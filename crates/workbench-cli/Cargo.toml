@@ -1,0 +1,46 @@
+[package]
+name = "workbench-cli"
+default-run = "save"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "save"
+path = "src/main.rs"
+
+[[bin]]
+name = "runner-fixture"
+path = "tests/support/runner_fixture.rs"
+required-features = ["test-fixtures"]
+
+[[bin]]
+name = "profile-fixture"
+path = "tests/support/profile_fixture.rs"
+required-features = ["test-fixtures"]
+
+[features]
+test-fixtures = []
+
+[dependencies]
+workbench-core = { path = "../workbench-core" }
+workbench-ui = { path = "../workbench-ui" }
+clap.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+rcgen.workspace = true
+rustls.workspace = true
+base64.workspace = true
+sha2.workspace = true
+
+[target.'cfg(unix)'.dependencies]
+signal-hook.workspace = true
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc.workspace = true
+
+[lints]
+workspace = true

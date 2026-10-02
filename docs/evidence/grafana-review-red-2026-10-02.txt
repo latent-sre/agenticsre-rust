@@ -1,0 +1,44 @@
+{
+  "normalized_origin": {
+    "input_utf8_bytes": 820,
+    "output_origin_length": 2420,
+    "exit_status": 1,
+    "schema_errors": [
+      {
+        "schema": "grafana-dashboard-data",
+        "path": [
+          "binding"
+        ],
+        "validator": "anyOf"
+      }
+    ],
+    "defect_observed": true
+  },
+  "sub_nanosecond_precision": {
+    "exit_status": 0,
+    "requests": 3,
+    "observed_request": {
+      "datasource": "independent_ds",
+      "expr": "up",
+      "from": "2026-10-02T00:00:00Z",
+      "interval_ms": 1000,
+      "kind": "prometheus",
+      "max_data_points": 1000,
+      "max_lines": null,
+      "to": "2026-10-02T00:01:00Z"
+    },
+    "defect_observed": true
+  },
+  "encoded_result": {
+    "maximum_bytes": 2097152,
+    "last_retained": {
+      "name": "encoded-size-2094906",
+      "padding": 2094906,
+      "stdout_bytes": 2097473,
+      "exit_status": 1,
+      "status": "partial"
+    },
+    "oversized_count": 7,
+    "defect_observed": true
+  }
+}

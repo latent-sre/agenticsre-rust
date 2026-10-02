@@ -1,0 +1,391 @@
+rustc 1.98.0 (88d9e12ae 2026-08-18)
+cargo 1.98.0 (797e8a9bc 2026-08-05)
+PRETTY_NAME="Debian GNU/Linux 13 (trixie)"
+NAME="Debian GNU/Linux"
+VERSION_ID="13"
+VERSION="13 (trixie)"
+VERSION_CODENAME=trixie
+DEBIAN_VERSION_FULL=13.6
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+4294967296
+250000 100000
+512
+[
+  {
+    "name": "bwrap",
+    "source": "/usr/bin/bwrap",
+    "bytes": 72160,
+    "sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71"
+  },
+  {
+    "name": "rg",
+    "source": "/usr/bin/rg",
+    "bytes": 5257872,
+    "sha256": "be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb"
+  }
+]
+bubblewrap 0.9.0
+ripgrep 14.1.0
+
+features:-simd-accel,+pcre2
+simd(compile):+SSE2,-SSSE3,-AVX2
+simd(runtime):+SSE2,+SSSE3,-AVX2
+
+PCRE2 10.42 is available (JIT is available)
+git version 2.47.3
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling libc v0.2.189
+   Compiling syn v3.0.6
+   Compiling jobserver v0.1.35
+   Compiling find-msvc-tools v0.1.14
+   Compiling shlex v2.0.1
+   Compiling stable_deref_trait v1.2.1
+   Compiling cc v1.5.1
+   Compiling smallvec v1.16.2
+   Compiling portable-atomic v1.15.0
+   Compiling cfg-if v1.0.5
+   Compiling pin-project-lite v0.2.17
+   Compiling synstructure v0.14.0
+   Compiling bytes v1.12.1
+   Compiling cmake v0.1.58
+   Compiling critical-section v1.2.0
+   Compiling serde_core v1.0.229
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling zerovec-derive v0.11.6
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling displaydoc v0.2.7
+   Compiling dunce v1.0.5
+   Compiling futures-core v0.3.34
+   Compiling writeable v0.6.4
+   Compiling zerovec v0.11.8
+   Compiling litemap v0.8.3
+   Compiling pkg-config v0.3.34
+   Compiling tinystr v0.8.4
+   Compiling fs_extra v1.3.0
+   Compiling icu_locale_core v2.3.0
+   Compiling aws-lc-sys v0.45.0
+   Compiling potential_utf v0.1.6
+   Compiling zerotrie v0.2.5
+   Compiling once_cell v1.21.4
+   Compiling zeroize v1.9.0
+   Compiling utf8_iter v1.0.4
+   Compiling icu_normalizer_data v2.3.0
+   Compiling icu_properties_data v2.3.0
+   Compiling icu_collections v2.3.0
+   Compiling icu_provider v2.3.1
+   Compiling tokio-macros v2.7.2
+   Compiling socket2 v0.6.5
+   Compiling mio v1.2.3
+   Compiling serde v1.0.229
+   Compiling tokio v1.53.1
+   Compiling rustls-pki-types v1.15.1
+   Compiling serde_derive v1.0.229
+   Compiling rand_core v0.10.1
+   Compiling itoa v1.0.18
+   Compiling percent-encoding v2.3.2
+   Compiling getrandom v0.4.3
+   Compiling aws-lc-rs v1.18.1
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_properties v2.3.0
+   Compiling futures-macro v0.3.34
+   Compiling autocfg v1.5.1
+   Compiling futures-task v0.3.34
+   Compiling slab v0.4.12
+   Compiling untrusted v0.9.0
+   Compiling futures-util v0.3.34
+   Compiling num-traits v0.2.19
+   Compiling idna_adapter v1.2.2
+   Compiling ipnet v2.12.2
+   Compiling http v1.5.0
+   Compiling tracing-core v0.1.36
+   Compiling cpufeatures v0.3.1
+   Compiling crossbeam-utils v0.8.23
+   Compiling tracing v0.1.44
+   Compiling http-body v1.1.0
+   Compiling idna v1.1.0
+   Compiling form_urlencoded v1.2.2
+   Compiling futures-channel v0.3.34
+   Compiling parking_lot_core v0.9.12
+   Compiling httparse v1.10.1
+   Compiling thiserror v2.0.21
+   Compiling rustls v0.23.45
+   Compiling url v2.5.8
+   Compiling chacha20 v0.10.2
+   Compiling thiserror-impl v2.0.21
+   Compiling subtle v2.6.1
+   Compiling either v1.18.0
+   Compiling log v0.4.34
+   Compiling typenum v1.20.1
+   Compiling base64 v0.23.1
+   Compiling tower-service v0.3.3
+   Compiling scopeguard v1.2.0
+   Compiling crossbeam-epoch v0.9.21
+   Compiling try-lock v0.2.5
+   Compiling want v0.3.1
+   Compiling lock_api v0.4.14
+   Compiling hybrid-array v0.4.15
+   Compiling prefix-trie v0.8.4
+   Compiling rand v0.10.3
+   Compiling tinyvec v1.13.3
+   Compiling atomic-waker v1.1.2
+   Compiling data-encoding v2.11.1
+   Compiling memchr v2.8.3
+   Compiling hickory-proto v0.26.3
+   Compiling hyper v1.11.1
+   Compiling parking_lot v0.12.5
+   Compiling crossbeam-channel v0.5.17
+   Compiling uuid v1.26.1
+   Compiling sync_wrapper v1.0.2
+   Compiling async-trait v0.1.92
+   Compiling time-core v0.1.9
+   Compiling openssl-probe v0.2.1
+   Compiling tower-layer v0.3.3
+   Compiling equivalent v1.0.2
+   Compiling zmij v1.0.23
+   Compiling futures-io v0.3.34
+   Compiling tagptr v0.2.0
+   Compiling powerfmt v0.2.0
+   Compiling num-conv v0.2.2
+   Compiling deranged v0.5.8
+   Compiling time v0.3.55
+   Compiling moka v0.12.16
+   Compiling hickory-net v0.26.3
+   Compiling tower v0.5.3
+   Compiling rustls-native-certs v0.8.4
+   Compiling hyper-util v0.1.21
+   Compiling aho-corasick v1.1.5
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling const-oid v0.10.2
+   Compiling serde_json v1.0.151
+   Compiling resolv-conf v0.7.6
+   Compiling bitflags v2.13.2
+   Compiling regex-syntax v0.8.11
+   Compiling regex-automata v0.4.18
+   Compiling tower-http v0.6.11
+   Compiling hickory-resolver v0.26.3
+   Compiling digest v0.11.3
+   Compiling http-body-util v0.1.5
+   Compiling utf8parse v0.2.2
+   Compiling anstyle-parse v1.0.0
+   Compiling sha2 v0.11.0
+   Compiling regex v1.13.1
+   Compiling webpki-root-certs v1.0.9
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling base64 v0.22.1
+   Compiling anstyle-query v1.1.5
+   Compiling colorchoice v1.0.5
+   Compiling anstyle v1.0.14
+   Compiling anstream v1.0.0
+   Compiling errno v0.3.14
+   Compiling clap_lex v1.1.1
+   Compiling strsim v0.11.1
+   Compiling heck v0.5.0
+   Compiling signal-hook v0.4.4
+   Compiling clap_derive v4.6.7
+   Compiling clap_builder v4.6.7
+   Compiling signal-hook-registry v1.4.8
+   Compiling clap v4.6.7
+   Compiling ring v0.17.14
+   Compiling getrandom v0.2.17
+   Compiling yasna v0.6.0
+   Compiling pem v4.0.0
+   Compiling rcgen v0.14.10
+   Compiling rustls-webpki v0.103.15
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling reqwest v0.13.5
+   Compiling workbench-core v0.1.0 (/tmp/work/crates/workbench-core)
+   Compiling workbench-cli v0.1.0 (/tmp/work/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 43.08s
+     Running unittests tests/support/profile_fixture.rs (target/debug/deps/profile_fixture-0652b9fdf9241cdc)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests tests/support/runner_fixture.rs (target/debug/deps/runner_fixture-f9a5ecef555cb1ec)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/save-2684a15c05f10cb9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/error_budget.rs (target/debug/deps/error_budget-68a4f3c6ae0688e4)
+
+running 8 tests
+test array_encodings_cannot_replace_object_inputs_or_envelopes ... ok
+test high_precision_finite_inputs_survive_the_real_child_protocol ... ok
+test nonfinite_or_duplicate_json_and_derived_range_errors_never_become_calculations ... ok
+test pure_python_regressions_run_in_the_isolated_supported_runtime ... ok
+test small_complete_reply_fits_the_minimum_capture_limit_but_deadline_still_applies ... ok
+test text_call_and_cli_calculations_share_units_threshold_and_normalized_input ... ok
+test typed_domain_and_exit_policy_failures_are_denied_before_dispatch ... ok
+test independent_numerical_goldens_match_without_turning_verdicts_into_process_failure ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running tests/grafana.rs (target/debug/deps/grafana-fb55bc2c627cb973)
+
+running 17 tests
+test basic_authentication_is_exact_and_its_numeric_and_encoded_echoes_are_masked ... ok
+test cancellation_closes_native_requests_with_signal_exit_and_no_later_dispatch ... ok
+test cli_call_and_human_output_share_one_observation ... ok
+test bounded_response_parsing_rejects_duplicate_nonfinite_deep_and_excess_bytes ... ok
+test invalid_admission_and_remote_looking_local_operations_never_make_http_or_child_effects ... ok
+test private_data_is_masked_without_corrupting_public_identity_or_control_types ... ok
+test real_https_dashboard_and_both_query_dialects_use_verified_scoped_exchanges ... ok
+test redaction_expansion_and_envelope_overhead_cannot_escape_the_encoded_result_cap ... ok
+test review_r1_canonical_origin_length_is_checked_before_http ... ok
+test review_r1_finalized_receipt_includes_late_source_and_timing_overhead ... ok
+test review_r1_fractional_time_precision_is_admitted_before_lossy_parser_conversion ... ok
+test review_r2_invalid_timestamp_separators_cannot_bypass_exact_precision_admission ... ok
+test secret_collisions_with_public_identifiers_preserve_correlated_typed_wrappers ... ok
+test tls_proxy_redirect_retry_and_ambient_trust_boundaries_are_real ... ok
+test whole_operation_deadline_includes_sequential_requests_and_body_consumption ... ok
+test wrong_org_datasource_and_http200_semantic_errors_stop_the_sequence ... ok
+test individual_request_deadline_is_twenty_seconds_within_the_sixty_second_operation ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.20s
+
+     Running tests/read_profile.rs (target/debug/deps/read_profile-1f8e1e943cdd3a6a)
+
+running 11 tests
+test inspection_admits_bound_forms_without_claiming_execution_or_availability ... ignored, requires root-owned runtime identity visible in the native Cally lane
+test native_alternative_syscall_abis_are_refused ... ignored, requires the explicit native Cally containment lane
+test native_detached_descendant_dies_with_namespace_parent ... ignored, requires the explicit native Cally containment lane
+test native_failed_exec_does_not_claim_tool_execution ... ignored, requires the explicit native Cally containment lane
+test native_git_rg_and_structured_call_preserve_real_outcomes ... ignored, requires the explicit native Cally containment lane
+test native_hostile_git_and_rg_controls_cannot_execute_helpers ... ignored, requires the explicit native Cally containment lane
+test native_output_deadline_and_cancellation_keep_bounds ... ignored, requires the explicit native Cally containment lane
+test native_socket_fifo_fd_and_filesystem_channels_are_closed ... ignored, requires the explicit native Cally containment lane
+test unavailable_local_runtime_identity_or_nested_isolation_never_falls_back ... ok
+test unsupported_repository_layout_and_implicit_cwd_fail_before_wrapper ... ok
+test malformed_policy_bindings_paths_and_wire_authority_are_denied ... ok
+
+test result: ok. 3 passed; 0 failed; 8 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+     Running tests/runner.rs (target/debug/deps/runner-cc6d9ffdb8b075b7)
+
+running 14 tests
+test both_streams_drain_after_capture_and_encoded_limits_and_disclose_loss ... ok
+test environment_is_fixed_stdin_closed_and_path_not_inherited ... ok
+test inspect_canonicalizes_without_running_and_discovery_is_offline ... ok
+test invalid_utf8_and_raw_cut_codepoint_are_disclosed ... ok
+test closed_or_stalled_result_consumers_exit_without_panicking_or_hanging ... ok
+test late_signal_interrupts_stalled_result_delivery_with_signal_exit ... ok
+test literal_arguments_unicode_and_metacharacters_never_get_shell_evaluation ... ok
+test malformed_version_record_grant_and_path_requests_never_create_markers ... ok
+test nonzero_primary_exit_is_preserved_separately_from_cli_status ... ok
+test primary_exit_before_descendant_pipe_eof_is_not_false_completion ... ok
+test sigint_and_sigterm_cancel_owned_children_with_normalized_exit ... ok
+test text_and_json_report_the_same_execution_and_literal_stdout ... ok
+test timeout_and_forced_termination_have_bounded_cleanup ... ok
+test late_signal_during_timeout_cleanup_preserves_timeout_and_signal_exit ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.59s
+
+     Running tests/tasks.rs (target/debug/deps/tasks-59efee543e17d4e2)
+
+running 13 tests
+test clean_check_is_completed_observation_with_source_and_input_identity ... ok
+test dialect_overrides_quoted_literals_and_selected_range_totals_are_preserved ... ok
+test embedded_binding_works_away_from_checkout_and_ignores_hostile_modules ... ok
+test each_upstream_rule_discriminates_its_single_field_mutation ... ok
+test findings_fields_and_capture_loss_cannot_be_claimed_complete ... ok
+test human_task_output_renders_findings_and_coverage_from_the_shared_receipt ... ok
+test model_byte_depth_panel_and_query_limits_fail_explicitly ... ok
+test nonregular_inputs_are_refused_without_blocking ... ok
+test task_contract_rejects_override_unknown_id_version_and_relative_structured_path ... ok
+test task_timeout_and_cancellation_preserve_supervisor_outcomes ... ok
+test unknown_plugins_receive_common_findings_with_explicit_coverage_limits ... ok
+test malformed_empty_v2_and_wrongly_typed_models_fail_without_input_echo ... ok
+test wrappers_nested_rows_and_nonquerying_panels_keep_upstream_semantics ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-1adb3b914462b814)
+
+running 13 tests
+test grafana::config::tests::url_validation_precedes_normalization_and_preserves_prefix ... ok
+test grafana::config::tests::provider_scope_and_auth_shapes_cannot_be_replaced ... ok
+test grafana::tests::review_r2_timestamp_grammar_and_fraction_precision_are_independent ... ok
+test grafana::redact::tests::private_primitives_encodings_and_key_collisions_are_explicit ... ok
+test read_profile::grammar::tests::dangerous_or_ambiguous_forms_are_denied ... ok
+test read_profile::grammar::tests::exact_forms_preserve_literal_paths_and_patterns ... ok
+test read_profile::seccomp::tests::filter_distinguishes_read_flags_and_rejects_alternative_abis ... ok
+test tasks::error_budget::tests::finite_numeric_input_survives_json_roundtrip_without_changing_bits ... ok
+test grafana::tests::timestamps_and_expressions_preserve_the_public_time_contract ... ok
+test tasks::error_budget::tests::malformed_calculator_replies_and_unrequested_modes_are_rejected ... ok
+test tasks::tests::embedded_checker_matches_pinned_upstream_bytes ... ok
+test tasks::error_budget::tests::original_reference_and_adapted_binding_have_separate_identity ... ok
+test tasks::tests::malformed_or_mismatched_child_protocol_cannot_be_accepted ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/contracts.rs (target/debug/deps/contracts-59bbb732cd28b756)
+
+running 6 tests
+test host_capture_limit_only_tightens_requested_limits ... ok
+test request_byte_depth_and_json_boundaries_are_enforced ... ok
+test schema_object_boundaries_reject_serde_sequence_encodings ... ok
+test strict_controls_reject_unknown_duplicate_null_and_wrong_types ... ok
+test versions_targets_recording_and_invalid_limits_fail_before_dispatch ... ok
+test unicode_and_escaping_cannot_exceed_the_final_encoded_receipt_cap ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+    Finished `test` profile [unoptimized] target(s) in 0.06s
+     Running tests/read_profile.rs (target/debug/deps/read_profile-1f8e1e943cdd3a6a)
+
+running 11 tests
+test malformed_policy_bindings_paths_and_wire_authority_are_denied ... ok
+test native_alternative_syscall_abis_are_refused ... ok
+test inspection_admits_bound_forms_without_claiming_execution_or_availability ... ok
+test native_failed_exec_does_not_claim_tool_execution ... ok
+test native_detached_descendant_dies_with_namespace_parent ... ok
+test native_git_rg_and_structured_call_preserve_real_outcomes ... FAILED
+test native_hostile_git_and_rg_controls_cannot_execute_helpers ... FAILED
+test native_socket_fifo_fd_and_filesystem_channels_are_closed ... ok
+test unavailable_local_runtime_identity_or_nested_isolation_never_falls_back ... ok
+test unsupported_repository_layout_and_implicit_cwd_fail_before_wrapper ... ok
+test native_output_deadline_and_cancellation_keep_bounds ... ok
+
+failures:
+
+---- native_git_rg_and_structured_call_preserve_real_outcomes stdout ----
+
+thread 'native_git_rg_and_structured_call_preserve_real_outcomes' (4478) panicked at crates/workbench-cli/tests/read_profile.rs:315:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":["The declared isolation controls are required; their state remains unconfirmed until the trusted wrapper reports successful exec and an exit. Inspection launches nothing and does not establish namespace availability.","Only the selected root and five declared runtime files are readable. Sensitive files intentionally granted in that root remain readable; no protected same-account identity or defense against kernel defects is claimed.","Git configuration is masked, untracked/submodule inspection is omitted, and linked/sparse/partial/shallow repositories are unsupported. Ripgrep omits .git, limits files to 8MiB and matches to 1000 per file.","The outer supervisor reports wrapper exit and process-group cleanup; the tool status uses Bubblewrap's exit-or-128-plus-signal encoding. Client cancellation does not establish which instruction was last executed.","Time, captured output and private temporary storage are bounded. This profile has no per-invocation total-memory or process-count quota."],"scope":"Output from one allowed observation of the granted working tree","state":"partial"},"data":{"cancellation_signal":null,"effects":"observe","execution_performed":true,"inspection_advisory":false,"isolation":{"capabilities":"none","namespaces":["user","mount","network","pid","ipc","uts"],"no_new_privileges":true,"proc_mounted":false,"root_read_only":true,"seccomp":"x86_64-read-v1","socket_syscalls":false,"state":"confirmed","tmp_bytes":16777216,"writable_file_opens":false},"policy":{"sha256":"sha256:c572ee4ac6139ab5124b8aca4e8be0ba8ba4617eee38503baff47cfba57b46e2"},"profile":"linux-read-v1","root":{"device":79,"id":"checkout","inode":5523123,"path":"/tmp/read-profile-4413-5/checkout"},"runtime":[{"device":79,"inode":5374895,"path":"/lib64/ld-linux-x86-64.so.2","sha256":"sha256:438c546d8e8cc48496bf3a95f753051afd9db66a629a74e31a9ded71586b56e0"},{"device":79,"inode":5374915,"path":"/lib/x86_64-linux-gnu/libc.so.6","sha256":"sha256:fa430b8f298f817a266046af84a77533185ad6fc4406c7d3787b5a0a0c207826"},{"device":79,"inode":5374963,"path":"/lib/x86_64-linux-gnu/libpcre2-8.so.0","sha256":"sha256:8ee551e7f9645d6212c017df0938062ba046608a5378aab7d7c01c47b81a9f50"},{"device":79,"inode":5374996,"path":"/lib/x86_64-linux-gnu/libz.so.1","sha256":"sha256:85590dd58edf5445e18bc7193e5ebc01ac5841f1ae187e97705a662e90c6421e"},{"device":79,"inode":5374930,"path":"/lib/x86_64-linux-gnu/libgcc_s.so.1","sha256":"sha256:30c61ab012a4241bed033725a09b61f5fdd3bb7df95ee852d0b096520524c7af"}],"supervisor":{"cancellation_signal":null,"cleanup":{"confirmed":true,"final_drain_ms":500,"grace_ms":2000,"group_absent":true,"kill_sent":false,"primary_reaped":true,"scope":"Observed process group and inherited output pipes only; deliberately escaped processes are not contained.","stderr_closed":true,"stdout_closed":true,"term_sent":false,"trigger":null},"process_group_id":4492,"process_id":4492,"stderr_bytes_observed":83,"stdout_bytes_observed":0},"tool":{"binding":{"device":79,"inode":5523125,"path":"/tmp/read-profile-4413-5/git","sha256":"sha256:356db14e102d68a1a37d8a1ac577dfd678d45d46e92f468bef8b7154e7bfdc60"},"execution_confirmed":true,"exit_status":128,"name":"git","normalized_args":["--no-pager","--literal-pathspecs","--no-optional-locks","--no-replace-objects","-c","core.fsmonitor=false","-c","core.hooksPath=/nonexistent","-c","core.attributesFile=/dev/null","-c","safe.directory=/workspace","status","--porcelain=v1","--untracked-files=no","--ignore-submodules=all","--"],"status_encoding":"exit_or_128_plus_signal"},"wrapper":{"binding":{"device":79,"inode":5523128,"path":"/tmp/read-profile-4413-5/bwrap","sha256":"sha256:e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71"},"exit_code":128,"signal":null}},"duration_ms":155,"effect_outcome":"not_applicable","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"child_failed","message":"The primary process exited unsuccessfully or its exit could not be established.","retryable":false}],"execution":{"child_exit_code":128,"signal":null,"status":"failed"},"finished_at":"2026-10-02T12:58:42.094719817Z","operation":"process.exec","operation_version":1,"output":{"encoding":"utf-8","stderr":"fatal: could not open '/dev/null' for reading and writing: Operation not permitted\n","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-4485-18dab7d3c11e88ea-0","resolved_target":{"cwd":"/tmp/read-profile-4413-5/checkout","effects":"observe","executable":"/tmp/read-profile-4413-5/git","profile":"linux-read-v1","root_id":"checkout"},"run_id":"run-4485-18dab7d3c11f36b7-1","sources":[{"evidence_state":"sourced","observed_at":"2026-10-02T12:58:42.094622474Z","reference":"local:child-output","untrusted":true}],"spec_version":"0.1","started_at":"2026-10-02T12:58:41.939190795Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(1)
+ right: Some(0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- native_hostile_git_and_rg_controls_cannot_execute_helpers stdout ----
+
+thread 'native_hostile_git_and_rg_controls_cannot_execute_helpers' (4479) panicked at crates/workbench-cli/tests/read_profile.rs:362:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":["The declared isolation controls are required; their state remains unconfirmed until the trusted wrapper reports successful exec and an exit. Inspection launches nothing and does not establish namespace availability.","Only the selected root and five declared runtime files are readable. Sensitive files intentionally granted in that root remain readable; no protected same-account identity or defense against kernel defects is claimed.","Git configuration is masked, untracked/submodule inspection is omitted, and linked/sparse/partial/shallow repositories are unsupported. Ripgrep omits .git, limits files to 8MiB and matches to 1000 per file.","The outer supervisor reports wrapper exit and process-group cleanup; the tool status uses Bubblewrap's exit-or-128-plus-signal encoding. Client cancellation does not establish which instruction was last executed.","Time, captured output and private temporary storage are bounded. This profile has no per-invocation total-memory or process-count quota."],"scope":"Output from one allowed observation of the granted working tree","state":"partial"},"data":{"cancellation_signal":null,"effects":"observe","execution_performed":true,"inspection_advisory":false,"isolation":{"capabilities":"none","namespaces":["user","mount","network","pid","ipc","uts"],"no_new_privileges":true,"proc_mounted":false,"root_read_only":true,"seccomp":"x86_64-read-v1","socket_syscalls":false,"state":"confirmed","tmp_bytes":16777216,"writable_file_opens":false},"policy":{"sha256":"sha256:7b60abd7ade45d3e97ac2fcbac17f2bf983c64fca1208f024bea5772736e31a3"},"profile":"linux-read-v1","root":{"device":79,"id":"checkout","inode":5523118,"path":"/tmp/read-profile-4413-6/checkout"},"runtime":[{"device":79,"inode":5374895,"path":"/lib64/ld-linux-x86-64.so.2","sha256":"sha256:438c546d8e8cc48496bf3a95f753051afd9db66a629a74e31a9ded71586b56e0"},{"device":79,"inode":5374915,"path":"/lib/x86_64-linux-gnu/libc.so.6","sha256":"sha256:fa430b8f298f817a266046af84a77533185ad6fc4406c7d3787b5a0a0c207826"},{"device":79,"inode":5374963,"path":"/lib/x86_64-linux-gnu/libpcre2-8.so.0","sha256":"sha256:8ee551e7f9645d6212c017df0938062ba046608a5378aab7d7c01c47b81a9f50"},{"device":79,"inode":5374996,"path":"/lib/x86_64-linux-gnu/libz.so.1","sha256":"sha256:85590dd58edf5445e18bc7193e5ebc01ac5841f1ae187e97705a662e90c6421e"},{"device":79,"inode":5374930,"path":"/lib/x86_64-linux-gnu/libgcc_s.so.1","sha256":"sha256:30c61ab012a4241bed033725a09b61f5fdd3bb7df95ee852d0b096520524c7af"}],"supervisor":{"cancellation_signal":null,"cleanup":{"confirmed":true,"final_drain_ms":500,"grace_ms":2000,"group_absent":true,"kill_sent":false,"primary_reaped":true,"scope":"Observed process group and inherited output pipes only; deliberately escaped processes are not contained.","stderr_closed":true,"stdout_closed":true,"term_sent":false,"trigger":null},"process_group_id":4496,"process_id":4496,"stderr_bytes_observed":83,"stdout_bytes_observed":0},"tool":{"binding":{"device":79,"inode":5523122,"path":"/tmp/read-profile-4413-6/git","sha256":"sha256:356db14e102d68a1a37d8a1ac577dfd678d45d46e92f468bef8b7154e7bfdc60"},"execution_confirmed":true,"exit_status":128,"name":"git","normalized_args":["--no-pager","--literal-pathspecs","--no-optional-locks","--no-replace-objects","-c","core.fsmonitor=false","-c","core.hooksPath=/nonexistent","-c","core.attributesFile=/dev/null","-c","safe.directory=/workspace","status","--porcelain=v1","--untracked-files=no","--ignore-submodules=all","--"],"status_encoding":"exit_or_128_plus_signal"},"wrapper":{"binding":{"device":79,"inode":5523148,"path":"/tmp/read-profile-4413-6/bwrap","sha256":"sha256:e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71"},"exit_code":128,"signal":null}},"duration_ms":136,"effect_outcome":"not_applicable","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"child_failed","message":"The primary process exited unsuccessfully or its exit could not be established.","retryable":false}],"execution":{"child_exit_code":128,"signal":null,"status":"failed"},"finished_at":"2026-10-02T12:58:42.156384191Z","operation":"process.exec","operation_version":1,"output":{"encoding":"utf-8","stderr":"fatal: could not open '/dev/null' for reading and writing: Operation not permitted\n","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-4491-18dab7d3c5efdfb9-0","resolved_target":{"cwd":"/tmp/read-profile-4413-6/checkout","effects":"observe","executable":"/tmp/read-profile-4413-6/git","profile":"linux-read-v1","root_id":"checkout"},"run_id":"run-4491-18dab7d3c5f074ac-1","sources":[{"evidence_state":"sourced","observed_at":"2026-10-02T12:58:42.156288141Z","reference":"local:child-output","untrusted":true}],"spec_version":"0.1","started_at":"2026-10-02T12:58:42.020019787Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(1)
+ right: Some(0)
+
+
+failures:
+    native_git_rg_and_structured_call_preserve_real_outcomes
+    native_hostile_git_and_rg_controls_cannot_execute_helpers
+
+test result: FAILED. 9 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.26s
+
+error: test failed, to rerun pass `-p workbench-cli --test read_profile`

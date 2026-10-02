@@ -3,9 +3,38 @@
 A planned SRE operations product for humans and agents: common commands, Grafana observations,
 named scripts, repeatable investigations, and extensible operational capabilities.
 
-**Status:** Product planning and repository bootstrap. There is no Rust executable yet.
-The owner selected this repository on 2026-10-02. SRE Workbench remains the working product name
-and save the proposed CLI name; choosing this repository does not settle the remaining design decisions.
+**Status:** Linux command-runner PoC, two fixed offline tasks and a native Grafana fixture adapter
+built, independently reviewed/verified and tested on Cally.
+The local browser interface is built and independently reviewed/verified for its agreed Linux PoC
+scope; [its acceptance record](docs/ui-verification.md) retains exact source identities and limits.
+The `save` CLI executes literal arguments
+with bounded output, deadlines and cancellation, or inspects commands without running them.
+It provides text/JSON receipts, structured requests, discovery and offline diagnostics. The
+`dashboard-hygiene` task checks local Grafana models using its embedded checker and optional
+system Python >=3.11. The `error-budget` task calculates time/request budgets and bounded-window
+burn policy from supplied measurements. Native `grafana dashboard get` and `grafana query`
+provide scoped HTTPS observations with bounded, redacted results. It is an operator-local
+development tool. A restricted Linux Git/ripgrep profile is implemented with remaining acceptance
+limits; Windows execution and live Grafana-version acceptance remain open. SRE Workbench and
+`save` are working names.
+
+```bash
+CARGO_INCREMENTAL=0 CARGO_PROFILE_DEV_DEBUG=0 cargo build --locked -p workbench-cli
+target/debug/save --json exec --cwd . -- /usr/bin/printf '%s\n' 'hello workbench'
+target/debug/save task run dashboard-hygiene --input tests/fixtures/dashboard-hygiene/clean-input.json
+target/debug/save task run error-budget --input tests/fixtures/error-budget/time-input.json
+target/debug/save ui serve --allow task.run
+```
+
+Rust 1.98.0 is pinned in `rust-toolchain.toml`. See [development](docs/development.md) for sandboxed
+tests and Cally's offline build, and [the PoC contract](docs/poc.md) for exact limits and scope.
+The [PoC](docs/poc-verification.md), [dashboard](docs/dashboard-verification.md),
+[error-budget](docs/error-budget-verification.md) and [Grafana acceptance](docs/grafana-verification.md)
+records tie passed checks and
+limitations to frozen source.
+The [local browser interface](docs/development.md#local-browser-interface) runs checks and shows
+results/history using the same core. It has no AI chat or persistent history; its compiled assets
+are embedded in `save`, so running it requires no separate Node server.
 
 ## Start here
 
@@ -16,10 +45,11 @@ and save the proposed CLI name; choosing this repository does not settle the rem
 - [Decisions and risks](docs/sre-workbench/decisions-and-risks.md): resolved and outstanding choices.
 - [Contributing](CONTRIBUTING.md): reproduce the planning checks before proposing changes.
 
-The first intended implementation slice is a Rust command runner with literal arguments, explicit
-working directory, text/JSON output, execution limits, cancellation and Windows/Linux tests.
-Grafana, script adapters and MCP follow through the shared core. No live target or credential
-configuration is included in this repository.
+[Native Grafana observations](docs/grafana.md) use explicit operator configuration and synthetic
+fixtures for current acceptance. [Restricted commands](docs/read-profile.md) and the
+[GUI](docs/ui.md) use the shared core; MCP is deferred behind the GUI.
+All 25 capabilities remain in scope; [adapter notes](docs/adapter-notes.md) preserve the verified upstream baseline. No live
+target or credential configuration is included in this repository.
 
 ## Validate the specifications
 

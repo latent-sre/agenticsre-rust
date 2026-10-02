@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:dashboard-hygiene-input:0.1",
+  "title": "dashboard-hygiene-input version 0.1",
+  "type": "object",
+  "properties": {
+    "file": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^/"
+    }
+  },
+  "required": [
+    "file"
+  ],
+  "additionalProperties": false
+}

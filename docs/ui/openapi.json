@@ -1,0 +1,1409 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AgenticSRE local workbench",
+    "version": "0.1.1",
+    "description": "Local bearer-authenticated browser adapter. Normative semantics: docs/ui.md. Core schemas are embedded unchanged except local reference relocation."
+  },
+  "paths": {
+    "/api/v1/session": {
+      "get": {
+        "operationId": "getSession",
+        "security": [
+          {
+            "sessionBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "getSession",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Bounded HTTP admission or lifecycle error, separate from a core operation result.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs": {
+      "post": {
+        "operationId": "submitRun",
+        "security": [
+          {
+            "sessionBearer": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "submitRun",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunSummary"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "description": "Invocation summary path.",
+                "schema": {
+                  "type": "string",
+                  "maxLength": 160
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Bounded HTTP admission or lifecycle error, separate from a core operation result.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunSubmission"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listRuns",
+        "security": [
+          {
+            "sessionBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "listRuns",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Bounded HTTP admission or lifecycle error, separate from a core operation result.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 49,
+              "default": 0
+            }
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "clearRuns",
+        "security": [
+          {
+            "sessionBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "clearRuns",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClearResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Bounded HTTP admission or lifecycle error, separate from a core operation result.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empty"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{id}": {
+      "get": {
+        "operationId": "getRun",
+        "security": [
+          {
+            "sessionBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "getRun",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunSummary"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Bounded HTTP admission or lifecycle error, separate from a core operation result.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,128}$"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/runs/{id}/receipt": {
+      "get": {
+        "operationId": "getReceipt",
+        "security": [
+          {
+            "sessionBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "getReceipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CoreResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Bounded HTTP admission or lifecycle error, separate from a core operation result.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,128}$"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/runs/{id}/cancel": {
+      "post": {
+        "operationId": "cancelRun",
+        "security": [
+          {
+            "sessionBearer": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "cancelRun",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunSummary"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Bounded HTTP admission or lifecycle error, separate from a core operation result.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Already terminal; actual final state retained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunSummary"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empty"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,128}$"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "sessionBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Process-scoped random token from the launcher URL fragment; never a URL query parameter."
+      }
+    },
+    "schemas": {
+      "CoreResult": {
+        "title": "SRE Workbench result draft 0.1",
+        "type": "object",
+        "properties": {
+          "spec_version": {
+            "const": "0.1"
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "operation": {
+            "$ref": "#/components/schemas/CoreCommon/$defs/operation"
+          },
+          "operation_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "target": {
+            "$ref": "#/components/schemas/CoreCommon/$defs/target"
+          },
+          "resolved_target": {
+            "type": "object"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "execution": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "enum": [
+                  "succeeded",
+                  "failed",
+                  "partial",
+                  "denied",
+                  "unsupported",
+                  "cancelled",
+                  "timed_out",
+                  "unknown"
+                ]
+              },
+              "child_exit_code": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "signal": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 32
+              }
+            },
+            "required": [
+              "status",
+              "child_exit_code",
+              "signal"
+            ],
+            "additionalProperties": false
+          },
+          "effect_outcome": {
+            "enum": [
+              "not_attempted",
+              "not_applicable",
+              "succeeded",
+              "failed",
+              "unknown"
+            ]
+          },
+          "assessment": {
+            "enum": [
+              "not_assessed",
+              "healthy",
+              "degraded",
+              "unhealthy",
+              "unknown"
+            ]
+          },
+          "coverage": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "complete",
+                  "partial",
+                  "not_established",
+                  "not_applicable"
+                ]
+              },
+              "scope": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                },
+                "maxItems": 50
+              }
+            },
+            "required": [
+              "state",
+              "scope",
+              "limitations"
+            ],
+            "additionalProperties": false
+          },
+          "output": {
+            "type": "object",
+            "properties": {
+              "stdout": {
+                "type": "string",
+                "maxLength": 2097152
+              },
+              "stderr": {
+                "type": "string",
+                "maxLength": 2097152
+              },
+              "stdout_truncated": {
+                "type": "boolean"
+              },
+              "stderr_truncated": {
+                "type": "boolean"
+              },
+              "encoding": {
+                "enum": [
+                  "utf-8",
+                  "utf-8-replaced"
+                ]
+              }
+            },
+            "required": [
+              "stdout",
+              "stderr",
+              "stdout_truncated",
+              "stderr_truncated",
+              "encoding"
+            ],
+            "additionalProperties": false
+          },
+          "data": {
+            "type": "object"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$",
+                  "maxLength": 128
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                },
+                "retryable": {
+                  "type": "boolean"
+                },
+                "next_step": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "retryable"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 50
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CoreCommon/$defs/source"
+            },
+            "maxItems": 100
+          },
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CoreCommon/$defs/artifact"
+            },
+            "maxItems": 100
+          },
+          "effective_limits": {
+            "$ref": "#/components/schemas/CoreCommon/$defs/limits"
+          },
+          "record_mode": {
+            "enum": [
+              "auto",
+              "always",
+              "never"
+            ]
+          }
+        },
+        "required": [
+          "spec_version",
+          "request_id",
+          "run_id",
+          "operation",
+          "operation_version",
+          "target",
+          "resolved_target",
+          "started_at",
+          "finished_at",
+          "duration_ms",
+          "execution",
+          "effect_outcome",
+          "assessment",
+          "coverage",
+          "output",
+          "data",
+          "errors",
+          "sources",
+          "artifacts",
+          "effective_limits",
+          "record_mode"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "execution": {
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "denied",
+                        "unsupported"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "effect_outcome": {
+                  "const": "not_attempted"
+                },
+                "assessment": {
+                  "const": "not_assessed"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "execution": {
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "failed",
+                        "denied",
+                        "unsupported",
+                        "timed_out",
+                        "unknown"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "errors": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CoreCommon": {
+        "title": "SRE Workbench common draft 0.1",
+        "$defs": {
+          "target": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "local",
+                  "connection",
+                  "service",
+                  "runner"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "environment": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            },
+            "required": [
+              "kind",
+              "id"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "kind": {
+                      "const": "service"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "environment"
+                  ]
+                }
+              }
+            ]
+          },
+          "limits": {
+            "type": "object",
+            "properties": {
+              "timeout_ms": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 300000
+              },
+              "max_output_bytes": {
+                "type": "integer",
+                "minimum": 1024,
+                "maximum": 2097152
+              },
+              "max_items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              },
+              "concurrency": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 16
+              }
+            },
+            "required": [
+              "timeout_ms",
+              "max_output_bytes"
+            ],
+            "additionalProperties": false
+          },
+          "artifact": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]*$",
+                "maxLength": 1024
+              },
+              "media_type": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1073741824
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "classification": {
+                "enum": [
+                  "public",
+                  "internal",
+                  "restricted"
+                ]
+              }
+            },
+            "required": [
+              "path",
+              "media_type",
+              "bytes",
+              "digest",
+              "classification"
+            ],
+            "additionalProperties": false
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "reference": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "observed_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "evidence_state": {
+                "enum": [
+                  "verified",
+                  "sourced",
+                  "unverified"
+                ]
+              },
+              "untrusted": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "reference",
+              "observed_at",
+              "evidence_state",
+              "untrusted"
+            ],
+            "additionalProperties": false
+          },
+          "operation": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+            "maxLength": 128
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]*$",
+            "maxLength": 1024
+          }
+        }
+      },
+      "CoreErrorBudgetInput": {
+        "title": "error-budget-input version 0.1",
+        "type": "object",
+        "properties": {
+          "slo": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 100
+          },
+          "window_days": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "bad_minutes": {
+            "type": "number",
+            "minimum": 0
+          },
+          "bad_events": {
+            "type": "number",
+            "minimum": 0
+          },
+          "total_events": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "sli_long": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "sli_short": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "long_window": {
+            "enum": [
+              "1h",
+              "6h",
+              "3d"
+            ]
+          },
+          "short_window": {
+            "enum": [
+              "5m",
+              "30m",
+              "6h"
+            ]
+          }
+        },
+        "required": [
+          "slo"
+        ],
+        "additionalProperties": false,
+        "dependentRequired": {
+          "bad_events": [
+            "total_events"
+          ],
+          "total_events": [
+            "bad_events"
+          ],
+          "sli_short": [
+            "sli_long"
+          ]
+        },
+        "not": {
+          "required": [
+            "bad_minutes",
+            "bad_events"
+          ]
+        },
+        "anyOf": [
+          {
+            "properties": {
+              "long_window": {
+                "const": "1h"
+              },
+              "short_window": {
+                "const": "5m"
+              }
+            }
+          },
+          {
+            "required": [
+              "long_window",
+              "short_window"
+            ],
+            "properties": {
+              "long_window": {
+                "const": "6h"
+              },
+              "short_window": {
+                "const": "30m"
+              }
+            }
+          },
+          {
+            "required": [
+              "long_window",
+              "short_window"
+            ],
+            "properties": {
+              "long_window": {
+                "const": "3d"
+              },
+              "short_window": {
+                "const": "6h"
+              }
+            }
+          }
+        ]
+      },
+      "Root": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "id",
+          "label"
+        ],
+        "additionalProperties": false
+      },
+      "CommandOperation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "process.exec",
+              "command.inspect"
+            ]
+          },
+          "version": {
+            "const": 1
+          },
+          "profile": {
+            "const": "linux-read-v1"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "profile"
+        ],
+        "additionalProperties": false
+      },
+      "TaskOperation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "const": "task.run"
+          },
+          "version": {
+            "const": 1
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "const": "error-budget"
+            },
+            "minItems": 1,
+            "maxItems": 1
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "tasks"
+        ],
+        "additionalProperties": false
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "api_version": {
+            "const": "0.1"
+          },
+          "session_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "roots": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Root"
+            },
+            "maxItems": 8
+          },
+          "operations": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CommandOperation"
+                },
+                {
+                  "$ref": "#/components/schemas/TaskOperation"
+                }
+              ]
+            },
+            "maxItems": 3
+          },
+          "limits": {
+            "type": "object",
+            "properties": {
+              "active_runs": {
+                "const": 1
+              },
+              "history_entries": {
+                "const": 50
+              },
+              "history_bytes": {
+                "const": 16777216
+              },
+              "max_request_bytes": {
+                "const": 65536
+              },
+              "max_submissions": {
+                "const": 1024
+              }
+            },
+            "required": [
+              "active_runs",
+              "history_entries",
+              "history_bytes",
+              "max_request_bytes",
+              "max_submissions"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "api_version",
+          "session_id",
+          "roots",
+          "operations",
+          "limits"
+        ],
+        "additionalProperties": false
+      },
+      "Limits": {
+        "type": "object",
+        "properties": {
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 300000
+          },
+          "max_output_bytes": {
+            "type": "integer",
+            "minimum": 1024,
+            "maximum": 2097152
+          }
+        },
+        "required": [
+          "timeout_ms",
+          "max_output_bytes"
+        ],
+        "additionalProperties": false
+      },
+      "CommandInputs": {
+        "type": "object",
+        "properties": {
+          "program": {
+            "enum": [
+              "git",
+              "rg"
+            ]
+          },
+          "args": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 4096
+            },
+            "maxItems": 64
+          }
+        },
+        "required": [
+          "program",
+          "args"
+        ],
+        "additionalProperties": false
+      },
+      "TaskInputs": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "const": "error-budget"
+          },
+          "version": {
+            "const": 1
+          },
+          "input": {
+            "$ref": "#/components/schemas/CoreErrorBudgetInput"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "CommandSubmission": {
+        "type": "object",
+        "properties": {
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          },
+          "operation": {
+            "enum": [
+              "process.exec",
+              "command.inspect"
+            ]
+          },
+          "root_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/CommandInputs"
+          }
+        },
+        "required": [
+          "submission_id",
+          "operation_version",
+          "limits",
+          "operation",
+          "root_id",
+          "inputs"
+        ],
+        "additionalProperties": false
+      },
+      "TaskSubmission": {
+        "type": "object",
+        "properties": {
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          },
+          "operation": {
+            "const": "task.run"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/TaskInputs"
+          }
+        },
+        "required": [
+          "submission_id",
+          "operation_version",
+          "limits",
+          "operation",
+          "inputs"
+        ],
+        "additionalProperties": false
+      },
+      "RunSubmission": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CommandSubmission"
+          },
+          {
+            "$ref": "#/components/schemas/TaskSubmission"
+          }
+        ]
+      },
+      "RunSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "operation": {
+            "enum": [
+              "process.exec",
+              "command.inspect",
+              "task.run"
+            ]
+          },
+          "check_label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "root_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "enum": [
+              "running",
+              "cancelling",
+              "terminal"
+            ]
+          },
+          "submitted_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "execution_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "receipt_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^/api/v1/runs/[A-Za-z0-9_-]+/receipt$",
+                "maxLength": 180
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "operation",
+          "check_label",
+          "root_id",
+          "state",
+          "submitted_at",
+          "execution_status",
+          "receipt_url"
+        ],
+        "additionalProperties": false
+      },
+      "RunList": {
+        "type": "object",
+        "properties": {
+          "runs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RunSummary"
+            },
+            "maxItems": 50
+          },
+          "next_offset": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 49
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evicted_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1024
+          }
+        },
+        "required": [
+          "runs",
+          "next_offset",
+          "evicted_count"
+        ],
+        "additionalProperties": false
+      },
+      "ClearResult": {
+        "type": "object",
+        "properties": {
+          "removed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 50
+          },
+          "active_preserved": {
+            "const": true
+          }
+        },
+        "required": [
+          "removed",
+          "active_preserved"
+        ],
+        "additionalProperties": false
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "status": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "detail": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "required": [
+                "field",
+                "detail"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 16
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "request_id"
+        ],
+        "additionalProperties": false
+      },
+      "Empty": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
+    }
+  }
+}

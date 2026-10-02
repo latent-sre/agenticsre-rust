@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:task-run-input:0.1",
+  "title": "task-run-input version 0.1",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "dashboard-hygiene"
+        },
+        "version": {
+          "const": 1
+        },
+        "input": {
+          "$ref": "urn:sre-workbench:spec:dashboard-hygiene-input:0.1"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "input"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "error-budget"
+        },
+        "version": {
+          "const": 1
+        },
+        "input": {
+          "$ref": "urn:sre-workbench:spec:error-budget-input:0.1"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "input"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

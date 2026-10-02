@@ -30,8 +30,13 @@ verify in a fresh environment. Do not update pins as an incidental documentation
 
 ## Implementation and publication
 
-Before Rust implementation, resolve the decisions needed for that slice and select a reviewed
-toolchain/dependency set. Add behavior through the shared core, then keep CLI and MCP contracts
+The first implementation boundary is [the PoC contract](docs/poc.md), with commands and execution
+boundaries in [development](docs/development.md). Use `cargo fmt --all -- --check`,
+`cargo clippy --workspace --all-targets --all-features --locked -- -D warnings`, sandboxed Rust tests
+and `tools/verify-poc.py` public result checks. Keep `Cargo.lock` and the exact toolchain pin.
+Fixture helper binaries require `test-fixtures` and are excluded from ordinary installs.
+
+Resolve only the decisions needed for each subsequent slice. Add behavior through the shared core, then keep CLI and MCP contracts
 consistent. Test failure and denial paths with disposable targets and synthetic credentials.
 
 Before pushing, fetch the target base, inspect the exact diff, run affected checks and the

@@ -2,6 +2,8 @@
 
 This is the proposed normative contract for the product. Draft version 0.1 is not a released API.
 Machine schemas constrain structure; the semantic invariants below require implementation tests.
+The [PoC contract](../poc.md) names the current build subset and stricter local ceilings;
+unimplemented modes are rejected, not silently approximated.
 The [schema index](schemas/README.md) distinguishes schema checks from runtime guarantees.
 
 ## Operation identity and discovery
@@ -99,7 +101,9 @@ Progress events do not imply success. A process that exits without a valid adapt
 Cancellation stops admission of new work, signals owned children, drains bounded output and
 records unfinished effects. Proposed grace period is two seconds before forced termination.
 The executor must verify whether its owned process tree actually stopped. A failed kill or escaped
-child is reported and blocks claims of complete cancellation. Process groups on POSIX and job
+child is reported and blocks claims of complete cancellation. The deadline includes pipe draining:
+a leader exiting while a descendant holds stdout/stderr open cannot make the invocation hang.
+Process groups do not contain a deliberately escaping untrusted program. Process groups on POSIX and job
 objects on Windows are implementation candidates, with platform conformance tests [SRC-04](sources.md).
 
 Async jobs later add accepted/queued handles; an accepted job is not a terminal operation success.
@@ -127,6 +131,10 @@ Lossless evidence collection fails or returns partial when a bound is hit; it ca
 coverage. Draining discarded bytes prevents a child blocking on a full pipe but still consumes its
 time budget. A closed downstream pipe stops streaming without a traceback and initiates owned-child
 cancellation. Internal diagnostics never corrupt JSON output.
+
+For process execution, max_output_bytes is the raw capture budget for each stream, not their sum.
+The PoC clamps requests to a 1 MiB host ceiling per stream; the shared schema admits up to 2 MiB
+for other profiles. Encoded-result and per-stream ceilings are independent.
 
 The encoded response ceiling applies after JSON escaping and envelope overhead, even when a raw
 stream has not reached its own cap. Reserve space for status/errors and reduce captured text with

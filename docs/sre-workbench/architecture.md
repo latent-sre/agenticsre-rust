@@ -1,7 +1,7 @@
 # Architecture specification
 
-The proposed design uses a Rust operations core with thin CLI and MCP entry points. Integrations
-implement a shared operation contract. Rust is a product choice to review in DEC-01; no performance
+The design uses a Rust operations core with thin CLI and MCP entry points. Integrations
+implement a shared operation contract. Rust is selected for the PoC in DEC-01; no performance
 or security benefit is assumed merely from the language.
 
 ## Component boundaries
@@ -43,7 +43,7 @@ Proposed independent repository structure:
 crates/workbench-core/     contracts, dispatcher, policy, adapters, run store
 crates/workbench-cli/      human CLI and JSON output
 crates/workbench-mcp/      MCP adapter calling the same core
-spec/                     versioned schemas and compatibility fixtures
+docs/sre-workbench/schemas/ authoritative draft schemas (keep in place during PoC)
 tests/contract/           cross-interface and adapter acceptance
 tests/platform/           Windows, Linux and macOS execution cases
 docs/                     user, integration, extension and operator documentation
@@ -108,6 +108,10 @@ and script adapters. Changes required in unrelated core modules are reviewed as 
 The contract can evolve while draft; published versions use the compatibility rules in contracts.md.
 
 ## Storage and artifacts
+
+The PoC uses `record=never` and invocation correlation IDs, with no durable store. It rejects other
+recording modes until implemented. The following is the later persistence design, selected when
+the first evidence consumer needs it.
 
 Use a per-user state directory with restrictive permissions, run metadata and content-addressed
 artifacts. Proposed initial storage is SQLite metadata plus ordinary artifact files (DEC-08).

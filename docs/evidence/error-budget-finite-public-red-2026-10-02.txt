@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/hawkfire/rusty/agenticsre-rust/tools/verify-error-budget.py", line 193, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/home/hawkfire/rusty/agenticsre-rust/tools/verify-error-budget.py", line 108, in main
+    result = run(*argv)
+  File "/home/hawkfire/rusty/agenticsre-rust/tools/verify-error-budget.py", line 65, in run
+    assert completed.returncode == expected, (argv[:3], completed.returncode,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (('task', 'run', 'error-budget'), 1, b'{"spec_version":"0.1","request_id":"request-35-18daad2bfeb9bd98-0","run_id":"run-35-18daad2bfeb9f3fe-1","operation":"task.run","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{"cwd":"/","effects":"observe","executable":"/usr/bin/python3.12","profile":"operator-local","resolution":"canonical path; not a protected installation claim","task":{"binding_digest":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","id":"error-budget","version":1}},"started_at":"2026-10-02T09:43:26.30198458Z","finished_at":"2026-10-02T09:43:26.3148569Z","duration_ms":12,"execution":{"status":"failed","child_exit_code":0,"signal":null},"effect_outcome":"not_applicable","assessment":"not_assessed","coverage":{"state":"not_established","scope":"Arithmetic on supplied SLO measurements and the selected fixed example alert policy only","limitations":["Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health ', b'')

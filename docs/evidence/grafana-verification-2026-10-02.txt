@@ -1,0 +1,191 @@
+PASS — scoped R2 timestamp and Grafana fixture verification
+
+[verified] Candidate e22a1fe4 passes the selected R2 acceptance scope. The malformed
+separator witness from failed R1 is denied before HTTP; representative grammar and
+every tested fractional position beyond milliseconds are also denied. Valid exact
+millisecond, lowercase and offset forms retain their values. All original boundary
+closures and the three independent native HTTPS missions pass on this revision.
+
+This is fresh focused R2 execution plus explicitly identified unchanged-code evidence
+from R1, as requested. It is not a claim that this agent repeated the complete Rust
+suite or release installation at R2. Those checks retain their original revision.
+
+Target and approval identity
+-----------------------------
+[verified] Repository: latent-sre/agenticsre-rust.
+Commit: e22a1fe4193058b96afbca4a3e5dedc63dc7fbb9
+Tree: 0e23352e0c508589c42b208f65156e3648b7df2d
+Archive: /tmp/agenticsre-poc-cally.6C2zpuYy/source.tar
+SHA256: 2848dd7f72969a492188f1f39408432489a4fd9f1e334f63f07466ae5ef6431d
+Parent immutable snapshot: /tmp/agenticsre-grafana-r2-final-_kguyno2
+Independent clone: this packet directory/source, removed after verification.
+All 168 archived files matched the supplied commit and clone before execution and
+remained unchanged before cleanup. Git status was clean. See identity.json and
+evidence/identity-recheck.json.
+
+[sourced] Formal review envelope delivered by the parent:
+repository latent-sre/agenticsre-rust;
+base_sha 378c6ed0504ee9ee5b6e1d2e1da252bc41b4bb62;
+candidate_sha e22a1fe4193058b96afbca4a3e5dedc63dc7fbb9;
+tree_oid 0e23352e0c508589c42b208f65156e3648b7df2d.
+Correctness APPROVE and security-delta APPROVE, no reportable findings/P0-P1 zero.
+Scope: R2 timestamp admission, affected core/native/public/security regressions and
+contract clarification, retaining unchanged Grafana/R1 review coverage.
+Criteria: strict RFC3339 and lossless milliseconds before HTTP; valid lowercase,
+offset and exact-millisecond forms; preserved final-size/origin bounds and
+auth/transport/redaction/local-dispatch controls. Reviews were static, not execution.
+[verified] Candidate HEAD/tree/clean status were independently rechecked against this
+envelope before subsequent execution. evidence/review-envelope.json records it.
+
+Acceptance criteria and verdicts
+---------------------------------
+[sourced] Criteria come from the parent R2 task, frozen docs/grafana.md:90 and :96,
+AGENTS.md, adapter exchange notes and the unchanged request/result/data schemas.
+R2 intentionally narrows the verification delta to timestamp admission and affected
+Grafana behavior, carrying the prior unchanged common-code checks by source identity.
+
+[verified] PASS, fresh R2: strict RFC3339 grammar and no precision loss before HTTP.
+The retained R1 witness exits 2/denied, null normalized request, zero HTTP. An
+independent 67-case public matrix contains 58 invalid inputs with zero requests:
+18 malformed grammar/calendar/offset cases and nonzero tails at each fractional
+position 4 through 43, alternating CLI/call and from/to fields. All results validate
+against envelope and operation-specific schemas. The core regression also covers
+all ASCII separator bytes. Exact cases and ledgers are in timestamp-matrix/checks.json.
+
+[verified] PASS, fresh R2: valid forms remain usable. Nine independent positive cases
+cover T/t, Z/z, positive/negative/half-hour offsets, -00:00, zero-only tails up to the
+64-byte admitted input boundary, and both from/to fields. Wire millisecond strings
+match independent expected integers, including 1790899200123. Native tests cover
+additional combinations. The parent task's representative form criteria are met.
+
+[verified] PASS, fresh R2: dashboard/Prometheus/Loki missions with real private HTTPS,
+exact paths/prefix/org/auth/query body ledgers, offset normalization and bounded query
+parameters. Independent fixture implementation is separate from repository helpers.
+The 96-result public fixture matrix also passed CLI/call/text parity, admission,
+scope/binding, redaction, malformed/semantic responses, TLS/proxy/redirect controls,
+deadline/cancellation and existing interface probes on this exact candidate.
+
+[verified] PASS, fresh R2: original review closures preserved. Unicode origin still
+denies exit 2 before HTTP with schema-valid data; the ordinary sub-nanosecond witness
+denies before HTTP. The dashboard finalized-size search observed no oversized receipt;
+its largest retained result was 2,097,150 bytes and succeeded. Query overflow omitted
+response data with exit 1, structured_response_too_large, coverage not_established,
+and a schema-valid 2,632-byte receipt. Fifteen closure-probe invocations are retained.
+
+[verified] PASS, fresh R2: schema/format checks and exact-revision identity/isolation.
+Five focused native/core regression tests passed; 63 unrelated tests were explicitly
+filtered, not counted as passed at this revision.
+
+[verified, carried from R1] Existing process/task/shared-receipt regression and
+release-install workflow evidence remain the R1 runs. R1 ran 66 Rust tests,
+19 command/25 dashboard/52 budget public results, clippy, offline release install,
+and seven installed/no-checkout mission/cap checks successfully. This packet does
+not rename those runs as R2 executions. See the reuse record and limitations below.
+
+Failure reproduction and changed-byte evidence
+-----------------------------------------------
+[verified] Initial failures remain at:
+/tmp/agenticsre-grafana-verify-6ZmmitkP/packet.txt (8a301811)
+/tmp/agenticsre-grafana-r1-verify-trx_c3yk/packet.txt (378c6ed0).
+R1's exact witness was from=2026-10-02.00:00:00.0000000001Z. It exited 0/succeeded,
+sent three HTTP requests and silently normalized to 2026-10-02T00:00:00Z.
+The same retained test with --expect-fixed now exits 2 with an empty ledger.
+Current witness: evidence/precision-separator/check.json and result.stdout.
+Original witnesses are linked and hashed in evidence/reused-evidence.json.
+
+[verified] Complete file comparison establishes 33 other crate/resource/manifest
+files are byte-identical to R1. The entire Grafana production module excluding
+date() is also identical, with its digest retained. Schemas and pinned dependencies
+are unchanged. Fresh runtime versions equal the R1 runtime versions. Source-only
+comparison of date() is recorded by the immutable targets and these explicit hashes;
+no working-tree or name-only assumption supports reuse.
+
+[verified] evidence/reused-evidence.json names each carried R1 command, revision,
+own exit status, absolute record path and digest. These support unchanged process,
+task, receipt, config, transport and install paths. Timestamp and boundary acceptance
+itself was freshly executed at R2. There was no new product failure in this run.
+
+Fresh checks executed
+----------------------
+[verified] Each command ran direct through:
+  python3 -I -B /tmp/agenticsre-grafana-r2-verify-dt6d_hi1/tests/run-check.py NAME COMMAND...
+Host cwd /tmp; target cwd /work. Exact full outer/inner argv, cwd, candidate/tree,
+elapsed time, process-own status and stdout/stderr digests are in evidence/NAME.json.
+The wrapper forwards the tested status; no pipe or later command masks a failure.
+All nine fresh harness/build/check commands below exited 0:
+
+boundary: /venv/bin/python -I -B /tests/boundary.py
+  Active namespace/credential/filesystem/network/limit checks and fresh versions.
+focused-rust: cargo test --workspace --all-features --locked --offline review_r
+  Five passed: four native review regressions and one core grammar matrix;
+  63 filtered, zero failed/ignored. Built from an empty disposable Cargo target.
+format: cargo fmt --all -- --check
+specifications: /venv/bin/python -B docs/sre-workbench/verify_specs.py
+  20 schemas, 21 positive/9 negative fixtures, documentation checks passed.
+independent-missions: /venv/bin/python -I -B /tests/https-acceptance.py mission-only
+  Three real HTTPS dashboard/Prometheus/Loki missions, independent exact ledgers.
+public-grafana: /venv/bin/python -B tools/verify-grafana.py /scratch/target/debug/save
+  96 schema-valid public results.
+review-regressions: /venv/bin/python -I -B /tests/review-regressions.py --expect-fixed
+  Fifteen targeted product calls covering the three initial findings and query cap.
+precision-separator: /venv/bin/python -I -B /tests/precision-separator.py --expect-fixed
+  Exact R1 separator witness denied before HTTP.
+timestamp-matrix: /venv/bin/python -I -B /tests/timestamp-matrix.py
+  67 calls, 58 denied without requests, nine valid exact-millisecond exchanges.
+
+[verified] Individual intended product exits 1/2 are recorded separately in the
+independent check JSON and raw receipts. Every original/final boundary witness has
+exact argv, status, request ledger and output hashes. Fresh debug binary SHA256:
+ca99e4dc9acef47a0dcba628a58624074a0dfb9718c5a9ae1900766088bd7677.
+
+Execution isolation and test authority
+---------------------------------------
+[verified] Linux x86_64 kernel 6.8.0-142; rustc 1.98.0 (88d9e12ae, LLVM 22.1.8),
+Cargo 1.98.0 (797e8a9bc), Python 3.14.7, re-observed in evidence/boundary.stdout.
+Every executable check used Bubblewrap user/network/PID/IPC/UTS namespaces, clearenv,
+die-with-parent/new-session, all capabilities dropped and NoNewPrivs. Source, tests,
+system/toolchain/Python/registry were read-only. Only disposable scratch and private
+tmp/dev/proc were writable. No host credentials, hosts file or resolver config were
+mounted. Native HTTPS listeners used generated certificates/synthetic auth only on
+private loopback; external/host network was unreachable and Cargo was offline.
+
+[verified] Limits: one CPU affinity, Cargo one job, test two threads; 4 GiB per-process
+address space, CPU 900 s, NOFILE 1024, NPROC 1024 shared-UID accounting, no core dumps,
+outer timeout 900 s with 5 s kill grace. These are not aggregate cgroup-memory/PID
+claims. No persistent host limits changed.
+
+[verified] Product remained untouched. Reused independent tests unchanged from R1;
+added only disposable timestamp-matrix.py, a public CLI/call grammar test using the
+independent SSL fixture. Its explicit diff is evidence/test-diff-from-r1.patch.
+Certificates and auth are synthetic; their setup commands and statuses are retained.
+
+Skipped checks, supplemental evidence and limits
+-------------------------------------------------
+[verified] Per the scoped R2 request, this agent did not repeat the full unrelated
+Rust/process/task matrix, clippy or local release installation at R2. Their R1
+observations are explicitly carried by unchanged code/runtime identity. No fresh
+R2 release-artifact or full-suite certification is claimed by this packet. The
+changed date path and native query behavior have fresh R2 executable proof.
+
+[sourced] Parent reported separate R2 Cally lanes on this exact archive: full 68 Rust
+tests plus 96 public results, and minimal 17 native HTTPS tests without Python plus
+missing_dependency for both Python tasks, both exit 0. Parent-reported binary SHA256:
+eda24309b143f5c48f97e804edfd9e967fa6356f4f2a90383303a2911fe5f889.
+These are supplemental parent-owned checks, not this agent's independent execution.
+
+[unverified] Live Grafana-version support, real credentials/targets, protected agent
+permissions, Windows, positive system-DNS integration and remote-work cancellation
+remain outside this fixture-only acceptance. Redaction proves tested known credential
+forms; it is not general sensitive-telemetry detection or a canonical-decoding claim.
+
+[verified] No remaining process with this verifier's sandbox mounts was found. Source
+clone, scratch/build outputs and venv were removed after all 168 hashes and clean
+status were rechecked. Parent snapshots/archives and earlier FAIL packets remain.
+Only tests, raw evidence/public certs and this packet remain; private synthetic keys
+were excluded. No containers, volumes, images, host installs, listeners or worktrees
+were left by this run. See evidence/cleanup.json.
+
+[verified] Product schemas were checked as described. No versioned verification-packet
+schema was supplied; no packet-schema validation is claimed. SHA256SUMS covers the
+retained packet, tests and evidence. This PASS is tied to the candidate and scoped
+reuse decisions above, not to later evolving product bytes.

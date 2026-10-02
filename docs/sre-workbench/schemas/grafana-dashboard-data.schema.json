@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:grafana-dashboard-data:0.1",
+  "title": "Native Grafana dashboard observation data",
+  "type": "object",
+  "properties": {
+    "adapter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "grafana"
+        },
+        "version": {
+          "const": 1
+        },
+        "api_profile": {
+          "const": "grafana-legacy-v1"
+        },
+        "compatibility_evidence": {
+          "const": "fixture_only"
+        },
+        "upstream_revision": {
+          "const": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7"
+        },
+        "upstream_digest": {
+          "const": "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "api_profile",
+        "compatibility_evidence",
+        "upstream_revision",
+        "upstream_digest"
+      ],
+      "additionalProperties": false
+    },
+    "binding": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "origin": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^https://",
+                  "maxLength": 2048
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "redacted": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "redacted"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "organization_id": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "redacted": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "redacted"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "organization_verified": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "origin",
+            "organization_id",
+            "organization_verified"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "request": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "uid": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{1,40}$"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "redacted": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "redacted"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "uid"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "response": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "dashboard": {
+              "type": "object"
+            },
+            "meta": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "dashboard",
+            "meta"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "redaction": {
+      "type": "object",
+      "properties": {
+        "applied": {
+          "type": "boolean"
+        },
+        "replacements": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2097152
+        }
+      },
+      "required": [
+        "applied",
+        "replacements"
+      ],
+      "additionalProperties": false
+    },
+    "transport": {
+      "type": "object",
+      "properties": {
+        "stage": {
+          "enum": [
+            "admission",
+            "organization",
+            "dashboard",
+            "datasource",
+            "query",
+            "complete"
+          ]
+        },
+        "requests_started": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "responses_received": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "request_timeout_ms": {
+          "const": 20000
+        },
+        "response_limit_bytes": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 2097152
+        }
+      },
+      "required": [
+        "stage",
+        "requests_started",
+        "responses_received",
+        "request_timeout_ms",
+        "response_limit_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "cancellation_signal": {
+      "enum": [
+        null,
+        2,
+        15
+      ]
+    }
+  },
+  "required": [
+    "adapter",
+    "binding",
+    "request",
+    "response",
+    "redaction",
+    "transport",
+    "cancellation_signal"
+  ],
+  "additionalProperties": false
+}

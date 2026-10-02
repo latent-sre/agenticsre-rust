@@ -1,0 +1,28 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-core)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.67s
+     Running tests/grafana.rs (target/debug/deps/grafana-c44e79545df4728c)
+
+running 4 tests
+test review_r1_canonical_origin_length_is_checked_before_http ... ok
+test review_r1_fractional_time_precision_is_admitted_before_lossy_parser_conversion ... ok
+
+thread 'review_r2_invalid_timestamp_separators_cannot_bypass_exact_precision_admission' (667) panicked at crates/workbench-cli/tests/grafana.rs:650:5:
+from="2026-10-02.00:00:00.0000000001Z": exit Some(0), dispatched 3, normalized "2026-10-02T00:00:00Z"
+from="2026-10-02.00:00:00Z": exit Some(0), dispatched 3, normalized "2026-10-02T00:00:00Z"
+from="2026-10-02 00:00:00Z": exit Some(0), dispatched 3, normalized "2026-10-02T00:00:00Z"
+from="2026-10-02_00:00:00.1230000000000+00:00": exit Some(0), dispatched 3, normalized "2026-10-02T00:00:00.123Z"
+to="2026-10-02.00:01:00.0000000001Z": exit Some(0), dispatched 3, normalized "2026-10-02T00:01:00Z"
+to="2026-10-02:00:01:00Z": exit Some(0), dispatched 3, normalized "2026-10-02T00:01:00Z"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test review_r2_invalid_timestamp_separators_cannot_bypass_exact_precision_admission ... FAILED
+test review_r1_finalized_receipt_includes_late_source_and_timing_overhead ... ok
+
+failures:
+
+failures:
+    review_r2_invalid_timestamp_separators_cannot_bypass_exact_precision_admission
+
+test result: FAILED. 3 passed; 1 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.40s
+
+error: test failed, to rerun pass `-p workbench-cli --test grafana`

@@ -1,0 +1,11 @@
+Upstream: https://github.com/latent-sre/save-toolkit
+Revision: 7d900fb999abee3b3712e1da881dcc7e80b1f6e7
+Path: skills/obs-alerting/scripts/error_budget.py
+SHA-256: 4e55475e6b10a4a2e195b1a6f162d688b093664c06bee69cb09435f1931cf5c2
+License: MIT (see LICENSE)
+upstream.py is retained byte-for-byte as the provenance and compatibility reference.
+calculator.py is a separately digested pure structured adaptation of its formulas.
+The upstream main function is not executed. wrapper.py owns bounded JSON transport.
+Intentional correction: alert thresholds compare exact decimal forms of normalized
+inputs; binary64 reported rates remain unchanged. This fixes the exact 14.4x
+boundary at SLO99/SLI85.6 without an epsilon that admits values below the threshold.

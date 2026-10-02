@@ -1,0 +1,12 @@
+{
+  "scope": "Static mockup behavior only, before framework/backend implementation. Existing Playwright1.63.0 and cached Chromium inside read-only private sandbox.",
+  "status": "PASS",
+  "checks": [
+    "desktop result layout has no horizontal overflow",
+    "appearance control switches to light theme",
+    "history navigation preserves distinct result states",
+    "empty and unavailable states render explicitly",
+    "390px layout fits; keyboard opens and closes navigation and restores focus",
+    "no browser JavaScript errors"
+  ]
+}

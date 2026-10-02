@@ -1,0 +1,229 @@
+FAIL — WORKBENCH-003 native Grafana fixture candidate 8a301811
+
+[verified] Overall executable acceptance is FAIL. Three independently reproduced
+boundary defects remain: oversized final JSON receipts, schema-invalid normalized
+Unicode origins, and silently rounded sub-nanosecond input timestamps. Existing
+tests and ordinary fixture missions passed; they did not exercise these edges.
+
+Target and environment
+----------------------
+[verified] Repository: latent-sre/agenticsre-rust.
+Commit: 8a301811eaafabc3e6b7a9d25d7ee07cfcc29063
+Tree: 701fdab8454df511d60b034c68a5345c983bfd11
+Archive: /tmp/agenticsre-poc-cally.pWr5jgCq/source.tar
+Archive SHA256: 41e7e2bf974ad559c0345beef5f562f707706abbfb1fde7dd016666009fc10f4
+Parent immutable snapshot: /tmp/agenticsre-grafana-final-zx8xg2e_
+Independent disposable clone: this packet directory/source (now removed).
+All 157 archived files matched the supplied commit and independent checkout before
+execution and remained identical before cleanup. Git status was clean. See
+identity.json, evidence/identity-recheck.json and evidence/cleanup.json.
+
+[verified] Linux x86_64, kernel 6.8.0-142-generic; rustc 1.98.0
+(88d9e12ae, LLVM 22.1.8), cargo 1.98.0 (797e8a9bc), Python 3.14.7.
+Fresh runtime/boundary observations are in evidence/boundary.stdout.
+Debug binary SHA256: 13511c0124d417258e33789c54eca3ff8087e158c502a3d31864b7b545aea852
+Installed release SHA256: 94da55ff9aec10df91815df2a4605e2a2174f32816bc4b76ebfbdf808b1677f2
+
+[sourced] The parent reported a correctness review requesting changes on this
+candidate, including the three defects below. No formal approval envelope was
+received; this packet does not assert review approval. Execution began against an
+exact frozen commit while that independent static review was pending.
+
+Acceptance criteria and verdicts
+--------------------------------
+[sourced] Criteria come from the parent task and frozen AGENTS.md, docs/grafana.md,
+docs/adapter-notes.md, docs/poc.md, existing task contracts and result/input/data
+schemas at the supplied immutable snapshot. This is Linux fixture acceptance.
+
+[verified] PASS: immutable identity, independent checkout, enforced execution
+isolation, cold all-feature regression execution, no product edits or residue.
+
+[verified] PASS: exact HTTPS dashboard, Prometheus and Loki sequences; base prefix,
+normalized offset/millisecond times, exact query bodies and headers, CLI/call/text
+parity, organization readback and datasource UID/type/org gates. Native integration
+tests, public-grafana and independent-https establish these fixture behaviors.
+
+[verified] FAIL: complete strict admission/schema contract. Existing malformed,
+unknown, scope, file/depth/count/size, target and macro cases passed, including
+independent exact 64 KiB config, 16 KiB provider, 16-connection and i64 organization
+boundaries. Nonzero fractional precision beyond nine digits is incorrectly admitted;
+Unicode normalization can grow the emitted origin past its schema ceiling.
+
+[verified] PASS: scoped Basic/Bearer transport and tested redaction, primitive and
+encoded echoes, auth fields, URL userinfo, key collisions, stable public controls,
+and no ambient cookie replay. Evidence includes native/public tests and independent
+Basic numeric/encoded echoes plus token "44" masking observational org metadata
+while preserving generated controls. This establishes the tested known-secret
+boundary, not detection of arbitrary sensitive telemetry.
+
+[verified] PASS: tested TLS verification, explicit CA trust, wrong host/unknown CA,
+ambient trust/proxy canaries, redirect/retry controls and missing resolver config.
+All HTTP fixtures ran inside the private network namespace; numeric loopback works
+without host resolver files. No host or external network fixture was used.
+
+[verified] FAIL: final encoded receipt bound. Raw body and chunked response caps,
+malformed/duplicate/nonfinite/deep/error responses, HTTP-200 semantic failures and
+redaction expansion tests passed. A narrow accepted structured response exceeds
+2 MiB after final metadata and output-loss annotation are added.
+
+[verified] PASS: whole-operation and per-request deadlines, slow body/headers,
+sequential calls, SIGINT/SIGTERM exits 130/143 and no later dispatch. The native
+suite observed the 20-second request deadline within the default 60-second operation.
+Independent probes timed out a sequential org/datasource sequence before query POST
+and cancelled after the datasource exchange began without later HTTP calls.
+
+[verified] PASS: observation honesty in tested success/error cases: child exit null,
+not_assessed, record never, empty frames not_established, no health/rendering claim,
+and incomplete or failed observations not successful complete results. The oversized
+receipt is partial/exit 1, but remains a byte-cap violation.
+
+[verified] PASS: offline release install and all three native operations with no
+source checkout mounted. Installed checks used a new generated CA/server and the
+read-only installed binary; source-unavailable assertions and SHA256 were captured.
+
+[verified] PASS: existing command/dashboard/error-budget regressions, public
+interfaces, format, clippy and specification checks at this exact candidate.
+The Linux supervisor file also matches prior accepted 87f5162 bytes; no expanded
+rerun of old independent supervisor matrices was needed.
+
+Expected versus observed failures
+---------------------------------
+[verified] F1, final receipt bytes: docs/grafana.md:120 and docs/poc.md:41 require a
+final encoded cap of 2,097,152 bytes. The binary search's last retained dashboard
+padding was 2,094,906 bytes; stdout was 2,097,473 bytes (321 over), exit 1/partial.
+Seven tested near-boundary receipts exceeded the cap. Exact argv, statuses, sizes,
+ledgers and hashes: evidence/review-regressions/checks.json. Full witness:
+evidence/review-regressions/encoded-size-2094906.stdout.
+[sourced] Relevant paths in the frozen product: crates/workbench-core/src/grafana.rs:508
+checks before source metadata; crates/workbench-core/src/result.rs:226 handles
+text-stream trimming and cannot reduce this nonempty structured response.
+
+[verified] F2, normalized origin: matching config/provider origin
+"https://127.0.0.1:9/" + 400 copies of U+00E9 is 820 UTF-8 input bytes. It is admitted
+and emitted as a 2,420-character binding.origin. The attempted loopback transport
+fails exit 1, but the operation-specific data violates its binding schema. Expected:
+denial with zero requests and schema-valid data. Witnesses:
+evidence/review-regressions/normalized-unicode-origin.stdout and checks.json.
+[sourced] crates/workbench-core/src/grafana/config.rs:82 bounds raw origin, then
+returns percent-expanded URL text at line 108 without rechecking normalized length.
+
+[verified] F3, timestamp precision: from 2026-10-02T00:00:00.0000000001Z to
+2026-10-02T00:01:00Z should be denied before HTTP under docs/grafana.md:91 and :134.
+Observed exit 0, three HTTP exchanges and normalized request from
+2026-10-02T00:00:00Z: the nonzero tenth fractional digit was silently discarded.
+Witnesses: evidence/review-regressions/sub-nanosecond-precision.stdout and the
+request ledger in checks.json.
+[sourced] crates/workbench-core/src/grafana.rs:94 parses before checking the
+nanosecond remainder, allowing parser precision loss to precede validation.
+
+Checks executed
+----------------
+[verified] All target-controlled commands below ran through tests/run-check.py.
+Host invocation form:
+  python3 -I -B /tmp/agenticsre-grafana-verify-6ZmmitkP/tests/run-check.py NAME COMMAND...
+Host cwd /tmp; target cwd /work. For installed-no-checkout the wrapper also received
+--artifact-only. Exact full outer/inner argv, cwd, times, process-own exit status,
+stdout/stderr paths and hashes are retained in evidence/NAME.json. Commands were
+direct and unpiped; the wrapper propagates the tested process status.
+
+NAME / exact inner command / own exit / observed result:
+
+boundary
+  /venv/bin/python -I -B /tests/boundary.py
+  0; active isolation checks and runtime capture passed.
+rust-suite
+  cargo test --workspace --all-features --locked --offline
+  0; 63 Rust tests passed, none failed/ignored, including the Python regression runner.
+specifications
+  /venv/bin/python -B docs/sre-workbench/verify_specs.py
+  0; 20 schemas, 21 positive and 9 negative fixtures, documentation checks passed.
+format
+  cargo fmt --all -- --check
+  0.
+clippy
+  cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings
+  0.
+public-poc
+  /venv/bin/python -B tools/verify-poc.py /scratch/target/debug/save
+  0; 19 schema-valid public results.
+public-dashboard
+  /venv/bin/python -B tools/verify-tasks.py /scratch/target/debug/save
+  0; 25 schema-valid public results.
+public-budget
+  /venv/bin/python -B tools/verify-error-budget.py /scratch/target/debug/save
+  0; 52 schema-valid public results.
+public-grafana
+  /venv/bin/python -B tools/verify-grafana.py /scratch/target/debug/save
+  0; 83 schema-valid public results.
+independent-https
+  /venv/bin/python -I -B /tests/https-acceptance.py
+  0; 26 independent calls with exact ledgers/receipts and boundary assertions.
+isolated-install
+  cargo install --locked --offline --path crates/workbench-cli --root /scratch/install
+  0; installed release binary only into disposable scratch.
+installed-no-checkout
+  /venv/bin/python -I -B /tests/https-acceptance.py installed
+  0; dashboard/Prometheus/Loki missions, source absent, installed digest captured.
+review-regressions
+  /venv/bin/python -I -B /tests/review-regressions.py
+  0; this reproduction harness ASSERTS THE THREE DEFECTS EXIST. Its zero status
+  confirms the failed criteria above; it is not a product acceptance pass.
+
+[verified] Individual product exits in the independent HTTPS matrix are retained
+under evidence/independent-https/checks.json (including intended exits 1, 2, 130 and
+143); its .ledger.json files record actual requests. Review-regressions/checks.json
+likewise retains every binary-search and malformed-input invocation. Generated test
+certificate commands and statuses are recorded alongside each independent fixture.
+
+Execution isolation
+--------------------
+[verified] Every executable check used Bubblewrap user/network/PID/IPC/UTS
+namespaces, die-with-parent/new-session, clearenv, all capabilities dropped and
+NoNewPrivs. Read-only mounts: source, tests, system runtime directories, toolchain,
+Python runtime/venv and Cargo registry. Writable persistent data was confined to
+this verifier's scratch; /tmp, /dev, /proc were private. No home credentials,
+/etc/hosts or /etc/resolv.conf were mounted. Offline Cargo prevented registry access;
+network namespace routing blocked host/external network and allowed private loopback
+fixtures. Certificate keys and auth values were generated synthetic test material.
+
+[verified] Each wrapper imposed one-CPU affinity, CARGO_BUILD_JOBS=1,
+RUST_TEST_THREADS=2, RLIMIT_AS=4 GiB, RLIMIT_CPU=900 s, RLIMIT_NPROC=1024,
+RLIMIT_NOFILE=1024, core dumps disabled and outer timeout 900 s with 5 s kill grace.
+These address-space/CPU limits are per process, and nproc is shared-UID accounting;
+they are not an aggregate cgroup memory or PID claim. The parent's already-scoped
+1024 nproc allowance was used from outset. No persistent host limits changed.
+
+Tests authored and failure coverage
+-----------------------------------
+[verified] Authored only disposable test/fixture infrastructure: tests/boundary.py,
+tests/run-check.py, tests/https-acceptance.py and tests/review-regressions.py, plus
+frozen schema copies for no-checkout validation. No product files were edited.
+The independent HTTPS server is separate from the repository fixture implementation.
+
+[verified] Deliberately failed scope/admission/organization/byte/depth/HTTP/TLS/body,
+deadline and cancellation paths through native/public and independent checks.
+The three review findings have actual failing frozen-candidate witnesses; the retained
+review-regressions.py has --expect-fixed assertions for a corrected revision.
+
+Limits, skipped checks and residue
+----------------------------------
+[unverified] No live Grafana version, real credential, remote datasource, native
+Windows, protected-agent permission, or cancellation of remote work was tested.
+Those are explicitly outside this fixture increment and remain open acceptance
+boundaries. Positive system-DNS integration was not exercised; missing resolver
+failure and numeric-IP operation were exercised. There was no external network use.
+
+[sourced] Parent reported separate Cally full/minimal lanes passed this same archive
+and both containers removed; these are supplemental parent-owned observations,
+not independently executed checks in this packet. They do not override the failures.
+
+[verified] Cleanup found no remaining process with this verifier's sandbox source
+mounts, then removed the disposable source clone, build/install scratch and venv.
+Parent frozen snapshot/archive were preserved. Only tests, public cert material,
+synthetic request/response evidence and this packet remain. Private test keys were
+excluded from retained evidence. See evidence/cleanup.json. No containers, volumes,
+images, running listeners, installed host binaries or worktrees were left by this run.
+
+[verified] Product/result schema validators ran as listed. No versioned verification
+packet schema was supplied; these explicit records do not claim packet-schema
+validation. SHA256SUMS covers every retained packet/test/evidence file.

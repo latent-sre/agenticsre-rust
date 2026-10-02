@@ -1,0 +1,82 @@
+[
+  {
+    "name": "fraction_without_observations",
+    "input": {"slo": 99.9},
+    "expected": {"allowed_bad_fraction": 0.001, "status": null, "burn": null}
+  },
+  {
+    "name": "exact_time_exhaustion",
+    "input": {"slo": 99.9, "bad_minutes": 40.32},
+    "expected": {"status": {"kind": "time", "unit": "minutes", "budget": 40.32, "consumed": 40.32, "remaining": 0, "consumed_percent": 100, "state": "exhausted", "observed_availability_percent": null}}
+  },
+  {
+    "name": "time_over_budget",
+    "input": {"slo": 99, "window_days": 1, "bad_minutes": 15},
+    "expected": {"status": {"unit": "minutes", "budget": 14.4, "remaining": -0.6, "consumed_percent": 104.16666666666667, "state": "over_budget"}}
+  },
+  {
+    "name": "request_units_and_observed_availability",
+    "input": {"slo": 99.9, "bad_events": 50, "total_events": 100000},
+    "expected": {"status": {"kind": "request", "unit": "events", "budget": 100, "consumed": 50, "remaining": 50, "consumed_percent": 50, "state": "ok", "observed_availability_percent": 99.95}}
+  },
+  {
+    "name": "fractional_request_measurements_preserved",
+    "input": {"slo": 90, "bad_events": 0.25, "total_events": 10},
+    "expected": {"status": {"unit": "events", "budget": 1, "consumed": 0.25, "remaining": 0.75, "consumed_percent": 25, "state": "ok", "observed_availability_percent": 97.5}}
+  },
+  {
+    "name": "fast_page_and_full_budget_projection",
+    "input": {"slo": 99.9, "sli_long": 98.5, "sli_short": 98.5},
+    "expected": {"burn": {"threshold": 14.4, "long_rate": 15, "short_rate": 15, "severity": "page", "reason": "both_windows_at_threshold", "full_budget_projection_days": 1.8666666666666667, "projection_state": "estimated"}}
+  },
+  {
+    "name": "one_window_does_not_establish_severity",
+    "input": {"slo": 99.9, "sli_long": 98.5},
+    "expected": {"burn": {"long_rate": 15, "short_rate": null, "severity": "not_evaluated", "reason": "short_window_missing", "full_budget_projection_days": null, "projection_state": "not_evaluated"}}
+  },
+  {
+    "name": "short_window_recovered_is_not_all_clear",
+    "input": {"slo": 99.9, "sli_long": 98.5, "sli_short": 99.99},
+    "expected": {"burn": {"long_rate": 15, "short_rate": 0.1, "severity": "none", "reason": "short_window_recovered"}}
+  },
+  {
+    "name": "short_spike_needs_long_confirmation",
+    "input": {"slo": 99.9, "sli_long": 99.99, "sli_short": 98.5},
+    "expected": {"burn": {"long_rate": 0.1, "short_rate": 15, "severity": "none", "reason": "long_window_unconfirmed"}}
+  },
+  {
+    "name": "slow_page_bound_pair",
+    "input": {"slo": 99.9, "sli_long": 99.3, "sli_short": 99.3, "long_window": "6h", "short_window": "30m"},
+    "expected": {"burn": {"threshold": 6, "long_rate": 7, "short_rate": 7, "severity": "page", "full_budget_projection_days": 4}}
+  },
+  {
+    "name": "ticket_at_exact_threshold",
+    "input": {"slo": 99.9, "sli_long": 99.9, "sli_short": 99.9, "long_window": "3d", "short_window": "6h"},
+    "expected": {"burn": {"threshold": 1, "long_rate": 1, "short_rate": 1, "severity": "ticket", "full_budget_projection_days": 28}}
+  },
+  {
+    "name": "zero_burn_has_no_finite_projection",
+    "input": {"slo": 99.9, "sli_long": 100, "sli_short": 100},
+    "expected": {"burn": {"long_rate": 0, "short_rate": 0, "severity": "none", "reason": "both_below_threshold", "full_budget_projection_days": null, "projection_state": "zero_long_burn"}}
+  },
+  {
+    "name": "seven_day_status_keeps_thirty_day_alert_policy",
+    "input": {"slo": 99.9, "window_days": 7, "bad_minutes": 0, "sli_long": 98.5, "sli_short": 98.5},
+    "expected": {"status": {"budget": 10.08, "remaining": 10.08}, "burn": {"policy_horizon_days": 30, "threshold": 14.4, "severity": "page", "full_budget_projection_days": 0.4666666666666667}}
+  },
+  {
+    "name": "exact_decimal_fast_threshold_is_included",
+    "input": {"slo": 99, "sli_long": 85.6, "sli_short": 85.6},
+    "expected": {"burn": {"threshold": 14.4, "long_rate": 14.4, "short_rate": 14.4, "severity": "page", "reason": "both_windows_at_threshold"}}
+  },
+  {
+    "name": "just_below_fast_threshold_is_not_rounded_up",
+    "input": {"slo": 99, "sli_long": 85.60000001, "sli_short": 85.60000001},
+    "expected": {"burn": {"severity": "none", "reason": "both_below_threshold"}}
+  },
+  {
+    "name": "finite_high_precision_input_survives_child_roundtrip",
+    "input": {"slo": 99.87654321098765, "window_days": 1.2345678901234566e290, "bad_events": 1.2345678901234566e290, "total_events": 1.2345678901234566e290, "sli_long": 98.98765432109876, "sli_short": 97.87654321098765},
+    "expected": {"status": {"kind": "request", "unit": "events", "state": "over_budget", "observed_availability_percent": 0}, "burn": {"severity": "none", "reason": "long_window_unconfirmed"}}
+  }
+]

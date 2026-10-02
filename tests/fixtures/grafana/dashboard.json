@@ -1,0 +1,18 @@
+{
+  "dashboard": {
+    "uid": "board-1",
+    "title": "Synthetic checkout observations",
+    "schemaVersion": 39,
+    "panels": [
+      {
+        "id": 1,
+        "type": "timeseries",
+        "title": "Is checkout available?",
+        "description": "Synthetic fixture data only.",
+        "datasource": {"uid": "metrics-1", "type": "prometheus"},
+        "targets": [{"refId": "A", "expr": "up"}]
+      }
+    ]
+  },
+  "meta": {"canEdit": false, "url": "/d/board-1/synthetic-checkout"}
+}

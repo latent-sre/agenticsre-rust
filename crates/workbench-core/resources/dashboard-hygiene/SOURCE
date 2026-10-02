@@ -1,0 +1,6 @@
+Upstream: https://github.com/latent-sre/save-toolkit
+Revision: 7d900fb999abee3b3712e1da881dcc7e80b1f6e7
+Path: skills/grafana/scripts/dashboard_hygiene.py
+SHA-256: 8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2
+License: MIT (see LICENSE)
+The checker is imported byte-for-byte. wrapper.py is the product's structured boundary.

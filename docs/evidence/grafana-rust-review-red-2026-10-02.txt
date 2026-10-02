@@ -1,0 +1,33 @@
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.41s
+     Running tests/grafana.rs (target/debug/deps/grafana-c44e79545df4728c)
+
+running 3 tests
+
+thread 'review_r1_canonical_origin_length_is_checked_before_http' (183) panicked at crates/workbench-cli/tests/grafana.rs:540:13:
+assertion `left == right` failed: canonical origin length 2432, dispatched 2 requests
+  left: Some(0)
+ right: Some(2)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test review_r1_canonical_origin_length_is_checked_before_http ... FAILED
+
+thread 'review_r1_fractional_time_precision_is_admitted_before_lossy_parser_conversion' (185) panicked at crates/workbench-cli/tests/grafana.rs:561:13:
+assertion `left == right` failed: fraction 0000000001 normalized to "2026-10-02T00:00:00Z", dispatched 3 requests
+  left: Some(0)
+ right: Some(2)
+test review_r1_fractional_time_precision_is_admitted_before_lossy_parser_conversion ... FAILED
+
+thread 'review_r1_finalized_receipt_includes_late_source_and_timing_overhead' (184) panicked at crates/workbench-cli/tests/grafana.rs:519:5:
+final receipt has 2097378 bytes, cap 2097152; padding 2094830
+test review_r1_finalized_receipt_includes_late_source_and_timing_overhead ... FAILED
+
+failures:
+
+failures:
+    review_r1_canonical_origin_length_is_checked_before_http
+    review_r1_finalized_receipt_includes_late_source_and_timing_overhead
+    review_r1_fractional_time_precision_is_admitted_before_lossy_parser_conversion
+
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.43s
+
+error: test failed, to rerun pass `-p workbench-cli --test grafana`

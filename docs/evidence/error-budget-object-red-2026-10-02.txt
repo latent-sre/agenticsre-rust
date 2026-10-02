@@ -1,0 +1,25 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-core)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.41s
+     Running tests/error_budget.rs (target/debug/deps/error_budget-9dfc0533438ed97b)
+
+running 1 test
+test array_encodings_cannot_replace_object_inputs_or_envelopes ... FAILED
+
+failures:
+
+---- array_encodings_cannot_replace_object_inputs_or_envelopes stdout ----
+
+thread 'array_encodings_cannot_replace_object_inputs_or_envelopes' (537) panicked at crates/workbench-cli/tests/error_budget.rs:120:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":["Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check.","Supplied measurements are not independently verified; no telemetry was collected, no alert was sent and no service health was assessed.","Thresholds are the fixed 30-day example policy; window_days does not rescale them. Crossings use decimal forms of normalized inputs; reported arithmetic is binary64.","One window cannot establish severity. A non-alert does not establish previously consumed budget or an all-clear.","Projection uses the full budget at the long-window rate under steady eligible volume; it is not remaining-budget runway."],"scope":"Arithmetic on supplied SLO measurements and the selected fixed example alert policy only","state":"complete"},"data":{"calculation":{"allowed_bad_fraction":0.00099999999999989,"burn":null,"status":null},"cancellation_signal":null,"coverage":{"limitations":["Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check.","Supplied measurements are not independently verified; no telemetry was collected, no alert was sent and no service health was assessed.","Thresholds are the fixed 30-day example policy; window_days does not rescale them. Crossings use decimal forms of normalized inputs; reported arithmetic is binary64.","One window cannot establish severity. A non-alert does not establish previously consumed budget or an all-clear.","Projection uses the full budget at the long-window rate under steady eligible volume; it is not remaining-budget runway."],"scope":"Arithmetic on supplied SLO measurements and the selected fixed example alert policy only","state":"complete"},"input":{"long_window":"1h","short_window":"5m","slo":99.9,"window_days":28.0},"runtime":{"executable":"/usr/bin/python3.12","version":"3.12.3"},"source":{"adapter_digest":"sha256:e7938a81478ea47bb2568a2d24b303e8bc1767612ccdac9ffeb7da95df17a17f","binding_digest":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","upstream_digest":"sha256:4e55475e6b10a4a2e195b1a6f162d688b093664c06bee69cb09435f1931cf5c2","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7"},"supervisor":{"cancellation_signal":null,"cleanup":{"confirmed":true,"final_drain_ms":500,"grace_ms":2000,"group_absent":true,"kill_sent":false,"primary_reaped":true,"scope":"Observed process group and inherited output pipes only; deliberately escaped processes are not contained.","stderr_closed":true,"stdout_closed":true,"term_sent":false,"trigger":null},"process_group_id":539,"process_id":539,"stderr_bytes_observed":0,"stdout_bytes_observed":274},"task":{"id":"error-budget","version":1}},"duration_ms":14,"effect_outcome":"not_applicable","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[],"execution":{"child_exit_code":0,"signal":null,"status":"succeeded"},"finished_at":"2026-10-02T09:31:13.311996661Z","operation":"task.run","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-538-18daac815441e1e3-0","resolved_target":{"cwd":"/","effects":"observe","executable":"/usr/bin/python3.12","profile":"operator-local","resolution":"canonical path; not a protected installation claim","task":{"binding_digest":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","id":"error-budget","version":1}},"run_id":"run-538-18daac815442215f-1","sources":[{"evidence_state":"sourced","observed_at":"2026-10-02T09:31:13.31191721Z","reference":"local:child-output","untrusted":true}],"spec_version":"0.1","started_at":"2026-10-02T09:31:13.297560578Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(0)
+ right: Some(2)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    array_encodings_cannot_replace_object_inputs_or_envelopes
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p workbench-cli --test error_budget`

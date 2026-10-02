@@ -1,0 +1,454 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:dashboard-hygiene-data:0.1",
+  "title": "dashboard-hygiene-data version 0.1",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "task": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "dashboard-hygiene"
+            },
+            "version": {
+              "const": 1
+            }
+          },
+          "required": [
+            "id",
+            "version"
+          ],
+          "additionalProperties": false
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "upstream_revision": {
+              "const": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7"
+            },
+            "checker_digest": {
+              "const": "sha256:8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2"
+            },
+            "binding_digest": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "upstream_revision",
+            "checker_digest",
+            "binding_digest"
+          ],
+          "additionalProperties": false
+        },
+        "supervisor": {
+          "type": "object",
+          "properties": {
+            "process_id": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "process_group_id": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "cancellation_signal": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 64
+            },
+            "stdout_bytes_observed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "stderr_bytes_observed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "cleanup": {
+              "type": "object",
+              "properties": {
+                "trigger": {
+                  "enum": [
+                    null,
+                    "timeout",
+                    "cancellation",
+                    "result_consumer_closed",
+                    "descendants_after_leader_exit",
+                    "supervisor_io_error"
+                  ]
+                },
+                "term_sent": {
+                  "type": "boolean"
+                },
+                "kill_sent": {
+                  "type": "boolean"
+                },
+                "group_absent": {
+                  "type": "boolean"
+                },
+                "primary_reaped": {
+                  "type": "boolean"
+                },
+                "stdout_closed": {
+                  "type": "boolean"
+                },
+                "stderr_closed": {
+                  "type": "boolean"
+                },
+                "confirmed": {
+                  "type": "boolean"
+                },
+                "grace_ms": {
+                  "const": 2000
+                },
+                "final_drain_ms": {
+                  "const": 500
+                },
+                "scope": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                }
+              },
+              "required": [
+                "trigger",
+                "term_sent",
+                "kill_sent",
+                "group_absent",
+                "primary_reaped",
+                "stdout_closed",
+                "stderr_closed",
+                "confirmed",
+                "grace_ms",
+                "final_drain_ms",
+                "scope"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "process_id",
+            "process_group_id",
+            "cancellation_signal",
+            "stdout_bytes_observed",
+            "stderr_bytes_observed",
+            "cleanup"
+          ],
+          "additionalProperties": false
+        },
+        "cancellation_signal": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 64
+        },
+        "runtime": {
+          "type": "object",
+          "properties": {
+            "executable": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32,
+              "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+            }
+          },
+          "required": [
+            "executable",
+            "version"
+          ],
+          "additionalProperties": false
+        },
+        "input": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "digest": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            }
+          },
+          "required": [
+            "file",
+            "digest",
+            "bytes"
+          ],
+          "additionalProperties": false
+        },
+        "checked_panels": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "rule": {
+                "enum": [
+                  "panel-title",
+                  "panel-description",
+                  "panel-units",
+                  "panel-no-targets",
+                  "panel-no-value",
+                  "panel-datasource",
+                  "target-rate-interval",
+                  "target-counter-agg",
+                  "template-all-value",
+                  "dashboard-tags"
+                ]
+              },
+              "location": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "detail": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              }
+            },
+            "required": [
+              "rule",
+              "location",
+              "detail"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 1000
+        },
+        "findings_total": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2097152
+        },
+        "findings_truncated": {
+          "type": "boolean"
+        },
+        "fields_truncated": {
+          "type": "boolean"
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "enum": [
+                "complete",
+                "partial"
+              ]
+            },
+            "scope": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "maxItems": 50
+            }
+          },
+          "required": [
+            "state",
+            "scope",
+            "limitations"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "task",
+        "source",
+        "supervisor",
+        "cancellation_signal",
+        "runtime",
+        "input",
+        "checked_panels",
+        "findings",
+        "findings_total",
+        "findings_truncated",
+        "fields_truncated",
+        "coverage"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "task": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "dashboard-hygiene"
+            },
+            "version": {
+              "const": 1
+            }
+          },
+          "required": [
+            "id",
+            "version"
+          ],
+          "additionalProperties": false
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "upstream_revision": {
+              "const": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7"
+            },
+            "checker_digest": {
+              "const": "sha256:8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2"
+            },
+            "binding_digest": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "upstream_revision",
+            "checker_digest",
+            "binding_digest"
+          ],
+          "additionalProperties": false
+        },
+        "supervisor": {
+          "type": "object",
+          "properties": {
+            "process_id": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "process_group_id": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "cancellation_signal": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 64
+            },
+            "stdout_bytes_observed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "stderr_bytes_observed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "cleanup": {
+              "type": "object",
+              "properties": {
+                "trigger": {
+                  "enum": [
+                    null,
+                    "timeout",
+                    "cancellation",
+                    "result_consumer_closed",
+                    "descendants_after_leader_exit",
+                    "supervisor_io_error"
+                  ]
+                },
+                "term_sent": {
+                  "type": "boolean"
+                },
+                "kill_sent": {
+                  "type": "boolean"
+                },
+                "group_absent": {
+                  "type": "boolean"
+                },
+                "primary_reaped": {
+                  "type": "boolean"
+                },
+                "stdout_closed": {
+                  "type": "boolean"
+                },
+                "stderr_closed": {
+                  "type": "boolean"
+                },
+                "confirmed": {
+                  "type": "boolean"
+                },
+                "grace_ms": {
+                  "const": 2000
+                },
+                "final_drain_ms": {
+                  "const": 500
+                },
+                "scope": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                }
+              },
+              "required": [
+                "trigger",
+                "term_sent",
+                "kill_sent",
+                "group_absent",
+                "primary_reaped",
+                "stdout_closed",
+                "stderr_closed",
+                "confirmed",
+                "grace_ms",
+                "final_drain_ms",
+                "scope"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "process_id",
+            "process_group_id",
+            "cancellation_signal",
+            "stdout_bytes_observed",
+            "stderr_bytes_observed",
+            "cleanup"
+          ],
+          "additionalProperties": false
+        },
+        "cancellation_signal": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 64
+        }
+      },
+      "required": [
+        "task",
+        "source"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

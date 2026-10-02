@@ -1,0 +1,24 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.80s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-620d6623d161615c)
+
+running 1 test
+test tasks::error_budget::tests::finite_numeric_input_survives_json_roundtrip_without_changing_bits ... FAILED
+
+failures:
+
+---- tasks::error_budget::tests::finite_numeric_input_survives_json_roundtrip_without_changing_bits stdout ----
+
+thread 'tasks::error_budget::tests::finite_numeric_input_survives_json_roundtrip_without_changing_bits' (430) panicked at crates/workbench-core/src/tasks/error_budget.rs:412:9:
+assertion `left == right` failed: finite caller inputs must survive the fixed child protocol roundtrip
+  left: Input { slo: 99.87654321098765, window_days: 1.2345678901234566e290, bad_minutes: None, bad_events: Some(1.2345678901234566e290), total_events: Some(1.2345678901234566e290), sli_long: Some(98.98765432109876), sli_short: Some(97.87654321098765), long_window: "1h", short_window: "5m" }
+ right: Input { slo: 99.87654321098763, window_days: 1.2345678901234565e290, bad_minutes: None, bad_events: Some(1.2345678901234565e290), total_events: Some(1.2345678901234565e290), sli_long: Some(98.98765432109876), sli_short: Some(97.87654321098763), long_window: "1h", short_window: "5m" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tasks::error_budget::tests::finite_numeric_input_survives_json_roundtrip_without_changing_bits
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p workbench-core --lib`

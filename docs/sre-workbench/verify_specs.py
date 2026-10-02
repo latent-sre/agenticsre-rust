@@ -85,7 +85,14 @@ def main() -> int:
     markdown = sorted(PACKAGE.rglob("*.md"))
     repository_docs = [
         ROOT / "README.md", ROOT / "CONTRIBUTING.md",
-        ROOT / "docs/roadmap.md", ROOT / "docs/plan-import.md",
+        ROOT / "docs/roadmap.md", ROOT / "docs/plan-import.md", ROOT / "docs/poc.md",
+        ROOT / "AGENTS.md", ROOT / "docs/development.md", ROOT / "docs/adapter-notes.md",
+        ROOT / "docs/poc-verification.md",
+        ROOT / "docs/tasks.md", ROOT / "docs/dashboard-verification.md", ROOT / "docs/error-budget.md",
+        ROOT / "docs/error-budget-verification.md", ROOT / "docs/grafana.md",
+        ROOT / "docs/grafana-verification.md", ROOT / "docs/read-profile.md", ROOT / "docs/mcp.md",
+        ROOT / "docs/read-profile-verification.md", ROOT / "docs/ui.md",
+        ROOT / "docs/ui-verification.md",
     ]
     for document in [*markdown, *repository_docs]:
         text = FENCE.sub("", document.read_text(encoding="utf-8"))

@@ -1,0 +1,47 @@
+{
+  "boundary": "Controlled external cargo/SSH stubs; actual image-context capture, shell parsing, exit handling and local cleanup; no product code or Cally container executed.",
+  "results": [
+    {
+      "case": "success",
+      "exit": 0,
+      "staging_removed": true,
+      "source_retained": true,
+      "scoped_remote_cleanup_attempted": true
+    },
+    {
+      "case": "image_build_failure",
+      "exit": 19,
+      "staging_removed": true,
+      "source_retained": true,
+      "scoped_remote_cleanup_attempted": true
+    },
+    {
+      "case": "run_failure",
+      "exit": 29,
+      "staging_removed": true,
+      "source_retained": true,
+      "scoped_remote_cleanup_attempted": true
+    },
+    {
+      "case": "record_run_failure",
+      "exit": 29,
+      "staging_removed": true,
+      "source_retained": true,
+      "scoped_remote_cleanup_attempted": true
+    },
+    {
+      "case": "record_success",
+      "exit": 1,
+      "staging_removed": true,
+      "source_retained": true,
+      "scoped_remote_cleanup_attempted": true
+    },
+    {
+      "case": "image_cleanup_failure",
+      "exit": 1,
+      "staging_removed": true,
+      "source_retained": true,
+      "scoped_remote_cleanup_attempted": true
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "boundary": "Disposable synthetic Git checkout; cargo and SSH are controlled external stubs; no network, product build or Cally container started. Actual staging, archiving, exit handling and deletion paths executed.",
+  "results": [
+    {
+      "script": "baseline",
+      "case": "run_failure",
+      "exit": 29,
+      "generated_files_removed": false,
+      "source_evidence_retained": true
+    },
+    {
+      "script": "cally-check.sh",
+      "case": "success",
+      "exit": 0,
+      "generated_files_removed": true,
+      "source_evidence_retained": true
+    },
+    {
+      "script": "cally-check.sh",
+      "case": "vendor_failure",
+      "exit": 17,
+      "generated_files_removed": true,
+      "source_evidence_retained": true
+    },
+    {
+      "script": "cally-check.sh",
+      "case": "pull_failure",
+      "exit": 23,
+      "generated_files_removed": true,
+      "source_evidence_retained": true
+    },
+    {
+      "script": "cally-check.sh",
+      "case": "run_failure",
+      "exit": 29,
+      "generated_files_removed": true,
+      "source_evidence_retained": true
+    },
+    {
+      "script": "cally-check.sh",
+      "case": "low_space",
+      "exit": 2,
+      "generated_files_removed": true,
+      "source_evidence_retained": false
+    },
+    {
+      "script": "cally-profile-check.sh",
+      "case": "success",
+      "exit": 0,
+      "generated_files_removed": true,
+      "source_evidence_retained": true
+    },
+    {
+      "script": "cally-profile-check.sh",
+      "case": "vendor_failure",
+      "exit": 17,
+      "generated_files_removed": true,
+      "source_evidence_retained": true
+    },
+    {
+      "script": "cally-profile-check.sh",
+      "case": "pull_failure",
+      "exit": 23,
+      "generated_files_removed": true,
+      "source_evidence_retained": true
+    },
+    {
+      "script": "cally-profile-check.sh",
+      "case": "run_failure",
+      "exit": 29,
+      "generated_files_removed": true,
+      "source_evidence_retained": true
+    },
+    {
+      "script": "cally-profile-check.sh",
+      "case": "low_space",
+      "exit": 2,
+      "generated_files_removed": true,
+      "source_evidence_retained": false
+    }
+  ]
+}

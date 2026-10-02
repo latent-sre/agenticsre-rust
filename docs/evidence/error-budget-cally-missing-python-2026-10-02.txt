@@ -1,0 +1,65 @@
+rustc 1.98.0 (88d9e12ae 2026-08-18)
+cargo 1.98.0 (797e8a9bc 2026-08-05)
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+4294967296
+250000 100000
+512
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling typenum v1.20.1
+   Compiling libc v0.2.189
+   Compiling hybrid-array v0.4.15
+   Compiling syn v3.0.6
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling utf8parse v0.2.2
+   Compiling anstyle-parse v1.0.0
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling anstyle-query v1.1.5
+   Compiling const-oid v0.10.2
+   Compiling colorchoice v1.0.5
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling anstyle v1.0.14
+   Compiling anstream v1.0.0
+   Compiling digest v0.11.3
+   Compiling serde_derive v1.0.229
+   Compiling errno v0.3.14
+   Compiling signal-hook v0.4.4
+   Compiling heck v0.5.0
+   Compiling cfg-if v1.0.5
+   Compiling strsim v0.11.1
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling time-core v0.1.9
+   Compiling deranged v0.5.8
+   Compiling powerfmt v0.2.0
+   Compiling cpufeatures v0.3.1
+   Compiling num-conv v0.2.2
+   Compiling clap_lex v1.1.1
+   Compiling time v0.3.55
+   Compiling clap_builder v4.6.7
+   Compiling sha2 v0.11.0
+   Compiling clap_derive v4.6.7
+   Compiling signal-hook-registry v1.4.8
+   Compiling workbench-core v0.1.0 (/tmp/work/crates/workbench-core)
+   Compiling clap v4.6.7
+   Compiling workbench-cli v0.1.0 (/tmp/work/crates/workbench-cli)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.97s
+{"spec_version":"0.1","request_id":"request-963-18daad50f3ab76ba-0","run_id":"run-963-18daad50f3abc4af-1","operation":"process.exec","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{"cwd":"/tmp/work","effects":"unclassified","executable":"/usr/bin/printf","profile":"operator-local","resolution":"canonical path; not a protected installation claim"},"started_at":"2026-10-02T09:46:05.030291414Z","finished_at":"2026-10-02T09:46:05.05096986Z","duration_ms":20,"execution":{"status":"succeeded","child_exit_code":0,"signal":null},"effect_outcome":"unknown","assessment":"not_assessed","coverage":{"state":"complete","scope":"Captured output and primary exit status of this invocation only","limitations":["Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check."]},"output":{"stdout":"hello workbench\n","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"cancellation_signal":null,"cleanup":{"confirmed":true,"final_drain_ms":500,"grace_ms":2000,"group_absent":true,"kill_sent":false,"primary_reaped":true,"scope":"Observed process group and inherited output pipes only; deliberately escaped processes are not contained.","stderr_closed":true,"stdout_closed":true,"term_sent":false,"trigger":null},"effects":"unclassified","process_group_id":964,"process_id":964,"profile":"operator-local","stderr_bytes_observed":0,"stdout_bytes_observed":16},"errors":[],"sources":[{"evidence_state":"sourced","observed_at":"2026-10-02T09:46:05.050951706Z","reference":"local:child-output","untrusted":true}],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-965-18daad50f508fa53-0","run_id":"run-965-18daad50f5095700-1","operation":"doctor","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T09:46:05.053194652Z","finished_at":"2026-10-02T09:46:05.054374865Z","duration_ms":1,"execution":{"status":"succeeded","child_exit_code":null,"signal":null},"effect_outcome":"not_applicable","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"This local operation only; no service health assessment","limitations":[]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"architecture":"x86_64","child_environment":{"LANG":"C.UTF-8","LC_ALL":"C.UTF-8","PATH":"/usr/bin:/bin","TZ":"UTC"},"default_timeout_ms":30000,"execution":{"reason":"Available in the operator-local PoC; invocation inputs are validated before dispatch.","status":"available"},"limitations":["No executable version probe or network request is performed.","Process groups are not containment for deliberately escaping programs.","No protected installation, agent read profile, persistence or service health assessment is provided."],"max_capture_bytes_per_stream":1048576,"max_encoded_result_bytes":2097152,"max_request_bytes":65536,"max_request_depth":16,"max_timeout_ms":300000,"offline":true,"os":"linux","profile":"operator-local","record_modes":["never"],"stdin":"closed","target":{"id":"workstation","kind":"local"},"tasks":[{"availability":{"reason":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","runtime_executable":null,"status":"missing_dependency","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"file"}],"digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","effects":"observe","entrypoint":"embedded/dashboard-hygiene/wrapper.py","id":"dashboard-hygiene","input_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}},{"availability":{"reason":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","runtime_executable":null,"status":"missing_dependency","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"input"}],"digest":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","effects":"observe","entrypoint":"embedded/error-budget/wrapper.py","id":"error-budget","input_schema":{"$ref":"urn:sre-workbench:spec:error-budget-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:error-budget-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}}],"version":"0.1.0"},"errors":[],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-966-18daad50f5339bd6-0","run_id":"run-966-18daad50f533d81b-1","operation":"task.list","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T09:46:05.055989443Z","finished_at":"2026-10-02T09:46:05.057108101Z","duration_ms":1,"execution":{"status":"succeeded","child_exit_code":null,"signal":null},"effect_outcome":"not_applicable","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"This local operation only; no service health assessment","limitations":[]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"tasks":[{"availability":{"reason":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","runtime_executable":null,"status":"missing_dependency","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"file"}],"digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","effects":"observe","entrypoint":"embedded/dashboard-hygiene/wrapper.py","id":"dashboard-hygiene","input_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}},{"availability":{"reason":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","runtime_executable":null,"status":"missing_dependency","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"input"}],"digest":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","effects":"observe","entrypoint":"embedded/error-budget/wrapper.py","id":"error-budget","input_schema":{"$ref":"urn:sre-workbench:spec:error-budget-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:error-budget-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}}]},"errors":[],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-967-18daad50f555511b-0","run_id":"run-967-18daad50f555c145-1","operation":"task.run","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T09:46:05.05821169Z","finished_at":"2026-10-02T09:46:05.059350696Z","duration_ms":1,"execution":{"status":"unsupported","child_exit_code":null,"signal":null},"effect_outcome":"not_attempted","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"Static textual model hygiene only; no rendering, query parsing, datasource resolution or live health validation","limitations":["Unknown plugin panels receive common textual rules only. PromQL heuristics require an explicit Prometheus datasource type."]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"source":{"binding_digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","checker_digest":"sha256:8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7"},"task":{"id":"dashboard-hygiene","version":1}},"errors":[{"code":"missing_dependency","message":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","retryable":false}],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-970-18daad50f58489ac-0","run_id":"run-970-18daad50f584b59f-1","operation":"task.run","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T09:46:05.061291556Z","finished_at":"2026-10-02T09:46:05.06213105Z","duration_ms":0,"execution":{"status":"unsupported","child_exit_code":null,"signal":null},"effect_outcome":"not_attempted","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"Arithmetic on supplied SLO measurements and the selected fixed example alert policy only","limitations":["Supplied measurements are not independently verified; no telemetry was collected, no alert was sent and no service health was assessed.","Thresholds are the fixed 30-day example policy; window_days does not rescale them. Crossings use decimal forms of normalized inputs; reported arithmetic is binary64.","One window cannot establish severity. A non-alert does not establish previously consumed budget or an all-clear.","Projection uses the full budget at the long-window rate under steady eligible volume; it is not remaining-budget runway."]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"source":{"adapter_digest":"sha256:e7938a81478ea47bb2568a2d24b303e8bc1767612ccdac9ffeb7da95df17a17f","binding_digest":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","upstream_digest":"sha256:4e55475e6b10a4a2e195b1a6f162d688b093664c06bee69cb09435f1931cf5c2","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7"},"task":{"id":"error-budget","version":1}},"errors":[{"code":"missing_dependency","message":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","retryable":false}],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+fb1871c0006aa51c296796f09b91b30c08e13c53677ee691a44cd1c3ac25ee2b  target/debug/save

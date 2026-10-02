@@ -1,0 +1,13 @@
+{
+  "spec_version": "0.1",
+  "record": "never",
+  "connections": {
+    "fixture": {
+      "origin": "https://127.0.0.1:8443/grafana",
+      "expected_org_id": 7,
+      "api_profile": "grafana-legacy-v1",
+      "credential_ref": "env:SAVE_GRAFANA_FIXTURE",
+      "tls_ca_file": "/tmp/synthetic-ca.pem"
+    }
+  }
+}

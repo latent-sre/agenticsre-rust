@@ -2,7 +2,9 @@
 
 This document defines how the product will be accepted. Planning-file validation checks document
 consistency and schema examples only; it cannot establish runtime safety, performance or usability.
-All runtime cases below are unrun for SRE Workbench until evidence is attached to an exact candidate.
+Runtime evidence and remaining gaps are recorded in [the roadmap](../roadmap.md). The bounded
+[PoC contract](../poc.md) selects the first runtime cases; a subset pass does not close the broader
+case or establish a supported live deployment.
 
 ## Acceptance catalog
 
@@ -80,7 +82,7 @@ DEC-03. RHEL 9+ is a relevant team runtime; Ubuntu is a relevant CI host, not pr
 PowerShell 5.1 and 7 differ and require separate evidence. Remote/WSL hosts are distinct from the
 desktop where an agent UI is visible.
 
-For each advertised combination record: product commit/artifact digest, toolchain, OS/arch, shell,
+For each advertised combination record: product commit or frozen-source digest, artifact digest, toolchain, OS/arch, shell,
 MCP host/client version, plugin version, operation set, credential boundary, tests run, outcomes
 and limitations. A failed or unavailable combination remains unsupported/experimental in release
 notes. Never infer support from successful compilation alone.

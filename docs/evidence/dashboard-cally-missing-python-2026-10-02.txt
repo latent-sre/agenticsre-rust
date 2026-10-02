@@ -1,0 +1,95 @@
+tar: ./.cargo/config.toml: time stamp 2026-10-02 09:00:54 is 0.111369315 s in the future
+tar: ./vendor/windows-sys/.cargo-checksum.json: time stamp 2026-10-02 09:00:54 is 0.064402843 s in the future
+tar: ./vendor/windows-sys/src/core: time stamp 2026-10-02 09:00:54 is 0.06417731 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/System/Wmi: time stamp 2026-10-02 09:00:54 is 0.05225887 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/System: time stamp 2026-10-02 09:00:54 is 0.050817377 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/Web/InternetExplorer: time stamp 2026-10-02 09:00:54 is 0.034524925 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/Web: time stamp 2026-10-02 09:00:54 is 0.034485491 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/HiDpi: time stamp 2026-10-02 09:00:54 is 0.034365987 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/TabletPC: time stamp 2026-10-02 09:00:54 is 0.034196028 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Shell/Common: time stamp 2026-10-02 09:00:54 is 0.034037851 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Shell/PropertiesSystem: time stamp 2026-10-02 09:00:54 is 0.033568331 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Shell: time stamp 2026-10-02 09:00:54 is 0.033540639 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/InteractionContext: time stamp 2026-10-02 09:00:54 is 0.033436634 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Magnification: time stamp 2026-10-02 09:00:54 is 0.033262517 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/ColorSystem: time stamp 2026-10-02 09:00:54 is 0.033141721 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/TextServices: time stamp 2026-10-02 09:00:54 is 0.032947056 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/WindowsAndMessaging: time stamp 2026-10-02 09:00:54 is 0.032678663 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Accessibility: time stamp 2026-10-02 09:00:54 is 0.032478808 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Controls/Dialogs: time stamp 2026-10-02 09:00:54 is 0.032267762 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Controls: time stamp 2026-10-02 09:00:54 is 0.031917215 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Input/XboxController: time stamp 2026-10-02 09:00:54 is 0.031783764 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Input/KeyboardAndMouse: time stamp 2026-10-02 09:00:54 is 0.031665172 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Input/Ime: time stamp 2026-10-02 09:00:54 is 0.031470056 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Input/Pointer: time stamp 2026-10-02 09:00:54 is 0.03136531 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Input/Touch: time stamp 2026-10-02 09:00:54 is 0.031254342 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI/Input: time stamp 2026-10-02 09:00:54 is 0.031225768 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32/UI: time stamp 2026-10-02 09:00:54 is 0.031214477 s in the future
+tar: ./vendor/windows-sys/src/Windows/Win32: time stamp 2026-10-02 09:00:54 is 0.031207093 s in the future
+tar: ./vendor/windows-sys/src/Windows: time stamp 2026-10-02 09:00:54 is 0.026711353 s in the future
+tar: ./vendor/windows-sys/src: time stamp 2026-10-02 09:00:54 is 0.026644607 s in the future
+tar: ./vendor/windows-sys: time stamp 2026-10-02 09:00:54 is 0.026530433 s in the future
+rustc 1.98.0 (88d9e12ae 2026-08-18)
+cargo 1.98.0 (797e8a9bc 2026-08-05)
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+4294967296
+250000 100000
+512
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling libc v0.2.189
+   Compiling typenum v1.20.1
+   Compiling syn v3.0.6
+   Compiling hybrid-array v0.4.15
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling utf8parse v0.2.2
+   Compiling anstyle-parse v1.0.0
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling anstyle-query v1.1.5
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling const-oid v0.10.2
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling colorchoice v1.0.5
+   Compiling anstyle v1.0.14
+   Compiling digest v0.11.3
+   Compiling anstream v1.0.0
+   Compiling serde_derive v1.0.229
+   Compiling errno v0.3.14
+   Compiling cfg-if v1.0.5
+   Compiling clap_lex v1.1.1
+   Compiling deranged v0.5.8
+   Compiling signal-hook v0.4.4
+   Compiling memchr v2.8.3
+   Compiling num-conv v0.2.2
+   Compiling itoa v1.0.18
+   Compiling strsim v0.11.1
+   Compiling heck v0.5.0
+   Compiling cpufeatures v0.3.1
+   Compiling time-core v0.1.9
+   Compiling powerfmt v0.2.0
+   Compiling sha2 v0.11.0
+   Compiling time v0.3.55
+   Compiling clap_derive v4.6.7
+   Compiling clap_builder v4.6.7
+   Compiling signal-hook-registry v1.4.8
+   Compiling clap v4.6.7
+   Compiling workbench-core v0.1.0 (/tmp/work/crates/workbench-core)
+   Compiling workbench-cli v0.1.0 (/tmp/work/crates/workbench-cli)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.07s
+{"spec_version":"0.1","request_id":"request-953-18daaadb29d324c9-0","run_id":"run-953-18daaadb29d36874-1","operation":"process.exec","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{"cwd":"/tmp/work","effects":"unclassified","executable":"/usr/bin/printf","profile":"operator-local","resolution":"canonical path; not a protected installation claim"},"started_at":"2026-10-02T09:01:00.109462216Z","finished_at":"2026-10-02T09:01:00.130094606Z","duration_ms":20,"execution":{"status":"succeeded","child_exit_code":0,"signal":null},"effect_outcome":"unknown","assessment":"not_assessed","coverage":{"state":"complete","scope":"Captured output and primary exit status of this invocation only","limitations":["Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check."]},"output":{"stdout":"hello workbench\n","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"cancellation_signal":null,"cleanup":{"confirmed":true,"final_drain_ms":500,"grace_ms":2000,"group_absent":true,"kill_sent":false,"primary_reaped":true,"scope":"Observed process group and inherited output pipes only; deliberately escaped processes are not contained.","stderr_closed":true,"stdout_closed":true,"term_sent":false,"trigger":null},"effects":"unclassified","process_group_id":954,"process_id":954,"profile":"operator-local","stderr_bytes_observed":0,"stdout_bytes_observed":16},"errors":[],"sources":[{"evidence_state":"sourced","observed_at":"2026-10-02T09:01:00.130081772Z","reference":"local:child-output","untrusted":true}],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-955-18daaadb2b1b77d7-0","run_id":"run-955-18daaadb2b1bae15-1","operation":"doctor","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T09:01:00.130977823Z","finished_at":"2026-10-02T09:01:00.131749269Z","duration_ms":0,"execution":{"status":"succeeded","child_exit_code":null,"signal":null},"effect_outcome":"not_applicable","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"This local operation only; no service health assessment","limitations":[]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"architecture":"x86_64","child_environment":{"LANG":"C.UTF-8","LC_ALL":"C.UTF-8","PATH":"/usr/bin:/bin","TZ":"UTC"},"default_timeout_ms":30000,"execution":{"reason":"Available in the operator-local PoC; invocation inputs are validated before dispatch.","status":"available"},"limitations":["No executable version probe or network request is performed.","Process groups are not containment for deliberately escaping programs.","No protected installation, agent read profile, persistence or service health assessment is provided."],"max_capture_bytes_per_stream":1048576,"max_encoded_result_bytes":2097152,"max_request_bytes":65536,"max_request_depth":16,"max_timeout_ms":300000,"offline":true,"os":"linux","profile":"operator-local","record_modes":["never"],"stdin":"closed","target":{"id":"workstation","kind":"local"},"tasks":[{"availability":{"reason":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","runtime_executable":null,"status":"missing_dependency","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"file"}],"digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","effects":"observe","entrypoint":"embedded/dashboard-hygiene/wrapper.py","id":"dashboard-hygiene","input_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}}],"version":"0.1.0"},"errors":[],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-956-18daaadb2b34e6eb-0","run_id":"run-956-18daaadb2b351587-1","operation":"task.list","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T09:01:00.132644438Z","finished_at":"2026-10-02T09:01:00.133410875Z","duration_ms":0,"execution":{"status":"succeeded","child_exit_code":null,"signal":null},"effect_outcome":"not_applicable","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"This local operation only; no service health assessment","limitations":[]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"tasks":[{"availability":{"reason":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","runtime_executable":null,"status":"missing_dependency","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"file"}],"digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","effects":"observe","entrypoint":"embedded/dashboard-hygiene/wrapper.py","id":"dashboard-hygiene","input_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}}]},"errors":[],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-957-18daaadb2b4e29f7-0","run_id":"run-957-18daaadb2b4e5047-1","operation":"task.run","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T09:01:00.134299742Z","finished_at":"2026-10-02T09:01:00.13530111Z","duration_ms":1,"execution":{"status":"unsupported","child_exit_code":null,"signal":null},"effect_outcome":"not_attempted","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"This local operation only; no service health assessment","limitations":[]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"source":{"binding_digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","checker_digest":"sha256:8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7"},"task":{"id":"dashboard-hygiene","version":1}},"errors":[{"code":"missing_dependency","message":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","retryable":false}],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+603b7b37d8618d7109344f3dff3e5087fb321ebe33e47a54d3817c2c7ddde327  target/debug/save

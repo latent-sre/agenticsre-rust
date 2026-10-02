@@ -1,0 +1,136 @@
+rustc 1.98.0 (88d9e12ae 2026-08-18)
+cargo 1.98.0 (797e8a9bc 2026-08-05)
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+4294967296
+250000 100000
+512
+Python 3.11.2
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling libc v0.2.189
+   Compiling typenum v1.20.1
+   Compiling syn v3.0.6
+   Compiling hybrid-array v0.4.15
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling const-oid v0.10.2
+   Compiling serde_derive v1.0.229
+   Compiling digest v0.11.3
+   Compiling cpufeatures v0.3.1
+   Compiling powerfmt v0.2.0
+   Compiling memchr v2.8.3
+   Compiling cfg-if v1.0.5
+   Compiling utf8parse v0.2.2
+   Compiling num-conv v0.2.2
+   Compiling deranged v0.5.8
+   Compiling itoa v1.0.18
+   Compiling time-core v0.1.9
+   Compiling time v0.3.55
+   Compiling anstyle-parse v1.0.0
+   Compiling sha2 v0.11.0
+   Compiling anstyle-query v1.1.5
+   Compiling colorchoice v1.0.5
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling anstyle v1.0.14
+   Compiling anstream v1.0.0
+   Compiling errno v0.3.14
+   Compiling heck v0.5.0
+   Compiling strsim v0.11.1
+   Compiling signal-hook v0.4.4
+   Compiling clap_lex v1.1.1
+   Compiling clap_builder v4.6.7
+   Compiling clap_derive v4.6.7
+   Compiling signal-hook-registry v1.4.8
+   Compiling workbench-core v0.1.0 (/tmp/work/crates/workbench-core)
+   Compiling clap v4.6.7
+   Compiling workbench-cli v0.1.0 (/tmp/work/crates/workbench-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.07s
+     Running unittests tests/support/runner_fixture.rs (target/debug/deps/runner_fixture-83bcaf96bf513ec2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/save-dd31f0bbcf644561)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/runner.rs (target/debug/deps/runner-bf8f50410693e609)
+
+running 14 tests
+test both_streams_drain_after_capture_and_encoded_limits_and_disclose_loss ... ok
+test environment_is_fixed_stdin_closed_and_path_not_inherited ... ok
+test inspect_canonicalizes_without_running_and_discovery_is_offline ... ok
+test invalid_utf8_and_raw_cut_codepoint_are_disclosed ... ok
+test closed_or_stalled_result_consumers_exit_without_panicking_or_hanging ... ok
+test late_signal_interrupts_stalled_result_delivery_with_signal_exit ... ok
+test literal_arguments_unicode_and_metacharacters_never_get_shell_evaluation ... ok
+test malformed_version_record_grant_and_path_requests_never_create_markers ... ok
+test nonzero_primary_exit_is_preserved_separately_from_cli_status ... ok
+test primary_exit_before_descendant_pipe_eof_is_not_false_completion ... ok
+test sigint_and_sigterm_cancel_owned_children_with_normalized_exit ... ok
+test text_and_json_report_the_same_execution_and_literal_stdout ... ok
+test timeout_and_forced_termination_have_bounded_cleanup ... ok
+test late_signal_during_timeout_cleanup_preserves_timeout_and_signal_exit ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.61s
+
+     Running tests/tasks.rs (target/debug/deps/tasks-c01f82ca20d61d9d)
+
+running 13 tests
+test clean_check_is_completed_observation_with_source_and_input_identity ... ok
+test dialect_overrides_quoted_literals_and_selected_range_totals_are_preserved ... ok
+test embedded_binding_works_away_from_checkout_and_ignores_hostile_modules ... ok
+test each_upstream_rule_discriminates_its_single_field_mutation ... ok
+test findings_fields_and_capture_loss_cannot_be_claimed_complete ... ok
+test human_task_output_renders_findings_and_coverage_from_the_shared_receipt ... ok
+test model_byte_depth_panel_and_query_limits_fail_explicitly ... ok
+test nonregular_inputs_are_refused_without_blocking ... ok
+test task_contract_rejects_override_unknown_id_version_and_relative_structured_path ... ok
+test task_timeout_and_cancellation_preserve_supervisor_outcomes ... ok
+test unknown_plugins_receive_common_findings_with_explicit_coverage_limits ... ok
+test malformed_empty_v2_and_wrongly_typed_models_fail_without_input_echo ... ok
+test wrappers_nested_rows_and_nonquerying_panels_keep_upstream_semantics ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-5fccea9b9438e5f8)
+
+running 2 tests
+test tasks::tests::malformed_or_mismatched_child_protocol_cannot_be_accepted ... ok
+test tasks::tests::embedded_checker_matches_pinned_upstream_bytes ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/contracts.rs (target/debug/deps/contracts-9827b40eac235c7d)
+
+running 5 tests
+test host_capture_limit_only_tightens_requested_limits ... ok
+test request_byte_depth_and_json_boundaries_are_enforced ... ok
+test strict_controls_reject_unknown_duplicate_null_and_wrong_types ... ok
+test versions_targets_recording_and_invalid_limits_fail_before_dispatch ... ok
+test unicode_and_escaping_cannot_exceed_the_final_encoded_receipt_cap ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+   Compiling workbench-cli v0.1.0 (/tmp/work/crates/workbench-cli)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.40s
+{"spec_version":"0.1","request_id":"request-1929-18daaad661480a43-0","run_id":"run-1929-18daaad661484ca3-1","operation":"process.exec","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{"cwd":"/tmp/work","effects":"unclassified","executable":"/usr/bin/printf","profile":"operator-local","resolution":"canonical path; not a protected installation claim"},"started_at":"2026-10-02T09:00:39.565033017Z","finished_at":"2026-10-02T09:00:39.585600896Z","duration_ms":20,"execution":{"status":"succeeded","child_exit_code":0,"signal":null},"effect_outcome":"unknown","assessment":"not_assessed","coverage":{"state":"complete","scope":"Captured output and primary exit status of this invocation only","limitations":["Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check."]},"output":{"stdout":"hello workbench\n","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"cancellation_signal":null,"cleanup":{"confirmed":true,"final_drain_ms":500,"grace_ms":2000,"group_absent":true,"kill_sent":false,"primary_reaped":true,"scope":"Observed process group and inherited output pipes only; deliberately escaped processes are not contained.","stderr_closed":true,"stdout_closed":true,"term_sent":false,"trigger":null},"effects":"unclassified","process_group_id":1930,"process_id":1930,"profile":"operator-local","stderr_bytes_observed":0,"stdout_bytes_observed":16},"errors":[],"sources":[{"evidence_state":"sourced","observed_at":"2026-10-02T09:00:39.58558701Z","reference":"local:child-output","untrusted":true}],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-1931-18daaad662905e87-0","run_id":"run-1931-18daaad66290b786-1","operation":"doctor","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T09:00:39.586554284Z","finished_at":"2026-10-02T09:00:39.58736275Z","duration_ms":0,"execution":{"status":"succeeded","child_exit_code":null,"signal":null},"effect_outcome":"not_applicable","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"This local operation only; no service health assessment","limitations":[]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"architecture":"x86_64","child_environment":{"LANG":"C.UTF-8","LC_ALL":"C.UTF-8","PATH":"/usr/bin:/bin","TZ":"UTC"},"default_timeout_ms":30000,"execution":{"reason":"Available in the operator-local PoC; invocation inputs are validated before dispatch.","status":"available"},"limitations":["No executable version probe or network request is performed.","Process groups are not containment for deliberately escaping programs.","No protected installation, agent read profile, persistence or service health assessment is provided."],"max_capture_bytes_per_stream":1048576,"max_encoded_result_bytes":2097152,"max_request_bytes":65536,"max_request_depth":16,"max_timeout_ms":300000,"offline":true,"os":"linux","profile":"operator-local","record_modes":["never"],"stdin":"closed","target":{"id":"workstation","kind":"local"},"tasks":[{"availability":{"reason":"Python is present; version >=3.11 is checked inside the supervised invocation, not probed by discovery.","runtime_executable":"/usr/bin/python3.11","status":"available","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"file"}],"digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","effects":"observe","entrypoint":"embedded/dashboard-hygiene/wrapper.py","id":"dashboard-hygiene","input_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}}],"version":"0.1.0"},"errors":[],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-1932-18daaad662acf3ec-0","run_id":"run-1932-18daaad662ad2c97-1","operation":"task.run","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{"cwd":"/","effects":"observe","executable":"/usr/bin/python3.11","profile":"operator-local","resolution":"canonical path; not a protected installation claim","task":{"binding_digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","id":"dashboard-hygiene","version":1}},"started_at":"2026-10-02T09:00:39.588424421Z","finished_at":"2026-10-02T09:00:39.604642554Z","duration_ms":16,"execution":{"status":"succeeded","child_exit_code":0,"signal":null},"effect_outcome":"not_applicable","assessment":"not_assessed","coverage":{"state":"complete","scope":"Static textual model hygiene only; no rendering, query parsing, datasource resolution or live health validation","limitations":["Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check.","Unknown plugin panels receive common textual rules only. PromQL heuristics require an explicit Prometheus datasource type."]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"cancellation_signal":null,"checked_panels":1,"coverage":{"limitations":["Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check.","Unknown plugin panels receive common textual rules only. PromQL heuristics require an explicit Prometheus datasource type."],"scope":"Static textual model hygiene only; no rendering, query parsing, datasource resolution or live health validation","state":"complete"},"fields_truncated":false,"findings":[],"findings_total":0,"findings_truncated":false,"input":{"bytes":985,"digest":"sha256:7fbb0c0430df5d8b99daec5b20e0ee518ea117bc6d5e1f2e0fded75eea8b2419","file":"/tmp/work/tests/fixtures/dashboard-hygiene/clean.json"},"runtime":{"executable":"/usr/bin/python3.11","version":"3.11.2"},"source":{"binding_digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","checker_digest":"sha256:8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7"},"supervisor":{"cancellation_signal":null,"cleanup":{"confirmed":true,"final_drain_ms":500,"grace_ms":2000,"group_absent":true,"kill_sent":false,"primary_reaped":true,"scope":"Observed process group and inherited output pipes only; deliberately escaped processes are not contained.","stderr_closed":true,"stdout_closed":true,"term_sent":false,"trigger":null},"process_group_id":1933,"process_id":1933,"stderr_bytes_observed":0,"stdout_bytes_observed":324},"task":{"id":"dashboard-hygiene","version":1}},"errors":[],"sources":[{"evidence_state":"sourced","observed_at":"2026-10-02T09:00:39.603836983Z","reference":"local:child-output","untrusted":true}],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+603b7b37d8618d7109344f3dff3e5087fb321ebe33e47a54d3817c2c7ddde327  target/debug/save

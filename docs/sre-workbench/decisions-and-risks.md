@@ -1,21 +1,22 @@
 # Decisions and risks
 
-The owner accepted the product direction and asked to include every discussed feature in a full
-plan. The choices below are concrete proposals, not accepted architecture decisions. Decision
-owners are roles to assign, not claims that a named person has approved anything.
+The owner accepted the product direction and all discussed capabilities, selected this repository,
+and authorized plan improvements and a PoC on 2026-10-02. Local choices below are implementation
+decisions under that authority. Broader product/live choices remain proposals. Decision owners are
+responsibilities, not claims that a named person approved a release.
 
 ## Decision register
 
 | ID | Choice and recommendation | Alternatives and tradeoff | Owner and due phase |
 |---|---|---|---|
-| DEC-01 | Use Rust for the shared operations core | Python gives faster reuse; Go already fits the team stack. Rust needs new build/review expertise. Decide on distribution/reliability value, not unmeasured speed | Product owner and technical lead, P0 |
-| DEC-02 | Repository selected: latent-sre/agenticsre-rust, owner 2026-10-02; independent product release | SRE Workbench and save remain working names; branding/package collision checks remain open | Product owner; repository choice resolved, naming due P0 |
-| DEC-03 | Start Windows x86-64 and Linux x86-64, then macOS arm64 | All platforms at once increase process/packaging test work; select OS/libc/MSRV and PowerShell support explicitly | Platform owner, P0 |
-| DEC-04 | One real trading service, one Grafana origin/org and a protected read identity for pilot | Fixture-only work can prove contracts but not adoption; choose credential provider and trusted host without exposing values | Human SRE and access owner, P0 before live work |
-| DEC-05 | Native Grafana reads; optional script adapters | Wrapping Python first is a useful prototype but retains interpreter dependency. Preserve helper semantics through independent/parity tests | Technical lead, P0 |
+| DEC-01 | PoC selected: Rust 1.98.0, edition 2024, shared core plus CLI, locked dependencies | Reuses the installed compiler; no speed or security claim follows from language choice. Review dependency licenses and actual execution behavior | Technical lead, local choice resolved |
+| DEC-02 | Repository selected: latent-sre/agenticsre-rust, owner 2026-10-02; independent product release | SRE Workbench and save remain working names; branding/package collision checks remain open before distribution | Product owner; repository choice resolved, naming does not block local builds |
+| DEC-03 | Prove Linux x86-64 PoC first; retain Windows x86-64 for P1 and macOS arm64 after | Advertise only exercised OS/ABI combinations. Other execution returns unsupported until native supervisor tests pass; compilation is insufficient | Technical lead for PoC; platform owner for expanded support |
+| DEC-04 | One real trading service, one Grafana origin/org and a protected read identity for live pilot | Local fixture acceptance precedes live selection and requires no credentials; choose provider and trusted host before live work | Human SRE and access owner, P2 live pilot |
+| DEC-05 | Native Grafana fixture adapter after core; optional reviewed script adapters in parallel | Preserve helper semantics through independent/parity tests; no live API capability claimed from fixtures | Technical lead, selected direction for P2 implementation |
 | DEC-06 | CLI and MCP share one core; local stdio first | CLI-only leaves no-terminal agents unserved; remote HTTP immediately adds identity/server operations | Host integrator, P2 |
 | DEC-07 | Direct argv default; named shell tasks first | General shell source is flexible but broader and harder to constrain. Later human shell capability stays explicit | Security and operator owners, P1/P5 |
-| DEC-08 | Local metadata database plus owned files, optional recording | JSON-only files simplify inspection but complicate indexing/concurrency; retention, encryption and migration need policy | Data/privacy owner, P1 |
+| DEC-08 | PoC supports record=never only; rejects other modes before dispatch | Invocation IDs are correlation, not durable records. Choose SQLite versus files with the first evidence consumer, retention and migration requirements | Technical lead for PoC; data/privacy owner before persistence |
 | DEC-09 | Read existing service records with provenance | A new authoritative inventory duplicates ownership; actual record adapter/schema depends on selected team data | Service owner, P3 |
 | DEC-10 | Native modules plus external process extensions | Native dynamic Rust plugins lack a stable ABI; WASM/container isolation may suit future untrusted code but adds runtime/limits work | Technical/security leads, P5 |
 | DEC-11 | Durable jobs before remote execution and scheduling | Immediate distributed orchestration expands scope; decide runner transport, deployment, identity, leases and stores | Platform owner, P6 |
@@ -24,8 +25,8 @@ owners are roles to assign, not claims that a named person has approved anything
 | DEC-14 | Begin UI with local evidence viewer | Hosted multi-user UI requires identity, tenancy and service ownership; UI must reuse core permissions/results | Product/security owners, P8 |
 | DEC-15 | Existing repository MIT license retained; distribution, support and positioning remain open | Imported copyright notice preserved; dependency licenses and external support/distribution need review | Product/release owner, before distribution |
 
-P0 decisions block implementation selection, not completion of this planning package. Later
-decisions block only their dependent phases. Host/API versions and exact library pins are recorded
+Unresolved decisions block only work that actually depends on them. Naming, live credentials and
+later platform acceptance do not block the authorized local PoC. Host/API versions and exact library pins are recorded
 in implementation evidence when selected; documents do not assume today's latest will be correct
 at build time.
 

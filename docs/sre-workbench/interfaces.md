@@ -1,6 +1,7 @@
 # CLI and agent interface specification
 
-All commands in this document are proposed. No executable is delivered by this planning package.
+This is the full target command catalog. The [PoC contract](../poc.md) and
+[development guide](../development.md) identify the current subset; the roadmap records evidence.
 The examples use synthetic targets and do not identify a real system or supply credentials.
 
 ## CLI grammar

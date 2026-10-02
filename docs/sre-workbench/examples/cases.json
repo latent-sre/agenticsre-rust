@@ -150,5 +150,43 @@
     "schema": "result",
     "valid": false,
     "reason": "Malformed timestamp must be rejected by the required RFC3339 format checker"
+  },
+  {
+    "file": "input-dashboard-hygiene.json",
+    "schema": "dashboard-hygiene-input",
+    "valid": true,
+    "reason": "Absolute model path for the fixed offline task"
+  },
+  {
+    "file": "request-dashboard-hygiene.json",
+    "schema": "request",
+    "input_schema": "task-run-input",
+    "valid": true,
+    "reason": "Installed dashboard-hygiene version 1; no caller binding override"
+  },
+  {
+    "file": "input-error-budget.json",
+    "schema": "error-budget-input",
+    "valid": true,
+    "reason": "Finite time-budget input; request and time units are distinct"
+  },
+  {
+    "file": "request-error-budget.json",
+    "schema": "request",
+    "input_schema": "task-run-input",
+    "valid": true,
+    "reason": "Fixed error-budget version1 calculation request"
+  },
+  {
+    "file": "config-grafana-fixture.json",
+    "schema": "config",
+    "valid": true,
+    "reason": "Explicit operator configuration for a synthetic HTTPS fixture; credential value is separate"
+  },
+  {
+    "file": "read-policy-fixture.json",
+    "schema": "read-policy",
+    "valid": true,
+    "reason": "Explicit synthetic read policy; zero digests are placeholders, not verified executable bindings"
   }
 ]

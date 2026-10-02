@@ -1,0 +1,4 @@
+# Preserve generated bundle bytes and retained raw test output exactly.
+/web/dist/** -whitespace
+/docs/evidence/*.txt -whitespace
+/docs/ui/previews/*.log -whitespace

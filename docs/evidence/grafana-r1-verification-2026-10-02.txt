@@ -1,0 +1,188 @@
+FAIL — WORKBENCH-003 Grafana R1 candidate 378c6ed0
+
+[verified] Overall executable acceptance is FAIL: malformed RFC3339 separator input
+still bypasses precision admission and dispatches HTTP. The three original witness
+inputs are corrected, including normalized-origin length and finalized receipt size.
+All fresh broad regressions and the isolated release installation passed.
+
+Target and criteria
+--------------------
+[verified] Repository: latent-sre/agenticsre-rust.
+Commit: 378c6ed0504ee9ee5b6e1d2e1da252bc41b4bb62
+Tree: e257d71cdb473ea3a2da8d1405e8e3c2cc9a23cd
+Archive: /tmp/agenticsre-poc-cally.TAa6Mh9t/source.tar
+SHA256: 268f9fddde670b6196e150c4c58d3f5d571edf251452341d8cc8a964c517c7da
+Parent snapshot: /tmp/agenticsre-grafana-r1-final-fhwmmdl6
+Independent disposable clone: this packet directory/source, removed after testing.
+All 163 files matched archive/commit before execution and before cleanup; clean Git
+status, no product edits. Identity and exact clone command: identity.json.
+
+[sourced] Acceptance is the parent's R1 task plus frozen AGENTS.md, docs/grafana.md,
+docs/adapter-notes.md, docs/poc.md and shared task/result schemas. docs/grafana.md:91
+requires RFC3339 timestamps without sub-millisecond rounding; :134 requires invalid
+dates to fail before HTTP. :120 and docs/poc.md:41 require final JSON within 2 MiB.
+
+[verified] R1 production changes relative to 8a301811 are exactly grafana.rs,
+grafana/config.rs and result.rs. Native/public Grafana tests also changed; additional
+files are roadmap/evidence. Schemas, dependencies, supervisor and acceptance contracts
+are byte-identical. See identity.json and evidence/acceptance-summary.json.
+
+[sourced] Parent relayed a correctness review requesting changes on this separator
+path, with the other two findings closed, and a security-only delta approval. No
+formal overall approval envelope was received. This packet claims executable
+verification only and does not turn a partial review approval into release approval.
+
+Criterion verdicts
+-------------------
+[verified] FAIL: timestamp grammar and lossless precision admission. The ordinary
+T-separated tenth fractional digit now exits 2 before HTTP, but the period-separated
+witness below still succeeds after precision loss. This remains an open criterion.
+
+[verified] PASS: normalized-origin length admission. The retained 820-byte Unicode
+origin is denied exit 2 before any request, with null binding and schema-valid data.
+Fresh native/public checks also include accepted Unicode origins within the limit.
+
+[verified] PASS: complete final encoded receipt bound for dashboard and query. The
+retained dashboard boundary search observed no oversized receipts; its largest
+retained response was 2,097,151 bytes, exit 0/succeeded. Above-boundary response data
+was omitted, exit 1 with structured_response_too_large and coverage not_established.
+Independent query calibration likewise produced a 2,632-byte bounded failure. The
+installed release binary passed both dashboard and query near-boundary checks too.
+
+[verified] PASS: exact dashboard/Prometheus/Loki HTTPS exchanges, prefixes, query
+bodies, org/datasource verification, CLI/call/text parity and observation honesty.
+Three fresh independent missions plus all native/public Grafana checks ran on R1.
+They preserve child exit null, not_assessed, record never and fixture_only identity.
+
+[verified] PASS: remaining tested strict configuration/provider/target/input admission,
+Basic/Bearer scopes, known-secret redaction and stable controls, key collisions,
+malformed/semantic/HTTP errors, raw-body bounds, TLS trust/hostname, proxy/redirect/
+retry controls, deadline/cancellation and no later dispatch. Covered by the fresh
+16-test native Grafana suite and 92-result public fixture matrix, with exception of
+the independently discovered timestamp grammar failure stated above.
+
+[verified] PASS: shared receipt regressions for process output loss/UTF-8/final caps,
+signals/cleanup/closed consumers, strict request parsing, task errors/findings,
+calculator protocol/numeric boundaries and schema conformance. Full cold all-feature
+Rust suite and all public command/task scripts ran again because result.rs changed.
+
+[verified] PASS: formatting, clippy, specification checks, isolated offline release
+installation and source-free installed missions. No-checkout checks executed three
+native operations plus four calibration/overflow invocations under the installed
+artifact, with assertions that checkout paths were absent.
+
+Reproduction and expected versus observed
+------------------------------------------
+[verified] Baseline 8a301811 failures remain preserved independently at
+/tmp/agenticsre-grafana-verify-6ZmmitkP/packet.txt and its evidence/review-regressions.
+R1 evidence/baseline-reproduction.json records the old revision, archive and retained
+witness hashes. Those old checks are not represented as R1 executions.
+
+[verified] R1 evidence/review-regressions/checks.json records 15 product invocations:
+the three retained failure families now pass --expect-fixed assertions, plus a
+query-specific finalized-overflow check. All receipts validate against both envelope
+and operation-specific schemas. Details are in its summary.json and raw stdout files.
+
+[verified] Remaining failure:
+  from = 2026-10-02.00:00:00.0000000001Z
+  to   = 2026-10-02T00:01:00Z
+Expected: invalid RFC3339 separator denied, exit 2, zero HTTP requests.
+Observed: exit 0/succeeded; GET /api/org, GET /api/datasources/uid/independent_ds
+with ds_type=prometheus, then POST /api/ds/query. Normalized from became
+2026-10-02T00:00:00Z and the query wire value was 1790899200000 milliseconds.
+The output was schema-valid but hid loss of input precision. The exact argv,
+request ledger, stdout hash, status and timing are in
+evidence/precision-separator/check.json; full result is result.stdout beside it.
+[sourced] Frozen crates/workbench-core/src/grafana.rs:103 locates the first period
+when checking fractions; this does not establish strict timestamp grammar before
+calling the permissive parser. Builder owns the correction and grammar audit.
+
+Checks executed and process-own statuses
+-----------------------------------------
+[verified] Common host invocation:
+  python3 -I -B /tmp/agenticsre-grafana-r1-verify-trx_c3yk/tests/run-check.py NAME COMMAND...
+Host cwd /tmp; executable-check cwd /work. installed-no-checkout additionally uses
+--artifact-only before NAME. Full boundary argv, cwd, revision/tree, elapsed time,
+own exit status and stdout/stderr paths/hashes are in evidence/NAME.json. No pipes or
+command chains mask tested statuses. Every command below exited 0 as described.
+
+boundary: /venv/bin/python -I -B /tests/boundary.py
+  Active boundary checks and fresh runtime observations passed.
+rust-suite: cargo test --workspace --all-features --locked --offline
+  66 Rust tests passed, zero failed/ignored, including Python regression runner;
+  16 native Grafana, 14 process, 13 dashboard, 8 budget, 9 core, 6 contracts.
+format: cargo fmt --all -- --check
+clippy: cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings
+specifications: /venv/bin/python -B docs/sre-workbench/verify_specs.py
+  20 schemas, 21 positive/9 negative fixtures and documentation checks passed.
+public-poc: /venv/bin/python -B tools/verify-poc.py /scratch/target/debug/save
+  19 schema-valid results.
+public-dashboard: /venv/bin/python -B tools/verify-tasks.py /scratch/target/debug/save
+  25 schema-valid results.
+public-budget: /venv/bin/python -B tools/verify-error-budget.py /scratch/target/debug/save
+  52 schema-valid results.
+public-grafana: /venv/bin/python -B tools/verify-grafana.py /scratch/target/debug/save
+  92 schema-valid results.
+independent-missions: /venv/bin/python -I -B /tests/https-acceptance.py mission-only
+  Three exact real HTTPS missions with independent request ledgers.
+review-regressions: /venv/bin/python -I -B /tests/review-regressions.py --expect-fixed
+  15 targeted invocations; original three witness families and query boundary passed.
+isolated-install: cargo install --locked --offline --path crates/workbench-cli --root /scratch/install
+  Release artifact installed only to disposable scratch.
+installed-no-checkout: /venv/bin/python -I -B /tests/https-acceptance.py installed --bounds
+  Seven product invocations: three missions, two calibrations, two overflow failures.
+precision-separator: /venv/bin/python -I -B /tests/precision-separator.py
+  The harness exited 0 because it ASSERTS THE REMAINING DEFECT EXISTS. This confirms
+  failed product acceptance, not a successful timestamp-admission check.
+
+[verified] Debug SHA256: 15fb67337f7fe746735b66026b6497e8d5bd1fabdcedf1591699668fc3d4e7fe
+Installed release SHA256: 75c79627f22ccfae16a03858040ec7cd208e909bd2079995af193a438eb10680
+Intended product exits 1/2 for denial/overflow are recorded separately from harness
+statuses. Raw installed/independent receipts and ledgers are retained in evidence.
+
+Environment, isolation, test changes and residue
+------------------------------------------------
+[verified] Fresh environment: Linux x86_64 kernel 6.8.0-142; Rust 1.98.0 (88d9e12ae,
+LLVM 22.1.8), Cargo 1.98.0 (797e8a9bc), Python 3.14.7. evidence/boundary.stdout captures
+versions, environment, namespaces, mounts, limits, capabilities and active probes.
+
+[verified] All target execution used Bubblewrap user/network/PID/IPC/UTS namespaces,
+clearenv, die-with-parent, new session, all capabilities dropped and NoNewPrivs.
+Source/tools/system runtimes/Python/registry/tests were read-only; only private
+scratch and namespace tmp/dev/proc were writable. No host credentials or resolver
+files were mounted. HTTP listeners were ephemeral private loopback; generated CA
+and auth values were synthetic. Host/external network was unreachable, Cargo offline.
+One CPU affinity, Cargo one job, tests two threads, RLIMIT_AS 4 GiB, CPU 900 s,
+NOFILE 1024, NPROC 1024, no core dumps, outer timeout 900 s plus 5 s kill grace.
+Address-space/CPU limits are per process; nproc uses shared-UID accounting. This is
+not an aggregate cgroup-limit claim. No host limits were changed persistently.
+
+[verified] Only disposable verification tests/fixtures were authored. The baseline
+test comparison is explicit in evidence/test-diff-from-baseline.patch. Changes add
+mission-only selection, query/release final-size checks and the separator regression.
+precision-separator.py retains --expect-fixed for the next immutable candidate.
+
+[verified] Cleanup rechecked all 163 product hashes and clean Git status, found no
+remaining verifier sandbox processes, and removed source clone, scratch/build/install
+and venv. Parent frozen snapshot/archive were preserved. No containers, volumes,
+images, host installs, listeners or worktrees were left by this run. Retained files
+are tests, evidence, public certs and this packet; private synthetic keys were omitted.
+See evidence/identity-recheck.json and evidence/cleanup.json.
+
+Skipped checks and limits
+--------------------------
+[verified] The previous 26-case independent matrix was not repeated wholesale.
+Fresh broader native/public execution, exact retained failure comparisons and new
+query/release boundary probes cover the changed paths. No prior green is asserted
+as fresh R1 execution. The same contract/schema/dependency/supervisor bytes were
+independently compared before reusing the prior scope decisions.
+
+[unverified] Live Grafana-version support, real credentials/targets, protected agent
+permissions, native Windows, positive system-DNS integration and cancellation of
+remote datasource work remain outside this fixture-only acceptance. Cally lanes are
+parent-owned supplemental checks and were not independently executed by this agent.
+
+[verified] Product schemas were validated as listed. No versioned verifier-packet
+schema was supplied, so no packet-schema validation is claimed. SHA256SUMS covers
+the retained packet/test/evidence files. This failed R1 verdict cannot approve a
+later revision; the separator fix requires fresh revision-bound execution.

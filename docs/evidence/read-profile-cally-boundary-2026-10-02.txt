@@ -1,0 +1,7 @@
+{
+  "outer_uid": 1000,
+  "exit_status": 0,
+  "stdout": "{\"pid\": 2, \"uid\": 1000, \"proc_absent\": true, \"read\": \"synthetic fixture\", \"write_denied\": true, \"write_errno\": 30, \"outside_denied\": true, \"outer_listener_denied\": true}\n",
+  "stderr": "",
+  "persistent_write_absent": true
+}

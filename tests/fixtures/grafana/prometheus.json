@@ -1,0 +1,13 @@
+{
+  "results": {
+    "A": {
+      "status": 200,
+      "frames": [
+        {
+          "schema": {"refId": "A", "fields": [{"name": "Time", "type": "time"}, {"name": "up", "type": "number"}]},
+          "data": {"values": [[1790899200000, 1790899260000], [1, 1]]}
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1 @@
+PASS: 83 public Grafana results; HTTPS exchanges, binding, auth/redaction, admission, bounds, cancellation and existing interfaces. All receipts/data schema-valid.

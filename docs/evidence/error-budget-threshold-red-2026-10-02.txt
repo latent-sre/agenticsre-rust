@@ -1,0 +1,16 @@
+..F......
+======================================================================
+FAIL: test_exact_decimal_boundary_pages_but_nearby_below_threshold_does_not (__main__.CalculationTests.test_exact_decimal_boundary_pages_but_nearby_below_threshold_does_not)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/hawkfire/rusty/agenticsre-rust/crates/workbench-core/resources/error-budget/test_calculator.py", line 50, in test_exact_decimal_boundary_pages_but_nearby_below_threshold_does_not
+    self.assertEqual(exact["severity"], "page")
+AssertionError: 'none' != 'page'
+- none
++ page
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.001s
+
+FAILED (failures=1)

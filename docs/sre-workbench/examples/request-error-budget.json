@@ -1,0 +1,23 @@
+{
+  "spec_version": "0.1",
+  "request_id": "example-error-budget-001",
+  "operation": "task.run",
+  "operation_version": 1,
+  "target": {
+    "kind": "local",
+    "id": "workstation"
+  },
+  "inputs": {
+    "id": "error-budget",
+    "version": 1,
+    "input": {
+      "slo": 99.9,
+      "bad_minutes": 40.32
+    }
+  },
+  "limits": {
+    "timeout_ms": 30000,
+    "max_output_bytes": 1048576
+  },
+  "record": "never"
+}

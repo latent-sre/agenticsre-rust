@@ -1,0 +1,2 @@
+{"landlock_abi": 8, "errno": 0}
+{"dev_null_readwrite": "allowed", "denials": {"file_write": 13, "file_truncate": 13, "fifo_write": 13, "fifo_readwrite": 13, "device_write": 13, "create": 13}, "file": "unchanged", "fifo_remaining": 0}

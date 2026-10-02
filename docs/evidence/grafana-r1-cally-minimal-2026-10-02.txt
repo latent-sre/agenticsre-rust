@@ -1,0 +1,220 @@
+rustc 1.98.0 (88d9e12ae 2026-08-18)
+cargo 1.98.0 (797e8a9bc 2026-08-05)
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+4294967296
+250000 100000
+512
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling libc v0.2.189
+   Compiling syn v3.0.6
+   Compiling jobserver v0.1.35
+   Compiling shlex v2.0.1
+   Compiling stable_deref_trait v1.2.1
+   Compiling find-msvc-tools v0.1.14
+   Compiling cc v1.5.1
+   Compiling smallvec v1.16.2
+   Compiling cfg-if v1.0.5
+   Compiling portable-atomic v1.15.0
+   Compiling pin-project-lite v0.2.17
+   Compiling synstructure v0.14.0
+   Compiling bytes v1.12.1
+   Compiling cmake v0.1.58
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling zerovec-derive v0.11.6
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling displaydoc v0.2.7
+   Compiling pkg-config v0.3.34
+   Compiling zerovec v0.11.8
+   Compiling litemap v0.8.3
+   Compiling dunce v1.0.5
+   Compiling futures-core v0.3.34
+   Compiling tinystr v0.8.4
+   Compiling serde_core v1.0.229
+   Compiling fs_extra v1.3.0
+   Compiling critical-section v1.2.0
+   Compiling writeable v0.6.4
+   Compiling aws-lc-sys v0.45.0
+   Compiling icu_locale_core v2.3.0
+   Compiling once_cell v1.21.4
+   Compiling potential_utf v0.1.6
+   Compiling zerotrie v0.2.5
+   Compiling icu_properties_data v2.3.0
+   Compiling zeroize v1.9.0
+   Compiling icu_normalizer_data v2.3.0
+   Compiling utf8_iter v1.0.4
+   Compiling icu_collections v2.3.0
+   Compiling icu_provider v2.3.1
+   Compiling tokio-macros v2.7.2
+   Compiling mio v1.2.3
+   Compiling socket2 v0.6.5
+   Compiling serde v1.0.229
+   Compiling tokio v1.53.1
+   Compiling rustls-pki-types v1.15.1
+   Compiling serde_derive v1.0.229
+   Compiling rand_core v0.10.1
+   Compiling itoa v1.0.18
+   Compiling aws-lc-rs v1.18.1
+   Compiling getrandom v0.4.3
+   Compiling percent-encoding v2.3.2
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_properties v2.3.0
+   Compiling futures-macro v0.3.34
+   Compiling futures-task v0.3.34
+   Compiling autocfg v1.5.1
+   Compiling slab v0.4.12
+   Compiling untrusted v0.9.0
+   Compiling futures-util v0.3.34
+   Compiling num-traits v0.2.19
+   Compiling idna_adapter v1.2.2
+   Compiling ipnet v2.12.2
+   Compiling http v1.5.0
+   Compiling tracing-core v0.1.36
+   Compiling cpufeatures v0.3.1
+   Compiling crossbeam-utils v0.8.23
+   Compiling tracing v0.1.44
+   Compiling http-body v1.1.0
+   Compiling idna v1.1.0
+   Compiling form_urlencoded v1.2.2
+   Compiling futures-channel v0.3.34
+   Compiling parking_lot_core v0.9.12
+   Compiling httparse v1.10.1
+   Compiling thiserror v2.0.21
+   Compiling rustls v0.23.45
+   Compiling url v2.5.8
+   Compiling chacha20 v0.10.2
+   Compiling thiserror-impl v2.0.21
+   Compiling try-lock v0.2.5
+   Compiling log v0.4.34
+   Compiling scopeguard v1.2.0
+   Compiling typenum v1.20.1
+   Compiling tower-service v0.3.3
+   Compiling base64 v0.23.1
+   Compiling crossbeam-epoch v0.9.21
+   Compiling subtle v2.6.1
+   Compiling either v1.18.0
+   Compiling prefix-trie v0.8.4
+   Compiling hybrid-array v0.4.15
+   Compiling lock_api v0.4.14
+   Compiling want v0.3.1
+   Compiling rand v0.10.3
+   Compiling atomic-waker v1.1.2
+   Compiling memchr v2.8.3
+   Compiling tinyvec v1.13.3
+   Compiling data-encoding v2.11.1
+   Compiling hickory-proto v0.26.3
+   Compiling hyper v1.11.1
+   Compiling parking_lot v0.12.5
+   Compiling crossbeam-channel v0.5.17
+   Compiling uuid v1.26.1
+   Compiling sync_wrapper v1.0.2
+   Compiling async-trait v0.1.92
+   Compiling equivalent v1.0.2
+   Compiling openssl-probe v0.2.1
+   Compiling time-core v0.1.9
+   Compiling deranged v0.5.8
+   Compiling tower-layer v0.3.3
+   Compiling num-conv v0.2.2
+   Compiling zmij v1.0.23
+   Compiling tagptr v0.2.0
+   Compiling powerfmt v0.2.0
+   Compiling futures-io v0.3.34
+   Compiling utf8parse v0.2.2
+   Compiling anstyle-parse v1.0.0
+   Compiling hickory-net v0.26.3
+   Compiling time v0.3.55
+   Compiling moka v0.12.16
+   Compiling tower v0.5.3
+   Compiling rustls-native-certs v0.8.4
+   Compiling hyper-util v0.1.21
+   Compiling aho-corasick v1.1.5
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling regex-syntax v0.8.11
+   Compiling const-oid v0.10.2
+   Compiling anstyle-query v1.1.5
+   Compiling bitflags v2.13.2
+   Compiling resolv-conf v0.7.6
+   Compiling colorchoice v1.0.5
+   Compiling anstyle v1.0.14
+   Compiling serde_json v1.0.151
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling anstream v1.0.0
+   Compiling hickory-resolver v0.26.3
+   Compiling tower-http v0.6.11
+   Compiling digest v0.11.3
+   Compiling regex-automata v0.4.18
+   Compiling http-body-util v0.1.5
+   Compiling errno v0.3.14
+   Compiling strsim v0.11.1
+   Compiling heck v0.5.0
+   Compiling signal-hook v0.4.4
+   Compiling clap_lex v1.1.1
+   Compiling clap_builder v4.6.7
+   Compiling clap_derive v4.6.7
+   Compiling signal-hook-registry v1.4.8
+   Compiling regex v1.13.1
+   Compiling sha2 v0.11.0
+   Compiling webpki-root-certs v1.0.9
+   Compiling ring v0.17.14
+   Compiling base64 v0.22.1
+   Compiling clap v4.6.7
+   Compiling getrandom v0.2.17
+   Compiling yasna v0.6.0
+   Compiling pem v4.0.0
+   Compiling rcgen v0.14.10
+   Compiling rustls-webpki v0.103.15
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling reqwest v0.13.5
+   Compiling workbench-core v0.1.0 (/tmp/work/crates/workbench-core)
+   Compiling workbench-cli v0.1.0 (/tmp/work/crates/workbench-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 48.58s
+
+running 16 tests
+     Running tests/grafana.rs (target/debug/deps/grafana-c44e79545df4728c)
+test basic_authentication_is_exact_and_its_numeric_and_encoded_echoes_are_masked ... ok
+test cancellation_closes_native_requests_with_signal_exit_and_no_later_dispatch ... ok
+test bounded_response_parsing_rejects_duplicate_nonfinite_deep_and_excess_bytes ... ok
+test cli_call_and_human_output_share_one_observation ... ok
+test invalid_admission_and_remote_looking_local_operations_never_make_http_or_child_effects ... ok
+test private_data_is_masked_without_corrupting_public_identity_or_control_types ... ok
+test real_https_dashboard_and_both_query_dialects_use_verified_scoped_exchanges ... ok
+test redaction_expansion_and_envelope_overhead_cannot_escape_the_encoded_result_cap ... ok
+test review_r1_canonical_origin_length_is_checked_before_http ... ok
+test review_r1_finalized_receipt_includes_late_source_and_timing_overhead ... ok
+test review_r1_fractional_time_precision_is_admitted_before_lossy_parser_conversion ... ok
+test secret_collisions_with_public_identifiers_preserve_correlated_typed_wrappers ... ok
+test tls_proxy_redirect_retry_and_ambient_trust_boundaries_are_real ... ok
+test whole_operation_deadline_includes_sequential_requests_and_body_consumption ... ok
+test wrong_org_datasource_and_http200_semantic_errors_stop_the_sequence ... ok
+test individual_request_deadline_is_twenty_seconds_within_the_sixty_second_operation ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.21s
+
+   Compiling rustls v0.23.45
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling reqwest v0.13.5
+   Compiling workbench-core v0.1.0 (/tmp/work/crates/workbench-core)
+   Compiling workbench-cli v0.1.0 (/tmp/work/crates/workbench-cli)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.93s
+{"spec_version":"0.1","request_id":"request-4889-18dab228cd3bea3b-0","run_id":"run-4889-18dab228cd3c6a02-1","operation":"process.exec","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{"cwd":"/tmp/work","effects":"unclassified","executable":"/usr/bin/printf","profile":"operator-local","resolution":"canonical path; not a protected installation claim"},"started_at":"2026-10-02T11:14:50.144894354Z","finished_at":"2026-10-02T11:14:50.165552513Z","duration_ms":20,"execution":{"status":"succeeded","child_exit_code":0,"signal":null},"effect_outcome":"unknown","assessment":"not_assessed","coverage":{"state":"complete","scope":"Captured output and primary exit status of this invocation only","limitations":["Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check."]},"output":{"stdout":"hello workbench\n","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"cancellation_signal":null,"cleanup":{"confirmed":true,"final_drain_ms":500,"grace_ms":2000,"group_absent":true,"kill_sent":false,"primary_reaped":true,"scope":"Observed process group and inherited output pipes only; deliberately escaped processes are not contained.","stderr_closed":true,"stdout_closed":true,"term_sent":false,"trigger":null},"effects":"unclassified","process_group_id":4890,"process_id":4890,"profile":"operator-local","stderr_bytes_observed":0,"stdout_bytes_observed":16},"errors":[],"sources":[{"evidence_state":"sourced","observed_at":"2026-10-02T11:14:50.16552985Z","reference":"local:child-output","untrusted":true}],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-4891-18dab228ce8ade05-0","run_id":"run-4891-18dab228ce8b59b0-1","operation":"doctor","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T11:14:50.166846349Z","finished_at":"2026-10-02T11:14:50.168051359Z","duration_ms":1,"execution":{"status":"succeeded","child_exit_code":null,"signal":null},"effect_outcome":"not_applicable","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"This local operation only; no service health assessment","limitations":[]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"architecture":"x86_64","child_environment":{"LANG":"C.UTF-8","LC_ALL":"C.UTF-8","PATH":"/usr/bin:/bin","TZ":"UTC"},"default_timeout_ms":30000,"execution":{"reason":"Available in the operator-local PoC; invocation inputs are validated before dispatch.","status":"available"},"grafana":{"reason":"Native adapter installed; explicit operator config and a scoped environment credential are required. Discovery does not read secrets or contact a server.","status":"requires_configuration"},"limitations":["No executable version probe or network request is performed.","Process groups are not containment for deliberately escaping programs.","No protected installation, agent read profile, persistence or service health assessment is provided."],"max_capture_bytes_per_stream":1048576,"max_encoded_result_bytes":2097152,"max_request_bytes":65536,"max_request_depth":16,"max_timeout_ms":300000,"offline":true,"os":"linux","profile":"operator-local","record_modes":["never"],"stdin":"closed","target":{"id":"workstation","kind":"local"},"tasks":[{"availability":{"reason":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","runtime_executable":null,"status":"missing_dependency","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"file"}],"digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","effects":"observe","entrypoint":"embedded/dashboard-hygiene/wrapper.py","id":"dashboard-hygiene","input_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}},{"availability":{"reason":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","runtime_executable":null,"status":"missing_dependency","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"input"}],"digest":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","effects":"observe","entrypoint":"embedded/error-budget/wrapper.py","id":"error-budget","input_schema":{"$ref":"urn:sre-workbench:spec:error-budget-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:error-budget-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}}],"version":"0.1.0"},"errors":[],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-4892-18dab228ceb14b2d-0","run_id":"run-4892-18dab228ceb1b351-1","operation":"task.list","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T11:14:50.169365122Z","finished_at":"2026-10-02T11:14:50.170483219Z","duration_ms":1,"execution":{"status":"succeeded","child_exit_code":null,"signal":null},"effect_outcome":"not_applicable","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"This local operation only; no service health assessment","limitations":[]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"tasks":[{"availability":{"reason":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","runtime_executable":null,"status":"missing_dependency","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"file"}],"digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","effects":"observe","entrypoint":"embedded/dashboard-hygiene/wrapper.py","id":"dashboard-hygiene","input_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:dashboard-hygiene-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}},{"availability":{"reason":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","runtime_executable":null,"status":"missing_dependency","version_verified":false},"task":{"allowed_environment":["PATH","LANG","LC_ALL","TZ"],"arguments":[{"input":"input"}],"digest":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","effects":"observe","entrypoint":"embedded/error-budget/wrapper.py","id":"error-budget","input_schema":{"$ref":"urn:sre-workbench:spec:error-budget-input:0.1"},"output_schema":{"$ref":"urn:sre-workbench:spec:error-budget-data:0.1"},"platforms":["linux"],"runtime":{"kind":"python","version_requirement":">=3.11; checked inside each invocation"},"spec_version":"0.1","timeout_ms":30000,"version":1}}]},"errors":[],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-4893-18dab228ced7a102-0","run_id":"run-4893-18dab228ced7ed99-1","operation":"task.run","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T11:14:50.171876071Z","finished_at":"2026-10-02T11:14:50.172888169Z","duration_ms":1,"execution":{"status":"unsupported","child_exit_code":null,"signal":null},"effect_outcome":"not_attempted","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"Static textual model hygiene only; no rendering, query parsing, datasource resolution or live health validation","limitations":["Unknown plugin panels receive common textual rules only. PromQL heuristics require an explicit Prometheus datasource type."]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"source":{"binding_digest":"sha256:0821152ed6d43e3de75b6f3e06029998f777069191d504792ceb56d909269b48","checker_digest":"sha256:8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7"},"task":{"id":"dashboard-hygiene","version":1}},"errors":[{"code":"missing_dependency","message":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","retryable":false}],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+{"spec_version":"0.1","request_id":"request-4896-18dab228cf05c7b4-0","run_id":"run-4896-18dab228cf0607b1-1","operation":"task.run","operation_version":1,"target":{"kind":"local","id":"workstation"},"resolved_target":{},"started_at":"2026-10-02T11:14:50.17489925Z","finished_at":"2026-10-02T11:14:50.175756537Z","duration_ms":0,"execution":{"status":"unsupported","child_exit_code":null,"signal":null},"effect_outcome":"not_attempted","assessment":"not_assessed","coverage":{"state":"not_applicable","scope":"Arithmetic on supplied SLO measurements and the selected fixed example alert policy only","limitations":["Supplied measurements are not independently verified; no telemetry was collected, no alert was sent and no service health was assessed.","Thresholds are the fixed 30-day example policy; window_days does not rescale them. Crossings use decimal forms of normalized inputs; reported arithmetic is binary64.","One window cannot establish severity. A non-alert does not establish previously consumed budget or an all-clear.","Projection uses the full budget at the long-window rate under steady eligible volume; it is not remaining-budget runway."]},"output":{"stdout":"","stderr":"","stdout_truncated":false,"stderr_truncated":false,"encoding":"utf-8"},"data":{"source":{"adapter_digest":"sha256:e7938a81478ea47bb2568a2d24b303e8bc1767612ccdac9ffeb7da95df17a17f","binding_digest":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","upstream_digest":"sha256:4e55475e6b10a4a2e195b1a6f162d688b093664c06bee69cb09435f1931cf5c2","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7"},"task":{"id":"error-budget","version":1}},"errors":[{"code":"missing_dependency","message":"A native Python 3 installation is required in /usr/bin or /bin; no interpreter was started.","retryable":false}],"sources":[],"artifacts":[],"effective_limits":{"timeout_ms":30000,"max_output_bytes":1048576},"record_mode":"never"}
+7f2fb7f28abbb9d580b3d1f0554d279bdd5b40f758f61b3ff63ce164f5390f56  target/debug/save

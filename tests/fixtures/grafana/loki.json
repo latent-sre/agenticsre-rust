@@ -1,0 +1,13 @@
+{
+  "results": {
+    "A": {
+      "status": 200,
+      "frames": [
+        {
+          "schema": {"refId": "A", "fields": [{"name": "Time", "type": "time"}, {"name": "Line", "type": "string"}]},
+          "data": {"values": [[1790899200000], ["synthetic checkout request completed"]]}
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "scope": "Static HTML mockup render only; no product execution or real backend. Cached Chromium and shared libraries, read-only inputs, private network/PID/IPC/UTS/user namespaces and temporary profile. No host service or package change.",
+  "screens": [
+    {
+      "name": "workbench-dark",
+      "theme": "dark",
+      "view": "result",
+      "width": 1440,
+      "height": 1050,
+      "exit": 0,
+      "bytes": 125213
+    },
+    {
+      "name": "workbench-light",
+      "theme": "light",
+      "view": "result",
+      "width": 1440,
+      "height": 1050,
+      "exit": 0,
+      "bytes": 125055
+    },
+    {
+      "name": "history-dark",
+      "theme": "dark",
+      "view": "history",
+      "width": 1440,
+      "height": 1050,
+      "exit": 0,
+      "bytes": 110256
+    },
+    {
+      "name": "empty-light",
+      "theme": "light",
+      "view": "empty",
+      "width": 1440,
+      "height": 1050,
+      "exit": 0,
+      "bytes": 82390
+    },
+    {
+      "name": "unavailable-dark",
+      "theme": "dark",
+      "view": "unavailable",
+      "width": 1440,
+      "height": 1050,
+      "exit": 0,
+      "bytes": 95152
+    },
+    {
+      "name": "mobile-dark",
+      "theme": "dark",
+      "view": "result",
+      "width": 390,
+      "height": 1200,
+      "exit": 0,
+      "bytes": 72735
+    }
+  ]
+}
