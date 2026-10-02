@@ -4,9 +4,12 @@
 latent-sre/agenticsre-rust as the working repository. Scope and dependencies live in the
 [planning package](sre-workbench/README.md); this file owns current execution status.
 
-**Paused by the owner:** On 2026-10-02 the owner requested committing the current work and pausing.
-The MCP increment is an unfinished checkpoint, not an accepted release. Resume from the outstanding
-review finding and verification prerequisites below; do not start the queued packaging work yet.
+**Paused at the owner's next-break request:** Work resumed after commit `ad85dc7` and resolved the
+remaining MCP product review finding. Correctness/security reviews approve R2; native acceptance
+is incomplete because the raw command client's parity comparator includes a per-invocation source
+timestamp. The current run and cleanup are finished; preserve its evidence and fix that comparator
+when the owner resumes. Packaging has not started. The owner subsequently authorized committing
+and pushing this paused checkpoint; implementation remains paused and no integration is installed.
 
 ## WORKBENCH-001 — bootstrap the product
 
@@ -182,7 +185,8 @@ native Windows, live targets and publication retain their separate prerequisites
 
 ## WORKBENCH-005 — bounded stdio MCP parity
 
-**Status:** Paused at the owner's requested commit checkpoint after the R1 review. The earlier
+**Status:** Paused after the R2b native verification checkpoint. Product reviews approve R2 and
+the R2b test/tooling delta; command-client acceptance remains incomplete as recorded below. The earlier
 owner-prioritized GUI and checkpoint `93fc339` remain accepted within their recorded scope.
 The [implementation boundary](mcp.md) now specifies both tested protocol revisions, immutable
 root/target/configuration authority, one owned worker and bounded pipe transport. A source-backed
@@ -216,7 +220,7 @@ successful inspection and execution under its existing root-owned fixture image.
 client passed eight admission checks / nine schema-valid receipts, explicitly reporting successful
 inspection unavailable and native execution skipped. All adapter and public-client source is frozen
 for candidate capture; native command checks, reviews and independent executable gates remain pending.
-Review/fix rounds: 1 completed; R1 re-review returned one P1 and the second fix round has not started.
+Product review/fix rounds: 2 completed, with all source findings resolved in R2.
 Incomplete builder returns: 0.
 **Frozen candidate:** R0 snapshot `fa41391a36306a0c531f85251e5b8000277982c8`, tree
 `10d77c58fcde66388621555229799c51dd26f998`, 273 files, under
@@ -262,7 +266,7 @@ with its own recorded data-only driver and reuse the cached pinned image, execut
 container lane without running repository shell scripts on Adama or pulling an image. Runtime
 and cleanup bounds remain unchanged. Security re-audit of the two changed runtime files is queued
 after another agent-thread-limit rejection; R0 security coverage does not automatically cover R1.
-**Resume boundary:** R1 correctness verdict is REQUEST CHANGES. The three original mechanisms were
+**Earlier R1 pause boundary (superseded below):** R1 correctness verdict was REQUEST CHANGES. The three original mechanisms were
 addressed, but malformed frames such as `[]` still enqueue errors before the uncertainty-admission
 guard. A client draining output while supplying such frames can keep extending shutdown after
 cleanup is unconfirmed. Close admission before any error-producing branch, or stop reading during
@@ -273,9 +277,69 @@ does not include `cargo-clippy` for Rust 1.98.0. The added MCP lane therefore ca
 No MCP build or native suite ran on Cally. Resolve the lint environment without changing host
 packages or weakening runtime checks, then execute the frozen corrected candidate. Evidence is in
 `/tmp/agenticsre-mcp-r1-verifier-2pz2lsuu`. R1 security re-audit and independent executable acceptance
-remain open. All further implementation and verification is paused at the owner's request.
+remained open. Work paused at that checkpoint at the owner's request, before the later resume below.
 The verifier confirmed exact-name removal of its prerequisite container; no verifier job, disposable
 container or derived image remains. The cached base and retained evidence were preserved.
+**Current resume work:** The builder owns a failing regression and correction for the remaining
+malformed-input shutdown bypass. The Cally prerequisite is resolved by restoring the already
+documented check split: formatting/Clippy run in the private local sandbox with the installed pinned
+toolchain, while Cally runs native/runtime acceptance. The accidental Cally-only Clippy invocation
+is removed; fresh local lint remains mandatory for the corrected source. No component installation,
+container boundary change or skipped lint result is substituted for that gate.
+R2 reproduced five failing regression cases before correction, including a real pipe drain that
+emitted extra responses beyond the original uncertainty receipt. The corrected terminal route
+handles closed admission before ordinary error responses and latches an absolute drain deadline.
+All 25 MCP crate tests now pass, including malformed JSON, non-object input, invalid IDs/envelopes,
+matching cancellation, exact original output and paced input during partial delivery. Evidence:
+`/tmp/agenticsre-mcp-r2-terminal-red.log` and `/tmp/agenticsre-mcp-r2-terminal-green.log`.
+R2 affected CLI/crate checks passed 33 tests with one native proof ignored. Workspace Clippy passed
+inside the private local sandbox for all targets/features with warnings denied, and formatting
+passed. Coordinator raw-client checks passed 23 groups; the full HTTPS client passed 23 checks /
+15 schema-valid receipts. Logs are `/tmp/agenticsre-mcp-r2-focused.log`,
+`/tmp/agenticsre-mcp-r2-clippy-green.log`, `/tmp/agenticsre-mcp-r2-public.log` and
+`/tmp/agenticsre-mcp-r2-grafana.log`. The binary is retained as `target/mcp-evidence/save-r2`, SHA-256
+`b74516725a023fb1451b28afc5d321cf6f16b8d846481a03018a69f91af744b0`. Disposable Cargo output was
+cleared after these checks to restore the Cally staging floor. Final re-review and independent
+native execution remain pending; no acceptance claim follows from the local counts alone.
+R2 correctness re-review and scoped security re-audit both APPROVED the exact frozen source, with
+zero unresolved findings. Independent Cally execution then passed 140 workspace tests (19 native
+tests ignored there), 19 native CLI profile tests, 10 core profile tests, 51 public profile receipts
+and 96 Grafana cases. It stopped at the new native MCP test: the fixture omitted required `-e`
+before its ripgrep pattern and correctly received `read_command_denied`. This is a test-contract
+error; the profile grammar is unchanged. The fixture now uses the documented explicit-pattern form.
+The helper also runs this feature-enabled Rust test before restoring the ordinary CLI build, so
+later public MCP clients and the recorded binary digest refer to the normal product build.
+These are test/tooling corrections; R2 product bytes remain unchanged. Retain the passed native
+baseline and rerun the corrected MCP target plus the three pending public MCP clients. Evidence:
+`/tmp/agenticsre-mcp-r2-cally-ddehfp91/cally.log`; original run and exact cleanup both completed.
+Test correction rounds: 1; product review/fix rounds remain 2, with source findings resolved.
+**Latest pause checkpoint — R2b:** Frozen snapshot `/tmp/agenticsre-mcp-r2b-snapshot-xfy0xf51`,
+commit `55ba7961421ed8c8e481e8730807595deaf22771`, tree
+`8b672fb6ee63f23991529812b9e2913ef27005e0`. The 273-file manifest
+`/tmp/agenticsre-mcp-r2b-snapshot.json` has SHA-256
+`696f8cb999951b2bb79ed4498b0b636c4b963b79cd3d3b49d02a8c62c89ec7b2`.
+Independent comparison confirmed that all product bytes match approved R2; only the native test,
+Cally helper and roadmap changed. The bounded delta review APPROVED with no findings. Fresh
+workspace/all-target/all-feature Clippy passed in `/tmp/agenticsre-mcp-r2b-clippy.log`.
+Independent Cally execution passed all nine native MCP tests and all 23 raw protocol groups.
+The raw command client then stopped at `tools/verify-mcp-commands.py:494`: its semantic comparator
+removes invocation times and PIDs but retains `sources[0].observed_at`. The captured Git MCP and CLI
+receipts differ only in that observation timestamp after the existing exclusions. This is an
+acceptance-client defect, with no product divergence established. No correction or retry was made
+before the owner's requested break. Five command-client groups passed; the remaining command
+checks, all six native lifecycle cases and the independent raw HTTPS MCP client remain pending.
+The final in-container residue check reported no surviving product processes. Container, derived
+image and disposable staging cleanup are confirmed; evidence is retained under
+`/tmp/agenticsre-mcp-r2-cally-aahi7evy`. Retain earlier passing R2/R2b evidence at resume.
+All nine exported command receipts passed the frozen canonical schemas. The independent packet
+`/tmp/agenticsre-mcp-r2-cally-aahi7evy/VERIFICATION.md` has SHA-256
+`63075e66b9cee630d5e42d92cd9d7fc005b23240e6815bdc6312ad742f0aafd2`; its overall required-lane
+verdict remains FAIL due to the comparator defect. `parity-comparison.json` preserves the exact
+receipt-pair comparison. No run-owned job or process remains.
+**Next authorized work on resume:** Correct only the comparator's volatile source timestamp
+handling, check it against the captured receipt pair, then freeze and independently run the pending
+command/HTTPS clients. Keep complete receipt schemas and all semantic fields checked. Do not
+restart already passed suites without a material reason. Finish MCP acceptance before packaging.
 **Outcome:** Launcher-granted discovery and equivalent core receipts for restricted commands,
 the numerical task and explicit Grafana fixture targets, with bounded framing and cancellation.
 **Gates:** Declare tested protocol versions; freeze and independently review/verify the adapter
@@ -342,10 +406,16 @@ Existing live/publishing/host-change authority is unchanged.
 of WP-05 before adding further execution surfaces. This does not close native Windows acceptance.
 **Outcome:** A reproducible development bundle with exact binary/source identities, documented
 runtime prerequisites, and a versioned disposable installation that can be upgraded and rolled back.
-**Scope:** Initial CAP-25 packaging/diagnostics and AC-34 through AC-36. Build from the accepted
+**Scope:** Initial CAP-25 packaging/diagnostics and the Linux portions of AC-34/AC-35. AC-36 remains
+the separate five-task human/agent pilot and cannot be closed by packaging. Build from the accepted
 source; exercise install, missing dependencies, upgrade and rollback inside the existing isolated
 test environments. Use explicit local paths, no host package manager, service registration, global
 PATH edits or production configuration. Preserve the embedded browser and stdio interfaces.
 **Gates:** Verify the packaged mission transactions and executable trust/modes after installation;
 bind evidence to the actual artifact and tested Linux environment. Publication, live installation,
 actual MCP-host registration and Windows runtime evidence remain separate acceptance requirements.
+**Read-only preparation:** No implementation has begun. A portable archive with a source-qualified
+artifact ID, manifest/checksums, license/notices, compatibility/dependency notes and explicit
+versioned paths can use the existing offline doctor and embedded task/UI/MCP interfaces without
+core changes. Rehearsal must use two distinguishable artifacts, reject corruption before activation,
+preserve synthetic external config/evidence, and rerun the packaged mission after rollback.

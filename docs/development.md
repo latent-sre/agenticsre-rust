@@ -131,7 +131,7 @@ tests without credentials or network access, with a private PID namespace:
 
 ```bash
 cargo fmt --all -- --check
-cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+tools/test-sandbox.sh cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings
 tools/test-sandbox.sh
 tools/test-sandbox.sh .venv/bin/python -B tools/verify-poc.py target/debug/save
 tools/test-sandbox.sh .venv/bin/python -B tools/verify-tasks.py target/debug/save
@@ -180,7 +180,10 @@ that snapshot, not subsequent edits. The helper uses `/home/hawkfire/.ssh/husker
 value is read or copied into tests.
 
 Cally selects its installed 1.98.0 toolchain explicitly; clippy/rustfmt checks run locally. The
-container cannot download missing components. The `minimal` lane retains the original PoC image
+container cannot download missing components. This also applies to `tools/cally-profile-check.sh mcp`:
+retain a passing local sandbox Clippy result for the same source candidate alongside the Cally
+runtime results. A Cally pass alone does not establish the separate lint gate. The `minimal` lane
+retains the original PoC image
 `docker.io/library/rust@sha256:af0579d28b9a7ec5251aaafcb0c0a23dcde5c97065112aae0cc3abeda42d5394`
 without Python. It builds the CLI and checks that task discovery/invocation explicitly reports the
 missing dependency for both tasks. It also runs the Grafana Rust HTTPS test target without Python.

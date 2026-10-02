@@ -63,6 +63,22 @@ struct Server {
     active: Option<Active>,
     legacy: Legacy,
     cleanup_unconfirmed: bool,
+    drain_deadline: Option<Instant>,
+}
+
+fn cancellation_id(params: &Value) -> Option<Id> {
+    let fields = params.as_object()?;
+    if fields
+        .keys()
+        .any(|key| !matches!(key.as_str(), "requestId" | "reason" | "_meta"))
+        || params
+            .get("reason")
+            .is_some_and(|reason| !reason.is_string())
+        || params.get("_meta").is_some_and(|meta| !meta.is_object())
+    {
+        return None;
+    }
+    Id::parse(&params["requestId"])
 }
 
 fn finish_work(
@@ -131,6 +147,7 @@ pub(crate) fn serve(options: Options) -> u8 {
             active: None,
             legacy: Legacy::New,
             cleanup_unconfirmed: false,
+            drain_deadline: None,
         };
         let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
             server.run(input, output, &signal)
@@ -156,6 +173,11 @@ pub(crate) fn serve(options: Options) -> u8 {
 }
 
 impl Server {
+    fn mark_cleanup_unconfirmed(&mut self) {
+        self.cleanup_unconfirmed = true;
+        self.drain_deadline
+            .get_or_insert_with(|| Instant::now() + OUTPUT_TIMEOUT);
+    }
     fn capacity(&self, extra: usize) -> bool {
         self.queue.len() + usize::from(self.active.is_some()) < MAX_SLOTS
             && self.queue.iter().map(|f| f.bytes.len()).sum::<usize>()
@@ -207,13 +229,15 @@ impl Server {
         let active = self.active.take().expect("finished active worker");
         let outcome = active.thread.join();
         if !matches!(outcome, Ok(Ok(_))) {
-            self.cleanup_unconfirmed = true;
+            self.mark_cleanup_unconfirmed();
             active.control.signal.store(15, Ordering::Relaxed);
             io::diagnostic(b"{\"event\":\"mcp_worker_failure\",\"cleanup\":\"unconfirmed\"}\n");
             return Err(());
         }
         let outcome = outcome.map_err(|_| ())??;
-        self.cleanup_unconfirmed |= !outcome.cleanup_confirmed;
+        if !outcome.cleanup_confirmed {
+            self.mark_cleanup_unconfirmed();
+        }
         if !active.cancelled {
             self.enqueue(Some(active.id), outcome.bytes, false)?;
         }
@@ -242,6 +266,25 @@ impl Server {
             && !self.cleanup_unconfirmed
     }
     fn frame(&mut self, bytes: &[u8], output_fd: i32) -> Result<(), ()> {
+        // The terminal drain has no request/error path. Only a valid cancellation can retract
+        // queued output; malformed input cannot append replies, advance initialization or renew
+        // its fixed deadline. Keep this branch before normal parsing and envelope errors.
+        if self.cleanup_unconfirmed {
+            if let Ok(value) = workbench_core::request::parse_bounded_json(bytes, 24)
+                && value["jsonrpc"] == "2.0"
+                && value["method"] == "notifications/cancelled"
+                && value.get("id").is_none()
+                && value.as_object().is_some_and(|object| {
+                    object
+                        .keys()
+                        .all(|key| matches!(key.as_str(), "jsonrpc" | "method" | "params"))
+                })
+                && let Some(id) = cancellation_id(&value["params"])
+            {
+                self.cancel(&id)?;
+            }
+            return Ok(());
+        }
         let value = match workbench_core::request::parse_bounded_json(bytes, 24) {
             Ok(value) => value,
             Err(_) => {
@@ -282,15 +325,8 @@ impl Server {
             if !params.is_object() || params.get("_meta").is_some_and(|meta| !meta.is_object()) {
                 return Ok(());
             }
-            if method == "notifications/cancelled"
-                && params.is_object()
-                && params.as_object().is_some_and(|p| {
-                    p.keys()
-                        .all(|k| matches!(k.as_str(), "requestId" | "reason" | "_meta"))
-                })
-                && params.get("reason").is_none_or(Value::is_string)
-            {
-                if let Some(id) = Id::parse(&params["requestId"]) {
+            if method == "notifications/cancelled" {
+                if let Some(id) = cancellation_id(&params) {
                     self.cancel(&id)?;
                 }
             } else if method == "notifications/initialized"
@@ -302,9 +338,6 @@ impl Server {
                 self.legacy = Legacy::Ready;
             }
             return Ok(());
-        }
-        if self.cleanup_unconfirmed {
-            return Err(());
         }
         let id = id.expect("request id");
         if !self.capacity(0) {
@@ -512,7 +545,12 @@ impl Server {
         let mut chunk = [0u8; IO_SLICE];
         let mut saturated_since = None;
         loop {
-            if self.cleanup_unconfirmed && self.queue.is_empty() {
+            if self.cleanup_unconfirmed
+                && (self.queue.is_empty()
+                    || self
+                        .drain_deadline
+                        .is_some_and(|deadline| Instant::now() >= deadline))
+            {
                 return 1;
             }
             if signal.load(Ordering::Relaxed) != 0 {
@@ -623,6 +661,7 @@ mod tests {
             active: None,
             legacy: Legacy::Ready,
             cleanup_unconfirmed: false,
+            drain_deadline: None,
         }
     }
     fn task(id: i64) -> Vec<u8> {
@@ -746,6 +785,9 @@ mod tests {
         assert_eq!(signal.load(Ordering::Relaxed), 15);
     }
     fn unconfirmed_worker(cancelled: bool) -> Active {
+        unconfirmed_worker_with_output(cancelled, 0)
+    }
+    fn unconfirmed_worker_with_output(cancelled: bool, output_bytes: usize) -> Active {
         let mut receipt = workbench_core::result::OperationResult::new(
             &workbench_core::request::Request::new("task.run", json!({})),
         );
@@ -755,6 +797,7 @@ mod tests {
             "Synthetic core receipt with unconfirmed owned cleanup.",
         );
         receipt.data = json!({"supervisor":{"cleanup":{"confirmed":false}}});
+        receipt.output.stdout = "x".repeat(output_bytes);
         let thread = std::thread::spawn(move || finish_work(&Id::Number(42), true, &receipt));
         let deadline = Instant::now() + Duration::from_secs(1);
         while !thread.is_finished() {
@@ -778,12 +821,15 @@ mod tests {
             response["result"]["structuredContent"]["errors"][0]["code"],
             "cleanup_unconfirmed"
         );
-        assert!(
-            server
-                .frame(br#"{"jsonrpc":"2.0","id":2,"method":"ping"}"#, 1)
-                .is_err(),
+        server
+            .frame(br#"{"jsonrpc":"2.0","id":2,"method":"ping"}"#, 1)
+            .unwrap();
+        assert_eq!(
+            server.queue.len(),
+            1,
             "unconfirmed cleanup must close admission"
         );
+        assert!(server.active.is_none());
         assert!(
             !server.cleanup(0),
             "normal completion is not cleanup confirmation"
@@ -856,10 +902,9 @@ mod tests {
         fn pipe() -> (File, File) {
             let mut fds = [0; 2];
             // SAFETY: two initialized slots receive new pipe descriptors owned by this test.
-            assert_eq!(
-                unsafe { libc::pipe2(fds.as_mut_ptr(), libc::O_CLOEXEC | libc::O_NONBLOCK) },
-                0
-            );
+            let created =
+                unsafe { libc::pipe2(fds.as_mut_ptr(), libc::O_CLOEXEC | libc::O_NONBLOCK) };
+            assert_eq!(created, 0);
             // SAFETY: successful pipe2 returned two new descriptors, each transferred exactly once.
             unsafe { (File::from_raw_fd(fds[0]), File::from_raw_fd(fds[1])) }
         }
@@ -886,5 +931,210 @@ mod tests {
                 );
             }
         }
+    }
+    fn assert_terminal_input_cannot_extend_queue(bytes: &[u8]) {
+        let mut server = server();
+        server.active = Some(unconfirmed_worker(false));
+        server.complete().unwrap();
+        let original = server.queue[0].bytes.clone();
+        let original_deadline = server.queue[0].deadline;
+        let original_drain_deadline = server.drain_deadline;
+        let _ = server.frame(bytes, 1);
+        assert_eq!(
+            server.queue.len(),
+            1,
+            "terminal input must not append a response"
+        );
+        assert_eq!(server.queue[0].bytes, original);
+        assert_eq!(server.queue[0].deadline, original_deadline);
+        assert_eq!(server.drain_deadline, original_drain_deadline);
+        assert!(server.active.is_none());
+        assert!(server.cleanup_unconfirmed);
+    }
+    #[test]
+    fn terminal_drain_ignores_malformed_json() {
+        assert_terminal_input_cannot_extend_queue(b"{");
+    }
+    #[test]
+    fn terminal_drain_ignores_non_object_json() {
+        assert_terminal_input_cannot_extend_queue(b"[]");
+    }
+    #[test]
+    fn terminal_drain_ignores_invalid_ids() {
+        assert_terminal_input_cannot_extend_queue(
+            br#"{"jsonrpc":"2.0","id":false,"method":"ping"}"#,
+        );
+    }
+    #[test]
+    fn terminal_drain_ignores_invalid_envelopes() {
+        assert_terminal_input_cannot_extend_queue(br#"{"jsonrpc":"wrong","id":2,"method":"ping"}"#);
+    }
+    #[test]
+    fn terminal_drain_paced_malformed_input_cannot_append_to_real_pipe_output() {
+        use std::os::fd::FromRawFd;
+        fn pipe() -> (File, File) {
+            let mut fds = [0; 2];
+            // SAFETY: pipe2 writes two new owned descriptors into the supplied array.
+            let created =
+                unsafe { libc::pipe2(fds.as_mut_ptr(), libc::O_CLOEXEC | libc::O_NONBLOCK) };
+            assert_eq!(created, 0);
+            // SAFETY: both successfully-created descriptors are transferred exactly once.
+            unsafe { (File::from_raw_fd(fds[0]), File::from_raw_fd(fds[1])) }
+        }
+        let (input, mut input_writer) = pipe();
+        let (mut output_reader, output) = pipe();
+        let mut server = server();
+        server.active = Some(unconfirmed_worker_with_output(false, 128 * 1024));
+        server.complete().unwrap();
+        let expected = server.queue[0].bytes.clone();
+        let signal = Arc::new(AtomicUsize::new(0));
+        let thread_signal = signal.clone();
+        let malformed: [&[u8]; 4] = [
+            b"{\n",
+            b"[]\n",
+            b"{\"jsonrpc\":\"2.0\",\"id\":false,\"method\":\"ping\"}\n",
+            b"{\"jsonrpc\":\"wrong\",\"id\":2,\"method\":\"ping\"}\n",
+        ];
+        input_writer.write_all(malformed[0]).unwrap();
+        let worker = std::thread::spawn(move || {
+            let status = server.run(input, output, &thread_signal);
+            (status, server.cleanup(0))
+        });
+        let deadline = Instant::now() + Duration::from_secs(3);
+        let mut received = Vec::new();
+        let mut chunk = [0; 4096];
+        let mut next_input = 1;
+        let mut output_closed = false;
+        while Instant::now() < deadline {
+            match output_reader.read(&mut chunk) {
+                Ok(0) => {
+                    output_closed = true;
+                    break;
+                }
+                Ok(count) => {
+                    received.extend_from_slice(&chunk[..count]);
+                    if next_input < malformed.len() {
+                        let _ = input_writer.write_all(malformed[next_input]);
+                        next_input += 1;
+                    }
+                }
+                Err(error) if error.kind() == std::io::ErrorKind::WouldBlock => {}
+                Err(error) => panic!("owned test pipe read: {error}"),
+            }
+            // Pace actual pipe drainage so all malformed classes arrive before the original
+            // receipt finishes; this is real nonblocking I/O rather than a simulated timer.
+            std::thread::sleep(Duration::from_millis(5));
+        }
+        signal.store(15, Ordering::Relaxed);
+        drop(input_writer);
+        let (status, clean) = worker.join().unwrap();
+        assert!(
+            output_closed,
+            "terminal drain did not stop after its original response"
+        );
+        assert_eq!(
+            next_input,
+            malformed.len(),
+            "all paced inputs must reach the active drain"
+        );
+        assert_eq!(status, 1);
+        assert!(!clean);
+        assert_eq!(
+            received.len(),
+            expected.len(),
+            "terminal input must neither append responses nor truncate the original receipt"
+        );
+        assert!(
+            received == expected,
+            "the original honest receipt must remain unchanged"
+        );
+    }
+    #[test]
+    fn terminal_drain_ignores_work_and_preserves_only_valid_matching_cancellation() {
+        assert_terminal_input_cannot_extend_queue(&task(2));
+        for input in [
+            br#"{"jsonrpc":"2.0","method":"notifications/cancelled","params":{"requestId":42,"_meta":false}}"#.as_slice(),
+            br#"{"jsonrpc":"2.0","method":"notifications/cancelled","params":{"requestId":42,"reason":false}}"#.as_slice(),
+            br#"{"jsonrpc":"2.0","method":"notifications/cancelled","params":{"requestId":42,"requestId":1}}"#.as_slice(),
+            br#"{"jsonrpc":"2.0","method":"notifications/cancelled","params":{"requestId":1}}"#.as_slice(),
+            br#"{"jsonrpc":"2.0","method":"notifications/initialized"}"#.as_slice(),
+        ] {assert_terminal_input_cannot_extend_queue(input);}
+        for written in [0, 1] {
+            let mut server = server();
+            server.active = Some(unconfirmed_worker(false));
+            server.complete().unwrap();
+            let deadline = server.drain_deadline;
+            server.queue[0].written = written;
+            let result=server.frame(br#"{"jsonrpc":"2.0","method":"notifications/cancelled","params":{"requestId":42}}"#,1);
+            if written == 0 {
+                assert!(result.is_ok());
+                assert!(server.queue.is_empty());
+            } else {
+                assert!(
+                    result.is_err(),
+                    "partial frame cancellation must close the transport"
+                );
+            }
+            assert_eq!(server.drain_deadline, deadline);
+            assert!(!server.cleanup(0));
+        }
+    }
+    #[test]
+    fn terminal_drain_deadline_is_absolute_under_paced_malformed_input() {
+        use std::os::fd::FromRawFd;
+        use std::sync::atomic::AtomicBool;
+        fn pipe() -> (File, File) {
+            let mut fds = [0; 2];
+            // SAFETY: pipe2 fills two valid descriptor slots; no preexisting descriptor is reused.
+            let created =
+                unsafe { libc::pipe2(fds.as_mut_ptr(), libc::O_CLOEXEC | libc::O_NONBLOCK) };
+            assert_eq!(created, 0);
+            // SAFETY: these new descriptors each become exactly one owned File.
+            unsafe { (File::from_raw_fd(fds[0]), File::from_raw_fd(fds[1])) }
+        }
+        let (input, mut input_writer) = pipe();
+        let (mut output_reader, output) = pipe();
+        let mut server = server();
+        server.active = Some(unconfirmed_worker_with_output(false, 128 * 1024));
+        server.complete().unwrap();
+        let original = server.queue[0].bytes.clone();
+        // Shorten only this private test deadline. Production remains five seconds, and the
+        // original frame still has its later five-second delivery deadline.
+        let start = Instant::now();
+        server.drain_deadline = Some(start + Duration::from_millis(150));
+        let finished = Arc::new(AtomicBool::new(false));
+        let feeding_finished = finished.clone();
+        let feeder = std::thread::spawn(move || {
+            while !feeding_finished.load(Ordering::Relaxed) {
+                if input_writer.write_all(b"[]\n").is_err() {
+                    break;
+                }
+                std::thread::sleep(Duration::from_millis(5));
+            }
+        });
+        let status = server.run(input, output, &AtomicUsize::new(0));
+        let elapsed = start.elapsed();
+        finished.store(true, Ordering::Relaxed);
+        feeder.join().unwrap();
+        let mut received = Vec::new();
+        output_reader.read_to_end(&mut received).unwrap();
+        assert_eq!(status, 1);
+        assert!(!server.cleanup(0));
+        assert!(
+            elapsed >= Duration::from_millis(100),
+            "must exercise the fixed deadline, not an input/queue refusal"
+        );
+        assert!(
+            elapsed < Duration::from_secs(1),
+            "paced input must not renew the terminal deadline"
+        );
+        assert!(
+            !received.is_empty() && received.len() < original.len(),
+            "deadline must interrupt actual partial delivery"
+        );
+        assert!(
+            original.starts_with(&received),
+            "only original receipt bytes may be written during terminal drain"
+        );
     }
 }

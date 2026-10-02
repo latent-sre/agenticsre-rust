@@ -343,7 +343,7 @@ fn native_restricted_commands_preserve_receipts_and_pinned_policy() {
         (
             "workbench_command_run",
             "rg",
-            vec!["--fixed-strings", "--", "synthetic", "fixture.txt"],
+            vec!["--fixed-strings", "-e", "synthetic", "--", "fixture.txt"],
         ),
     ]
     .into_iter()

@@ -172,9 +172,7 @@ cat .profile-runtime/provenance.json
 .profile-runtime/bwrap --version
 .profile-runtime/rg --version
 /usr/bin/git --version
-if [ \"\$WORKBENCH_CALLY_MODE\" = mcp ]; then
-    cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings
-fi
+# Formatting and Clippy are separate local sandbox gates; this pinned runtime image omits them.
 if [ \"\$WORKBENCH_CALLY_MODE\" != gui-focused ]; then
 cargo test --workspace --all-targets --all-features --locked --offline
 cargo test -p workbench-cli --test read_profile --all-features --locked --offline -- --include-ignored
@@ -185,6 +183,10 @@ fi
 if [ \"\$WORKBENCH_CALLY_MODE\" = gui ] || [ \"\$WORKBENCH_CALLY_MODE\" = gui-focused ]; then
     cargo test -p workbench-cli --test ui --locked --offline -- --include-ignored
 fi
+if [ \"\$WORKBENCH_CALLY_MODE\" = mcp ]; then
+    cargo test -p workbench-cli --test mcp --all-features --locked --offline -- --include-ignored
+fi
+# Restore the ordinary operator build after all feature-enabled Rust tests.
 cargo build -p workbench-cli --locked --offline
 if [ \"\$WORKBENCH_CALLY_MODE\" != gui-focused ]; then
 /usr/bin/python3 -B tools/verify-read-profile.py target/debug/save --git /usr/bin/git --rg /opt/workbench-source/.profile-runtime/rg --bwrap /opt/workbench-source/.profile-runtime/bwrap --no-schema --json-results
@@ -193,7 +195,6 @@ target/debug/save --json exec --cwd /opt/workbench-source -- /usr/bin/printf \"%
 fi
 sha256sum target/debug/save
 if [ \"\$WORKBENCH_CALLY_MODE\" = mcp ]; then
-    cargo test -p workbench-cli --test mcp --all-features --locked --offline -- --include-ignored
     /usr/bin/python3 -B tools/verify-mcp.py target/debug/save --no-schema
     /usr/bin/python3 -B tools/verify-mcp-commands.py target/debug/save --git /usr/bin/git --rg /opt/workbench-source/.profile-runtime/rg --bwrap /opt/workbench-source/.profile-runtime/bwrap --no-schema --json-results
     /usr/bin/python3 -B tools/verify-mcp-grafana.py target/debug/save --no-schema --json-results
