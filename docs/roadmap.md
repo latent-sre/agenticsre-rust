@@ -4,6 +4,10 @@
 latent-sre/agenticsre-rust as the working repository. Scope and dependencies live in the
 [planning package](sre-workbench/README.md); this file owns current execution status.
 
+**Paused by the owner:** On 2026-10-02 the owner requested committing the current work and pausing.
+The MCP increment is an unfinished checkpoint, not an accepted release. Resume from the outstanding
+review finding and verification prerequisites below; do not start the queued packaging work yet.
+
 ## WORKBENCH-001 — bootstrap the product
 
 **Status:** Local PoC complete and independently verified. Broader product implementation continues.
@@ -32,7 +36,7 @@ integration does not imply it is installed, authorized, connected or operational
 | Specification baseline | Grafana snapshot passed 20 schemas, 21 positive and 9 negative fixtures, all IDs; Python 3.14.7 and dependencies pinned | Validate changed documentation at integration boundary |
 | Cally assistance | Grafana snapshot passed 68 Rust tests and 96 HTTPS cases; minimal lane passed 17 native HTTPS tests without Python and refused both Python tasks. Both containers removed | Reuse bounded lanes for material changes; [acceptance record](grafana-verification.md) |
 | Adapter baseline | Dashboard, error-budget and native Grafana fixture adapters accepted; provenance retained in [adapter notes](adapter-notes.md) | Restricted-command evidence and local browser interface; MCP deferred |
-| Hosted CI | First implementation push `93fc339` passed formatting/lint, then six read-profile fixtures failed while resolving required tool paths before product dispatch | Add explicit Git/ripgrep/Bubblewrap prerequisites and bounded build settings; verify a fresh hosted run |
+| Hosted CI | Completed checkpoint `93fc339` and prerequisite repair `7b6aed1` pushed to main; [Rust PoC](https://github.com/latent-sre/agenticsre-rust/actions/runs/37041979990) and [specifications](https://github.com/latent-sre/agenticsre-rust/actions/runs/37041980033) both passed on the repair commit | Preserve native/Cally acceptance separately; MCP remains local pending its own gates |
 
 Execution authority: local source changes, disposable checks and bounded Cally build assistance
 are authorized. On 2026-10-02 the owner explicitly requested committing and pushing the completed
@@ -178,12 +182,100 @@ native Windows, live targets and publication retain their separate prerequisites
 
 ## WORKBENCH-005 — bounded stdio MCP parity
 
-**Status:** Deferred behind the standalone GUI by the owner's explicit choice on 2026-10-02.
-The [implementation boundary](mcp.md) is prepared. Official references and the published 3.5.0
+**Status:** Paused at the owner's requested commit checkpoint after the R1 review. The earlier
+owner-prioritized GUI and checkpoint `93fc339` remain accepted within their recorded scope.
+The [implementation boundary](mcp.md) now specifies both tested protocol revisions, immutable
+root/target/configuration authority, one owned worker and bounded pipe transport. A source-backed
+design review selected pinned SDK models with an application-owned loop; the SDK service loop's
+detached tasks would otherwise require a second lifetime model. Credential-free Grafana discovery
+and actual-load configuration/CA identity checks are implemented while preserving existing wrappers:
+101 affected core/CLI checks passed, with 18 existing native tests explicitly ignored, plus focused
+Clippy. Guard-removal controls failed at the expected config/CA identity assertions and were restored
+before regression checks. Official references and the published 3.5.0
 checksum were checked; bounded read-only SDK inspection is retained under
 `/tmp/agenticsre-rmcp-source-rz_317ls`. It supports current and legacy revisions, but its default
-framing/dispatch do not establish the required application bounds. No SDK execution, repository
-dependency, MCP registration or live connection was created.
+framing/dispatch do not establish the required application bounds. No MCP registration or live
+connection has been created. Minimal exact `rmcp=3.5.0` model-only dependency resolution added 15
+external packages without upgrading existing ones; ten Linux archives totalled 1,397,027 bytes.
+The first adapter walking skeleton passed three real stdio tests for modern/legacy numerical calls,
+discovery and startup refusal; later lifecycle additions remain under test. Independent raw-client
+checks found unknown methods with parameters incorrectly returning invalid-parameters instead of
+method-not-found; the builder corrected routing, pending fresh execution. Disposable Cargo output
+was cleared after preserving the walking-skeleton binary and all accepted evidence, recovering
+approximately 1.25 GiB. The corrected adapter passed 20 focused Rust tests (one native proof ignored)
+and 23 independently authored raw-client groups with schema validation. The real HTTPS MCP fixture
+client passed 18 checks / 11 schema-valid receipts, including both protocol eras, CLI parity,
+identity pinning, busy/discovery responsiveness, cancellation without a final reply and connection
+closure on EOF/stdout loss/signals. These are coordinator/builder checks, not the final independent
+verdict. Source formatting and all specification checks passed. Workspace Clippy passed after an
+adjacent unsafe-block comment correction in a test. Full workspace regressions passed 127 tests,
+with 19 native tests explicitly ignored. The bounded Cally MCP lane is added. Local command fixture
+inspection is unavailable because the existing private namespace maps trusted system bindings to
+UID/GID 65534; this refusal does not establish native command acceptance. Cally must demonstrate
+successful inspection and execution under its existing root-owned fixture image. The local command
+client passed eight admission checks / nine schema-valid receipts, explicitly reporting successful
+inspection unavailable and native execution skipped. All adapter and public-client source is frozen
+for candidate capture; native command checks, reviews and independent executable gates remain pending.
+Review/fix rounds: 1 completed; R1 re-review returned one P1 and the second fix round has not started.
+Incomplete builder returns: 0.
+**Frozen candidate:** R0 snapshot `fa41391a36306a0c531f85251e5b8000277982c8`, tree
+`10d77c58fcde66388621555229799c51dd26f998`, 273 files, under
+`/tmp/agenticsre-mcp-r0-snapshot-h1i8xg5o`; capture manifest
+`/tmp/agenticsre-mcp-r0-snapshot.json` SHA-256
+`4ba3624e00b21ed4e98f3812c709c93ab0ffd2e1f07e617a5f02cabd23bd39ac`.
+R0 correctness review requested changes: two P1 lifecycle defects and one P2 notification-validation
+defect, all independently found. The separate static security audit passed with zero validated
+security findings; this does not waive correctness findings. Independent executable verification
+was initially queued after an agent-thread-limit rejection and now waits for the corrected candidate;
+coordinator results do not replace its verdict.
+Cally preflight succeeded and found no remaining `agenticsre-` test containers. Original frozen
+source stays unchanged; final evidence will distinguish later documentation from product bytes.
+**R0 findings:** Serialized worker results discarded the core's `cleanup_unconfirmed` state, allowing
+new admission or successful EOF shutdown after uncertain cleanup. Stdout saturation had a deadline
+only after a reply was queued, allowing an active long-running operation to continue while output
+was blocked. Cancellation and initialized notifications accepted malformed scalar `_meta` values
+and changed state. The builder owns corrections and focused red/green proofs; native acceptance
+waits for these changes rather than treating the existing idle-pipe check as sufficient.
+**R1 progress:** Worker outcomes now retain cleanup confirmation, uncertain cleanup closes admission,
+active output saturation has its own five-second deadline, and notification metadata is validated
+before state changes. Four focused assertions failed on the original lifecycle behavior; 26 Rust
+checks pass after correction, with one native case ignored. Independently authored real HTTPS
+regressions also failed on retained R0 bytes: malformed metadata suppressed an active request's
+reply, and active HTTP survived blocked stdout beyond seven seconds. Both now pass on R1; the full
+raw client passes 23 groups and the expanded HTTPS client passes 23 checks / 15 schema-valid receipts.
+R1 binary SHA-256 is `5ffb248ddd3eb5d74757a8c682339cfac18ffcde3c1e73a8a05e13c2534a0a6a`,
+retained under `target/mcp-evidence/save-r1`. Old generated Cargo output was removed after retaining
+that binary and all evidence, restoring the Cally staging floor. No new host setting or isolation
+exception was used. Native process-lifetime checks and re-review remain pending.
+The native public client now defines six actual ripgrep/FIFO lifecycle cases, with a reader-open
+witness and PID/start-time/pidfd tracking before each cancellation or transport failure. These are
+source-complete but unexecuted until Cally. Offline vendoring preflight identified five remaining
+locked non-Linux dependency archives; a bounded fetch added 76,876 bytes without dependency changes,
+and the complete locked offline fetch now passes.
+**R1 frozen candidate:** `663e30c05a8172ed9a98c321d4fa948b809c5f06`, tree
+`b30d02e6e249534ecba9262d18836652acc7e899`, 273 files, under
+`/tmp/agenticsre-mcp-r1-snapshot-drqib70r`. Capture manifest
+`/tmp/agenticsre-mcp-r1-snapshot.json` SHA-256
+`a485b285d9dec0fbc2a5cd6d499fc13b06a40286b983b8c01c2fcecbf47bb88b`.
+Correctness re-review and independent native verification are assigned. The verifier will stage
+with its own recorded data-only driver and reuse the cached pinned image, executing the same MCP
+container lane without running repository shell scripts on Adama or pulling an image. Runtime
+and cleanup bounds remain unchanged. Security re-audit of the two changed runtime files is queued
+after another agent-thread-limit rejection; R0 security coverage does not automatically cover R1.
+**Resume boundary:** R1 correctness verdict is REQUEST CHANGES. The three original mechanisms were
+addressed, but malformed frames such as `[]` still enqueue errors before the uncertainty-admission
+guard. A client draining output while supplying such frames can keep extending shutdown after
+cleanup is unconfirmed. Close admission before any error-producing branch, or stop reading during
+the bounded uncertainty drain, and prove malformed traffic cannot extend that drain. This P1 is
+source-backed; its new regression and correction are not yet implemented.
+Independent Cally verification stopped at a real prerequisite check: the cached pinned Rust image
+does not include `cargo-clippy` for Rust 1.98.0. The added MCP lane therefore cannot run unchanged.
+No MCP build or native suite ran on Cally. Resolve the lint environment without changing host
+packages or weakening runtime checks, then execute the frozen corrected candidate. Evidence is in
+`/tmp/agenticsre-mcp-r1-verifier-2pz2lsuu`. R1 security re-audit and independent executable acceptance
+remain open. All further implementation and verification is paused at the owner's request.
+The verifier confirmed exact-name removal of its prerequisite container; no verifier job, disposable
+container or derived image remains. The cached base and retained evidence were preserved.
 **Outcome:** Launcher-granted discovery and equivalent core receipts for restricted commands,
 the numerical task and explicit Grafana fixture targets, with bounded framing and cancellation.
 **Gates:** Declare tested protocol versions; freeze and independently review/verify the adapter
@@ -243,3 +335,17 @@ known runner namespace-failure gap and broader platform/live-adoption work expli
 **Gates:** Passed for this GUI slice: approved visual specification, real end-to-end workflows,
 browser-render/keyboard verification, and independent correctness, security and executable gates.
 Existing live/publishing/host-change authority is unchanged.
+
+## WORKBENCH-007 — Linux development artifact and rollback
+
+**Status:** Queued after the current MCP acceptance gate; completes the outstanding Linux portion
+of WP-05 before adding further execution surfaces. This does not close native Windows acceptance.
+**Outcome:** A reproducible development bundle with exact binary/source identities, documented
+runtime prerequisites, and a versioned disposable installation that can be upgraded and rolled back.
+**Scope:** Initial CAP-25 packaging/diagnostics and AC-34 through AC-36. Build from the accepted
+source; exercise install, missing dependencies, upgrade and rollback inside the existing isolated
+test environments. Use explicit local paths, no host package manager, service registration, global
+PATH edits or production configuration. Preserve the embedded browser and stdio interfaces.
+**Gates:** Verify the packaged mission transactions and executable trust/modes after installation;
+bind evidence to the actual artifact and tested Linux environment. Publication, live installation,
+actual MCP-host registration and Windows runtime evidence remain separate acceptance requirements.

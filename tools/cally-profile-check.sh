@@ -5,8 +5,8 @@ IFS=$'\n\t'
 
 repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
 mode=${1:-profile}
-if (( $# > 1 )) || [[ "$mode" != profile && "$mode" != gui && "$mode" != gui-focused ]]; then
-    printf '%s\n' 'Usage: tools/cally-profile-check.sh [profile|gui|gui-focused]' >&2
+if (( $# > 1 )) || [[ "$mode" != profile && "$mode" != gui && "$mode" != gui-focused && "$mode" != mcp ]]; then
+    printf '%s\n' 'Usage: tools/cally-profile-check.sh [profile|gui|gui-focused|mcp]' >&2
     exit 2
 fi
 image_ref=docker.io/library/rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959
@@ -96,7 +96,7 @@ PY
     cargo vendor --locked --offline vendor > .cargo/config.toml 2> "$evidence_dir/vendor.log"
 )
 cp -- "$evidence_dir/source/.profile-runtime/provenance.json" "$evidence_dir/runtime-provenance.json"
-if [[ "$mode" != profile ]]; then
+if [[ "$mode" == gui || "$mode" == gui-focused ]]; then
     python3 "$repo_dir/tools/stage-ui-runtime.py" "$evidence_dir/source/.ui-runtime"
     cp -- "$evidence_dir/source/.ui-runtime/provenance.json" "$evidence_dir/ui-runtime-provenance.json"
 fi
@@ -172,6 +172,9 @@ cat .profile-runtime/provenance.json
 .profile-runtime/bwrap --version
 .profile-runtime/rg --version
 /usr/bin/git --version
+if [ \"\$WORKBENCH_CALLY_MODE\" = mcp ]; then
+    cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings
+fi
 if [ \"\$WORKBENCH_CALLY_MODE\" != gui-focused ]; then
 cargo test --workspace --all-targets --all-features --locked --offline
 cargo test -p workbench-cli --test read_profile --all-features --locked --offline -- --include-ignored
@@ -179,7 +182,7 @@ cargo test -p workbench-core --lib --locked --offline read_profile -- --include-
 else
     cargo test -p workbench-ui --lib --locked --offline
 fi
-if [ \"\$WORKBENCH_CALLY_MODE\" != profile ]; then
+if [ \"\$WORKBENCH_CALLY_MODE\" = gui ] || [ \"\$WORKBENCH_CALLY_MODE\" = gui-focused ]; then
     cargo test -p workbench-cli --test ui --locked --offline -- --include-ignored
 fi
 cargo build -p workbench-cli --locked --offline
@@ -189,7 +192,13 @@ if [ \"\$WORKBENCH_CALLY_MODE\" != gui-focused ]; then
 target/debug/save --json exec --cwd /opt/workbench-source -- /usr/bin/printf \"%s\\n\" \"hello workbench\"
 fi
 sha256sum target/debug/save
-if [ \"\$WORKBENCH_CALLY_MODE\" != profile ]; then
+if [ \"\$WORKBENCH_CALLY_MODE\" = mcp ]; then
+    cargo test -p workbench-cli --test mcp --all-features --locked --offline -- --include-ignored
+    /usr/bin/python3 -B tools/verify-mcp.py target/debug/save --no-schema
+    /usr/bin/python3 -B tools/verify-mcp-commands.py target/debug/save --git /usr/bin/git --rg /opt/workbench-source/.profile-runtime/rg --bwrap /opt/workbench-source/.profile-runtime/bwrap --no-schema --json-results
+    /usr/bin/python3 -B tools/verify-mcp-grafana.py target/debug/save --no-schema --json-results
+fi
+if [ \"\$WORKBENCH_CALLY_MODE\" = gui ] || [ \"\$WORKBENCH_CALLY_MODE\" = gui-focused ]; then
     export PYTHONPATH=/opt/workbench-source/.ui-runtime/site-packages
     export WORKBENCH_BROWSER_EXECUTABLE=/opt/workbench-source/.ui-runtime/browser
     export WORKBENCH_UI_OUTPUT=/tmp/ui-evidence
@@ -200,7 +209,7 @@ if [ \"\$WORKBENCH_CALLY_MODE\" != profile ]; then
     /usr/bin/python3 -B tools/ui-check-artifacts.py export /tmp/ui-evidence
     exit \"\$browser_status\"
 fi'" < /dev/null 2>&1 | tee "$evidence_dir/cally.log" || run_status=$?
-if [[ "$mode" != profile ]]; then
+if [[ "$mode" == gui || "$mode" == gui-focused ]]; then
     if python3 "$repo_dir/tools/ui-check-artifacts.py" collect "$evidence_dir/cally.log" "$evidence_dir/ui"; then
         :
     elif (( run_status == 0 )); then

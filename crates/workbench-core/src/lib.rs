@@ -1,6 +1,10 @@
 //! Shared, bounded operation semantics for the experimental `save` CLI.
 pub mod discovery;
 mod grafana;
+pub use grafana::{
+    GrafanaConfigDescription, GrafanaConfigIdentity, GrafanaTargetDescription,
+    grafana_config_description,
+};
 mod process;
 mod read_launcher;
 mod read_profile;
@@ -57,10 +61,64 @@ pub fn execute_with_policy_identity(
     context: &OperatorContext,
     expected_policy_digest: Option<&str>,
 ) -> OperationResult {
+    execute_with_identities(
+        request,
+        control,
+        context,
+        expected_policy_digest,
+        None,
+        false,
+    )
+}
+
+/// Execute under launcher-pinned authority. Commands require the policy identity and Grafana
+/// observations require the configuration identity; neither can fall back to operator authority.
+/// These identities are trusted startup inputs, never fields accepted from a wire request.
+pub fn execute_with_authority_identities(
+    request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    expected_policy_digest: Option<&str>,
+    expected_grafana_identity: Option<&GrafanaConfigIdentity>,
+) -> OperationResult {
+    execute_with_identities(
+        request,
+        control,
+        context,
+        expected_policy_digest,
+        expected_grafana_identity,
+        true,
+    )
+}
+
+fn execute_with_identities(
+    request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    expected_policy_digest: Option<&str>,
+    expected_grafana_identity: Option<&GrafanaConfigIdentity>,
+    require_identities: bool,
+) -> OperationResult {
     let start = Instant::now();
     let mut result = OperationResult::new(&request);
     if let Err(problem) = request.validate() {
         result.reject(problem);
+    } else if require_identities
+        && expected_policy_digest.is_none()
+        && matches!(
+            request.operation.as_str(),
+            "process.exec" | "command.inspect"
+        )
+    {
+        result.reject(Problem::invalid("read_policy_identity_required", "A pinned command grant requires its trusted policy identity; unpinned execution is refused."));
+    } else if require_identities
+        && expected_grafana_identity.is_none()
+        && matches!(
+            request.operation.as_str(),
+            "grafana.dashboard.get" | "grafana.query"
+        )
+    {
+        result.reject(Problem::invalid("grafana_identity_required", "A pinned Grafana grant requires its trusted configuration identity; unpinned execution is refused."));
     } else if expected_policy_digest.is_some()
         && context.read_policy_path.is_none()
         && matches!(
@@ -79,6 +137,7 @@ pub fn execute_with_policy_identity(
             control,
             context,
             expected_policy_digest,
+            expected_grafana_identity,
             start,
             &mut result,
         );
@@ -92,13 +151,19 @@ fn dispatch(
     control: &RunControl,
     context: &OperatorContext,
     expected_policy_digest: Option<&str>,
+    expected_grafana_identity: Option<&GrafanaConfigIdentity>,
     start: Instant,
     result: &mut OperationResult,
 ) {
     match request.operation.as_str() {
-        "grafana.dashboard.get" | "grafana.query" => {
-            grafana::run(request, control, context, start, result)
-        }
+        "grafana.dashboard.get" | "grafana.query" => grafana::run(
+            request,
+            control,
+            context,
+            expected_grafana_identity,
+            start,
+            result,
+        ),
         "task.run" => tasks::run(request, control, result),
         "task.describe" => tasks::describe(&request.inputs, result),
         "process.exec" | "command.inspect" if context.read_policy_path.is_some() => {

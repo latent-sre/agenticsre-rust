@@ -1,9 +1,10 @@
 use super::{Error, PROFILE};
-use crate::request::{bounded, parse_bounded_json, valid_operation};
+use crate::request::{Problem, bounded, parse_bounded_json, valid_operation};
 use base64::{Engine, engine::general_purpose::STANDARD};
 use reqwest::{Certificate, Url, header::HeaderValue};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use sha2::{Digest, Sha256};
 use std::{collections::BTreeMap, fs::OpenOptions, io::Read, path::Path};
 
 #[derive(Deserialize)]
@@ -25,6 +26,84 @@ struct Connection {
     api_profile: String,
     credential_ref: String,
     tls_ca_file: Option<String>,
+}
+
+/// Credential-free startup description. Unsupported profile names are not echoed.
+#[derive(Clone, Debug, Serialize)]
+pub struct GrafanaTargetDescription {
+    pub id: String,
+    pub api_profile: Option<&'static str>,
+}
+
+#[derive(Clone, Debug, Serialize)]
+pub struct GrafanaConfigDescription {
+    /// SHA-256 of the exact bounded configuration bytes, before normalization.
+    pub digest: String,
+    pub targets: Vec<GrafanaTargetDescription>,
+}
+
+/// Opaque launcher-owned identity. It contains no credentials, provider values or paths, and
+/// cannot be created from wire data. Custom CA digests are keyed by configured target ID.
+#[derive(Clone)]
+pub struct GrafanaConfigIdentity {
+    config_digest: [u8; 32],
+    ca_digests: BTreeMap<String, [u8; 32]>,
+}
+
+impl std::fmt::Debug for GrafanaConfigIdentity {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("GrafanaConfigIdentity")
+            .finish_non_exhaustive()
+    }
+}
+
+/// Describe the explicit configuration without consulting credential environment variables or
+/// contacting any target. Each of at most 16 custom CA bundles is bounded to 64 KiB and PEM-checked;
+/// trust-anchor acceptance remains part of the existing request client's TLS setup.
+/// Execution rechecks these identities on the same bytes it uses, without a precheck/reopen race.
+pub fn grafana_config_description(
+    path: &Path,
+) -> Result<(GrafanaConfigDescription, GrafanaConfigIdentity), Problem> {
+    describe(path).map_err(|error| Problem::invalid(
+        error.code,
+        "The Grafana startup configuration or CA bundle could not be admitted; private configuration details are withheld.",
+    ))
+}
+
+fn describe(path: &Path) -> Result<(GrafanaConfigDescription, GrafanaConfigIdentity), Error> {
+    let bytes = read_file(path, 64 * 1024)?;
+    let config = parse_config(&bytes)?;
+    let config_digest: [u8; 32] = Sha256::digest(&bytes).into();
+    let mut ca_digests = BTreeMap::new();
+    let mut targets = Vec::new();
+    for (id, connection) in config.connections {
+        if let Some(path) = connection.tls_ca_file {
+            let bytes = read_file(Path::new(&path), 64 * 1024)?;
+            ca_roots(&bytes)?;
+            ca_digests.insert(id.clone(), Sha256::digest(&bytes).into());
+        }
+        targets.push(GrafanaTargetDescription {
+            id,
+            api_profile: (connection.api_profile == PROFILE).then_some(PROFILE),
+        });
+    }
+    Ok((
+        GrafanaConfigDescription {
+            digest: format!(
+                "sha256:{}",
+                config_digest
+                    .iter()
+                    .map(|byte| format!("{byte:02x}"))
+                    .collect::<String>()
+            ),
+            targets,
+        },
+        GrafanaConfigIdentity {
+            config_digest,
+            ca_digests,
+        },
+    ))
 }
 
 // Deliberately no Debug/Serialize: provider values and authorization are private.
@@ -126,11 +205,9 @@ fn configured_reference(reference: &str) -> Option<&str> {
     Some(name)
 }
 
-pub(super) fn load(path: Option<&Path>, alias: &str, operation: &str) -> Result<Prepared, Error> {
-    let path = path.ok_or_else(|| Error::admission("configuration_required"))?;
-    let bytes = read_file(path, 64 * 1024)?;
+fn parse_config(bytes: &[u8]) -> Result<Config, Error> {
     let value =
-        parse_bounded_json(&bytes, 16).map_err(|_| Error::admission("invalid_configuration"))?;
+        parse_bounded_json(bytes, 16).map_err(|_| Error::admission("invalid_configuration"))?;
     if !value.is_object()
         || !value["connections"].is_object()
         || ["state_dir", "retention_days", "store_max_bytes"]
@@ -144,7 +221,7 @@ pub(super) fn load(path: Option<&Path>, alias: &str, operation: &str) -> Result<
     {
         return Err(Error::admission("invalid_configuration"));
     }
-    let mut config: Config =
+    let config: Config =
         serde_json::from_value(value).map_err(|_| Error::admission("invalid_configuration"))?;
     if config.spec_version != "0.1"
         || config.record != "never"
@@ -174,6 +251,35 @@ pub(super) fn load(path: Option<&Path>, alias: &str, operation: &str) -> Result<
         }
         origin(&connection.origin)?;
     }
+    Ok(config)
+}
+
+pub(super) fn load(
+    path: Option<&Path>,
+    alias: &str,
+    operation: &str,
+    expected_identity: Option<&GrafanaConfigIdentity>,
+) -> Result<Prepared, Error> {
+    let path = path.ok_or_else(|| {
+        Error::admission(if expected_identity.is_some() {
+            "grafana_configuration_required"
+        } else {
+            "configuration_required"
+        })
+    })?;
+    let bytes = read_file(path, 64 * 1024).map_err(|error| {
+        if expected_identity.is_some() {
+            Error::admission("grafana_configuration_changed")
+        } else {
+            error
+        }
+    })?;
+    if expected_identity
+        .is_some_and(|expected| expected.config_digest != <[u8; 32]>::from(Sha256::digest(&bytes)))
+    {
+        return Err(Error::admission("grafana_configuration_changed"));
+    }
+    let mut config = parse_config(&bytes)?;
     let connection = config
         .connections
         .remove(alias)
@@ -182,28 +288,19 @@ pub(super) fn load(path: Option<&Path>, alias: &str, operation: &str) -> Result<
         return Err(Error::unsupported("unsupported_api_profile"));
     }
     let origin = origin(&connection.origin)?;
+    // Pinned execution checks the selected CA before credential lookup. Legacy operator callers
+    // retain their existing credential-first admission ordering.
+    let pinned_roots = expected_identity
+        .map(|identity| roots(&connection, alias, Some(identity)))
+        .transpose()?;
     let variable = configured_reference(&connection.credential_ref)
         .ok_or_else(|| Error::admission("invalid_credential_reference"))?;
     let secret = std::env::var(variable).map_err(|_| Error::admission("credential_unavailable"))?;
     let (authorization, secrets) =
         credential(&secret, &origin, connection.expected_org_id, operation)?;
-    let roots = match connection.tls_ca_file {
-        Some(path) => {
-            let bytes = read_file(Path::new(&path), 64 * 1024)?;
-            let roots = Certificate::from_pem_bundle(&bytes)
-                .map_err(|_| Error::admission("invalid_ca_bundle"))?;
-            if roots.is_empty() {
-                return Err(Error::admission("invalid_ca_bundle"));
-            }
-            roots
-        }
-        None => webpki_root_certs::TLS_SERVER_ROOT_CERTS
-            .iter()
-            .map(|der| {
-                Certificate::from_der(der.as_ref())
-                    .map_err(|_| Error::admission("invalid_ca_bundle"))
-            })
-            .collect::<Result<Vec<_>, _>>()?,
+    let roots = match pinned_roots {
+        Some(roots) => roots,
+        None => roots(&connection, alias, None)?,
     };
     Ok(Prepared {
         origin,
@@ -212,6 +309,46 @@ pub(super) fn load(path: Option<&Path>, alias: &str, operation: &str) -> Result<
         secrets,
         roots,
     })
+}
+
+fn ca_roots(bytes: &[u8]) -> Result<Vec<Certificate>, Error> {
+    let roots =
+        Certificate::from_pem_bundle(bytes).map_err(|_| Error::admission("invalid_ca_bundle"))?;
+    if roots.is_empty() {
+        return Err(Error::admission("invalid_ca_bundle"));
+    }
+    Ok(roots)
+}
+
+fn roots(
+    connection: &Connection,
+    alias: &str,
+    expected_identity: Option<&GrafanaConfigIdentity>,
+) -> Result<Vec<Certificate>, Error> {
+    match &connection.tls_ca_file {
+        Some(path) => {
+            let bytes = read_file(Path::new(path), 64 * 1024).map_err(|error| {
+                if expected_identity.is_some() {
+                    Error::admission("grafana_ca_changed")
+                } else {
+                    error
+                }
+            })?;
+            if expected_identity.is_some_and(|identity| {
+                identity.ca_digests.get(alias) != Some(&<[u8; 32]>::from(Sha256::digest(&bytes)))
+            }) {
+                return Err(Error::admission("grafana_ca_changed"));
+            }
+            ca_roots(&bytes)
+        }
+        None => webpki_root_certs::TLS_SERVER_ROOT_CERTS
+            .iter()
+            .map(|der| {
+                Certificate::from_der(der.as_ref())
+                    .map_err(|_| Error::admission("invalid_ca_bundle"))
+            })
+            .collect::<Result<Vec<_>, _>>(),
+    }
 }
 
 fn credential(

@@ -89,8 +89,40 @@ enum Commands {
         #[command(subcommand)]
         command: UiCommands,
     },
+    /// Serve bounded MCP over local stdio pipes with explicit immutable launcher grants
+    Mcp {
+        #[command(subcommand)]
+        command: McpCommands,
+    },
     /// Report offline runtime readiness and limitations without spawning probes
     Doctor,
+}
+
+#[derive(Subcommand)]
+enum McpCommands {
+    /// Stdout is protocol-only. Close stdin to stop; history and retries are not provided.
+    Serve {
+        #[arg(long, default_value = "stdio", value_parser = ["stdio"])]
+        transport: String,
+        #[arg(
+            long,
+            value_name = "OPERATION",
+            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get or grafana.query; empty grants expose no tools"
+        )]
+        allow: Vec<String>,
+        #[arg(
+            long,
+            value_name = "ROOT_ID",
+            help = "Repeat trusted --read-policy root IDs for command grants"
+        )]
+        root: Vec<String>,
+        #[arg(
+            long,
+            value_name = "TARGET_ID",
+            help = "Repeat trusted --config target IDs for Grafana grants"
+        )]
+        target: Vec<String>,
+    },
 }
 
 #[derive(Subcommand)]
@@ -349,7 +381,9 @@ fn normalize(cli: Cli) -> Result<Request, Problem> {
             json!({"datasource":datasource,"kind":kind,"from":from,"to":to,"expr":expr}),
         ),
         Commands::Doctor => Request::new("doctor", json!({})),
-        Commands::Ui { .. } => unreachable!("UI handled before operation normalization"),
+        Commands::Ui { .. } | Commands::Mcp { .. } => {
+            unreachable!("adapters handled before operation normalization")
+        }
     };
     request.record = cli.record;
     Ok(request)
@@ -423,6 +457,10 @@ fn main() -> std::process::ExitCode {
 }
 
 fn run() -> u8 {
+    let arguments: Vec<_> = std::env::args_os().take_while(|arg| arg != "--").collect();
+    let mcp_invocation = arguments
+        .windows(2)
+        .any(|pair| pair[0] == "mcp" && pair[1] == "serve");
     // Only flags before the literal argv separator participate in CLI parsing.
     let wants_json = std::env::args_os()
         .skip(1)
@@ -443,6 +481,10 @@ fn run() -> u8 {
                     1
                 };
             }
+            if mcp_invocation {
+                workbench_mcp::invalid_startup();
+                return 2;
+            }
             let result = OperationResult::rejection(
                 &Request::new("request.invalid", json!({})),
                 Problem::invalid(
@@ -453,6 +495,28 @@ fn run() -> u8 {
             return deliver(result, wants_json, &RunControl::default());
         }
     };
+    if let Commands::Mcp {
+        command:
+            McpCommands::Serve {
+                allow,
+                root,
+                target,
+                ..
+            },
+    } = &cli.command
+    {
+        if cli.json || cli.record != "never" {
+            workbench_mcp::invalid_startup();
+            return 2;
+        }
+        return workbench_mcp::serve(workbench_mcp::Options {
+            allow: allow.clone(),
+            roots: root.clone(),
+            targets: target.clone(),
+            read_policy: cli.read_policy.clone(),
+            config: cli.config.clone(),
+        });
+    }
     if let Commands::Ui {
         command: UiCommands::Serve { port, allow, root },
     } = &cli.command

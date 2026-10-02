@@ -1,0 +1,20 @@
+[package]
+name = "workbench-mcp"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+workbench-core = { path = "../workbench-core" }
+rmcp = { version = "=3.5.0", default-features = false }
+serde.workspace = true
+serde_json.workspace = true
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc.workspace = true
+signal-hook.workspace = true
+
+[lints]
+workspace = true

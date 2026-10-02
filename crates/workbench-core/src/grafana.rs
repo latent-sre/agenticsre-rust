@@ -1,6 +1,10 @@
 //! Fixed legacy Grafana exchanges. Fixture conformance is not live-version certification.
 mod config;
 mod redact;
+pub use config::{
+    GrafanaConfigDescription, GrafanaConfigIdentity, GrafanaTargetDescription,
+    grafana_config_description,
+};
 
 use crate::{
     OperatorContext, RunControl,
@@ -452,6 +456,7 @@ pub(crate) fn run(
     request: &Request,
     control: &RunControl,
     context: &OperatorContext,
+    expected_identity: Option<&GrafanaConfigIdentity>,
     start: Instant,
     result: &mut OperationResult,
 ) {
@@ -483,6 +488,7 @@ pub(crate) fn run(
             context.config_path.as_deref(),
             &request.target.id,
             &request.operation,
+            expected_identity,
         )?;
         check(control, deadline)?;
         let mut redactor = Redactor::new(&prepared.secrets)?;

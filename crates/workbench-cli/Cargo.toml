@@ -27,6 +27,7 @@ test-fixtures = []
 [dependencies]
 workbench-core = { path = "../workbench-core" }
 workbench-ui = { path = "../workbench-ui" }
+workbench-mcp = { path = "../workbench-mcp" }
 clap.workspace = true
 serde_json.workspace = true
 
