@@ -1,0 +1,8 @@
+{
+  "program": "git",
+  "args": [
+    "status",
+    "--short"
+  ],
+  "cwd": "../trading-app"
+}

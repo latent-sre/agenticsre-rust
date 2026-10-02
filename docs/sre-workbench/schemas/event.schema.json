@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:event:0.1",
+  "title": "SRE Workbench event draft 0.1",
+  "type": "object",
+  "properties": {
+    "spec_version": {
+      "const": "0.1"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "type": {
+      "enum": [
+        "started",
+        "progress",
+        "output",
+        "warning",
+        "completed"
+      ]
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "spec_version",
+    "run_id",
+    "sequence",
+    "observed_at",
+    "type",
+    "data"
+  ],
+  "additionalProperties": false
+}

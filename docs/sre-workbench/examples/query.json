@@ -1,0 +1,25 @@
+{
+  "spec_version": "0.1",
+  "id": "service.up",
+  "version": 1,
+  "dialect": "promql",
+  "target_alias": "fixture-grafana",
+  "datasource_alias": "fixture-metrics",
+  "template": "up{job={{job}}}",
+  "parameters": {
+    "job": {
+      "type": "string",
+      "required": true,
+      "description": "Exact job label; rendered as an escaped quoted string.",
+      "pattern": "^[A-Za-z0-9._-]+$"
+    }
+  },
+  "max_range_seconds": 3600,
+  "max_items": 1000,
+  "owner_ref": "fixture-team",
+  "purpose": "Observe the configured job's scrape up series.",
+  "units": "boolean series",
+  "limitations": [
+    "A scrape success is not application health."
+  ]
+}

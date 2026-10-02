@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:bundle:0.1",
+  "title": "SRE Workbench bundle draft 0.1",
+  "type": "object",
+  "properties": {
+    "spec_version": {
+      "const": "0.1"
+    },
+    "bundle_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "producer_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "target": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/target"
+    },
+    "run_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "complete": {
+      "type": "boolean"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2048
+      },
+      "maxItems": 100
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/source"
+      },
+      "maxItems": 100
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/artifact"
+      },
+      "maxItems": 100
+    },
+    "classification": {
+      "enum": [
+        "public",
+        "internal",
+        "restricted"
+      ]
+    }
+  },
+  "required": [
+    "spec_version",
+    "bundle_id",
+    "created_at",
+    "producer_version",
+    "target",
+    "run_ids",
+    "complete",
+    "limitations",
+    "sources",
+    "artifacts",
+    "classification"
+  ],
+  "additionalProperties": false
+}

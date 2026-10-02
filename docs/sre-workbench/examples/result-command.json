@@ -1,0 +1,55 @@
+{
+  "spec_version": "0.1",
+  "request_id": "example-command-001",
+  "run_id": "run-example-001",
+  "operation": "process.exec",
+  "operation_version": 1,
+  "target": {
+    "kind": "local",
+    "id": "workstation"
+  },
+  "resolved_target": {
+    "executable": "C:/Program Files/Git/cmd/git.exe",
+    "cwd": "F:/repos/trading-app"
+  },
+  "started_at": "2026-10-02T15:00:00Z",
+  "finished_at": "2026-10-02T15:00:00.100Z",
+  "duration_ms": 100,
+  "execution": {
+    "status": "succeeded",
+    "child_exit_code": 0,
+    "signal": null
+  },
+  "effect_outcome": "not_applicable",
+  "assessment": "not_assessed",
+  "coverage": {
+    "state": "complete",
+    "scope": "Captured output of the selected synthetic git status invocation only",
+    "limitations": [
+      "Does not establish application health"
+    ]
+  },
+  "output": {
+    "stdout": "",
+    "stderr": "",
+    "stdout_truncated": false,
+    "stderr_truncated": false,
+    "encoding": "utf-8"
+  },
+  "data": {},
+  "errors": [],
+  "sources": [
+    {
+      "reference": "fixture:command-output",
+      "observed_at": "2026-10-02T15:00:00Z",
+      "evidence_state": "sourced",
+      "untrusted": true
+    }
+  ],
+  "artifacts": [],
+  "effective_limits": {
+    "timeout_ms": 15000,
+    "max_output_bytes": 1048576
+  },
+  "record_mode": "auto"
+}

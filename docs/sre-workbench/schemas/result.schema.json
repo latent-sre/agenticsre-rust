@@ -1,0 +1,304 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:result:0.1",
+  "title": "SRE Workbench result draft 0.1",
+  "type": "object",
+  "properties": {
+    "spec_version": {
+      "const": "0.1"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "operation": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+    },
+    "operation_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "target": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/target"
+    },
+    "resolved_target": {
+      "type": "object"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "succeeded",
+            "failed",
+            "partial",
+            "denied",
+            "unsupported",
+            "cancelled",
+            "timed_out",
+            "unknown"
+          ]
+        },
+        "child_exit_code": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "signal": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 32
+        }
+      },
+      "required": [
+        "status",
+        "child_exit_code",
+        "signal"
+      ],
+      "additionalProperties": false
+    },
+    "effect_outcome": {
+      "enum": [
+        "not_attempted",
+        "not_applicable",
+        "succeeded",
+        "failed",
+        "unknown"
+      ]
+    },
+    "assessment": {
+      "enum": [
+        "not_assessed",
+        "healthy",
+        "degraded",
+        "unhealthy",
+        "unknown"
+      ]
+    },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "enum": [
+            "complete",
+            "partial",
+            "not_established",
+            "not_applicable"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "state",
+        "scope",
+        "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "stdout": {
+          "type": "string",
+          "maxLength": 2097152
+        },
+        "stderr": {
+          "type": "string",
+          "maxLength": 2097152
+        },
+        "stdout_truncated": {
+          "type": "boolean"
+        },
+        "stderr_truncated": {
+          "type": "boolean"
+        },
+        "encoding": {
+          "enum": [
+            "utf-8",
+            "utf-8-replaced"
+          ]
+        }
+      },
+      "required": [
+        "stdout",
+        "stderr",
+        "stdout_truncated",
+        "stderr_truncated",
+        "encoding"
+      ],
+      "additionalProperties": false
+    },
+    "data": {
+      "type": "object"
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "maxLength": 128
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "retryable": {
+            "type": "boolean"
+          },
+          "next_step": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 50
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/source"
+      },
+      "maxItems": 100
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/artifact"
+      },
+      "maxItems": 100
+    },
+    "effective_limits": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/limits"
+    },
+    "record_mode": {
+      "enum": [
+        "auto",
+        "always",
+        "never"
+      ]
+    }
+  },
+  "required": [
+    "spec_version",
+    "request_id",
+    "run_id",
+    "operation",
+    "operation_version",
+    "target",
+    "resolved_target",
+    "started_at",
+    "finished_at",
+    "duration_ms",
+    "execution",
+    "effect_outcome",
+    "assessment",
+    "coverage",
+    "output",
+    "data",
+    "errors",
+    "sources",
+    "artifacts",
+    "effective_limits",
+    "record_mode"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "denied",
+                  "unsupported"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "effect_outcome": {
+            "const": "not_attempted"
+          },
+          "assessment": {
+            "const": "not_assessed"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "failed",
+                  "denied",
+                  "unsupported",
+                  "timed_out",
+                  "unknown"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "errors": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:process-input:0.1",
+  "title": "SRE Workbench process-input draft 0.1",
+  "type": "object",
+  "properties": {
+    "program": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "args": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 16384
+      },
+      "maxItems": 100
+    },
+    "cwd": {
+      "type": "string",
+      "pattern": "^(?:[A-Za-z]:[/\\\\]|/)",
+      "maxLength": 1024
+    }
+  },
+  "required": [
+    "program",
+    "args",
+    "cwd"
+  ],
+  "additionalProperties": false
+}

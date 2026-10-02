@@ -1,0 +1,72 @@
+{
+  "spec_version": "0.1",
+  "request_id": "example-command-001",
+  "run_id": "run-example-001",
+  "operation": "evidence.collect",
+  "operation_version": 1,
+  "target": {
+    "kind": "local",
+    "id": "workstation"
+  },
+  "resolved_target": {
+    "executable": "C:/Program Files/Git/cmd/git.exe",
+    "cwd": "F:/repos/trading-app"
+  },
+  "started_at": "2026-10-02T15:00:00Z",
+  "finished_at": "2026-10-02T15:00:00.100Z",
+  "duration_ms": 100,
+  "execution": {
+    "status": "partial",
+    "child_exit_code": null,
+    "signal": null
+  },
+  "effect_outcome": "not_applicable",
+  "assessment": "not_assessed",
+  "coverage": {
+    "state": "partial",
+    "scope": "Two requested diagnostic checks",
+    "limitations": [
+      "TCP check timed out"
+    ]
+  },
+  "output": {
+    "stdout": "",
+    "stderr": "",
+    "stdout_truncated": false,
+    "stderr_truncated": false,
+    "encoding": "utf-8"
+  },
+  "data": {
+    "items": [
+      {
+        "id": "dns",
+        "status": "succeeded"
+      },
+      {
+        "id": "tcp",
+        "status": "timed_out"
+      }
+    ]
+  },
+  "errors": [
+    {
+      "code": "check_timeout",
+      "message": "One requested check exceeded its deadline.",
+      "retryable": false
+    }
+  ],
+  "sources": [
+    {
+      "reference": "fixture:command-output",
+      "observed_at": "2026-10-02T15:00:00Z",
+      "evidence_state": "sourced",
+      "untrusted": true
+    }
+  ],
+  "artifacts": [],
+  "effective_limits": {
+    "timeout_ms": 15000,
+    "max_output_bytes": 1048576
+  },
+  "record_mode": "auto"
+}

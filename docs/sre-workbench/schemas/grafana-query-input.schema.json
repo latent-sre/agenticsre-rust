@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:grafana-query-input:0.1",
+  "title": "SRE Workbench grafana-query-input draft 0.1",
+  "type": "object",
+  "properties": {
+    "datasource": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,40}$"
+    },
+    "kind": {
+      "enum": [
+        "prometheus",
+        "loki"
+      ]
+    },
+    "from": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "to": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expr": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    }
+  },
+  "required": [
+    "datasource",
+    "kind",
+    "from",
+    "to",
+    "expr"
+  ],
+  "additionalProperties": false
+}

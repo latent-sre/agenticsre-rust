@@ -1,0 +1,39 @@
+{
+  "spec_version": "0.1",
+  "id": "process.exec",
+  "operation_version": 1,
+  "title": "Run a configured command",
+  "description": "Run a literal argument vector under the effective host command policy.",
+  "effects": "unclassified",
+  "input_schema": {
+    "$ref": "urn:sre-workbench:spec:process-input:0.1"
+  },
+  "output_schema": {
+    "$ref": "urn:sre-workbench:spec:result:0.1"
+  },
+  "execution_modes": [
+    "foreground"
+  ],
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "dependencies": [
+    {
+      "name": "configured executable",
+      "kind": "binary",
+      "version_requirement": "record actual version"
+    }
+  ],
+  "stability": "experimental",
+  "default_timeout_ms": 30000,
+  "max_timeout_ms": 300000,
+  "required_permissions": [
+    "command.execute"
+  ],
+  "implementation": {
+    "kind": "builtin",
+    "reference": "process-adapter"
+  }
+}

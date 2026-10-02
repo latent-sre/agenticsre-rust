@@ -1,0 +1,22 @@
+{
+  "spec_version": "0.1",
+  "request_id": "example-grafana-001",
+  "operation": "grafana.query",
+  "operation_version": 1,
+  "target": {
+    "kind": "connection",
+    "id": "fixture-grafana"
+  },
+  "inputs": {
+    "datasource": "fixture-metrics",
+    "kind": "prometheus",
+    "from": "2026-10-02T14:30:00Z",
+    "to": "2026-10-02T15:00:00Z",
+    "expr": "up"
+  },
+  "limits": {
+    "timeout_ms": 60000,
+    "max_output_bytes": 1048576
+  },
+  "record": "auto"
+}

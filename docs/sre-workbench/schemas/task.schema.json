@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:task:0.1",
+  "title": "SRE Workbench task draft 0.1",
+  "type": "object",
+  "properties": {
+    "spec_version": {
+      "const": "0.1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+      "maxLength": 128
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "entrypoint": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/path"
+    },
+    "digest": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+    },
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "native",
+            "python",
+            "powershell",
+            "bash"
+          ]
+        },
+        "version_requirement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "kind",
+        "version_requirement"
+      ],
+      "additionalProperties": false
+    },
+    "input_schema": {
+      "type": "object"
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "arguments": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "literal": {
+                "type": "string",
+                "maxLength": 16384
+              }
+            },
+            "required": [
+              "literal"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "input": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            },
+            "required": [
+              "input"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "maxItems": 100
+    },
+    "allowed_environment": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+      },
+      "maxItems": 50,
+      "uniqueItems": true
+    },
+    "effects": {
+      "enum": [
+        "observe",
+        "local_write",
+        "remote_write",
+        "unclassified"
+      ]
+    },
+    "timeout_ms": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 300000
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "windows",
+          "linux",
+          "macos"
+        ]
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "spec_version",
+    "id",
+    "version",
+    "entrypoint",
+    "digest",
+    "runtime",
+    "input_schema",
+    "output_schema",
+    "arguments",
+    "allowed_environment",
+    "effects",
+    "timeout_ms",
+    "platforms"
+  ],
+  "additionalProperties": false
+}

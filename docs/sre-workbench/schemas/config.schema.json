@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:config:0.1",
+  "title": "SRE Workbench config draft 0.1",
+  "type": "object",
+  "properties": {
+    "spec_version": {
+      "const": "0.1"
+    },
+    "state_dir": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "record": {
+      "enum": [
+        "auto",
+        "always",
+        "never"
+      ]
+    },
+    "retention_days": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3650
+    },
+    "store_max_bytes": {
+      "type": "integer",
+      "minimum": 1048576,
+      "maximum": 1099511627776
+    },
+    "connections": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+        "maxLength": 128
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "origin": {
+            "type": "string",
+            "pattern": "^https://[^\\s]+$",
+            "maxLength": 2048
+          },
+          "expected_org_id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "api_profile": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "credential_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "origin",
+          "expected_org_id",
+          "api_profile",
+          "credential_ref"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "spec_version",
+    "state_dir",
+    "record",
+    "retention_days",
+    "store_max_bytes",
+    "connections"
+  ],
+  "additionalProperties": false
+}

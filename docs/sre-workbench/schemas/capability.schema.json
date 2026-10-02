@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:capability:0.1",
+  "title": "SRE Workbench capability draft 0.1",
+  "type": "object",
+  "properties": {
+    "spec_version": {
+      "const": "0.1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+      "maxLength": 128
+    },
+    "operation_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "effects": {
+      "enum": [
+        "observe",
+        "local_write",
+        "remote_write",
+        "unclassified"
+      ]
+    },
+    "input_schema": {
+      "type": "object"
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "execution_modes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "foreground",
+          "job"
+        ]
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "windows",
+          "linux",
+          "macos",
+          "remote"
+        ]
+      },
+      "maxItems": 4,
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "kind": {
+            "enum": [
+              "binary",
+              "interpreter",
+              "service",
+              "credential_provider"
+            ]
+          },
+          "version_requirement": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "name",
+          "kind",
+          "version_requirement"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 20
+    },
+    "stability": {
+      "enum": [
+        "experimental",
+        "stable",
+        "deprecated"
+      ]
+    },
+    "default_timeout_ms": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 300000
+    },
+    "max_timeout_ms": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 300000
+    },
+    "required_permissions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+        "maxLength": 128
+      },
+      "maxItems": 50
+    },
+    "implementation": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "builtin",
+            "executable",
+            "script"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "digest": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        }
+      },
+      "required": [
+        "kind",
+        "reference"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "spec_version",
+    "id",
+    "operation_version",
+    "title",
+    "description",
+    "effects",
+    "input_schema",
+    "output_schema",
+    "execution_modes",
+    "platforms",
+    "dependencies",
+    "stability",
+    "default_timeout_ms",
+    "max_timeout_ms",
+    "required_permissions",
+    "implementation"
+  ],
+  "additionalProperties": false
+}
