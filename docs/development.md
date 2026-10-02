@@ -215,6 +215,11 @@ results instead of calling this focused lane a full-suite pass.
 This creates no Forgejo repository/runner registration and invokes no paid PR review. The included
 GitHub workflow needs an actual hosted run before it can be called verified; local linting and
 Cally execution do not prove GitHub integration.
+The hosted Linux job explicitly installs Git, ripgrep and Bubblewrap before compiling the
+read-profile fixtures; the generic Ubuntu runner image is not assumed to provide them. It uses
+the same two-job/no-debug-symbol build settings as the local and Cally lanes. Tests requiring the
+explicit native containment environment still run on Cally rather than being silently enabled on
+the hosted runner.
 
 ## Development artifact and rollback
 

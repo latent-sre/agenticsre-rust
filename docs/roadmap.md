@@ -32,6 +32,7 @@ integration does not imply it is installed, authorized, connected or operational
 | Specification baseline | Grafana snapshot passed 20 schemas, 21 positive and 9 negative fixtures, all IDs; Python 3.14.7 and dependencies pinned | Validate changed documentation at integration boundary |
 | Cally assistance | Grafana snapshot passed 68 Rust tests and 96 HTTPS cases; minimal lane passed 17 native HTTPS tests without Python and refused both Python tasks. Both containers removed | Reuse bounded lanes for material changes; [acceptance record](grafana-verification.md) |
 | Adapter baseline | Dashboard, error-budget and native Grafana fixture adapters accepted; provenance retained in [adapter notes](adapter-notes.md) | Restricted-command evidence and local browser interface; MCP deferred |
+| Hosted CI | First implementation push `93fc339` passed formatting/lint, then six read-profile fixtures failed while resolving required tool paths before product dispatch | Add explicit Git/ripgrep/Bubblewrap prerequisites and bounded build settings; verify a fresh hosted run |
 
 Execution authority: local source changes, disposable checks and bounded Cally build assistance
 are authorized. On 2026-10-02 the owner explicitly requested committing and pushing the completed
