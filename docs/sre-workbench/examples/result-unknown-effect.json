@@ -1,0 +1,61 @@
+{
+  "spec_version": "0.1",
+  "request_id": "example-change-001",
+  "run_id": "run-example-change-001",
+  "operation": "change.apply",
+  "operation_version": 1,
+  "target": {
+    "kind": "connection",
+    "id": "fixture-grafana"
+  },
+  "resolved_target": {
+    "target_alias": "fixture-grafana"
+  },
+  "started_at": "2026-10-02T15:00:00Z",
+  "finished_at": "2026-10-02T15:00:15Z",
+  "duration_ms": 15000,
+  "execution": {
+    "status": "timed_out",
+    "child_exit_code": null,
+    "signal": null
+  },
+  "effect_outcome": "unknown",
+  "assessment": "not_assessed",
+  "coverage": {
+    "state": "not_established",
+    "scope": "Target effect after lost response",
+    "limitations": [
+      "Reconcile before retry"
+    ]
+  },
+  "output": {
+    "stdout": "",
+    "stderr": "",
+    "stdout_truncated": false,
+    "stderr_truncated": false,
+    "encoding": "utf-8"
+  },
+  "data": {},
+  "errors": [
+    {
+      "code": "effect_unknown",
+      "message": "The target response was lost after dispatch.",
+      "retryable": false,
+      "next_step": "Reconcile the bound plan with the target."
+    }
+  ],
+  "sources": [
+    {
+      "reference": "fixture:lost-change-response",
+      "observed_at": "2026-10-02T15:00:00Z",
+      "evidence_state": "sourced",
+      "untrusted": true
+    }
+  ],
+  "artifacts": [],
+  "effective_limits": {
+    "timeout_ms": 15000,
+    "max_output_bytes": 1048576
+  },
+  "record_mode": "auto"
+}

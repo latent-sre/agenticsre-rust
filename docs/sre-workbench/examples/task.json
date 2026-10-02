@@ -1,0 +1,56 @@
+{
+  "spec_version": "0.1",
+  "id": "dashboard-hygiene",
+  "version": 1,
+  "entrypoint": "tasks/dashboard_hygiene.py",
+  "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "runtime": {
+    "kind": "python",
+    "version_requirement": ">=3.11; actual supported version verified at release"
+  },
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "file": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "file"
+    ],
+    "additionalProperties": false
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "findings": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "coverage": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "findings",
+      "coverage"
+    ],
+    "additionalProperties": false
+  },
+  "arguments": [
+    {
+      "input": "file"
+    }
+  ],
+  "allowed_environment": [],
+  "effects": "observe",
+  "timeout_ms": 30000,
+  "platforms": [
+    "windows",
+    "linux",
+    "macos"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "spec_version": "9.0",
+  "request_id": "example-command-001",
+  "operation": "process.exec",
+  "operation_version": 1,
+  "target": {
+    "kind": "local",
+    "id": "workstation"
+  },
+  "inputs": {
+    "program": "git",
+    "args": [
+      "status",
+      "--short"
+    ],
+    "cwd": "F:/repos/trading-app"
+  },
+  "limits": {
+    "timeout_ms": 15000,
+    "max_output_bytes": 1048576
+  },
+  "record": "auto"
+}

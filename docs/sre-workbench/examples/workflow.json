@@ -1,0 +1,47 @@
+{
+  "spec_version": "0.1",
+  "id": "diagnostics.connectivity",
+  "version": 1,
+  "kind": "diagnostic_pack",
+  "description": "Synthetic DNS and TCP checks; no execution by this package.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "host": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "host"
+    ],
+    "additionalProperties": false
+  },
+  "max_steps": 10,
+  "timeout_ms": 60000,
+  "concurrency": 2,
+  "steps": [
+    {
+      "id": "dns",
+      "operation": "dns.resolve",
+      "operation_version": 1,
+      "inputs": {
+        "host": "service.example.invalid"
+      },
+      "depends_on": [],
+      "on_failure": "continue"
+    },
+    {
+      "id": "tcp",
+      "operation": "net.tcp.connect",
+      "operation_version": 1,
+      "inputs": {
+        "host": "service.example.invalid",
+        "port": 443
+      },
+      "depends_on": [
+        "dns"
+      ],
+      "on_failure": "continue"
+    }
+  ]
+}

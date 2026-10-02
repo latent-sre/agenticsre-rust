@@ -1,0 +1,56 @@
+{
+  "spec_version": "0.1",
+  "request_id": "example-command-001",
+  "run_id": "run-example-001",
+  "operation": "process.exec",
+  "operation_version": 1,
+  "target": {
+    "kind": "local",
+    "id": "workstation"
+  },
+  "resolved_target": {},
+  "started_at": "2026-10-02T15:00:00Z",
+  "finished_at": "2026-10-02T15:00:00.100Z",
+  "duration_ms": 100,
+  "execution": {
+    "status": "denied",
+    "child_exit_code": null,
+    "signal": null
+  },
+  "effect_outcome": "not_attempted",
+  "assessment": "not_assessed",
+  "coverage": {
+    "state": "not_applicable",
+    "scope": "Request rejected before execution",
+    "limitations": []
+  },
+  "output": {
+    "stdout": "",
+    "stderr": "",
+    "stdout_truncated": false,
+    "stderr_truncated": false,
+    "encoding": "utf-8"
+  },
+  "data": {},
+  "errors": [
+    {
+      "code": "policy_denied",
+      "message": "This operation is unavailable under the effective policy.",
+      "retryable": false
+    }
+  ],
+  "sources": [
+    {
+      "reference": "fixture:command-output",
+      "observed_at": "2026-10-02T15:00:00Z",
+      "evidence_state": "sourced",
+      "untrusted": true
+    }
+  ],
+  "artifacts": [],
+  "effective_limits": {
+    "timeout_ms": 15000,
+    "max_output_bytes": 1048576
+  },
+  "record_mode": "auto"
+}

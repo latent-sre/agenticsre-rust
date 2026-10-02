@@ -1,0 +1,15 @@
+{
+  "spec_version": "0.1",
+  "state_dir": "F:/workbench-example-state",
+  "record": "auto",
+  "retention_days": 7,
+  "store_max_bytes": 1073741824,
+  "connections": {
+    "fixture-grafana": {
+      "origin": "https://grafana.example.invalid",
+      "expected_org_id": 1,
+      "api_profile": "test-fixture",
+      "credential_ref": "fixture-provider:grafana-read"
+    }
+  }
+}

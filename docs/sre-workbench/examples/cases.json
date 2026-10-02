@@ -1,0 +1,154 @@
+[
+  {
+    "file": "request-command.json",
+    "schema": "request",
+    "valid": true,
+    "reason": "Valid generic request and separately validated process inputs",
+    "input_manifest": "capability-command.json"
+  },
+  {
+    "file": "request-grafana.json",
+    "schema": "request",
+    "valid": true,
+    "reason": "Envelope and Grafana input shape; target and query semantics require runtime validation",
+    "input_schema": "grafana-query-input"
+  },
+  {
+    "file": "capability-command.json",
+    "schema": "capability",
+    "valid": true,
+    "reason": "Unclassified effects do not imply read permission"
+  },
+  {
+    "file": "result-command.json",
+    "schema": "result",
+    "valid": true,
+    "reason": "Completed process without target-health assessment"
+  },
+  {
+    "file": "result-denied.json",
+    "schema": "result",
+    "valid": true,
+    "reason": "Denied before dispatch"
+  },
+  {
+    "file": "result-unknown-effect.json",
+    "schema": "result",
+    "valid": true,
+    "reason": "Timeout retains uncertain target effect"
+  },
+  {
+    "file": "result-partial.json",
+    "schema": "result",
+    "valid": true,
+    "reason": "Partial results retain failed checks"
+  },
+  {
+    "file": "event-started.json",
+    "schema": "event",
+    "valid": true,
+    "reason": "Bounded sequenced event shape"
+  },
+  {
+    "file": "config.json",
+    "schema": "config",
+    "valid": true,
+    "reason": "References only; origin authorization is separate"
+  },
+  {
+    "file": "workflow.json",
+    "schema": "workflow",
+    "valid": true,
+    "reason": "Structural workflow; graph semantics require executor checks"
+  },
+  {
+    "file": "task.json",
+    "schema": "task",
+    "valid": true,
+    "reason": "Synthetic digest; not an installed or approved task"
+  },
+  {
+    "file": "query.json",
+    "schema": "query",
+    "valid": true,
+    "reason": "Typed parameter definition; dialect renderer remains unimplemented"
+  },
+  {
+    "file": "bundle.json",
+    "schema": "bundle",
+    "valid": true,
+    "reason": "Synthetic metadata/digest; does not verify actual artifact bytes"
+  },
+  {
+    "file": "invalid-request-role.json",
+    "schema": "request",
+    "valid": false,
+    "reason": "Caller cannot supply a role field"
+  },
+  {
+    "file": "invalid-request-version.json",
+    "schema": "request",
+    "valid": false,
+    "reason": "Unknown envelope version"
+  },
+  {
+    "file": "invalid-result-denied-effect.json",
+    "schema": "result",
+    "valid": false,
+    "reason": "Denied cannot claim successful effect"
+  },
+  {
+    "file": "invalid-config-secret.json",
+    "schema": "config",
+    "valid": false,
+    "reason": "Unexpected secret-bearing top-level field"
+  },
+  {
+    "file": "invalid-bundle-path.json",
+    "schema": "bundle",
+    "valid": false,
+    "reason": "Parent traversal in an artifact path"
+  },
+  {
+    "file": "invalid-workflow-limit.json",
+    "schema": "workflow",
+    "valid": false,
+    "reason": "Zero step budget"
+  },
+  {
+    "file": "input-command.json",
+    "schema": "process-input",
+    "valid": true,
+    "reason": "Explicit process input"
+  },
+  {
+    "file": "input-grafana-query.json",
+    "schema": "grafana-query-input",
+    "valid": true,
+    "reason": "Bounded query input shape; range ordering remains semantic"
+  },
+  {
+    "file": "input-grafana-dashboard.json",
+    "schema": "grafana-dashboard-input",
+    "valid": true,
+    "reason": "One dashboard identifier"
+  },
+  {
+    "file": "invalid-input-query-kind.json",
+    "schema": "grafana-query-input",
+    "valid": false,
+    "reason": "Initial native Grafana queries support only Prometheus/Loki"
+  },
+  {
+    "file": "invalid-input-relative-cwd.json",
+    "schema": "process-input",
+    "valid": false,
+    "reason": "Normalized agent process input requires absolute cwd"
+  },
+  {
+    "file": "invalid-result-timestamp.json",
+    "schema": "result",
+    "valid": false,
+    "reason": "Malformed timestamp must be rejected by the required RFC3339 format checker"
+  }
+]

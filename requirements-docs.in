@@ -1,0 +1,8 @@
+# Documentation validation only. No Rust or product runtime dependencies.
+jsonschema==4.26.0
+referencing==0.37.0
+rfc3339-validator==0.1.4
+# Keep the already exercised validator dependency versions while importing.
+attrs==26.1.0
+jsonschema-specifications==2025.9.1
+rpds-py==2026.6.3

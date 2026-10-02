@@ -1,0 +1,7 @@
+{
+  "datasource": "fixture-metrics",
+  "kind": "prometheus",
+  "from": "2026-10-02T14:30:00Z",
+  "to": "2026-10-02T15:00:00Z",
+  "expr": "up"
+}

@@ -1,0 +1,10 @@
+{
+  "spec_version": "0.1",
+  "run_id": "run-example-001",
+  "sequence": 1,
+  "observed_at": "2026-10-02T15:00:00Z",
+  "type": "started",
+  "data": {
+    "operation": "process.exec"
+  }
+}

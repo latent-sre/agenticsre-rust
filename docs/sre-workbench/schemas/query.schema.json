@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:query:0.1",
+  "title": "SRE Workbench query draft 0.1",
+  "type": "object",
+  "properties": {
+    "spec_version": {
+      "const": "0.1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+      "maxLength": 128
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "dialect": {
+      "enum": [
+        "promql",
+        "logql",
+        "spl",
+        "wql",
+        "traceql",
+        "sql",
+        "other"
+      ]
+    },
+    "target_alias": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "datasource_alias": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "template": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16384
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "string",
+              "integer",
+              "number",
+              "boolean"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "pattern": {
+            "type": "string",
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "type",
+          "required",
+          "description"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "max_range_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 86400
+    },
+    "max_items": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "owner_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "units": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2048
+      },
+      "maxItems": 50
+    }
+  },
+  "required": [
+    "spec_version",
+    "id",
+    "version",
+    "dialect",
+    "target_alias",
+    "datasource_alias",
+    "template",
+    "parameters",
+    "max_range_seconds",
+    "max_items",
+    "owner_ref",
+    "purpose",
+    "units",
+    "limitations"
+  ],
+  "additionalProperties": false
+}

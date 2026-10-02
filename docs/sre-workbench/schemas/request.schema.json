@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:request:0.1",
+  "title": "SRE Workbench request draft 0.1",
+  "type": "object",
+  "properties": {
+    "spec_version": {
+      "const": "0.1"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "operation": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+    },
+    "operation_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "target": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/target"
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "limits": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/limits"
+    },
+    "record": {
+      "enum": [
+        "auto",
+        "always",
+        "never"
+      ]
+    }
+  },
+  "required": [
+    "spec_version",
+    "request_id",
+    "operation",
+    "operation_version",
+    "target",
+    "inputs",
+    "limits",
+    "record"
+  ],
+  "additionalProperties": false
+}
