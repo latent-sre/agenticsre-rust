@@ -1,4 +1,5 @@
 //! Shared, bounded operation semantics for the experimental `save` CLI.
+mod context;
 pub mod discovery;
 mod grafana;
 pub use grafana::{
@@ -27,6 +28,9 @@ use std::time::Instant;
 /// Explicit operator startup configuration, never a wire-request field or a grant.
 #[derive(Default)]
 pub struct OperatorContext {
+    /// Explicit offline fixture export and bounded freshness policy; never wire fields.
+    pub context_source_path: Option<std::path::PathBuf>,
+    pub context_max_age_days: Option<u16>,
     pub config_path: Option<std::path::PathBuf>,
     /// Narrow command execution using this explicit trusted policy; never read from a request.
     pub read_policy_path: Option<std::path::PathBuf>,
@@ -156,6 +160,7 @@ fn dispatch(
     result: &mut OperationResult,
 ) {
     match request.operation.as_str() {
+        "context.resolve" => context::run(request, control, context, start, result),
         "grafana.dashboard.get" | "grafana.query" => grafana::run(
             request,
             control,

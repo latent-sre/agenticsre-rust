@@ -1,0 +1,112 @@
+# WORKBENCH-008 context — combined independent verification
+
+**PASS for the thin offline Linux context fixture contract on exact R1.** [verified] The cold workspace run passed 151 tests (150 product tests and one verifier-only checkpoint test), with 19 ignored by the ordinary suite. The explicit native restricted-MCP grant regression passed separately. All 92 distinct public context checks passed across the two attributed runs. All 90 exported public receipts and two direct checkpoint receipts passed the frozen canonical result and applicable context-data schemas. Both ordinary CLI builds produced the same SHA-256. [verified]
+
+The original run remains terminal 1 because its public harness incorrectly expected silence for a JSON-mode CLI parse error. The follow-up corrected only that verifier expectation and ran the remaining public matrix; it did not rerun the passed workspace/native suites or first 12 public cases. No product source changed between runs. [verified]
+
+## Target, approval and criteria
+
+Repository `latent-sre/agenticsre-rust`; R1 commit `e0d223c5ae6c2192417515d749f9ce912fe1dd1a`, tree `b16a46821256077181c5566cbd814c065a697d6c`, based on R0 `afd2929d80e5fa176eb39f3be942a7197726a8ee`. Original snapshot `/tmp/agenticsre-context-r1-snapshot-yvmh2dtw`; 315-file manifest `/tmp/agenticsre-context-r1-snapshot.json`, SHA-256 `fab13d9470f8d6c27a580d90fd7e41bc538fd5da68183e32036e2e6d7cde51e5`. Original and disposable copy HEAD/tree/clean status matched before each run; every original and captured archive member was checked again afterward. [verified]
+
+The parent supplied independent static APPROVE for this exact R1/tree, with the three R0 P2 findings resolved, zero new/unresolved findings and zero P0/P1 findings. R0 was not executed by this verifier. Builder pre-fix red/green evidence and the static verdict are sourced from their separate handoffs; no independent R0-red execution is claimed here. [sourced]
+
+Acceptance is the frozen `docs/context.md` contract and the caller's scoped handoff: explicit startup source/freshness authority, literal exact service/environment resolution, optional selector disambiguation, provenance, bounded strict schemas, history/partial/required-binding behavior, inert metadata, no adapter authority expansion, existing grant regression and cleanup. The contract deliberately limits this capability to an offline fixture export; it is not an authoritative live catalog or a dispatch/grant mechanism. [sourced]
+
+## Exact source, binary and runtime identities
+
+| Identity | Observed value |
+|---|---|
+| Production `context.rs` SHA-256 | `039bb30b61edb893213d226b4f21cf9753121bddc2e1348049e080f69f2a071b` |
+| Both original-only source tar SHA-256 | `80794a4f6c2f6116904eaca821cf55981564321702f9a45433ffe024a71e0b5e` |
+| Both ordinary CLI binary SHA-256 | `22b8a16efbfce9fc03f1e6ed7ac0d64437757a38137124ba355f8bef36321153` |
+| Context input schema SHA-256 | `8d50105aca782dfd2790bdf5a44c92101663694ac40491d573ec75b4f27f0fef` |
+| Context export schema SHA-256 | `279f2a0a54fae33a0a187a4e7a00da4d8d601f41bd8804434b71bca5828d3923` |
+| Context data schema SHA-256 | `af8c6b7b61d7183a3fe85c6be94686a4c96579dee2edfb048816996db0b42b04` |
+| Cached Rust image | `docker.io/library/rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959` |
+| Cached base actual image ID | `sha256:ab239914c9d2fbe5ef024c5314dae21e2a2c43618086e169d78a754429978b97` |
+| First disposable image | `sha256:0d43b080deaeabe7d986f6e1b501934ce44e266d7dc68112cba092fb0d248861` |
+| Focused disposable image | `sha256:47dd61e1ada44d29d803791a56746f59f6e53d98f42c3ae5388c298b5bae1382` |
+
+All table identities were observed or independently read back. The binary was built normally with `cargo build -p workbench-cli --locked --offline`, after feature-gated tests in the first lane. Both native observations have the identical hash, not an inferred same-source equivalence. Binaries were ephemeral target-tmpfs artifacts and are not retained exports; exact source, logs, hashes and receipts remain. [verified]
+
+Both lanes observed Rust 1.98.0 (`88d9e12ae178fab0fb5cc050a94da85685d449ea`), Cargo 1.98.0 (`797e8a9bc`), Python 3.13.5, Debian 13.6 x86-64 and kernel `7.0.0-34-generic`. Runtime versions were re-read in the focused lane. Root-owned Bubblewrap 0.9.0, rg 14.1.0 and Git 2.47.3 identities are retained in each raw log. All 260 locked registry archives were cached and checksum-verified as data; no downloads occurred. [verified]
+
+## Criterion-level verdicts
+
+| Criterion | Verdict and evidence |
+|---|---|
+| CLI/structured parity | PASS — complete semantic receipts compared after validating each age from its own observed timestamp/review time, then normalizing only invocation identities/timing, source observation times and that independently checked age [verified] |
+| Explicit environment; exact IDs; optional team/deployment | PASS — omitted environment, unknown/case-changed service, prod fallback, unmatched selectors and ambiguous matches refused; either optional selector disambiguates [verified] |
+| Source revision/digest/review provenance | PASS — exact fixture bytes hashed before/after every call; selected declaration preserved; source IDs/revisions/digests and sourced/untrusted state checked [verified] |
+| Missing, stale, retired, future and required bindings | PASS — no usable fallback; target/environment/organization missing/empty cases, environment mismatch and both age-policy endpoints checked [verified] |
+| Optional omissions and dependency direction | PASS — absent owners/forward remain absent and partial; declared empty lists remain complete; distinct forward/reverse declarations preserved [verified] |
+| Strict shapes and version | PASS — unknown/null fields, duplicate top/source/record fields, unsupported revision, wrong source kind and positional arrays at every struct location refused [verified] |
+| Lexical review timestamps | PASS — X/space separators, lower z, negative-zero UTC suffix, non-UTC and over-64 values refused; explicit +00:00 preserved [verified] |
+| Input/output bounds | PASS — exact 256 KiB and 128-record boundaries accepted; excess bytes/records, depth 17 and selected output over 64 KiB refused [verified] |
+| Descriptor admission | PASS — FIFO without a writer, device, directory, relative/parent-traversal paths and final/intermediate/chained/dangling symlinks refused promptly [verified] |
+| Startup and wire authority | PASS — source/age pairing and range enforced; wire source/runtime/permission/credential/target overrides refused; discovery with a FIFO still reports requires_configuration; UI/MCP source startup refuses without stdout [verified] |
+| Metadata effects and bounded disclosure | PASS for tested canaries — source/external bytes unchanged, no shell marker, no connection to a private metadata URL canary, no credential/unrelated-record leak and no child status claimed [verified] |
+| Deadline and cancellation | PASS for explicit direct read-checkpoint scope — actual unchanged context implementation exercised with elapsed monotonic deadline and pre-set cancellation control [verified] |
+| Shared operation/grant regression | PASS — cold full workspace suite plus one actual native restricted-MCP pinned-policy regression [verified] |
+| Schema conformance | PASS — 90 public and two checkpoint receipts validated externally against frozen canonical schemas [verified] |
+| Cleanup | PASS — focused process residue empty, scratch absent, both exact container/image removals and final global context-container readback clean [verified] |
+
+## Commands, statuses and original failure
+
+Exact command arrays, working directories, own exit codes, runtimes and log digests are retained in each run's `commands.json`; CHECK_BEGIN/CHECK_END lines bind individual native checks. No pass was inferred from the exit of a later command in a pipeline. [verified]
+
+First run `/tmp/agenticsre-context-cally-8stdgxse`, native cwd `/opt/workbench-source`: [verified]
+
+```text
+cargo test --workspace --all-targets --all-features --locked --offline -- --nocapture
+cargo test -p workbench-cli --test mcp --all-features --locked --offline native_restricted_commands_preserve_receipts_and_pinned_policy -- --include-ignored --exact
+cargo build -p workbench-cli --locked --offline
+/usr/bin/python3 -I -B .verification/context-public.py target/debug/save
+```
+
+Statuses were 0, 0, 0 and 1. Workspace: 151 passed/19 ignored/zero failed across 18 test binaries. The explicit native test: one passed/eight filtered. The first 12 public invocations passed. The 13th, missing `--env` under `--json`, returned the expected product exit 2 and nonempty stdout; the verifier incorrectly expected silence. `main.rs:516` implements the existing canonical invalid_usage response. The first attempt preserves its failure and original hash-only record for that unparsed stdout; a later receipt does not rewrite the original observation. [verified outcomes; sourced parse behavior]
+
+The parent classified and authorized a shorter follow-up: 120-second staging, 420-second native timeout, actual launch before 00:48 UTC and all executable work before 01:02:57 UTC. The full 900-second lane cutoff of 00:42:57 was not extended. Focused runtime launched before 00:45:01 and the driver was terminal by 00:45:39 UTC. [verified command/timing bounds; sourced follow-up authority retained in `focused-followup-authority.json`]
+
+Focused run, same cwd/source: [verified]
+
+```text
+cargo build -p workbench-cli --locked --offline
+/usr/bin/python3 -I -B .verification/context-public.py target/debug/save --remaining-only
+```
+
+Both exited 0. Five JSON-mode usage cases now assert the canonical invalid_usage receipt; only plain UI/MCP startup cases require empty stdout. All 80 remaining checks passed. The first 12 public cases, workspace tests, direct checkpoint test and native grant check were carried explicitly and were not repeated. Final product-process residue check exited 0 with an empty observation. [verified]
+
+## Verifier-owned tests and exact attribution
+
+The original 315 production/test/documentation files were unchanged in both execution copies and source archives. Separate test artifacts were injected only into disposable staging: `.verification/context-public.py` and `crates/workbench-core/tests/verifier_context_control.rs`. Complete copies/hashes are retained. The ordinary product build does not include the integration-test module. [verified]
+
+The core test hash is `0163967b4f63e9af82f43fd6d548a5960a2b2bf42a672610a065f32930914816`. It includes the exact frozen `context.rs`, imports actual public request/result/OperatorContext/RunControl types, supplies a backdated monotonic start or pre-set signal, calls the real read checkpoint and checks its receipt plus unchanged source. It does not stub behavior or substitute normalization. Its two receipts are direct function-level proofs; they do not establish a live public-CLI signal race, kernel scheduling guarantee or total-operation preemption. [verified]
+
+Focused public harness SHA-256 is `bc316247ce4f3d47f1d13c62ccecce7ce5a084039d13f80c6ab42cc29e052d46`; focused lane `2f1bdc721937bfadc13c66f50ec537c60aa4b3a5a915d06b29169a2080392f9e`; driver `1cb0cfe49af66f1f35f1dcc247427c00f8f353a91f9b1218e1a972276fbdc730`. The first harness is retained separately, including its wrong expectation. No source/roadmap edits, commits, pushes, custom ELF probes, host installs or service changes were made by this verifier. [verified]
+
+## Independent data validation
+
+This command ran outside product execution, cwd `/home/hawkfire/rusty`, and exited 0: [verified]
+
+```text
+/home/hawkfire/rusty/agenticsre-rust/.venv/bin/python -I -B /tmp/agenticsre-context-cally-ycwbvgb2/validate-combined-context.py
+```
+
+The validator imports no product code. It rejects duplicate/nonfinite JSON, resolves only locally registered frozen schemas, verifies both source archives member-by-member against all 315 original hashes, confirms exact source/binary attribution and validates each exported result plus applicable context-data. It checks selected source digests against the independently logged pre-call fixture digests and records a hash for every receipt. [verified]
+
+Counts: first run 12 public receipts plus two direct checkpoint receipts; focused run 78 public receipts plus two plain startup checks without receipts. Thus 92 distinct public checks, 90 public receipts and 92 total schema-validated receipts. Python 3.14.7/jsonschema 4.26.0/referencing 0.37.0 were observed. No caller-supplied evidence-record schema was provided; the custom report and artifact hash manifest are not claims of a separately validated evidence-record contract. [verified]
+
+## Enforced isolation and cleanup
+
+All Rust/dependency/test/product execution occurred in the private Cally container. Host operations were trusted data staging/hash inspection, archive extraction after locked checksums, SSH orchestration and schema validation of returned data. Source/vendor/runtime were supplied through a root-owned COPY-only image with no RUN stage, image pull or runtime network. No host paths or credentials were exposed to product execution. [verified]
+
+Both lanes retained UID/GID1000, read-only root/source, private PID/network namespaces, NNP, cap-drop ALL, 2.5 CPUs/4 GiB/512 PIDs, target2 GiB and tmp512 MiB tmpfs, two Cargo/test threads. Runtime checks observed source owner0/read-only, zero effective capabilities, NoNewPrivs1, an empty route table and exact cgroup limits. The follow-up tightened runtime from 900 to 420 seconds. Both strict >=8 GiB pre-staging assertions passed. [verified]
+
+The first handle2344 is terminal1; focused handle17968 is terminal0. Exact containers `agenticsre-context-8stdgxse` and `agenticsre-context-ycwbvgb2` were removed, with empty name readbacks. Both disposable image inspections returned125 with `image not known`. Final `ps --all --filter name=agenticsre-context-` was empty; cached base image ID was unchanged; no owned local drivers remained. Both extraction/vendor/execution-copy trees were absent. The focused scratch directory and product-process observation were empty. The first lane's pre-removal residue check was skipped after its assertion; exact outer removal is its cleanup proof. Source archives and evidence are intentional retained data. [verified]
+
+## Preserved failure and limits
+
+The first-run packet remains INCONCLUSIVE for its unfinished public matrix. Packet SHA-256 `a2d5d21c659025701329d013785797e7174ddb9008a1a2050785a8ffd5a4df6a`; its 29-artifact manifest SHA-256 `28ec18d2ef1977b837b12fd6964cf7ba7ab6c646b3bf8828ab9274c5125b8480`. Both directories are sealed with files0444/directories0555 and SHA-256 inventories. This is a read-only, change-detectable seal, not an assertion that owner/root cannot modify files. [verified]
+
+The remaining ordinary ignored tests were not silently counted as passed. Extensive prior browser/Grafana/native profile proofs remain attributed to their earlier revisions; unchanged frontend/runtime suites were not repeated beyond relevant workspace/grant checks. The existing restricted-profile namespace-setup-refusal gap remains open. No live catalog, authoritative-source integration, context UI/MCP tool, target dispatch, catalog mutation, Windows behavior, broad Linux compatibility or release/package refresh was accepted by this slice. Kernel-unavailable descriptor prerequisites and public-CLI in-flight signal timing were not independently injected here. [unverified/out of scope for those wider criteria]

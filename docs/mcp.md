@@ -1,7 +1,8 @@
-# Stdio MCP — next implementation boundary
+# Bounded stdio MCP
 
-This is the next CAP-06 increment after the local GUI PoC. Execution status belongs
-in [the roadmap](roadmap.md). It is a contract for local fixture work, not an installed host
+This is the CAP-06 increment after the local GUI PoC. [Independent fixture verification](mcp-verification.md)
+records acceptance; current execution status belongs in [the roadmap](roadmap.md). This contract
+covers local fixture work, not an installed host
 integration or a grant to access production systems.
 
 ## Mission

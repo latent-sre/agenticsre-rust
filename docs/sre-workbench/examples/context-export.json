@@ -1,0 +1,48 @@
+{
+  "records": [
+    {
+      "bindings": {
+        "environment": "dev",
+        "organization": "synthetic-org",
+        "target": "fixture-checkout"
+      },
+      "dependencies": {
+        "forward": [
+          {
+            "environment": "dev",
+            "service": "database"
+          }
+        ],
+        "reverse": []
+      },
+      "deployment": "blue",
+      "environment": "dev",
+      "last_reviewed": "2026-10-02T00:00:00Z",
+      "owners": [
+        "platform"
+      ],
+      "required_bindings": [
+        "target",
+        "environment"
+      ],
+      "resource_aliases": [
+        {
+          "alias": "checkout",
+          "kind": "grafana.dashboard"
+        }
+      ],
+      "runbooks": [
+        "https://example.invalid/runbooks/checkout"
+      ],
+      "service": "checkout",
+      "state": "active",
+      "team": "platform"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "id": "synthetic-team-export",
+    "kind": "fixture-export",
+    "revision": "fixture-1"
+  }
+}

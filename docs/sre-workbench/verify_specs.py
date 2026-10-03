@@ -93,6 +93,9 @@ def main() -> int:
         ROOT / "docs/grafana-verification.md", ROOT / "docs/read-profile.md", ROOT / "docs/mcp.md",
         ROOT / "docs/read-profile-verification.md", ROOT / "docs/ui.md",
         ROOT / "docs/ui-verification.md",
+        ROOT / "docs/mcp-verification.md", ROOT / "docs/packaging.md",
+        ROOT / "docs/packaging-verification.md", ROOT / "docs/context.md",
+        ROOT / "docs/context-verification.md",
     ]
     for document in [*markdown, *repository_docs]:
         text = FENCE.sub("", document.read_text(encoding="utf-8"))

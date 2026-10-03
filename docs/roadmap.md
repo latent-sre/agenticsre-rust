@@ -4,12 +4,23 @@
 latent-sre/agenticsre-rust as the working repository. Scope and dependencies live in the
 [planning package](sre-workbench/README.md); this file owns current execution status.
 
-**Paused at the owner's next-break request:** Work resumed after commit `ad85dc7` and resolved the
-remaining MCP product review finding. Correctness/security reviews approve R2; native acceptance
-is incomplete because the raw command client's parity comparator includes a per-invocation source
-timestamp. The current run and cleanup are finished; preserve its evidence and fix that comparator
-when the owner resumes. Packaging has not started. The owner subsequently authorized committing
-and pushing this paused checkpoint; implementation remains paused and no integration is installed.
+**Three-hour build session:** The owner resumed work from pushed checkpoint `719fee3` and authorized
+a local review commit at the deadline. Start: **2026-10-02 22:17:57 UTC** (17:17:57 America/Chicago).
+Stop/commit deadline: **2026-10-03 01:17:57 UTC** (20:17:57 America/Chicago). Reserve the final
+15 minutes for cleanup, evidence and the commit. New full Cally jobs must start before
+**00:42:57 UTC**, and all executable work must end by **01:02:57 UTC**, leaving cleanup margin.
+Shorter late checks require their own bounded duration; do not start a job that can overrun the deadline.
+Finish the remaining MCP acceptance, then build the Linux development bundle. Keep passed checks,
+resolved product findings and existing execution boundaries. This session authorizes committing
+the review checkpoint, without a new push or live installation.
+
+**Review checkpoint:** MCP fixture acceptance, Linux/stateless development packaging and offline
+core/CLI context resolution are complete for their stated slices. Native product execution ended
+by 00:45:39 UTC; cleanup, sealed evidence and final documentation checks passed before the reserved
+commit period. Final checks covered 25 schemas, 24 positive/11 negative fixtures and 25 repository
+documents; 197 product/assets/schema/tooling files matched the approved R1 capture. The local
+three-hour checkpoint is ready for owner review. Work pauses at the scheduled commit boundary;
+the next resume items and wider acceptance gaps remain listed below.
 
 ## WORKBENCH-001 — bootstrap the product
 
@@ -17,8 +28,9 @@ and pushing this paused checkpoint; implementation remains paused and no integra
 **Owner:** Codex coordinates implementation and evidence; human owner retains live adoption/release decisions.
 **Outcome:** Establish this repository as the product home, preserve the complete plan and its
 provenance, and make the first command-runner slice concrete and reviewable.
-**Next action:** The selected browser PoC under WORKBENCH-006 is complete. Use the documented launch
-workflow; the next planned implementation increment is the deferred bounded MCP adapter. Reuse the accepted
+**Next action:** The selected browser PoC and bounded MCP fixture slice are complete. Use the
+documented launch workflows; Linux development packaging is accepted and offline context fixtures
+are independently accepted through the core/CLI. Reuse the accepted
 core and Cally tooling; rerun affected checks for subsequent changes. Native Windows and full P1
 acceptance remain open.
 **Evidence:** [Import record](plan-import.md), [capability specifications](sre-workbench/capabilities.md),
@@ -38,8 +50,8 @@ integration does not imply it is installed, authorized, connected or operational
 | WP-02 through first WP-04 increment | Complete for Linux PoC: independent review APPROVE and executable verification PASS; 19 Rust tests, 77 independent CLI invocations and 14 schema cases. Review P2 late-signal mapping and verifier-found Cargo default were fixed | [Acceptance record](poc-verification.md); preserve broader platform/policy gaps |
 | Specification baseline | Grafana snapshot passed 20 schemas, 21 positive and 9 negative fixtures, all IDs; Python 3.14.7 and dependencies pinned | Validate changed documentation at integration boundary |
 | Cally assistance | Grafana snapshot passed 68 Rust tests and 96 HTTPS cases; minimal lane passed 17 native HTTPS tests without Python and refused both Python tasks. Both containers removed | Reuse bounded lanes for material changes; [acceptance record](grafana-verification.md) |
-| Adapter baseline | Dashboard, error-budget and native Grafana fixture adapters accepted; provenance retained in [adapter notes](adapter-notes.md) | Restricted-command evidence and local browser interface; MCP deferred |
-| Hosted CI | Completed checkpoint `93fc339` and prerequisite repair `7b6aed1` pushed to main; [Rust PoC](https://github.com/latent-sre/agenticsre-rust/actions/runs/37041979990) and [specifications](https://github.com/latent-sre/agenticsre-rust/actions/runs/37041980033) both passed on the repair commit | Preserve native/Cally acceptance separately; MCP remains local pending its own gates |
+| Adapter baseline | Dashboard, error-budget, native Grafana fixtures and bounded stdio MCP accepted; provenance retained in [adapter notes](adapter-notes.md) and [MCP verification](mcp-verification.md) | Linux development bundle; native Windows and live/installed-host acceptance remain separate |
+| Hosted CI | Completed checkpoint `93fc339` and prerequisite repair `7b6aed1` pushed to main; [Rust PoC](https://github.com/latent-sre/agenticsre-rust/actions/runs/37041979990) and [specifications](https://github.com/latent-sre/agenticsre-rust/actions/runs/37041980033) both passed on the repair commit | Current three-hour checkpoint is local for owner review; native/Cally acceptance is retained separately, with no new hosted result claimed |
 
 Execution authority: local source changes, disposable checks and bounded Cally build assistance
 are authorized. On 2026-10-02 the owner explicitly requested committing and pushing the completed
@@ -185,8 +197,9 @@ native Windows, live targets and publication retain their separate prerequisites
 
 ## WORKBENCH-005 — bounded stdio MCP parity
 
-**Status:** Paused after the R2b native verification checkpoint. Product reviews approve R2 and
-the R2b test/tooling delta; command-client acceptance remains incomplete as recorded below. The earlier
+**Status:** Complete for the bounded Linux fixture slice. [Independent acceptance](mcp-verification.md)
+passed with earlier unchanged evidence retained and remaining host/platform/profile gaps explicit.
+Product reviews approve R2 and the R2b/R2c test/tooling deltas, with product bytes unchanged. The earlier
 owner-prioritized GUI and checkpoint `93fc339` remain accepted within their recorded scope.
 The [implementation boundary](mcp.md) now specifies both tested protocol revisions, immutable
 root/target/configuration authority, one owned worker and bounded pipe transport. A source-backed
@@ -340,6 +353,15 @@ receipt-pair comparison. No run-owned job or process remains.
 handling, check it against the captured receipt pair, then freeze and independently run the pending
 command/HTTPS clients. Keep complete receipt schemas and all semantic fields checked. Do not
 restart already passed suites without a material reason. Finish MCP acceptance before packaging.
+**R2c completion in the three-hour session:** The comparator regression failed before correction
+and all three tests passed afterward, including semantic-difference and original-receipt guards.
+The exact retained receipt pair compares equal. Independent delta review APPROVE; every product
+byte remains unchanged from approved R2. Cally passed 15 native command checks (all six lifecycle
+cases), 23 HTTPS checks, all 31 exported receipts and 20 advertised tool-schema observations.
+Final residue was empty and exact cleanup passed. Packet/source identities and retained R2/R2b
+coverage are in [MCP verification](mcp-verification.md). Product fix rounds remain 2; test/tooling
+correction rounds total 2. Actual host installation, Windows/live compatibility and the original
+namespace-refusal acceptance gap remain open. Continue with Linux packaging below.
 **Outcome:** Launcher-granted discovery and equivalent core receipts for restricted commands,
 the numerical task and explicit Grafana fixture targets, with bounded framing and cancellation.
 **Gates:** Declare tested protocol versions; freeze and independently review/verify the adapter
@@ -402,8 +424,8 @@ Existing live/publishing/host-change authority is unchanged.
 
 ## WORKBENCH-007 — Linux development artifact and rollback
 
-**Status:** Queued after the current MCP acceptance gate; completes the outstanding Linux portion
-of WP-05 before adding further execution surfaces. This does not close native Windows acceptance.
+**Status:** Complete for the Linux/stateless development slice: independent R1 review APPROVE and
+installed acceptance PASS. This does not close native Windows, release clearance or the AC-36 pilot.
 **Outcome:** A reproducible development bundle with exact binary/source identities, documented
 runtime prerequisites, and a versioned disposable installation that can be upgraded and rolled back.
 **Scope:** Initial CAP-25 packaging/diagnostics and the Linux portions of AC-34/AC-35. AC-36 remains
@@ -414,8 +436,148 @@ PATH edits or production configuration. Preserve the embedded browser and stdio 
 **Gates:** Verify the packaged mission transactions and executable trust/modes after installation;
 bind evidence to the actual artifact and tested Linux environment. Publication, live installation,
 actual MCP-host registration and Windows runtime evidence remain separate acceptance requirements.
-**Read-only preparation:** No implementation has begun. A portable archive with a source-qualified
+**Implementation contract:** [Linux bundle](packaging.md). A portable archive with a source-qualified
 artifact ID, manifest/checksums, license/notices, compatibility/dependency notes and explicit
 versioned paths can use the existing offline doctor and embedded task/UI/MCP interfaces without
 core changes. Rehearsal must use two distinguishable artifacts, reject corruption before activation,
 preserve synthetic external config/evidence, and rerun the packaged mission after rollback.
+**First builder checkpoint:** Deterministic bounded USTAR creation, digest-bound verification,
+versioned staged installation and separate atomic activation/rollback are implemented in
+`tools/package-linux.py`. Public CLI integrity/selection tests passed 23 cases on Python 3.12.3
+and 3.14.7; hash-gate mutation controls failed as expected. Root's two selected rollback/tamper
+checks passed. Exact product execution and missing-Python behavior were pending Cally at this checkpoint.
+Root's checksum-bound notice preparation includes project/upstream notices, all locked Cargo
+registry packages, 17 pinned runtime npm packages and selected Tailwind CSS/Vite contributors
+(19 npm notice records), with distribution gaps explicit.
+**R0 review:** REQUEST CHANGES. A P1 permits same-size input replacement between hashing and
+validation/installation; a P2 permits declared dependency notice paths absent from the bundle.
+The builder owns deterministic regressions and corrections; no native packaging job launched
+before correction. Review/fix rounds: 1 underway; incomplete builder returns: 0. R0 capture:
+`/tmp/agenticsre-package-r0-snapshot-o9ehx0jr`, commit
+`5bd0693cc2968c864972ca0fda7a193481ca5708`, tree
+`88a33326274ba69eddad949c94ea5cc1cbdbdbfb`; 298-file manifest SHA-256
+`9371a1198444d00250fa707e07f3c00ef5e8e6a7f626dc09567546dff2ab3f40`.
+All Rust/embedded frontend bytes match accepted MCP R2c.
+**Artifact export prerequisite:** Independent real-engine preflight passed using only fixed
+synthetic data files and the bounded export barrier/controller. Exact bytes/digests matched;
+container cleanup/readback passed. Evidence: `/tmp/agenticsre-package-export-preflight-rekfq7uk`.
+Actual builds and installed-product transactions awaited the corrected frozen candidate at this checkpoint.
+**R1 correction:** The archive operations now hash/parse/install an unnamed private bounded copy
+of the external input, so a writable original cannot replace validated bytes between passes.
+Actual same-size file replacement reproduced both verify/install failures before the correction
+and retained authorized bytes afterward. Declared dependency notice references now require safe
+paths to included files across creation, verification, installation and selection. Four public
+missing-notice cases failed before correction and now refuse. All 31 tests passed on Python
+3.12.3 and 3.14.7; root's two race cases and missing-notice spot check passed. Evidence:
+`/tmp/agenticsre-package-r1-p1-{red,green}.log`,
+`/tmp/agenticsre-package-r1-p2-{red,green}.log`, `/tmp/agenticsre-package-r1-green.log` and
+`/tmp/agenticsre-package-r1-root-spot.log`. Independent R1 re-review APPROVE; both source findings
+are resolved, with zero new or unresolved findings. Product/runtime driver bytes remain unchanged.
+The corrected 301-file source capture is commit `9c1ee1c7e058f48afbb99bcbb867a519392ba066`, tree
+`81d6b895a346475bc9017a6c39778fc2b4208df6`; capture manifest SHA-256
+`d264a8f5c105ba8276fd27714102850b82caac8ebc2e8639094850c624ee1009`.
+Packaging review/fix rounds: 1 completed; incomplete builder returns: 0.
+**Real Cally artifacts:** Current and previous ordinary binaries built sequentially from exact accepted
+captures; deterministic repack and all eight installed positive checks passed. Installed CLI/tasks,
+current stdio MCP/UI, explicit upgrade/rollback, hashes/modes and unchanged external canaries passed.
+External DATA-only validation checked both exported archives and 17 exact schema-valid receipts.
+Archives and build metadata are retained in `target/packages/linux-r1`, with full identities in
+[packaging verification](packaging-verification.md). The first lane's overall exit was 1 because
+nested proc setup failed before the missing-Python payload; a follow-up likewise stopped on an
+extra verifier assertion. Those failed setups remain preserved. A separate COPY-only disposable
+image with non-executable fixed Python bindings completed the scoped negative payload exit 0;
+its five receipts are independently schema-valid. All four focused groups and cleanup passed,
+giving 22 validated receipt observations in total. The combined sealed packet is
+`/tmp/agenticsre-package-unavailable-python-mhf8ewgw/VERIFICATION.md`, SHA-256
+`d5fd9c9e29e4f91ef96db21602d4a2948c995b9dd637942f661b8a4255dc9044`.
+Its 19-artifact digest manifest is
+`ff650194e0056f62ede74fa1ed91f3e3fd25bc5c6fe18ec781788ed45492269d`.
+No run-owned jobs, containers or disposable images remain. This does not repeat the accepted
+positive builds or weaken the existing outer execution boundary. The fixture proves unavailable
+fixed runtime bindings; a renamed authentic interpreter runs the verifier.
+
+## WORKBENCH-008 — sourced service context fixtures
+
+**Status:** Complete for the offline core/CLI fixture slice: R1 static review APPROVE and independent
+Cally acceptance PASS. The [fixture contract](context.md) fixes source shape, trusted age policy,
+authority and bounds; [native verification](context-verification.md) preserves scope and evidence.
+**Outcome:** Resolve explicit service/environment metadata from a bounded operator-selected record
+export, with source/review identity and honest stale/retired/ambiguous/partial states. No live
+catalog or automatic target dispatch. Actual team source/adapter remains the separate DEC-09 decision.
+**Scope:** First offline CAP-07/AC-12 slice through the existing core and CLI. Source paths remain
+trusted startup configuration; UI/MCP context exposure, catalog writes, credentials and live
+integrations stay outside this increment. Preserve the existing operation and grant behavior.
+**Time boundary:** Builder returns by 00:15 UTC for independent review and bounded Cally acceptance.
+Keep the session's 00:42 full-job cutoff and 01:02 executable cutoff; unfinished acceptance must
+remain explicit at the review commit rather than overrunning the three-hour deadline.
+**Builder checkpoint:** Core/CLI resolution, discovery, three typed schemas and fixtures are
+implemented. Seven public CLI tests passed, including structured-call parity, exact observed
+source identity, ambiguity/missing selectors, stale/retired/future records, incomplete bindings,
+optional omissions, malformed/null input, FIFO/devices and all-component symlinks. Source access
+pins with `O_PATH` and inspects the regular inode before data-open; it rechecks the descriptor's
+device/inode identity. Builder workspace tests passed 79 cases with six existing ignored tests;
+all-target/all-feature Clippy, formatting and specification checks passed (25 schemas, 24 positive
+and 11 negative fixtures). Root's selected descriptor/FIFO/symlink check passed. Evidence:
+`/tmp/agenticsre-context-regressions.log`, `/tmp/agenticsre-context-clippy.log` and
+`/tmp/agenticsre-context-specs.log`. At this checkpoint, review/native acceptance, cancellation/
+deadline and selected output/record-count boundaries were still unverified; the first frozen review
+was next. The accepted Linux bundle above predates this new feature and retains its separate
+source/binary identity.
+**R0 review:** REQUEST CHANGES; three independent P2 findings, zero P0/P1. Positional arrays can
+enter Serde-derived object positions contrary to the export schema; the pinned time parser accepts
+lexical forms outside the declared timestamp grammar; fixed-date freshness tests expire after
+30 days. Correction round 1 is underway with public red/green regressions, strict shape/timestamp
+guards and generated review timestamps for positive tests. No R0 Cally payload was run. R0 source:
+`/tmp/agenticsre-context-r0-snapshot-hovm9lf_`, commit
+`afd2929d80e5fa176eb39f3be942a7197726a8ee`, tree
+`76f41cf3aeb76f254bb6bbe01a7d4122f6840a83`; 315-file manifest SHA-256
+`ea9777675fc18e0983215305649e5337a11d10abc9aac275d9d0c63d2bf79236`.
+**R1 correction:** Public controls reproduced accepted positional source arrays and invalid `X`
+timestamps before correction (exit 0 rather than the required refusal). Explicit object guards now
+cover each declared object position; lexical timestamp checks enforce the published UTC grammar
+and maximum length before parsing. Positive tests generate current review timestamps and normalize
+only observation time and its validated age for parity. All ten focused CLI tests, all-target/
+all-feature Clippy, formatting and diff checks passed. Only `context.rs` and its CLI tests changed.
+Evidence: `/tmp/agenticsre-context-r1-{red,green,clippy}.log`. Correction round 1 implemented;
+fresh frozen re-review and native acceptance follow below.
+**R1 review:** APPROVE for the exact two-file correction; all three original P2s are resolved,
+zero new/unresolved findings and zero independent P0/P1s. Root's three selected new rejection/
+valid-time regressions passed. Frozen R1: `/tmp/agenticsre-context-r1-snapshot-yvmh2dtw`, commit
+`e0d223c5ae6c2192417515d749f9ce912fe1dd1a`, tree
+`b16a46821256077181c5566cbd814c065a697d6c`; 315-file manifest SHA-256
+`fab13d9470f8d6c27a580d90fd7e41bc538fd5da68183e32036e2e6d7cde51e5`.
+Context review/fix rounds: 1 completed; incomplete builder returns: 0.
+**Native acceptance:** The bounded Cally job started before 00:39:55 UTC against approved R1;
+its full workspace/all-feature and public context results are recorded below. No R0 native run occurred.
+Run-owned container `agenticsre-context-8stdgxse`, derived image
+`sha256:0d43b080deaeabe7d986f6e1b501934ce44e266d7dc68112cba092fb0d248861`;
+evidence `/tmp/agenticsre-context-cally-8stdgxse`. The strict pre-staging 8 GiB floor passed after
+root cleaned only the completed builder's ignored Cargo cache, preserving all accepted binaries,
+archives and evidence. No new full Cally job may start after the session cutoff.
+**Final native observations:** The first R1 job passed 151 workspace tests (19 explicitly ignored),
+the selected native MCP grant test and 12 public cases. It then hit a verifier expectation error:
+JSON CLI usage errors emit canonical `invalid_usage` receipts rather than empty stdout. Product
+behavior was correct and unchanged. One focused late check, authorized for a 120-second staging/
+420-second runtime bound with launch before 00:48 UTC, rebuilt only the ordinary CLI and ran the
+remaining 80 cases. It finished by 00:45:39 UTC. Both builds have identical SHA-256
+`22b8a16efbfce9fc03f1e6ed7ac0d64437757a38137124ba355f8bef36321153`.
+All 92 distinct public checks passed. All 90 public and two direct cancellation/deadline checkpoint
+receipts are schema-valid. Source/external canaries stayed unchanged, metadata loopback connections
+were zero and no product residue remained. Exact cleanup and all 315 source hashes passed; no
+run-owned containers/drivers/staging remain. The original incomplete run is preserved.
+Combined sealed packet: `/tmp/agenticsre-context-cally-ycwbvgb2/VERIFICATION.md`, SHA-256
+`d5cf0ebe34db98e721c6bec4080cabeb17abb0c729c9665f999686d333d2a28e`; 35-artifact manifest
+`36a2b5a92a8836e7c5322ec7f9b7bada8ebc8b7d123ddcb7676013d2c6919a98`.
+Unchanged packet/receipt copies are tracked under `docs/evidence` for review. The one injected
+Cargo test covers two deterministic checkpoints; it does not establish public in-flight signal timing.
+Context executable-client correction rounds: 1; product review/fix rounds: 1. No new executable
+checks are needed for this slice. Finish evidence and the session's review commit.
+
+## Next resume boundary
+
+Review this three-hour checkpoint. The remaining product queue is unchanged: native Windows and
+restricted-profile namespace-refusal evidence; release/dependency clearance and the AC-36 human/
+agent pilot; actual team source selection (DEC-09); and the P3 diagnostic/query/capture/compare
+features in the delivery plan. A context-containing Linux artifact needs its own new source/build
+identity and installed mission evidence. Keep the earlier accepted archives and frontend/runtime
+proofs as baselines. Source-aware UI/MCP context grants and live integrations remain separate work.

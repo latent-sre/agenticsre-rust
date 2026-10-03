@@ -1,0 +1,223 @@
+{
+  "$defs": {
+    "record": {
+      "additionalProperties": false,
+      "properties": {
+        "bindings": {
+          "additionalProperties": false,
+          "properties": {
+            "environment": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            "organization": {
+              "maxLength": 128,
+              "minLength": 0,
+              "type": "string"
+            },
+            "target": {
+              "maxLength": 128,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          "required": [],
+          "type": "object"
+        },
+        "dependencies": {
+          "additionalProperties": false,
+          "properties": {
+            "forward": {
+              "items": {
+                "$ref": "#/$defs/selector"
+              },
+              "maxItems": 32,
+              "type": "array"
+            },
+            "reverse": {
+              "items": {
+                "$ref": "#/$defs/selector"
+              },
+              "maxItems": 32,
+              "type": "array"
+            }
+          },
+          "required": [],
+          "type": "object"
+        },
+        "deployment": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        "environment": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        "last_reviewed": {
+          "format": "date-time",
+          "maxLength": 64,
+          "pattern": "(Z|\\+00:00)$",
+          "type": "string"
+        },
+        "owners": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "type": "array"
+        },
+        "required_bindings": {
+          "items": {
+            "enum": [
+              "target",
+              "environment",
+              "organization"
+            ]
+          },
+          "maxItems": 3,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "resource_aliases": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "alias": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              "kind": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "kind",
+              "alias"
+            ],
+            "type": "object"
+          },
+          "maxItems": 32,
+          "type": "array"
+        },
+        "runbooks": {
+          "items": {
+            "maxLength": 2048,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "type": "array"
+        },
+        "service": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "team": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "service",
+        "team",
+        "environment",
+        "state",
+        "last_reviewed",
+        "required_bindings",
+        "bindings"
+      ],
+      "type": "object"
+    },
+    "selector": {
+      "additionalProperties": false,
+      "properties": {
+        "deployment": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        "environment": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        "service": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        "team": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "service",
+        "environment"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "urn:sre-workbench:spec:context-export:0.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "records": {
+      "items": {
+        "$ref": "#/$defs/record"
+      },
+      "maxItems": 128,
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "source": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        "kind": {
+          "const": "fixture-export"
+        },
+        "revision": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "revision"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "source",
+    "records"
+  ],
+  "type": "object"
+}

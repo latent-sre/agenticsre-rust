@@ -24,6 +24,16 @@ struct Cli {
         long,
         global = true,
         value_name = "FILE",
+        requires = "context_max_age_days",
+        help = "Explicit absolute offline fixture export; no source discovery or dispatch authority"
+    )]
+    context_source: Option<PathBuf>,
+    #[arg(long, global = true, requires = "context_source", value_parser = clap::value_parser!(u16).range(1..=365), help = "Maximum review age in days, 1..365; paired with --context-source")]
+    context_max_age_days: Option<u16>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "FILE",
         help = "Restrict commands using an explicit absolute linux-read-v1 policy; requires --cwd, Git/rg grammar and Linux isolation. No fallback."
     )]
     read_policy: Option<PathBuf>,
@@ -53,6 +63,11 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
+    /// Resolve offline service metadata without selecting a live execution target
+    Context {
+        #[command(subcommand)]
+        command: ContextCommands,
+    },
     /// Run a native executable with literal arguments after --
     Exec(ProcessArgs),
     /// Inspect a command without spawning it
@@ -96,6 +111,20 @@ enum Commands {
     },
     /// Report offline runtime readiness and limitations without spawning probes
     Doctor,
+}
+
+#[derive(Subcommand)]
+enum ContextCommands {
+    Resolve {
+        #[arg(long)]
+        service: String,
+        #[arg(long)]
+        env: String,
+        #[arg(long)]
+        team: Option<String>,
+        #[arg(long)]
+        deployment: Option<String>,
+    },
 }
 
 #[derive(Subcommand)]
@@ -295,6 +324,24 @@ fn parse_duration(value: &str) -> Result<u64, &'static str> {
 fn normalize(cli: Cli) -> Result<Request, Problem> {
     let restricted = cli.read_policy.is_some();
     let mut request = match cli.command {
+        Commands::Context {
+            command:
+                ContextCommands::Resolve {
+                    service,
+                    env,
+                    team,
+                    deployment,
+                },
+        } => {
+            let mut inputs = json!({"service":service,"environment":env});
+            if let Some(team) = team {
+                inputs["team"] = json!(team);
+            }
+            if let Some(deployment) = deployment {
+                inputs["deployment"] = json!(deployment);
+            }
+            Request::new("context.resolve", inputs)
+        }
         Commands::Exec(args) => process_request("process.exec", args, restricted)?,
         Commands::Command {
             command: CommandCommands::Inspect(args),
@@ -505,7 +552,11 @@ fn run() -> u8 {
             },
     } = &cli.command
     {
-        if cli.json || cli.record != "never" {
+        if cli.json
+            || cli.record != "never"
+            || cli.context_source.is_some()
+            || cli.context_max_age_days.is_some()
+        {
             workbench_mcp::invalid_startup();
             return 2;
         }
@@ -521,9 +572,14 @@ fn run() -> u8 {
         command: UiCommands::Serve { port, allow, root },
     } = &cli.command
     {
-        if cli.json || cli.record != "never" || cli.config.is_some() {
+        if cli.json
+            || cli.record != "never"
+            || cli.config.is_some()
+            || cli.context_source.is_some()
+            || cli.context_max_age_days.is_some()
+        {
             eprintln!(
-                "ui serve does not accept --json, --config or recording modes other than never"
+                "ui serve does not accept --json, --config, context source options or recording modes other than never"
             );
             return 2;
         }
@@ -542,6 +598,8 @@ fn run() -> u8 {
     }
     let json = cli.json;
     let context = OperatorContext {
+        context_source_path: cli.context_source.clone(),
+        context_max_age_days: cli.context_max_age_days,
         config_path: cli.config.clone(),
         read_policy_path: cli.read_policy.clone(),
         read_profile_launcher: cli

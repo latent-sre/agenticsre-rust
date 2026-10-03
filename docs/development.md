@@ -98,6 +98,20 @@ The browser driver starts actual embedded servers inside the sandbox. The local 
 marks native restricted-command checks as not run; it cannot replace Cally's required native lane.
 Do not run product listeners or browser checks on the host to bypass the declared test boundary.
 
+## Stdio MCP
+
+An MCP client launches the ordinary binary with pipes for stdin/stdout:
+
+```bash
+target/debug/save mcp serve --transport stdio --allow task.run
+```
+
+This grant exposes only the numerical error-budget task. Direct terminal/regular-file transport
+is refused. The [MCP contract](mcp.md) specifies request metadata for `2026-07-28` and the separate
+`2025-11-25` handshake, plus command/root and Grafana/target grants. Wire arguments cannot widen
+startup authority. The [acceptance record](mcp-verification.md) covers controlled raw-client and
+native fixtures; installed-host registration remains a separate step.
+
 ## Local verification
 
 The fixed dashboard task uses system Python 3.11+ and the embedded checker. From the repository
@@ -224,11 +238,101 @@ the same two-job/no-debug-symbol build settings as the local and Cally lanes. Te
 explicit native containment environment still run on Cally rather than being silently enabled on
 the hosted runner.
 
+## Offline service context
+
+The source CLI includes the [offline context resolver](context.md), with
+[independent native evidence](context-verification.md). Build from this source using the normal
+locked CLI build. Select a regular export file and review-age policy at startup; requests supply
+only explicit selectors. From the repository root:
+
+```bash
+target/debug/save --json \
+  --context-source "$(pwd)/tests/fixtures/context/unique.json" \
+  --context-max-age-days 30 \
+  context resolve --service checkout --env dev --team platform --deployment blue
+```
+
+The sample retains its declared review date. An expired record returns `context_stale`; changing
+the policy is an explicit operator startup decision. The public Cally checks used generated recent
+synthetic exports for successful observations and separate deliberately stale/future exports for
+refusals. This sample command uses the same verified normalization, with repository paths substituted.
+
+Use `call --request FILE` for the existing structured request interface, keeping the same startup
+options. The operation is `context.resolve`; its `inputs` object contains `service`, `environment`
+and optional `team`/`deployment`. Source path and age policy are not request fields. Discovery reports
+`requires_configuration` without opening the export. Resolution reads metadata only: bindings and
+runbook references do not select a command, target, credential or approval. The source options are
+rejected for the current UI/MCP servers.
+
+The previously accepted development archives below contain the earlier MCP/browser source. They
+do not include `context resolve`; source build and archive identities are kept separate.
+
 ## Development artifact and rollback
 
-`target/debug/save` is a development artifact. Remove it or select a previous explicit binary path
-to roll back; there is no configuration or stored-data migration. An isolated install uses
-`cargo install --locked --offline --path crates/workbench-cli --root /tmp/workbench-install`, then
-`/tmp/workbench-install/bin/save`. Shipping still needs native platform, install/upgrade,
-dependency-license, provenance and live-acceptance evidence. The roadmap identifies commands
-actually exercised.
+The [Linux development bundle](packaging.md) contains the ordinary `save` binary, embedded browser
+assets and task bindings, exact source/build manifests, dependency inventory and available notices.
+The [acceptance record](packaging-verification.md) identifies the actual current/prior archives and
+their separately trusted SHA-256 values. The tested runtime is Debian 13 x86-64 with glibc 2.41;
+the artifact does not establish compatibility with Adama or other distributions.
+
+Use an operator-trusted checkout of `tools/package-linux.py` with Python 3.11+. Validation runs no
+archive code or product commands. Supply an absolute installation root you control; the installer
+creates version directories and selection is a separate operation. These operations passed in
+disposable Cally directories. The paths below illustrate an explicit per-user installation and
+have not been applied to a host installation:
+
+```bash
+python3 -I -B tools/package-linux.py verify /absolute/path/current.tar \
+  --expected-sha256 76a2ca3414ae624cb51f7ff6378e78771336ec9360b8f4c9e3618e8f52aafa02
+python3 -I -B tools/package-linux.py install /absolute/path/current.tar \
+  --expected-sha256 76a2ca3414ae624cb51f7ff6378e78771336ec9360b8f4c9e3618e8f52aafa02 \
+  --root /absolute/path/workbench-install
+python3 -I -B tools/package-linux.py activate \
+  save-0.1.0-src-8f4d42b935291593-bin-939e5f5b5d2bccea \
+  --root /absolute/path/workbench-install
+/absolute/path/workbench-install/current/bin/save --json doctor
+/absolute/path/workbench-install/current/bin/save ui serve --allow task.run
+```
+
+The UI prints its local browser URL. It needs no Node server; both fixed offline tasks require
+system Python 3.11+. Stdio MCP can be launched from the same selected binary using the
+[explicit grant instructions](mcp.md). Installing or selecting a version does not add grants,
+global PATH entries or system services.
+
+Install the retained previous archive with its own trusted digest before rollback:
+
+```bash
+python3 -I -B tools/package-linux.py install /absolute/path/previous.tar \
+  --expected-sha256 efa9fd14bb7daebe7cca729315f867aa34fbfad7e917f0f200c0346ecb179ba2 \
+  --root /absolute/path/workbench-install
+python3 -I -B tools/package-linux.py rollback \
+  save-0.1.0-src-60395b4757c8ad83-bin-2990afe949f1279a \
+  --root /absolute/path/workbench-install
+```
+
+Selection revalidates installed files and atomically switches a relative `current` pointer. Versions
+remain separate; no stored data or configuration is migrated. Existing external configuration and
+evidence are never rewritten. Same-account modification remains possible. A checksum supplies
+integrity relative to the separately trusted digest; no signature or release authenticity is claimed.
+
+To create another development bundle, first capture exact source-file digests and observed build
+metadata in the version-1 shapes enforced by `tools/package-linux.py`. Build evidence must match
+the supplied binary. Prepare notices from a checksum-verified Cargo vendor directory and the tracked
+frontend notice inventory; the helper runs no dependency code:
+
+```bash
+python3 -I -B tools/prepare-package-notices.py --repo /absolute/source \
+  --vendor /absolute/vendor --output /absolute/fresh-notice-inputs
+python3 -I -B tools/package-linux.py create --binary /absolute/build/save \
+  --source-manifest /absolute/source-manifest.json \
+  --build-provenance /absolute/build-provenance.json \
+  --inventory /absolute/fresh-notice-inputs/inventory.json \
+  --notices-dir /absolute/fresh-notice-inputs/notices \
+  --product-version 0.1.0 --output /absolute/fresh-bundle.tar
+```
+
+The response returns the artifact ID and archive digest. The independent Cally build used these
+commands with run-owned absolute paths and ordinary current/prior binaries. Repacking identical
+inputs passed deterministically; reproducibility of separate Rust builds is not asserted.
+Shipping still requires license/distribution clearance, broader native platform evidence and the
+human/agent usefulness pilot identified in the roadmap.

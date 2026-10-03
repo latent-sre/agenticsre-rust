@@ -1,0 +1,136 @@
+{
+  "$id": "urn:sre-workbench:spec:context-data:0.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "maxProperties": 0,
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "record": {
+          "$ref": "urn:sre-workbench:spec:context-export:0.1#/$defs/record"
+        },
+        "resolution": {
+          "additionalProperties": false,
+          "properties": {
+            "age_seconds": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "max_age_days": {
+              "maximum": 365,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "missing_optional": {
+              "items": {
+                "enum": [
+                  "target",
+                  "environment",
+                  "organization",
+                  "owners",
+                  "resource_aliases",
+                  "runbooks",
+                  "dependencies.forward",
+                  "dependencies.reverse"
+                ]
+              },
+              "maxItems": 8,
+              "type": "array"
+            },
+            "missing_required": {
+              "items": {
+                "enum": [
+                  "target",
+                  "environment",
+                  "organization"
+                ]
+              },
+              "maxItems": 3,
+              "type": "array"
+            },
+            "state": {
+              "enum": [
+                "resolved",
+                "retired",
+                "stale",
+                "incomplete_required"
+              ]
+            },
+            "usable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "state",
+            "usable",
+            "max_age_days",
+            "age_seconds",
+            "missing_required",
+            "missing_optional"
+          ],
+          "type": "object"
+        },
+        "source": {
+          "additionalProperties": false,
+          "properties": {
+            "evidence_state": {
+              "const": "sourced"
+            },
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            "kind": {
+              "const": "fixture-export"
+            },
+            "observed_at": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "revision": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "revision",
+            "sha256",
+            "observed_at",
+            "evidence_state"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "source",
+        "record",
+        "resolution"
+      ],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "cancellation_signal": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "cancellation_signal"
+      ],
+      "type": "object"
+    }
+  ]
+}
