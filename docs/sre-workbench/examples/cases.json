@@ -188,5 +188,29 @@
     "schema": "read-policy",
     "valid": true,
     "reason": "Explicit synthetic read policy; zero digests are placeholders, not verified executable bindings"
+  },
+  {
+    "file": "context-export.json",
+    "reason": "Offline context fixture shape; source authenticity and resolution are separately tested",
+    "schema": "context-export",
+    "valid": true
+  },
+  {
+    "file": "input-context.json",
+    "reason": "Offline context fixture shape; source authenticity and resolution are separately tested",
+    "schema": "context-resolve-input",
+    "valid": true
+  },
+  {
+    "file": "invalid-input-context-null.json",
+    "reason": "Offline context fixture shape; source authenticity and resolution are separately tested",
+    "schema": "context-resolve-input",
+    "valid": false
+  },
+  {
+    "file": "invalid-input-context-source.json",
+    "reason": "Offline context fixture shape; source authenticity and resolution are separately tested",
+    "schema": "context-resolve-input",
+    "valid": false
   }
 ]

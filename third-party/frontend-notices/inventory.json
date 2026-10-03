@@ -1,0 +1,257 @@
+{
+  "lock_sha256": "8aad80c575ee760fccbb309fc231d3cc5264e1d93078983d7dcc36a77b5a82d7",
+  "origin": "Existing pinned npm installation; package name/version checked against lockfile and license bytes hashed. Cached package archives were unavailable for independent integrity revalidation.",
+  "packages": [
+    {
+      "integrity": "sha512-utTS5L2OkeYUzXGohL1Z8sefu1GLNOJcxe8Hd6iIdc/Xo1K1nDB2JEp4iSFhvYh33xKC9V91TxrS8qfrpoKobQ==",
+      "license": "MIT",
+      "name": "@tanstack/history",
+      "notices": [
+        {
+          "path": "@tanstack__history-1.162.4/LICENSE",
+          "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+        }
+      ],
+      "package_json_sha256": "800026ec5d79297f3b8789f80e04eb328881d81325785d24b98fb71fbf5e5793",
+      "version": "1.162.4"
+    },
+    {
+      "integrity": "sha512-TiRghcrGkUTE+M4JBxvpPSpBhxvIzQairw+cksrHYGr+2uwC77yW1SY9nYxnYRYOppvucf8rEg6b5byoz4rTpw==",
+      "license": "MIT",
+      "name": "@tanstack/query-core",
+      "notices": [
+        {
+          "path": "@tanstack__query-core-5.104.1/LICENSE",
+          "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+        }
+      ],
+      "package_json_sha256": "ac5d0763eb06a76a1881315f806d634fb4e88321c37db4ffd757a8e167a85ace",
+      "version": "5.104.1"
+    },
+    {
+      "integrity": "sha512-Zz70EgjahNI7aCz8BZxM3vUGU44ycxEAzMuCUjLeA7SVhhOkg3ZgPjPJPvHjs6Rmky/dtmnu1WzjGHNHmhCoZQ==",
+      "license": "MIT",
+      "name": "@tanstack/react-query",
+      "notices": [
+        {
+          "path": "@tanstack__react-query-5.104.1/LICENSE",
+          "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+        }
+      ],
+      "package_json_sha256": "8e747c939b5ba98420d21118a689d52c17bee3407be126608c3591e82841c19c",
+      "version": "5.104.1"
+    },
+    {
+      "integrity": "sha512-Mpvw8Wm5MGDbTqI8Yc9flLKxbOHwoWocv0H2aGKcgw2a017oK5nZWqa954P+DrUx/8fI98YNywnHP5XcD3tQ9w==",
+      "license": "MIT",
+      "name": "@tanstack/react-router",
+      "notices": [
+        {
+          "path": "@tanstack__react-router-1.170.41/LICENSE",
+          "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+        }
+      ],
+      "package_json_sha256": "94d7ee8dfbdbd8af83c3141291979717a22a69bfe9d6943aade10f7b20f715bd",
+      "version": "1.170.41"
+    },
+    {
+      "integrity": "sha512-oj5O5DmiMWE+ih+SioX2ayC1kbK7d3fpLx0B75fPJr9nY3zU+hoW010yr64qXsY/9fyiLVE2bn5mGNV3owm8RQ==",
+      "license": "MIT",
+      "name": "@tanstack/react-store",
+      "notices": [
+        {
+          "path": "@tanstack__react-store-0.11.2/LICENSE",
+          "sha256": "cb4a7917af22bd56340e877f10a5c5aa4fded7af2459162630ff7fcb48bb45c7"
+        }
+      ],
+      "package_json_sha256": "ee72c15213f4d6a52b46043364088d9c92082b52f7677d63850d30b01e30c181",
+      "version": "0.11.2"
+    },
+    {
+      "integrity": "sha512-X+19pGuuLVPvvAvPYw9v/+ktRk5cCll8AtfpBpOhDRmVgUMrfqze0467xtq8YRVVs/mmo5rVtWn/7Tp32RDBKw==",
+      "license": "MIT",
+      "name": "@tanstack/router-core",
+      "notices": [
+        {
+          "path": "@tanstack__router-core-1.171.34/LICENSE",
+          "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+        }
+      ],
+      "package_json_sha256": "9baa4bd01a97e3dc08434ea9f885dbd84dfcb37e11229623059dea7d244851af",
+      "version": "1.171.34"
+    },
+    {
+      "integrity": "sha512-sJ4mjol8uQsHV0gOJzzjwXfh2Fwm+Sz0+8deqiTm4jGbMdjzNSW+xZCFm0kUa870uhd8yi+DpKnZb5Kc4apa0Q==",
+      "license": "MIT",
+      "name": "@tanstack/store",
+      "notices": [
+        {
+          "path": "@tanstack__store-0.11.2/LICENSE",
+          "sha256": "cb4a7917af22bd56340e877f10a5c5aa4fded7af2459162630ff7fcb48bb45c7"
+        }
+      ],
+      "package_json_sha256": "fe7ebae521173392b11aa7ce4cd8676d098813e4a410347c8c5609ca42c9fff7",
+      "version": "0.11.2"
+    },
+    {
+      "integrity": "sha512-UaXxwISYJPTr9hwQxMFYZ7kNhSXboMXP+Z3TRX6f1/NyaGPfuNUZOWP1pUEb75B2HjfklIYLVRfWiFZJyC6Npg==",
+      "license": "MIT",
+      "name": "cookie-es",
+      "notices": [
+        {
+          "path": "cookie-es-3.1.1/LICENSE",
+          "sha256": "f57270b85c3922414c061e36b93f7c74420b8facf5ccf729202d5ff5b7cd7608"
+        }
+      ],
+      "package_json_sha256": "35bb5b0275f6c3d72817179357ce65f535e8dfda1b2cb9d1f721bb148a8b7f87",
+      "version": "3.1.1"
+    },
+    {
+      "integrity": "sha512-iQcBXcd+Rv/pkubRyGh2utW2j1oPG5hZY6TUhVPpqK4G+o3IbxpJNx04hgksjc/N7GK5pEorUxDeg31cFgEk/w==",
+      "license": "Unlicense",
+      "name": "isbot",
+      "notices": [
+        {
+          "path": "isbot-5.2.2/LICENSE",
+          "sha256": "472f8bb212250d2b07f2484f2bee03d65eec36a52902b80244e2e52f1990b090"
+        }
+      ],
+      "package_json_sha256": "d72054dcb4a07adb2673c393807ef2c38cf40e928a38dba78f812bdf0255de52",
+      "version": "5.2.2"
+    },
+    {
+      "integrity": "sha512-PsbZR1wAPcG91eEthKhN+Zn92FMHxv+/faECIwjXdxfTODGSGegYv0sc1Olz+HYPvKOuoXfp+0pA2XVt2cI0Ig==",
+      "license": "MIT",
+      "name": "openapi-fetch",
+      "notices": [
+        {
+          "path": "openapi-fetch-0.17.0/LICENSE",
+          "sha256": "bbcaaa447169c969087d38c3edc9ce44a6bd4f67152a8eed5aa9d43969e23edc"
+        }
+      ],
+      "package_json_sha256": "e99c487d1b91ae7cd6baf8dc745564fa5c256c549965ff00f46bddc1ff3ad608",
+      "version": "0.17.0"
+    },
+    {
+      "integrity": "sha512-OKTGPthhivLw/fHz6c3OPtg72vi86qaMlqbJuVJ23qOvQ+53uw1n7HdmkJFibloF7QEjDrDkzJiOJuockM/ljw==",
+      "license": "MIT",
+      "name": "openapi-typescript-helpers",
+      "notices": [
+        {
+          "path": "openapi-typescript-helpers-0.1.0/LICENSE",
+          "sha256": "bbcaaa447169c969087d38c3edc9ce44a6bd4f67152a8eed5aa9d43969e23edc"
+        }
+      ],
+      "package_json_sha256": "449b77404eaf4e12ea8ddd856b866c6a07e98e6a72e85f3698ae44cdf1e762c1",
+      "version": "0.1.0"
+    },
+    {
+      "integrity": "sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==",
+      "license": "MIT",
+      "name": "react",
+      "notices": [
+        {
+          "path": "react-19.3.0/LICENSE",
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ],
+      "package_json_sha256": "6e003e4e9ed25afa7fdd55613f8aa877cefa9b359d9c13f81ee704030248e24e",
+      "version": "19.3.0"
+    },
+    {
+      "integrity": "sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==",
+      "license": "MIT",
+      "name": "react-dom",
+      "notices": [
+        {
+          "path": "react-dom-19.3.0/LICENSE",
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ],
+      "package_json_sha256": "136d4af63de473392ea79d6a21932b0ed9eb37fe518ce70f4621250f3d79e9bb",
+      "version": "19.3.0"
+    },
+    {
+      "integrity": "sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==",
+      "license": "MIT",
+      "name": "scheduler",
+      "notices": [
+        {
+          "path": "scheduler-0.28.0/LICENSE",
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ],
+      "package_json_sha256": "06290718f22bcd93f29eaa1ac8d2ec9a7592ba4fec12bf1230e7cdd9a871b324",
+      "version": "0.28.0"
+    },
+    {
+      "integrity": "sha512-HlSgSAkTk4EqHcje1ptJjfZi1YDv5KbhVJ/d3P7T/nAXua2VmDu+AKDX5VTdFfZf48nDkWB2TKYt0DrCSa+3wg==",
+      "license": "MIT",
+      "name": "seroval",
+      "notices": [
+        {
+          "path": "seroval-1.6.8/LICENSE",
+          "sha256": "2bd8a2c61751fc47dcd214f864b6fcdbcb518995fbf497c81a06c3bfe8d1d9d4"
+        }
+      ],
+      "package_json_sha256": "b5140d853edacaf5806b62b63416761c09c9390fc86d2dfba983ed51837904f8",
+      "version": "1.6.8"
+    },
+    {
+      "integrity": "sha512-N7mWAMydj89EnYTHtRpS3LBrAz3J9O6oVrqpuXuvlAHfAUG8WEKqtbAd7SBiJNY5NfCAFhSdyAh7wI4Shjqy4g==",
+      "license": "MIT",
+      "name": "seroval-plugins",
+      "notices": [
+        {
+          "path": "seroval-plugins-1.6.8/LICENSE",
+          "sha256": "2bd8a2c61751fc47dcd214f864b6fcdbcb518995fbf497c81a06c3bfe8d1d9d4"
+        }
+      ],
+      "package_json_sha256": "b8c68bf1706ead534f825b1abe320b1340678710233071edea9f5f9819e16ab1",
+      "version": "1.6.8"
+    },
+    {
+      "integrity": "sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==",
+      "license": "MIT",
+      "name": "tailwindcss",
+      "notices": [
+        {
+          "path": "tailwindcss-4.3.3/LICENSE",
+          "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985"
+        }
+      ],
+      "package_json_sha256": "3dc86b46c511947ca00838aa3f1776243abe923ac347c092e60a0cbc7ae68559",
+      "scope": "selected build-generated CSS/runtime helper contribution",
+      "version": "4.3.3"
+    },
+    {
+      "integrity": "sha512-6L+EeigHMQhdaIPNIFUKwfWJSwWFQ8gJbJ2DLOs5sDIegTwR9fRxvnM3uciHKjIZhFz+KAv2emhWMRvDmMcY8A==",
+      "license": "MIT",
+      "name": "use-sync-external-store",
+      "notices": [
+        {
+          "path": "use-sync-external-store-1.7.0/LICENSE",
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      ],
+      "package_json_sha256": "ba3694aec166f2f53612c4978bc85fb31dd4eee75a2eccc1ad1a1cc49c9428d2",
+      "version": "1.7.0"
+    },
+    {
+      "integrity": "sha512-SQr1x6W5vVSbROg7vsyXIaxK9b0G7zsT68acdWWRmnBUsgDieLCRG+Rep9WdZgcposvv/GSnr4GUUBqB3vXq6w==",
+      "license": "MIT",
+      "name": "vite",
+      "notices": [
+        {
+          "path": "vite-8.3.2/LICENSE.md",
+          "sha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6"
+        }
+      ],
+      "package_json_sha256": "2b906339263f24e9be4219f93d966b4bcf0d4141adc05939a537c3a8fd6f760a",
+      "scope": "selected build-generated CSS/runtime helper contribution",
+      "version": "8.3.2"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "All non-dev lockfile packages plus selected Tailwind CSS/Vite build-generated asset contributors; not a complete frontend build-tool SBOM."
+}

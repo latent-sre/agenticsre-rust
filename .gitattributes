@@ -2,3 +2,5 @@
 /web/dist/** -whitespace
 /docs/evidence/*.txt -whitespace
 /docs/ui/previews/*.log -whitespace
+# Retain upstream license text, including its original whitespace.
+/third-party/frontend-notices/** -whitespace

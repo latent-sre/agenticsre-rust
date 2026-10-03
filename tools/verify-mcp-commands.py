@@ -42,6 +42,8 @@ def comparable(receipt: dict) -> dict:
     if isinstance(supervisor, dict):
         supervisor.pop("process_id")
         supervisor.pop("process_group_id")
+    for source in value.get("sources", []):
+        source.pop("observed_at", None)
     return value
 
 

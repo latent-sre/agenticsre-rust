@@ -1,0 +1,32 @@
+{
+  "$id": "urn:sre-workbench:spec:context-resolve-input:0.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "deployment": {
+      "maxLength": 128,
+      "minLength": 1,
+      "type": "string"
+    },
+    "environment": {
+      "maxLength": 128,
+      "minLength": 1,
+      "type": "string"
+    },
+    "service": {
+      "maxLength": 128,
+      "minLength": 1,
+      "type": "string"
+    },
+    "team": {
+      "maxLength": 128,
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "service",
+    "environment"
+  ],
+  "type": "object"
+}

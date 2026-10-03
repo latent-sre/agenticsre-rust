@@ -9,6 +9,9 @@ registers them locally and never retrieves schema references over the network.
 | [Common](common.schema.json) | Reusable target, limit, artifact and source definitions |
 | [Request](request.schema.json) | Shared operation envelope; no caller identity or grant override |
 | [Process input](process-input.schema.json) | Explicit program, argument vector and absolute working directory |
+| [Context input](context-resolve-input.schema.json) | Explicit service/environment selectors; no wire source or grant |
+| [Context export](context-export.schema.json) | Bounded offline fixture declarations; separate dependency directions |
+| [Context data](context-data.schema.json) | Selected metadata, observed source identity and usable/coverage state |
 | [Grafana query input](grafana-query-input.schema.json) | Selected datasource/dialect and fixed timestamps |
 | [Grafana dashboard input](grafana-dashboard-input.schema.json) | One dashboard UID |
 | [Result](result.schema.json) | Execution, assessment, coverage, effects, output and evidence |

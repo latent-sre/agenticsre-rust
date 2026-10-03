@@ -1,6 +1,7 @@
 use serde_json::{Value, json};
 
-pub(crate) const OPERATIONS: [&str; 10] = [
+pub(crate) const OPERATIONS: [&str; 11] = [
+    "context.resolve",
     "process.exec",
     "command.inspect",
     "capability.list",
@@ -19,7 +20,10 @@ pub fn capability(operation: &str) -> Option<Value> {
     }
     let process = matches!(operation, "process.exec" | "command.inspect");
     let grafana = matches!(operation, "grafana.dashboard.get" | "grafana.query");
-    let input_schema = if grafana {
+    let context = operation == "context.resolve";
+    let input_schema = if context {
+        json!({"$ref":"urn:sre-workbench:spec:context-resolve-input:0.1"})
+    } else if grafana {
         json!({"$ref": if operation == "grafana.query" { "urn:sre-workbench:spec:grafana-query-input:0.1" } else { "urn:sre-workbench:spec:grafana-dashboard-input:0.1" }})
     } else if process {
         json!({"$ref":"urn:sre-workbench:spec:process-input:0.1"})
@@ -34,11 +38,11 @@ pub fn capability(operation: &str) -> Option<Value> {
     };
     Some(json!({
         "spec_version":"0.1", "id":operation, "operation_version":1,
-        "title": match operation { "grafana.dashboard.get" => "Read a Grafana dashboard", "grafana.query" => "Query a Grafana datasource", "process.exec" => "Run an operator command", "command.inspect" => "Inspect a command without running it", "capability.list" => "List installed capabilities", "capability.describe" => "Describe an installed capability", "task.run" => "Run a fixed offline task", "task.list" => "List installed tasks", "task.describe" => "Describe an installed task", _ => "Check offline runtime readiness" },
-        "description": if grafana { "Native bounded HTTPS using the explicitly configured grafana-legacy-v1 profile and scoped operator environment credential. Fixture evidence only; no live server-version or service-health claim." } else if process { "Literal native commands under the operator account, optionally narrowed by a trusted launcher-attached linux-read-v1 policy. No wire-selected role, protected same-account identity or service health inference." } else if operation == "task.run" { "Run an installed dashboard-hygiene or error-budget version-1 task using fixed embedded source, isolated Python and supervised process limits." } else { "Offline metadata from this installed runtime; no external process or network probe." },
+        "title": match operation { "context.resolve" => "Resolve offline service context", "grafana.dashboard.get" => "Read a Grafana dashboard", "grafana.query" => "Query a Grafana datasource", "process.exec" => "Run an operator command", "command.inspect" => "Inspect a command without running it", "capability.list" => "List installed capabilities", "capability.describe" => "Describe an installed capability", "task.run" => "Run a fixed offline task", "task.list" => "List installed tasks", "task.describe" => "Describe an installed task", _ => "Check offline runtime readiness" },
+        "description": if context { "Resolve exact service/environment selectors from an explicit offline fixture-export and bounded startup review-age policy. Source declarations remain sourced data; no live catalog, target dispatch, approval or credential authority." } else if grafana { "Native bounded HTTPS using the explicitly configured grafana-legacy-v1 profile and scoped operator environment credential. Fixture evidence only; no live server-version or service-health claim." } else if process { "Literal native commands under the operator account, optionally narrowed by a trusted launcher-attached linux-read-v1 policy. No wire-selected role, protected same-account identity or service health inference." } else if operation == "task.run" { "Run an installed dashboard-hygiene or error-budget version-1 task using fixed embedded source, isolated Python and supervised process limits." } else { "Offline metadata from this installed runtime; no external process or network probe." },
         "effects": if operation == "process.exec" { "unclassified" } else { "observe" },
         "input_schema":input_schema, "output_schema":{"$ref":"urn:sre-workbench:spec:result:0.1"},
-        "execution_modes":["foreground"], "platforms":if process || operation == "task.run" || grafana { vec!["linux"] } else { vec!["linux","windows","macos"] },
+        "execution_modes":["foreground"], "platforms":if process || operation == "task.run" || grafana || context { vec!["linux"] } else { vec!["linux","windows","macos"] },
         "dependencies":if operation == "task.run" { vec![json!({"name":"python3","kind":"interpreter","version_requirement":">=3.11"})] } else { vec![] }, "stability":"experimental", "default_timeout_ms":if grafana {60000} else {30000},"max_timeout_ms":if grafana {60000} else {300000},
         "required_permissions": if operation == "process.exec" { vec!["command.execute"] } else { vec![] },
         "implementation":{"kind":"builtin","reference":format!("workbench-core:{operation}")}
@@ -46,6 +50,9 @@ pub fn capability(operation: &str) -> Option<Value> {
 }
 
 pub fn availability(operation: &str) -> Value {
+    if operation == "context.resolve" {
+        return json!({"status":if cfg!(target_os = "linux") {"requires_configuration"} else {"unsupported_platform"},"reason":"Offline fixture-export resolution requires paired trusted source and review-age options. Discovery does not open the source or establish a live binding."});
+    }
     if matches!(operation, "grafana.dashboard.get" | "grafana.query") {
         if !cfg!(target_os = "linux") {
             return json!({"status":"unsupported_platform","reason":"Native Grafana fixture acceptance is currently limited to Linux."});

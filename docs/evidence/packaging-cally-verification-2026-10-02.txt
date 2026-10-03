@@ -1,0 +1,84 @@
+# Packaging R1 — combined independent acceptance
+
+**PASS for the Linux/stateless development-bundle acceptance slice of AC-34/AC-35.** [verified] The real current/prior builds, 31 native integrity tests, eight positive installed acceptance groups and 17 positive receipts are carried from the identified full run. The focused unavailable-Python fixture completed four acceptance groups and five additional schema-valid receipts against the exact same retained current archive. Both optional tasks reported `missing_dependency` without starting a task interpreter; help/version, doctor and literal execution remained usable. All run-owned containers, images, staging and processes were cleaned up. [verified]
+
+This is not release publication, broad distribution compatibility, Windows acceptance, a protected installation, or the AC-36 five-task pilot. Those criteria were not executed here and remain outside this verdict. The separate restricted-profile namespace-setup-refusal gap remains open. [unverified for those criteria]
+
+## Target and acceptance binding
+
+Repository: `latent-sre/agenticsre-rust`. Exact packaging R1 candidate `9c1ee1c7e058f48afbb99bcbb867a519392ba066`; tree `81d6b895a346475bc9017a6c39778fc2b4208df6`; base `5bd0693cc2968c864972ca0fda7a193481ca5708`. Original `/tmp/agenticsre-package-r1-snapshot-21jfbzjo`; 301-file capture manifest `/tmp/agenticsre-package-r1-snapshot.json`, SHA-256 `d264a8f5c105ba8276fd27714102850b82caac8ebc2e8639094850c624ee1009`. HEAD/tree/clean status matched before execution. All 301 original file hashes matched again after the focused run. No original or product source was edited. [verified]
+
+The parent supplied static APPROVE for this exact candidate/tree and identified the frozen `docs/packaging.md` contract, source/build/archive identity, installed current/prior/rollback behavior, numerical MCP/UI, optional-runtime refusal, canonical receipts and cleanup as acceptance criteria. Static fixes and pre-fix reds are sourced from the separate review/builder evidence; this verifier ran R1 and did not execute R0 tooling. [sourced]
+
+The prior ordinary build used GUI source commit `76e6a3f316da685e12f3e741935f6dd55d9e64c0`, tree `9bde9db7f06e19e8b6e527e2f7b31934f5dd6776`, with an independently checked 259-file manifest. Separately injected frontend notice support is explicitly excluded from that original source manifest. [verified]
+
+## Criterion-level verdicts
+
+| Criterion | Verdict and direct evidence |
+|---|---|
+| Exact source, real ordinary build, archive and installed binary identities | PASS — full run and independent exported-byte inspection [verified] |
+| Deterministic current archive repack and distinct prior artifact | PASS — own command statuses and digest comparison [verified] |
+| Integrity, archive consumption snapshot and declared notice references | PASS — 31 native Python 3.13.5 tests; actual archive data independently checked [verified] |
+| Fresh/repeated installation, explicit selection, current upgrade and prior rollback | PASS — positive installed harness [verified] |
+| Installed help/version/doctor, literal argv and both embedded tasks away from source | PASS — prior/current/rollback positive paths [verified] |
+| Current installed numerical MCP and embedded UI/assets/authenticated API | PASS — positive harness, EOF/SIGTERM cleanup [verified] |
+| Corruption/hostile paths/types, canaries, installed modes and no partial state | PASS — integrity and installed harnesses [verified] |
+| Unavailable fixed Python runtime: optional tasks refuse while basic CLI works | PASS — focused unchanged harness, five exact receipts [verified] |
+| Canonical receipt and applicable task-data schema validity | PASS — 17 positive plus five focused receipts, 22 total observations [verified] |
+| Owned process, installation, container/image and staging cleanup | PASS — each terminal run and final readback [verified] |
+
+## Artifact identities retained as data
+
+Actual archives remain in `/tmp/agenticsre-package-cally-oyrt09pp`. No archive or product executable was run on Adama. [verified]
+
+| Identity | Current | Previous |
+|---|---|---|
+| Archive | `current.tar` | `previous.tar` |
+| Archive SHA-256 | `76a2ca3414ae624cb51f7ff6378e78771336ec9360b8f4c9e3618e8f52aafa02` | `efa9fd14bb7daebe7cca729315f867aa34fbfad7e917f0f200c0346ecb179ba2` |
+| Archive bytes | 40,156,672 | 38,209,024 |
+| Binary SHA-256 | `939e5f5b5d2bccea2630df6d4870b12a18e2d72f3e834531195123965169aa56` | `2990afe949f1279ad87f59bdf7c515d88c3622ec4706de485c13a11e8bdc0495` |
+| Binary bytes | 36,887,184 | 35,114,600 |
+| Source-manifest SHA-256 | `8f4d42b935291593b95860285ce67da717be23ae1e1f31ab6e525afb74824074` | `60395b4757c8ad83feeb87c5196255d54475b977c8e8929d3ff930abd53e3663` |
+| Artifact ID | `save-0.1.0-src-8f4d42b935291593-bin-939e5f5b5d2bccea` | `save-0.1.0-src-60395b4757c8ad83-bin-2990afe949f1279a` |
+
+All table values were observed from actual native builds and independently exported/inspected bytes. Installed identities were asserted by the unchanged harness. [verified]
+
+## Checks executed and failure preservation
+
+The full run `/tmp/agenticsre-package-cally-oyrt09pp` retains exact command arrays, cwds, own statuses and build provenance in `verification.json`, plus raw `package-cally.log`. Current and prior `cargo build -p workbench-cli --locked --offline`, both notice generators, actual archive creation/current repack, `tools/test-package-linux.py -v` (31 tests) and positive `tools/verify-package-linux.py` (eight groups) each exited 0. [verified]
+
+That run itself ended 1: the additional nested `--proc /proc` mount was denied before the missing-runtime payload. It remains **INCONCLUSIVE as an individual run**, with its original failed `verification.json` SHA-256 `c890f94a87f232eb946a872ec3e6b4c12863210348ba150879715e1646bd2bde` unchanged. The second attempt `/tmp/agenticsre-package-missing-python-moexbybe` also ended 1 before the product harness, at an extra verifier namespace assertion. It recorded a bwrap PID without state; its liveness cannot be inferred. Both attempts had exact outer cleanup and no negative product receipts. [verified]
+
+The focused successful attempt used no nested bwrap or proc setup. The exact native payload, cwd `/opt/workbench-source`, was: [verified]
+
+```text
+/opt/verification/verifier-python -I -B /opt/workbench-source/tools/verify-package-linux.py /opt/verification/current.tar --expected-sha256 76a2ca3414ae624cb51f7ff6378e78771336ec9360b8f4c9e3618e8f52aafa02 --missing-python-only --json-results
+```
+
+It exited 0, as did the outer lane and SSH command; handle 58104 is terminal. The untouched R1 runtime verifier SHA-256 is `aad5cfe8af868b736581fd14184e9d9f295d1a349e219f1f0be61a7a89d487ec`. `missing-python.log` retains exact boundary observations, command, receipts, four group results, status 0 and `UNAVAILABLE_PYTHON_RESIDUE []`. No Rust rebuild or positive-suite repetition occurred. [verified]
+
+The independent data-validation command, cwd `/home/hawkfire/rusty`, exited 0: [verified]
+
+```text
+/home/hawkfire/rusty/agenticsre-rust/.venv/bin/python -I -B /tmp/agenticsre-package-unavailable-python-mhf8ewgw/validate-negative-evidence.py
+```
+
+It validated all five actual envelopes/receipts against frozen canonical `result.schema.json`, independently checked both task refusals (unsupported, no child exit/signal, not_attempted, empty output and missing_dependency), both availability listings, unchanged archive and all 301 original files. Successful task-data schemas do not apply to refused task results. The positive run separately validated all 17 receipts and applicable successful task-data schemas. These host checks treated JSON/tar/source as data, rejected duplicate/nonfinite JSON, disabled external schema retrieval and imported no product code. Python 3.14.7/jsonschema 4.26.0/referencing 0.37.0 were observed. No caller-supplied versioned evidence-record schema exists, so record conformance is not claimed. [verified]
+
+## Focused fixture and enforced isolation
+
+The COPY-only multi-stage image copied authentic `/usr/bin/python3.13` from the cached base into `/opt/verification/verifier-python`, then replaced only `/usr/bin/python3.13` with a root-owned regular data placeholder mode 0644. Both `/usr/bin/python3` and `/bin/python3` resolved to it and were non-executable. This models unavailable fixed runtime bindings; it does not claim total interpreter removal. The verifier helper remained authentic, with SHA-256 `17b78e0a93175e86f9ac03141924fd7a7f0c0c52e66b34bfa0de20ffef989df1`, matching the observed cached runtime. Product tasks resolve only the fixed paths and did not select that helper. [verified; fixed-path resolution sourced to frozen `crates/workbench-core/src/process.rs:120` and preparation mapping `tasks.rs:56`]
+
+Cached base: `docker.io/library/rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959`, actual ID `sha256:ab239914c9d2fbe5ef024c5314dae21e2a2c43618086e169d78a754429978b97`. Focused image: `sha256:0b3e328574f60d28c79d1931433bb0162499bcf14c3497c96bde2e85a0e8d3d6`. Cached base identity was reread and unchanged. No RUN stage, pull, download, host/base change, custom ELF, new privilege or host execution was involved. Context was streamed, not retained as a duplicate tar. [verified]
+
+Outer controls were UID/GID 1000, explicit private PID namespace, network none, read-only root and source, no host mounts/credentials, NNP, all capabilities dropped, 2.5 CPUs/4 GiB/512 PIDs, private tmpfs `/tmp`512 MiB and a tighter 180-second timeout. Runtime observed PID 1, UID/GID 1000, exact cgroup bounds, readonly root/source, zero effective capabilities, NoNewPrivs 1 and a route table with no destinations. Native Python 3.13.5 was re-observed. Prior build Rust/Cargo 1.98.0, Debian 13.6 and glibc 2.41 provenance is explicitly carried from the full build, not re-probed by this fixture. [verified]
+
+Verifier-authored staging, lane and validation scripts are retained separately from product source. Their exact hashes, streamed context and all engine command/status records are retained in the artifact manifest and `commands.json`. The >=8 GiB pre-staging assertion passed; no vendor/full source was restaged. [verified]
+
+## Cleanup, sealing and remaining limits
+
+The focused container `agenticsre-package-unavailable-mhf8ewgw` and disposable image `localhost/agenticsre-package-unavailable:mhf8ewgw` were removed. Exact container readback was empty (exit 0); image inspection returned 125, `image not known`. The two earlier exact cleanup records remain in their original packets. Final `ps --all --filter name=agenticsre-package-` returned no containers, cached base identity was unchanged, and no local run-owned staging drivers remained. All three execution handles are terminal. Staging copies were removed; evidence archives/source captures intentionally remain. [verified]
+
+Original full-run packet SHA-256: `b2728f0ab16ddd8d0dfd156889923bf420ef323f54d8f6757f03c3af91cec96f`; its 40-artifact manifest SHA-256: `7684e8f90e0b34bb45a0b4273dd0f22b4066f3fae645629e679f402fbfe56a59`. Second failed setup packet SHA-256: `d7722bfd2740c069d69558a1a2219009b9fede05b6591982b7e4c6fc712b9481`; its 16-artifact manifest SHA-256: `136ecd9a56f33c71f0beb802163c9fb06f0135d6beffa65277614326593bd862`. These were sealed without rewriting the failed observations. All three packets use files mode 0444 and directories mode 0555 with SHA-256 manifests; this is a read-only, change-detectable evidence seal, not a claim that the owner/root cannot alter files. [verified]
+
+The tested ABI remains Debian 13 x86-64/glibc 2.41. Inventories are 260 current or 245 prior locked Cargo registry entries plus 19 npm notice entries, with explicit source/license/system/compiler gaps; they are not exact linked graphs or cleared redistribution evidence. Signing, managed installation, power-loss durability, state migrations, MCP host registration, live services and broader platform compatibility were not tested. [unverified for those wider criteria]
