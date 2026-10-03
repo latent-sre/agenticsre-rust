@@ -264,15 +264,16 @@ and optional `team`/`deployment`. Source path and age policy are not request fie
 runbook references do not select a command, target, credential or approval. The source options are
 rejected for the current UI/MCP servers.
 
-The previously accepted development archives below contain the earlier MCP/browser source. They
-do not include `context resolve`; source build and archive identities are kept separate.
+The current development archive below includes `context resolve`. Its installed CLI and structured
+request workflow passed on Cally. Earlier MCP/browser archives remain retained for rollback and
+have their own feature sets and source identities.
 
 ## Development artifact and rollback
 
 The [Linux development bundle](packaging.md) contains the ordinary `save` binary, embedded browser
 assets and task bindings, exact source/build manifests, dependency inventory and available notices.
-The [acceptance record](packaging-verification.md) identifies the actual current/prior archives and
-their separately trusted SHA-256 values. The tested runtime is Debian 13 x86-64 with glibc 2.41;
+The [acceptance record](packaging-verification.md) identifies the current context archive and retained
+baselines, with their separately trusted SHA-256 values. The tested runtime is Debian 13 x86-64 with glibc 2.41;
 the artifact does not establish compatibility with Adama or other distributions.
 
 Use an operator-trusted checkout of `tools/package-linux.py` with Python 3.11+. Validation runs no
@@ -283,12 +284,12 @@ have not been applied to a host installation:
 
 ```bash
 python3 -I -B tools/package-linux.py verify /absolute/path/current.tar \
-  --expected-sha256 76a2ca3414ae624cb51f7ff6378e78771336ec9360b8f4c9e3618e8f52aafa02
+  --expected-sha256 1ed48ee349b9c51e0be98bb0ada2ce1fd2577773f91d273f709ad669298917dd
 python3 -I -B tools/package-linux.py install /absolute/path/current.tar \
-  --expected-sha256 76a2ca3414ae624cb51f7ff6378e78771336ec9360b8f4c9e3618e8f52aafa02 \
+  --expected-sha256 1ed48ee349b9c51e0be98bb0ada2ce1fd2577773f91d273f709ad669298917dd \
   --root /absolute/path/workbench-install
 python3 -I -B tools/package-linux.py activate \
-  save-0.1.0-src-8f4d42b935291593-bin-939e5f5b5d2bccea \
+  save-0.1.0-src-5e4001ba226190e0-bin-22b8a16efbfce9fc \
   --root /absolute/path/workbench-install
 /absolute/path/workbench-install/current/bin/save --json doctor
 /absolute/path/workbench-install/current/bin/save ui serve --allow task.run
@@ -299,14 +300,29 @@ system Python 3.11+. Stdio MCP can be launched from the same selected binary usi
 [explicit grant instructions](mcp.md). Installing or selecting a version does not add grants,
 global PATH entries or system services.
 
-Install the retained previous archive with its own trusted digest before rollback:
+The current archive is retained as `target/packages/linux-context-r1/current.tar` in this checkout.
+To resolve context after installation, select a reviewed regular export and explicit age policy:
 
 ```bash
-python3 -I -B tools/package-linux.py install /absolute/path/previous.tar \
-  --expected-sha256 efa9fd14bb7daebe7cca729315f867aa34fbfad7e917f0f200c0346ecb179ba2 \
+/absolute/path/workbench-install/current/bin/save --json \
+  --context-source /absolute/path/reviewed-context-export.json \
+  --context-max-age-days 30 \
+  context resolve --service checkout --env dev --team platform --deployment blue
+```
+
+The installed Cally mission used fresh synthetic exports and separately stale/ambiguous/missing
+cases. Substitute only your explicit paths and selectors; export age and completeness determine
+the result. Context metadata never grants target or credential authority.
+
+Install the retained MCP baseline (`target/packages/linux-r1/current.tar`) with its own trusted
+digest before rollback:
+
+```bash
+python3 -I -B tools/package-linux.py install /absolute/path/mcp-baseline.tar \
+  --expected-sha256 76a2ca3414ae624cb51f7ff6378e78771336ec9360b8f4c9e3618e8f52aafa02 \
   --root /absolute/path/workbench-install
 python3 -I -B tools/package-linux.py rollback \
-  save-0.1.0-src-60395b4757c8ad83-bin-2990afe949f1279a \
+  save-0.1.0-src-8f4d42b935291593-bin-939e5f5b5d2bccea \
   --root /absolute/path/workbench-install
 ```
 
@@ -331,8 +347,9 @@ python3 -I -B tools/package-linux.py create --binary /absolute/build/save \
   --product-version 0.1.0 --output /absolute/fresh-bundle.tar
 ```
 
-The response returns the artifact ID and archive digest. The independent Cally build used these
-commands with run-owned absolute paths and ordinary current/prior binaries. Repacking identical
+The response returns the artifact ID and archive digest. The independent Cally refresh used these
+commands with run-owned absolute paths and the ordinary context binary, retaining the already
+accepted MCP baseline without rebuilding it. Repacking identical
 inputs passed deterministically; reproducibility of separate Rust builds is not asserted.
 Shipping still requires license/distribution clearance, broader native platform evidence and the
 human/agent usefulness pilot identified in the roadmap.

@@ -9,8 +9,8 @@ The local browser interface is built and independently reviewed/verified for its
 scope; [its acceptance record](docs/ui-verification.md) retains exact source identities and limits.
 The bounded stdio MCP adapter is also [independently verified](docs/mcp-verification.md) for explicit
 launcher grants and controlled Linux fixtures.
-The [Linux development bundle](docs/packaging-verification.md) is verified for versioned
-installation, upgrade and rollback in the tested Cally environment.
+The [Linux development bundle](docs/packaging-verification.md) includes offline context resolution
+and is verified for versioned installation, upgrade and rollback in the tested Cally environment.
 The `save` CLI executes literal arguments
 with bounded output, deadlines and cancellation, or inspects commands without running them.
 It provides text/JSON receipts, structured requests, discovery and offline diagnostics. The
@@ -54,8 +54,8 @@ fixtures for current acceptance. [Restricted commands](docs/read-profile.md) and
 [GUI](docs/ui.md) and [stdio MCP adapter](docs/mcp.md) use the shared core.
 See [development installation and rollback](docs/development.md#development-artifact-and-rollback).
 Offline [service-context fixtures](docs/context.md) are implemented through the core/CLI and
-[independently verified](docs/context-verification.md). The earlier packaged binary has its own
-source identity and predates this feature.
+[independently verified](docs/context-verification.md). The current development archive includes
+this CLI feature; its installed mission and retained rollback baseline have separate verified identities.
 All 25 capabilities remain in scope; [adapter notes](docs/adapter-notes.md) preserve the verified upstream baseline. No live
 target or credential configuration is included in this repository.
 

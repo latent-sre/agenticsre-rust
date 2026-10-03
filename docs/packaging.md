@@ -22,6 +22,14 @@ at runtime. Restricted command execution still needs the documented Git/ripgrep/
 kernel and fixed library prerequisites in [the profile contract](read-profile.md). Offline help,
 discovery and doctor must remain useful when an optional runtime is absent.
 
+Context-containing source builds also provide the [offline context CLI](context.md), configured
+with an explicit export path and review-age policy. Its regular-file descriptor checks require
+Linux `openat2` and the trusted proc descriptor route; unavailable prerequisites are refused.
+The installed mission must exercise both direct selectors and structured requests, validate the
+observed export digest, and preserve stale/ambiguous/missing refusals without choosing a fallback.
+Context configuration is not exposed by the current UI/MCP servers. Earlier artifacts retain
+their original feature sets and identities.
+
 ## Artifact identity and contents
 
 Each artifact has a source-qualified ID rather than an invented product release version. Its

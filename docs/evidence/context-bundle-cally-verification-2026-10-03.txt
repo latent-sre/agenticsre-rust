@@ -1,0 +1,115 @@
+# WORKBENCH-009 — context-containing Linux development bundle
+
+**PASS for the installed Linux development-bundle increment.** [verified] One ordinary CLI build from exact committed source produced the actual retained archive. Deterministic repacking, all nine installed acceptance groups, five installed-context observations, explicit upgrade from the retained MCP bundle and rollback passed. All 26 exported receipts passed independent canonical/schema validation. All 499 current archive members and their declared sizes, digests, modes and provenance were checked. Exact container/image/staging cleanup was confirmed. [verified]
+
+No product/tool/documentation edits, commits, pushes, host installation, downloads, live requests or model calls were made by this verifier. Original accepted artifacts remain unchanged. This verdict does not assert release/license clearance, signatures, broad Linux compatibility, Windows acceptance or live context integration. [verified scope; wider claims unverified]
+
+## Target and carried approval boundary
+
+Repository `latent-sre/agenticsre-rust`; exact source commit `837c217838c7e6950e59f8e143daf60f4fe9615d`, tree `8e22e9af0910063e2ba5d7c2050e1cc4afc443fa`. All 318 tracked entries were regular files, totaling 3,637,638 bytes. Capture read explicit committed Git blobs, not the working tree. The coordinator's uncommitted roadmap/packaging continuation edits were excluded. A detached disposable metadata clone, manually populated from those blobs, reported the exact HEAD/tree and clean status before staging. No checkout filters/hooks or repository executable ran on the host. [verified]
+
+All 115 product/build/frontend/third-party paths match accepted context R1. The package creator/installer, package integrity tests, installed verifier, notice preparer and raw MCP helper match accepted package R1. Differences from context R1 are documentation, `.gitattributes`, the specification verifier and retained context evidence. `commit-preflight.json` retains every source hash/Git entry and the exact comparison. The actual ordinary binary is also byte-identical to the accepted context R1 binary. [verified]
+
+The parent authorized this artifact/installed-mission increment using the unchanged source boundary and existing package/context approvals. No new product-code approval is claimed. Acceptance comes from WORKBENCH-009 and the packaging/context contracts: real source-qualified artifact, archive determinism, installed identities/modes, existing missions, installed context provenance/parity/refusals, explicit upgrade/rollback and cleanup. [sourced]
+
+Carried evidence remains attributed to its original targets: package R1's 31 native integrity tests and accepted unavailable-fixed-Python fixture; context R1's 151 workspace tests, 92 public checks and native MCP grant regression. They were not rerun solely to change archive identity. This lane independently executes the installed mission against the newly exported bytes. [verified reuse boundary; sourced prior verdicts]
+
+## Actual retained artifact and metadata
+
+| Field | Current context bundle |
+|---|---|
+| Exported data archive | `/tmp/agenticsre-context-bundle-cally-isacf5wl/current.tar` |
+| Archive SHA-256 | `1ed48ee349b9c51e0be98bb0ada2ce1fd2577773f91d273f709ad669298917dd` |
+| Archive bytes | 40,572,928 |
+| Artifact ID | `save-0.1.0-src-5e4001ba226190e0-bin-22b8a16efbfce9fc` |
+| Binary SHA-256 | `22b8a16efbfce9fc03f1e6ed7ac0d64437757a38137124ba355f8bef36321153` |
+| Binary bytes / installed mode | 37,301,160 / 0755 |
+| Source-manifest SHA-256 / bytes | `5e4001ba226190e0d27a5dae7950985c97eadf42cdbfe8c20f35a4b08b8baf4f` / 36,927 |
+| Build-provenance SHA-256 / bytes | `b0fd87029ac7b81b3db5757ee837b0ef4ce699af05fa4a8efc778118a7986e75` / 1,225 |
+| Artifact manifest SHA-256 / bytes | `3343999bdcf66312d9fb2a0156454ca8fa6d6ac53325fc9b5b62b85a8f2d4a23` / 81,684 |
+| Inventory SHA-256 | `cbcd0dc7262215c990db9306ce642e36d37c852a5a25076ff117e79f32990424` |
+| Original-only source tar SHA-256 | `7bcab4db1adfc2514da60fc99ce5df47dc14af9d8c50f7fdbf67c19bbeb84271` |
+| Exported verification record SHA-256 / bytes | `55ffd11b7e36e12e577b045de56db29b987226536c1b026a4b87a729c9f107c9` / 48,302 |
+
+Every table value was observed from actual build/exported bytes and independently checked. `current-source-manifest.json`, `current-build-provenance.json` and `current-artifact-manifest.json` are retained separately for inspection and match the archive copies. The observed binary equality is specific to these builds; the contract guarantees archive repacking determinism, not universal Rust build reproducibility. [verified]
+
+The unchanged prior MCP bundle was supplied from `target/packages/linux-r1/current.tar`, exported again as `previous.tar`, and checked against SHA-256 `76a2ca3414ae624cb51f7ff6378e78771336ec9360b8f4c9e3618e8f52aafa02` (40,156,672 bytes). It retains source `9c1ee1c7e058f48afbb99bcbb867a519392ba066`, tree `81d6b895a346475bc9017a6c39778fc2b4208df6`, binary `939e5f5b5d2bccea2630df6d4870b12a18e2d72f3e834531195123965169aa56` (36,887,184 bytes), and artifact `save-0.1.0-src-8f4d42b935291593-bin-939e5f5b5d2bccea`. It was reused, not rebuilt or relabeled. [verified]
+
+## Criterion-level verdicts
+
+| Criterion | Verdict |
+|---|---|
+| Exact committed source and ordinary build identity | PASS — 318 committed blobs, detached copy identity, source manifests and actual binary hash [verified] |
+| Deterministic archive repacking | PASS — same binary/source/build/inventory/notice inputs repacked to the same SHA-256 [verified] |
+| Archive corruption refusal, installed hashes/modes, fresh/repeated install | PASS — corrupted bytes refused before installation state; current digest/mode checked; repeated install reports already_present [verified] |
+| Existing offline CLI/task missions away from source | PASS — prior/current/rollback help, version, doctor, richer literal argv and both embedded tasks [verified] |
+| Requested hello mission | PASS — selected new installed binary returned exact `hello workbench\n`, child0, succeeded, not_assessed and never [verified] |
+| Installed numerical MCP / embedded UI | PASS — current stdio task transaction, EOF cleanup, assets and authenticated numerical API, SIGTERM cleanup [verified] |
+| Installed context parity and provenance | PASS — direct CLI and structured call agree after independently checked timing/age normalization; exact export digest, revision and declared review time preserved [verified] |
+| Installed stale / ambiguous / missing context | PASS — stale unusable; ambiguous/missing safely empty data; no alternate target or dispatch [verified] |
+| Explicit upgrade and rollback capability distinction | PASS — new selected artifact advertises context.resolve; selected prior and rollback artifact report unknown_operation; rollback repeats mission/tasks and preserves both binaries [verified] |
+| Source/config/input/evidence canaries and partial-state cleanup | PASS — unchanged throughout transaction and rollback; hostile workspace code absent; no partial release/selection state [verified] |
+| Exact returned archive and receipt validation | PASS — current499 members, all payload hashes, declared notices and all26 canonical/applicable task/context receipts [verified] |
+| Owned cleanup | PASS — process residue empty; disposable installation absent; export acknowledgment; exact container/image absence; staging removed [verified] |
+
+## Checks executed and own statuses
+
+Every native command and its cwd, own exit, duration and output hash is in exported `verification.json`; orchestration/engine commands are in `commands.json`. Raw stdout/stderr is retained in `package-cally.log`. The native cwd was `/opt/workbench-source`; installed product calls ran from a hostile disposable directory away from source with synthetic environment values. No status is inferred from a later pipeline command. [verified]
+
+1. `cargo build -p workbench-cli --locked --offline`: exit0, 43.205 seconds. Only one ordinary build ran. [verified]
+2. `rustc -vV` and `cargo --version`: exit0, fresh runtime observations bound to this build. [verified]
+3. `/usr/bin/python3 -I -B /opt/workbench-source/tools/prepare-package-notices.py --repo /opt/workbench-source --vendor /opt/workbench-source/vendor --output /tmp/workbench-package/current-notice-inputs`: exit0. [verified]
+4. The unchanged `tools/package-linux.py create` received the actual `/tmp/workbench-package/current-save`, current source/build manifests, generated inventory/notices, product version0.1.0 and output `current.tar`: exit0. Exact arrays are in the record. Repeating the same inputs to `deterministic-repack.tar` exited0 and produced the same digest; the duplicate was removed. [verified]
+5. The unchanged packager verified the retained MCP archive with separately pinned SHA-256: exit0. [verified]
+6. `/usr/bin/python3 -I -B /opt/verification/verify-installed-context-bundle.py /tmp/workbench-package/current.tar --expected-sha256 1ed48ee349b9c51e0be98bb0ada2ce1fd2577773f91d273f709ad669298917dd --previous-bundle /tmp/workbench-package/previous.tar --previous-expected-sha256 76a2ca3414ae624cb51f7ff6378e78771336ec9360b8f4c9e3618e8f52aafa02 --json-results`: exit0, nine installed acceptance groups. [verified]
+7. All three fixed-file engine `cp` transfers exited0; streamed tar path/type/count/size/padding and SHA-256 checks passed. The fixed completion line was then sent, and the actual native lane/SSH/controller exited0. [verified]
+
+No failed attempt or silent skip occurred in this increment. Negative product outcomes were the deliberately asserted corruption/context/capability refusals. [verified]
+
+## Installed context and rollback evidence
+
+The context fixture used `fixture-export`, ID `installed-fixture`, revision `installed-1`, a review timestamp generated from observed UTC one hour earlier, and explicit service `checkout` / environment `dev`. Startup selected the source path and 30-day age policy. Selected owners, resource aliases, runbook reference, required target/environment and separate forward/reverse declarations remained data. Source identity was bound to bytes read; the declarations were reported as sourced, not verified live catalog/approval data. [verified]
+
+The direct and structured calls preserve every semantic receipt field. The verifier first checks `age_seconds` against each observation's own `observed_at` and original review timestamp, then removes only invocation identities/times, source observation times and the independently checked age for comparison. Stale, ambiguous and absent records return the expected errors without fallback; source files and the request remain byte-identical afterward and after rollback. [verified]
+
+Before upgrade and again after rollback, the old MCP binary reports `unknown_operation` for `context.resolve`. The new selected binary reports `requires_configuration` for discovery and successfully resolves the explicitly configured fixture. Thus rollback is distinguished by both exact binary identity and actual capability behavior. [verified]
+
+## Verifier-owned changes and carried checks
+
+Only private verifier files were authored. `verify-installed-context-bundle.py` derives from unchanged accepted `tools/verify-package-linux.py` (original SHA-256 `aad5cfe8af868b736581fd14184e9d9f295d1a349e219f1f0be61a7a89d487ec`). Its retained `installed-verifier.diff` adds installed context checks, prior/current/rollback discovery distinction, the requested hello assertion and explicit source-tool paths; the existing package/CLI/tasks/MCP/UI/rollback assertions remain. Private verifier SHA-256 is `854688e6f22923dc21214844e41c5a8cca24f8b2ebee90a877cf8e23166568ec`. [verified]
+
+The private lane creates only the new artifact and reuses the retained prior archive. Private staging driver SHA-256 is `7c2b50fd7943b5b3c176cec0ca11a900c16536e4007e057c55cfcef0a471750f`; lane SHA-256 `65806559ef31fa4efd0f84f3d97598f8f3379396b0c1794fe4b54ebc5b97bf57`. The accepted exporter remains byte-identical, SHA-256 `8661f52401df4e3d15a50fda50c37dad700484f3e998beaa7830692f1706f68c`, retaining its parser/real-engine export evidence. [verified]
+
+Full context/workspace/native/package-integrity suites and the unavailable-fixed-Python fixture were intentionally carried because their relevant production/tool bytes and cached environment remain unchanged. No new full suite, browser, Grafana exhaustive, optional-runtime or blocked custom-probe run occurred. These carried claims remain bound to their historical packets; the current installed mission and exported artifact checks are fresh. [verified scope; sourced historical passes]
+
+## Independent external data validation
+
+Command, cwd `/home/hawkfire/rusty`, own exit0: [verified]
+
+```text
+/home/hawkfire/rusty/agenticsre-rust/.venv/bin/python -I -B /tmp/agenticsre-context-bundle-cally-isacf5wl/validate-bundle-evidence.py
+```
+
+The validator imports no product code. It validates archive digests, regular files/no links, safe unique member paths, every size/digest/mode and zero uid/gid/mtime, embedded source/build identity, inventories and every declared notice reference. It reads the frozen canonical schemas as data from the exact captured source tar; external reference retrieval is disabled and duplicate/nonfinite JSON is rejected. The captured 318 source hashes were additionally rechecked directly against committed Git blobs. [verified]
+
+All26 receipts passed: prior CLI6, current CLI12, current MCP1, current UI1, rollback CLI6. Successful task data and every context receipt were checked against their domain schemas as well as the canonical result schema. Exact raw JSON lines are retained without reserialization in `receipts.jsonl`, SHA-256 `f6e61e3d813b5e99a829681d2268a3057114aa5c0cf6fda8212dcae2d9a88b92`. The five source-observation lines are `context-observations.jsonl`, SHA-256 `94ffd1313e46d4954a98554e430301f25d16629b878bb39a3217a201eaf4d336`. [verified]
+
+External runtime: Python3.14.7/jsonschema4.26.0/referencing0.37.0. No caller-supplied versioned evidence-record schema was provided, so record-conformance validation is not claimed. `external-validation.json` SHA-256 is `1bc35f8071f809ace0353aef5b5b9356a50dded16480e242bb682b890db86200`; raw log SHA-256 is `fb2fd0e7f4666d08cb9c3018f1ced6c2ca973b181babf0d20ccf4a1466056009`. [verified]
+
+## Execution isolation, time and cleanup
+
+Cached base `docker.io/library/rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959`, actual base ID `sha256:ab239914c9d2fbe5ef024c5314dae21e2a2c43618086e169d78a754429978b97`. Disposable run image `sha256:6db3db364de30e91316f87cd3ff5338e8e4b31e2538b99c45f294e3c7028b0fb`. One streamed COPY-only context, no RUN stage, image pull, duplicate build.tar, host Cargo cache or network dependency fetch. Fresh local free space was 9,043,804,160 bytes before staging, above the exact 8 GiB floor. [verified]
+
+All repository/dependency/product execution occurred in Cally: UID/GID1000, root-owned read-only root/source, private PID/network namespaces, network none, no host paths/credentials, NNP/cap-drop ALL, 2.5 CPUs/4 GiB/512 PIDs/900-second runtime, private tmp512 MiB and target2 GiB tmpfs. Cargo used jobs2, debug0 and incremental0. Runtime boundary assertions observed read-only source, zero capabilities, NNP1, empty routes and exact cgroup values. Rust/Cargo1.98.0, Debian13.6 Linux x86-64 and glibc2.41 were observed in fresh build provenance; supervised task receipts observed Python3.13.5. [verified]
+
+The new session did not inherit the old historical three-hour cutoff. The fresh COPY stage remained bounded180 seconds and the execution/export controller900 seconds. Actual build/runtime/export completed in 48.944 seconds after container start; handle85897 is terminal0. [verified]
+
+Pre-export `PACKAGE_PROCESS_RESIDUE []` included process states for any surviving process and observed none. The installed verifier confirmed scratch removal and absence of partial selection/release state. After data export/acknowledgment, exact container `agenticsre-package-isacf5wl` and image `localhost/agenticsre-package:isacf5wl` were removed; independent final name readback was empty and image inspection exited125 with `image not known`. Cached base ID remained unchanged, no owned local driver remained, and all source/vendor/support/metadata-clone staging was absent. The prior protected archive remained unchanged. Only evidence, source captures and exported data are intentionally retained. [verified]
+
+## Material limits
+
+This remains a stateless Linux development bundle tested on Debian13 x86-64/glibc2.41. No protected/global install, signatures, release publication, broader ABI/Windows evidence, state migrations, live catalog, target dispatch, UI/MCP context authority or human/agent pilot is claimed. The existing restricted-profile namespace-setup-refusal gap remains open. [unverified/out of scope]
+
+Inventory scope is all260 locked Cargo registry packages plus19 frontend notice records, including selected Tailwind/Vite contributors; it is not an exact linked-binary or complete frontend build-tool SBOM. Explicit gaps remain for release/license clearance, unavailable npm archive revalidation, Rust compiler/standard/system libraries and eight locked crates without available license texts. No missing text was invented and no cleared redistribution claim is made. [verified inventory; release clearance unverified]
+
+Evidence is sealed with files0444/directories0555 and a SHA-256 artifact manifest. This is a read-only, change-detectable record, not protection against owner/root mutation. [verified]

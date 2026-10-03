@@ -4,7 +4,7 @@
 latent-sre/agenticsre-rust as the working repository. Scope and dependencies live in the
 [planning package](sre-workbench/README.md); this file owns current execution status.
 
-**Three-hour build session:** The owner resumed work from pushed checkpoint `719fee3` and authorized
+**Completed three-hour build session:** The owner resumed work from pushed checkpoint `719fee3` and authorized
 a local review commit at the deadline. Start: **2026-10-02 22:17:57 UTC** (17:17:57 America/Chicago).
 Stop/commit deadline: **2026-10-03 01:17:57 UTC** (20:17:57 America/Chicago). Reserve the final
 15 minutes for cleanup, evidence and the commit. New full Cally jobs must start before
@@ -19,8 +19,18 @@ core/CLI context resolution are complete for their stated slices. Native product
 by 00:45:39 UTC; cleanup, sealed evidence and final documentation checks passed before the reserved
 commit period. Final checks covered 25 schemas, 24 positive/11 negative fixtures and 25 repository
 documents; 197 product/assets/schema/tooling files matched the approved R1 capture. The local
-three-hour checkpoint is ready for owner review. Work pauses at the scheduled commit boundary;
-the next resume items and wider acceptance gaps remain listed below.
+three-hour checkpoint was committed locally as `837c217838c7e6950e59f8e143daf60f4fe9615d`
+at 01:18:53 UTC, with a clean working tree, then paused for owner review.
+
+**Resumed work:** The owner requested continuation after that checkpoint. The earlier job and
+commit cutoffs are historical; no new timed session or publication boundary was requested.
+The selected increment is a context-containing Linux development bundle from committed source
+`837c217`, with a new source/build/archive identity and installed mission evidence on Cally.
+Reuse accepted product reviews and runtime checks where source bytes are unchanged. Preserve both
+earlier archives for upgrade/rollback. On 2026-10-03 the owner requested committing this evidence
+and opening a pull request. The review branch `codex/context-linux-bundles` targets `main` and
+includes the unpublished implementation checkpoint `837c217` plus the installed-bundle evidence.
+The actual archives remain local data artifacts; live installation and release remain separate.
 
 ## WORKBENCH-001 — bootstrap the product
 
@@ -29,8 +39,8 @@ the next resume items and wider acceptance gaps remain listed below.
 **Outcome:** Establish this repository as the product home, preserve the complete plan and its
 provenance, and make the first command-runner slice concrete and reviewable.
 **Next action:** The selected browser PoC and bounded MCP fixture slice are complete. Use the
-documented launch workflows; Linux development packaging is accepted and offline context fixtures
-are independently accepted through the core/CLI. Reuse the accepted
+documented launch workflows; Linux development packaging includes the independently accepted
+offline context core/CLI. Continue toward P3 diagnostic/query/capture/compare fixtures. Reuse the accepted
 core and Cally tooling; rerun affected checks for subsequent changes. Native Windows and full P1
 acceptance remain open.
 **Evidence:** [Import record](plan-import.md), [capability specifications](sre-workbench/capabilities.md),
@@ -50,8 +60,8 @@ integration does not imply it is installed, authorized, connected or operational
 | WP-02 through first WP-04 increment | Complete for Linux PoC: independent review APPROVE and executable verification PASS; 19 Rust tests, 77 independent CLI invocations and 14 schema cases. Review P2 late-signal mapping and verifier-found Cargo default were fixed | [Acceptance record](poc-verification.md); preserve broader platform/policy gaps |
 | Specification baseline | Grafana snapshot passed 20 schemas, 21 positive and 9 negative fixtures, all IDs; Python 3.14.7 and dependencies pinned | Validate changed documentation at integration boundary |
 | Cally assistance | Grafana snapshot passed 68 Rust tests and 96 HTTPS cases; minimal lane passed 17 native HTTPS tests without Python and refused both Python tasks. Both containers removed | Reuse bounded lanes for material changes; [acceptance record](grafana-verification.md) |
-| Adapter baseline | Dashboard, error-budget, native Grafana fixtures and bounded stdio MCP accepted; provenance retained in [adapter notes](adapter-notes.md) and [MCP verification](mcp-verification.md) | Linux development bundle; native Windows and live/installed-host acceptance remain separate |
-| Hosted CI | Completed checkpoint `93fc339` and prerequisite repair `7b6aed1` pushed to main; [Rust PoC](https://github.com/latent-sre/agenticsre-rust/actions/runs/37041979990) and [specifications](https://github.com/latent-sre/agenticsre-rust/actions/runs/37041980033) both passed on the repair commit | Current three-hour checkpoint is local for owner review; native/Cally acceptance is retained separately, with no new hosted result claimed |
+| Adapter baseline | Dashboard, error-budget, native Grafana fixtures, bounded stdio MCP and offline core/CLI context accepted; the context-containing Linux archive passed installed missions | P3 investigation fixtures; native Windows and live/installed-host acceptance remain separate |
+| Hosted CI | Completed checkpoint `93fc339` and prerequisite repair `7b6aed1` pushed to main; [Rust PoC](https://github.com/latent-sre/agenticsre-rust/actions/runs/37041979990) and [specifications](https://github.com/latent-sre/agenticsre-rust/actions/runs/37041980033) both passed on the repair commit | Owner requested a PR for the implementation checkpoint and bundle evidence; native/Cally acceptance is retained separately, with no new hosted result claimed |
 
 Execution authority: local source changes, disposable checks and bounded Cally build assistance
 are authorized. On 2026-10-02 the owner explicitly requested committing and pushing the completed
@@ -507,7 +517,7 @@ catalog or automatic target dispatch. Actual team source/adapter remains the sep
 **Scope:** First offline CAP-07/AC-12 slice through the existing core and CLI. Source paths remain
 trusted startup configuration; UI/MCP context exposure, catalog writes, credentials and live
 integrations stay outside this increment. Preserve the existing operation and grant behavior.
-**Time boundary:** Builder returns by 00:15 UTC for independent review and bounded Cally acceptance.
+**Time boundary (completed session):** Builder returns by 00:15 UTC for independent review and bounded Cally acceptance.
 Keep the session's 00:42 full-job cutoff and 01:02 executable cutoff; unfinished acceptance must
 remain explicit at the review commit rather than overrunning the three-hour deadline.
 **Builder checkpoint:** Core/CLI resolution, discovery, three typed schemas and fixtures are
@@ -553,7 +563,7 @@ Run-owned container `agenticsre-context-8stdgxse`, derived image
 `sha256:0d43b080deaeabe7d986f6e1b501934ce44e266d7dc68112cba092fb0d248861`;
 evidence `/tmp/agenticsre-context-cally-8stdgxse`. The strict pre-staging 8 GiB floor passed after
 root cleaned only the completed builder's ignored Cargo cache, preserving all accepted binaries,
-archives and evidence. No new full Cally job may start after the session cutoff.
+archives and evidence. No new full Cally job was started after that session's cutoff.
 **Final native observations:** The first R1 job passed 151 workspace tests (19 explicitly ignored),
 the selected native MCP grant test and 12 public cases. It then hit a verifier expectation error:
 JSON CLI usage errors emit canonical `invalid_usage` receipts rather than empty stdout. Product
@@ -571,13 +581,63 @@ Combined sealed packet: `/tmp/agenticsre-context-cally-ycwbvgb2/VERIFICATION.md`
 Unchanged packet/receipt copies are tracked under `docs/evidence` for review. The one injected
 Cargo test covers two deterministic checkpoints; it does not establish public in-flight signal timing.
 Context executable-client correction rounds: 1; product review/fix rounds: 1. No new executable
-checks are needed for this slice. Finish evidence and the session's review commit.
+checks are needed for the accepted fixture slice. Evidence and the session's review commit were
+completed as `837c217`; the later installed artifact mission is separate WORKBENCH-009 evidence.
 
-## Next resume boundary
+## WORKBENCH-009 — context-containing Linux development bundle
 
-Review this three-hour checkpoint. The remaining product queue is unchanged: native Windows and
+**Status:** Complete: independent WORKBENCH-009 verdict PASS; packet and exact receipts sealed.
+Final integration checks passed: 25 schemas, 24 positive/11 negative fixtures, 15 package documents,
+25 repository documents and all planning IDs; `git diff --check` is clean. The ordinary CLI was built from exact commit
+`837c217` with the accepted package tools and existing bounded Cally environment. The actual
+context-containing archive was exported before disposable build cleanup.
+The 8 GiB staging floor passed with 9,046,966,272 bytes free after removing only the completed,
+unused frontend npm download-content cache. Source, installed dependencies, cache logs/index,
+available notices and accepted binaries/archives were retained; their protected digests are
+unchanged. Cleanup evidence: `/tmp/agenticsre-context-bundle-cache-cleanup.json`.
+**Outcome:** A separately identified development bundle that resolves explicitly selected offline
+context after installation away from source, with schema-valid provenance and refusal behavior.
+**Acceptance:** Verify deterministic repacking, installed hashes/modes, existing CLI/tasks/MCP/UI
+missions, installed context CLI/structured parity and stale/ambiguous/missing refusal, explicit
+upgrade from the retained MCP bundle and rollback, unchanged external canaries and exact cleanup.
+Retain prior context matrix, native grant and packaging integrity evidence when the corresponding
+source bytes are unchanged; do not rerun full suites solely for another archive identity.
+**Owners:** Coordinator owns documentation and this roadmap. Independent verifier owns private
+build/installed acceptance drivers, immutable evidence and artifact export; product/tool changes
+are not planned. Require at least 8 GiB free before local staging; preserve accepted data artifacts.
+**Limits:** Linux development packaging only. No release clearance/signatures, global installation,
+live integration, UI/MCP context exposure or native Windows claim. Review/fix rounds: 0 for this
+increment; any material product/tool change re-enters its affected independent gates.
+
+**Actual artifact:** `target/packages/linux-context-r1/current.tar`, SHA-256
+`1ed48ee349b9c51e0be98bb0ada2ce1fd2577773f91d273f709ad669298917dd`, 40,572,928 bytes;
+artifact `save-0.1.0-src-5e4001ba226190e0-bin-22b8a16efbfce9fc`. Exact source-manifest SHA-256
+`5e4001ba226190e0d27a5dae7950985c97eadf42cdbfe8c20f35a4b08b8baf4f`; ordinary binary SHA-256
+`22b8a16efbfce9fc03f1e6ed7ac0d64437757a38137124ba355f8bef36321153`, matching the two
+accepted context builds. Root's retained DATA copy passes unchanged package verification; the
+older MCP and GUI artifacts remain intact with their original hashes.
+**Installed acceptance:** Deterministic repacking and all nine installed groups passed: explicit selection,
+CLI/tasks, exact hello receipt, current stdio MCP/browser assets/authenticated API, context direct/
+structured parity and provenance, stale/ambiguous/missing refusal, distinguishable upgrade/rollback
+and unchanged external canaries. All 26 exact receipts are schema-valid; five context observation
+records and the raw receipts are copied unchanged into `docs/evidence`. All 318 source hashes
+match committed Git blobs; 115 product/build/frontend/third-party files and five package tools match
+accepted baselines. Full existing suites were reused rather than repeated for another archive ID.
+Final independent readback confirmed empty residue, exact container/image/staging/driver absence,
+unchanged cached base and retained prior archive. [Acceptance details](packaging-verification.md#context-containing-refresh)
+and [installed commands](development.md#development-artifact-and-rollback) retain the tested scope.
+**Sealed packet:** `/tmp/agenticsre-context-bundle-cally-isacf5wl/VERIFICATION.md`, SHA-256
+`b8c56039ad431889a6488e8c09207cfb934f336e36138b1c11161f7afdf4fc1d`; 46-artifact manifest
+`6bf5d842f217b8314d4bf7d37661611646fc87418a84e2777e7dd96dcfe20638`.
+The unchanged packet is copied into `docs/evidence`. The bundle refresh introduced no product/tool
+change or live installation. The subsequent owner-requested review handoff commits its documentation
+and evidence on `codex/context-linux-bundles`, alongside the existing implementation checkpoint.
+
+## Remaining product queue
+
+The remaining product queue is unchanged: native Windows and
 restricted-profile namespace-refusal evidence; release/dependency clearance and the AC-36 human/
 agent pilot; actual team source selection (DEC-09); and the P3 diagnostic/query/capture/compare
-features in the delivery plan. A context-containing Linux artifact needs its own new source/build
+features in the delivery plan. The context-containing Linux artifact now has its own source/build
 identity and installed mission evidence. Keep the earlier accepted archives and frontend/runtime
 proofs as baselines. Source-aware UI/MCP context grants and live integrations remain separate work.

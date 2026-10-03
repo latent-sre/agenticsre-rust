@@ -1,0 +1,5 @@
+{"case": "unique-cli", "request_id": "request-3722-18dae3514d4084cb-0", "source_sha256": "276e97af1f0fea0c79c643de84ffe73aaced8c93063e1f26d4747442c9e6de05", "source_bytes": 668, "unchanged": true}
+{"case": "unique-structured", "request_id": "installed-context-parity", "source_sha256": "276e97af1f0fea0c79c643de84ffe73aaced8c93063e1f26d4747442c9e6de05", "source_bytes": 668, "unchanged": true}
+{"case": "stale", "request_id": "request-3724-18dae3514d8519ef-0", "source_sha256": "9c6acf43da0f0325f1095b09b1ca6f902c83cb093d827c073dbf8790fcb0e9f2", "source_bytes": 719, "unchanged": true}
+{"case": "ambiguous", "request_id": "request-3725-18dae3514da60c80-0", "source_sha256": "fca5df185f6844c585a4387db4a16cfd087b358422772850eee4af0c3613ce3b", "source_bytes": 1313, "unchanged": true}
+{"case": "missing", "request_id": "request-3726-18dae3514dc6e460-0", "source_sha256": "276e97af1f0fea0c79c643de84ffe73aaced8c93063e1f26d4747442c9e6de05", "source_bytes": 668, "unchanged": true}

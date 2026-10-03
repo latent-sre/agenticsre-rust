@@ -104,6 +104,8 @@ Actual team source/adapter selection is DEC-09; credentials, approvals, live map
 source-aware browser/MCP grants and downstream diagnostic dispatch remain separate work.
 Public in-flight signal timing was not established by the deterministic checkpoint test.
 
-The accepted Linux bundles in [packaging verification](packaging-verification.md) predate this context
-source and retain their own identities. They do not contain the context capability. Existing native
+The original MCP/GUI Linux bundles predate this context source and retain their own identities.
+The later [context-containing refresh](packaging-verification.md#context-containing-refresh) packages
+the accepted implementation from committed source `837c217` and adds installed mission evidence.
+Existing native
 restricted-profile namespace-refusal, Windows, release-clearance and five-task pilot gaps remain open.
