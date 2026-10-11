@@ -423,3 +423,19 @@ accepted MCP baseline without rebuilding it. Repacking identical
 inputs passed deterministically; reproducibility of separate Rust builds is not asserted.
 Shipping still requires license/distribution clearance, broader native platform evidence and the
 human/agent usefulness pilot identified in the roadmap.
+
+### Offline evidence comparison
+
+After collecting two bundles, use their generated run IDs:
+
+```sh
+target/debug/save --json --state-dir /absolute/private/store evidence compare BEFORE_RUN AFTER_RUN \
+  --normalization exact-window-v1 --max-items 100
+```
+
+Use `window-offset-v1` only when comparing equal-duration windows by their relative offsets.
+Optional `--before-manifest-sha256` and `--after-manifest-sha256` pin the inspected manifests.
+Comparison reads only the selected store and requires no Grafana/provider/context options.
+An incomplete or incompatible comparison exits 1 and retains explicit reasons; it never asserts
+service health or log rates. The [contract](evidence.md#comparison-interface-and-projections)
+documents supported frames, provenance, limits and structured request parity.

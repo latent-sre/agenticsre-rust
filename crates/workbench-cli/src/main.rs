@@ -203,6 +203,29 @@ enum EvidenceCommands {
         )]
         input: PathBuf,
     },
+    /// Compare retained metric samples and log entries without contacting their sources
+    Compare {
+        /// Generated run ID for the earlier observation
+        before: String,
+        /// Generated run ID for the later observation
+        after: String,
+        #[arg(long, value_parser = ["exact-window-v1", "window-offset-v1"])]
+        normalization: String,
+        #[arg(long)]
+        before_manifest_sha256: Option<String>,
+        #[arg(long)]
+        after_manifest_sha256: Option<String>,
+        #[arg(long, default_value_t = 100, value_parser = clap::value_parser!(u64).range(1..=1000))]
+        max_items: u64,
+        #[arg(
+            long,
+            default_value_t = 1_048_576,
+            help = "Encoded difference detail budget; at most 1MiB is effective"
+        )]
+        max_output_bytes: usize,
+        #[arg(long, default_value_t = 30_000)]
+        timeout_ms: u64,
+    },
     List,
     Show(EvidenceReference),
     Protect(EvidenceReference),
@@ -495,6 +518,29 @@ fn normalize(cli: Cli) -> Result<Request, Problem> {
             ),
             EvidenceCommands::Collect { target, input } => {
                 grafana_request("evidence.collect", target, parse_json(input_file(input)?)?)
+            }
+            EvidenceCommands::Compare {
+                before,
+                after,
+                normalization,
+                before_manifest_sha256,
+                after_manifest_sha256,
+                max_items,
+                max_output_bytes,
+                timeout_ms,
+            } => {
+                let mut inputs = json!({"before":{"id":before},"after":{"id":after},"normalization":normalization});
+                if let Some(digest) = before_manifest_sha256 {
+                    inputs["before"]["expected_manifest_sha256"] = json!(digest);
+                }
+                if let Some(digest) = after_manifest_sha256 {
+                    inputs["after"]["expected_manifest_sha256"] = json!(digest);
+                }
+                let mut request = Request::new("evidence.compare", inputs);
+                request.limits.max_items = Some(max_items);
+                request.limits.max_output_bytes = max_output_bytes;
+                request.limits.timeout_ms = timeout_ms;
+                request
             }
             EvidenceCommands::List => Request::new("evidence.list", json!({})),
             EvidenceCommands::Show(reference) => evidence_reference("evidence.show", reference),

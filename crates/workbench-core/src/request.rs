@@ -177,7 +177,7 @@ impl Request {
                 "This operation does not record evidence; explicitly select record=never.",
             ));
         }
-        if self.limits.max_items.is_some()
+        if (self.limits.max_items.is_some() && self.operation != "evidence.compare")
             || self
                 .limits
                 .concurrency
@@ -185,7 +185,7 @@ impl Request {
         {
             return Err(Problem::unsupported(
                 "unsupported_limits",
-                "max_items is unsupported; only diagnostics.run accepts concurrency, with a ceiling of two checks.",
+                "Only evidence.compare accepts max_items; only diagnostics.run accepts concurrency, with a ceiling of two checks.",
             ));
         }
         Ok(())

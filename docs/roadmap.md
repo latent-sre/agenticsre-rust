@@ -1414,6 +1414,38 @@ prerequisites do not block the remaining authorized implementation.
 **Next:** Typed before/after comparison over verified bundles, then runbooks, offline replay,
 reports, toil metadata and configuration checks in the preserved dependency order.
 
+## WORKBENCH-014 — typed evidence comparison
+
+**Status:** Complete for the Linux core/CLI fixture increment. The
+[acceptance record](evidence-comparison-verification.md) binds source review and installed execution
+to frozen source/binary bytes. The full product backlog remains open.
+
+**Delivered:** Offline comparison over verified bundle references; exact-window and window-offset
+policies; compatible service/connection/query/datasource/parameter/sampling identities; bounded
+Prometheus samples and duplicate-preserving Loki entries with exact timestamps. Missing, redacted,
+unsupported, interrupted and partial observations remain explicit. Hosted grants remain unavailable.
+
+**Verification:** 291 workspace tests passed (19 existing native tests ignored), with nine public
+comparison tests freshly passed after the final source-metadata correction. Format, lint, build and
+38-schema specification checks passed. Independent installed r2 passed ten commands, 16 canonical
+receipts and seven comparison cases; all 17 store files remained unchanged. Fixture workers joined
+before offline comparison, and all 765 source files plus the binary matched their guards.
+
+**Resolved findings:** Per-series sampling compatibility, shared detail-array/prefix limits, and
+canonical source metadata. Failing regressions and installed r1 are retained alongside final proof;
+independent review reports no unresolved findings.
+
+**Identity:** Snapshot `target/evidence-comparison/review-r2`, manifest SHA-256
+`e80369b5af3eb33c479c37b7270f020693f88bbe081964f6c6c595c0e85295f7`.
+Binary SHA-256 `319eabdd1a0f85d1c480362848d900c7b06abebfefaafbd4722b4c7ea8a14e70`.
+The packet retains 115 hashed artifacts. Source remains local and uncommitted; later acceptance
+documentation does not change tested product bytes.
+
+**Next:** Reviewed observation-only runbooks with typed branches/checkpoints and version-aware
+resume, followed by offline replay, reports, toil metadata and configuration checks. Live home-lab
+compatibility and native Windows evidence remain separate prerequisites; unchanged collection/store
+proof is reused.
+
 ## Remaining product queue
 
 The following ledger preserves the complete requested scope. Accepted slices are evidence for
@@ -1432,7 +1464,7 @@ and [verification](sre-workbench/verification.md).
 | CAP-07 context | [Offline core/CLI source resolver](context-verification.md) | Approved real team source, hosted context grants and live target selection |
 | CAP-08 diagnostics | WORKBENCH-010 core/CLI and [WORKBENCH-011 browser](diagnostics-ui-verification.md) qualified native acceptance with frozen correctness/security reviews | Positive system-resolver fixture gap and later live/platform bindings |
 | CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery | Other operation recording policies, hosted views/grants and live/platform acceptance |
-| CAP-10 comparison | No product comparison is accepted | Compatible bundle/run validation, named normalization and honest missing/incompatible comparisons |
+| CAP-10 comparison | [Typed Linux fixture comparison](evidence-comparison-verification.md), compatibility, normalization and explicit missing/partial outcomes | Live datasource/plugin compatibility, other supported evidence kinds, hosted/platform acceptance |
 | CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted | Dependent browser/MCP grants and live/platform acceptance |
 | CAP-12 runbooks | No product runbook execution is accepted | Reviewed observation-only steps, typed branches/checkpoints and version-aware resume |
 | CAP-13 configuration checks | Dashboard task implements a supported offline validator slice | `config.check` contract, declared kind/version/digest and other supported validators |

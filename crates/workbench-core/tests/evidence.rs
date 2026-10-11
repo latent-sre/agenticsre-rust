@@ -17,6 +17,7 @@ fn hosted_evidence_cannot_inherit_operator_store_authority() {
         "evidence.packs.list",
         "evidence.packs.describe",
         "evidence.collect",
+        "evidence.compare",
         "evidence.list",
         "evidence.show",
         "evidence.protect",
@@ -89,4 +90,19 @@ fn collection_does_not_silently_record_under_never() {
     assert_eq!(result.errors[0].code, "recording_required");
     assert_eq!(result.effect_outcome, "not_attempted");
     assert_eq!(result.record_mode, "never");
+}
+
+#[test]
+fn comparison_discovery_is_observational_and_offline() {
+    let result = execute_with_context(
+        Request::new(
+            "capability.describe",
+            json!({"operation":"evidence.compare"}),
+        ),
+        &RunControl::default(),
+        &OperatorContext::default(),
+    );
+    assert_eq!(result.execution.status, Status::Succeeded);
+    assert_eq!(result.data["capability"]["effects"], "observe");
+    assert_eq!(result.data["capability"]["required_permissions"], json!([]));
 }

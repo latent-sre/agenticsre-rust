@@ -1,0 +1,2 @@
+PASS: 38 schemas; 32 positive and 17 negative fixtures; 15 package documents plus 34 repository documents; all planning IDs covered.
+This checks specification structure, not product behavior or live readiness.

@@ -1,0 +1,73 @@
+{
+  "source_manifest_sha256": "e80369b5af3eb33c479c37b7270f020693f88bbe081964f6c6c595c0e85295f7",
+  "source_files": 765,
+  "source_guard_before": true,
+  "source_guard_after": true,
+  "binary_sha256": "319eabdd1a0f85d1c480362848d900c7b06abebfefaafbd4722b4c7ea8a14e70",
+  "binary_bytes": 41712592,
+  "binary_path": "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/debug/save",
+  "checks": [
+    {
+      "label": "fmt-r2",
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.362
+    },
+    {
+      "label": "clippy-r2",
+      "argv": [
+        "tools/test-sandbox.sh",
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "seconds": 2.774
+    },
+    {
+      "label": "public-r2",
+      "argv": [
+        "tools/test-sandbox.sh",
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "workbench-cli",
+        "--all-features",
+        "--test",
+        "comparison"
+      ],
+      "exit": 0,
+      "seconds": 4.125
+    },
+    {
+      "label": "build-r2",
+      "argv": [
+        "tools/test-sandbox.sh",
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "-p",
+        "workbench-cli"
+      ],
+      "exit": 0,
+      "seconds": 0.558
+    }
+  ],
+  "reused_workspace_evidence": "workspace-final.log / r1; r2 changes only comparison source metadata and its public regression"
+}

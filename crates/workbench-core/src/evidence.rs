@@ -1,5 +1,7 @@
 //! Operator-local collection and durable evidence. Hosted grants remain separate.
 pub(crate) mod collect;
+pub(crate) mod compare;
+mod frames;
 pub(crate) mod pack;
 pub(crate) mod store;
 

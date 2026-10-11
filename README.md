@@ -62,6 +62,10 @@ The [evidence collection increment](docs/evidence.md) builds on those queries wi
 bindings, sanitized receipts and a private versioned local store, with
 [Linux fixture acceptance](docs/evidence-collection-verification.md). See
 [collection commands](docs/development.md#evidence-collection-and-local-store).
+Offline `evidence compare` checks two verified bundles and reports typed metric/log differences
+with explicit normalization, incompatibilities and missing observations; see the
+[comparison contract](docs/evidence.md#comparison-interface-and-projections) and
+[Linux fixture acceptance](docs/evidence-comparison-verification.md).
 See [development installation and rollback](docs/development.md#development-artifact-and-rollback).
 Offline [service-context fixtures](docs/context.md) are implemented through the core/CLI and
 [independently verified](docs/context-verification.md). The current development archive includes

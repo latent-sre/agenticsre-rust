@@ -139,6 +139,86 @@ claims. Unknown shapes, redacted identities, incompatible units/sampling and mis
 explicit incompatible/missing outcomes. Partial input cannot produce a complete aggregate claim.
 Retain both source references and algorithm version; differences do not establish causation.
 
+### Comparison interface and projections
+
+```sh
+save --json --state-dir /absolute/private/store evidence compare BEFORE_RUN AFTER_RUN \
+  --normalization exact-window-v1
+```
+
+The structured operation accepts exactly `before`, `after` and `normalization`. Each reference
+contains `id` and optionally `expected_manifest_sha256`; the direct CLI exposes the pins as
+`--before-manifest-sha256` and `--after-manifest-sha256`. Both references are verified under one
+store lock and deadline. Comparison never initializes, repairs or changes a store, resolves
+current context, loads Grafana configuration, reads credentials or replays a query. Hosted evidence
+grants remain unavailable. It accepts `record=never` only.
+
+Algorithm `returned-observations-v1` returns both immutable bundle references, their original
+windows and observation times, a compatibility result, source limitations, changed provenance
+field paths, and separate `metrics` and `logs` checks. Equality concerns only the named projections
+below. Config, CA and context-source revisions can differ; those differences remain disclosed.
+Service/environment and selected team/deployment, effective origin/organization, installed query
+identity, typed parameters, datasource and effective request sampling must agree. Retained compiled
+requests are checked against the installed query compiler. Redacted essential identity cannot be
+reconstructed. A missing or unusable receipt stays a missing check.
+
+Global identity/window incompatibility produces `state=incompatible`; incompatible or missing
+individual checks produce `state=partial`. Interrupted bundles, incomplete capture, missing or
+nonfinite samples, warning notices and omitted difference details also prevent a complete result.
+Complete comparison means all retained supported observations were compared; the receipt still
+reports `coverage.state=not_established`. Empty returned log sets can be compared; empty metric
+observations remain partial. Execution exits 0 for complete comparison, 1 for partial/incompatible
+comparison or store failure, and 2 for invalid/unsupported requests. Health stays `not_assessed`.
+
+`exact-window-v1` compares absolute nanosecond timestamps. `window-offset-v1` subtracts each original
+window start, requires equal durations and retains the absolute source timestamps alongside every
+sample/entry difference. No interpolation, padding, implicit time shift, zero filling, tolerance or
+rate estimation occurs.
+
+- **Prometheus:** Recognize wide/multi numeric time-series frames, including the legacy untyped
+  form and dataplane type version `[0,1]`. A series is its numeric field name and sorted string
+  labels. Compare aligned finite values exactly as represented in retained JSON; preserve null
+  and SDK `NaN`/`Inf`/`NegInf` entities as unavailable observations. Numeric field units must be
+  absent or dimensionless (`""`, `none`, `dimensionless`). Time-field intervals and
+  `calculatedMinStep` must agree when present, and each matching series must retain its sampling
+  interval. Declared intervals can exceed the requested interval. Duplicate identities/timestamps,
+  shifted disjoint sample grids and inconsistent sampling are refused; gaps remain explicit.
+- **Loki:** Recognize legacy `labels`/`Time`/`Line`/`tsNs`/`id` and dataplane
+  `labels`/`timestamp`/`body`/`id` frames, with optional `labelTypes`. Versioned log profiles use
+  `[0,0]`. Simple time/body frames are accepted when unambiguous. Compare multisets of exact
+  timestamp, canonical labels, supported label classifications and body, preserving duplicate
+  counts. Generated IDs are excluded. `label_sets` counts projected label sets, not indexed Loki
+  streams. Returned-entry differences never imply total volume or rates.
+
+Epoch millisecond values and SDK `data.nanos` retain integer nanosecond precision. Legacy string
+`tsNs` must agree with the millisecond timestamp and any supplied nanos. Unsupported long/table,
+histogram, exemplar or unknown semantic profiles are explicit incompatible checks. Display names,
+colors, links, frame presentation, generated log IDs and transport execution metadata do not enter
+observation identity. Warning/error notices and truncation remain limitations rather than being
+normalized away.
+
+Per side, projection bounds are 512 frames/series or log label sets, 128 fields per frame and
+10,000 observations. Label sets allow 64 entries, 256-byte keys, 2,048-byte values and 16 KiB
+aggregate; field names allow 256 bytes and log bodies 16 KiB. Oversized or ambiguous inputs are
+refused rather than silently sampled. Checks poll the one deadline, signal and result consumer
+between bounded decoding/comparison steps. As with store reads, synchronous kernel I/O cannot be
+forcibly preempted.
+
+`--max-items` (structured `limits.max_items`) defaults to 100 and allows 1–1,000 emitted difference
+details across both checks. `--max-output-bytes` bounds their combined encoded arrays, with an
+effective ceiling of one MiB and the envelope's 1,024-byte minimum. Whole details form a stable
+prefix; full bounded-input difference counts and `omitted_details` remain visible. Fixed bounded
+metadata is additional to that detail budget, while the canonical receipt remains under two MiB.
+`--timeout-ms` defaults to 30,000. Truncating details never claims a complete aggregate.
+
+The projections follow the [Grafana time-series contract](https://grafana.com/developers/dataplane/timeseries),
+[SDK JSON serializer](https://github.com/grafana/grafana-plugin-sdk-go/blob/v0.296.2/data/frame_json.go),
+[Prometheus matrix fixture](https://github.com/grafana/grafana-prometheus-datasource/blob/cb5651b00a6b7769b10067f1a6baec07278f4c52/pkg/promlib/converter/testdata/prom-matrix-frame.jsonc),
+and Loki [legacy](https://github.com/grafana/grafana-loki-datasource/blob/6d076df3d695f5fda342fbbad1f52547b55a96e2/pkg/loki/test_non_dataplane/streams_simple.golden.jsonc)
+and [dataplane fixtures](https://github.com/grafana/grafana-loki-datasource/blob/6d076df3d695f5fda342fbbad1f52547b55a96e2/pkg/loki/testdata_dataplane/streams_simple.golden.jsonc).
+These pinned upstream examples establish format evidence, not the home lab's installed plugin
+versions or live compatibility.
+
 ## Acceptance
 
 Use private HTTPS fixtures and the ordinary installed binary. Verify real pack dispatch, exact

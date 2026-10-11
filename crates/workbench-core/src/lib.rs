@@ -257,6 +257,7 @@ fn dispatch(
 ) {
     match request.operation.as_str() {
         "evidence.collect" => evidence::collect::run(request, control, context, start, result),
+        "evidence.compare" => evidence::compare::run(request, control, context, start, result),
         "evidence.packs.describe" => evidence::pack::describe(&request.inputs, result),
         "evidence.list" | "evidence.show" | "evidence.protect" | "evidence.unprotect"
         | "evidence.delete" | "evidence.prune" | "evidence.recover" => {

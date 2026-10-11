@@ -1,0 +1,39 @@
+{
+  "status": "accepted_linux_core_cli_fixture_increment",
+  "operation": "evidence.compare",
+  "algorithm": "returned-observations-v1",
+  "source_manifest_sha256": "e80369b5af3eb33c479c37b7270f020693f88bbe081964f6c6c595c0e85295f7",
+  "source_files": 765,
+  "binary_sha256": "319eabdd1a0f85d1c480362848d900c7b06abebfefaafbd4722b4c7ea8a14e70",
+  "binary_bytes": 41712592,
+  "base_head": "2c4e4220654d85d5be22ac42a034beb51fcc5624",
+  "workspace_r1": {
+    "passed": 291,
+    "failed": 0,
+    "ignored_existing_native": 19
+  },
+  "r2_delta": "Canonical source metadata and its public regression only; 9 public tests plus fmt/clippy/build freshly passed, unchanged suite evidence reused",
+  "installed_r2": {
+    "exit": 0,
+    "terminal_receipts": 10,
+    "stored_query_receipts": 6,
+    "comparison_cases": 7,
+    "http_requests_collection_only": 18,
+    "unchanged_store_files": 17,
+    "fixture_threads_joined": true,
+    "source_binary_guards_matched": true
+  },
+  "specifications": {
+    "schemas": 38,
+    "positive": 32,
+    "negative": 17
+  },
+  "independent_review_unresolved_findings": 0,
+  "remaining": [
+    "live home-lab Grafana/plugin compatibility and scoped read identity",
+    "native non-Linux evidence store/comparison support",
+    "hosted evidence grants",
+    "remaining roadmap capabilities; no whole-product completion claim"
+  ],
+  "changes_uncommitted": true
+}

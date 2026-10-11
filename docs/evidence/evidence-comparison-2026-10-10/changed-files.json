@@ -1,0 +1,22 @@
+[
+  "README.md",
+  "crates/workbench-cli/src/main.rs",
+  "crates/workbench-cli/tests/comparison.rs",
+  "crates/workbench-core/src/discovery.rs",
+  "crates/workbench-core/src/evidence.rs",
+  "crates/workbench-core/src/evidence/compare.rs",
+  "crates/workbench-core/src/evidence/frames.rs",
+  "crates/workbench-core/src/lib.rs",
+  "crates/workbench-core/src/request.rs",
+  "crates/workbench-core/tests/evidence.rs",
+  "docs/development.md",
+  "docs/evidence.md",
+  "docs/roadmap.md",
+  "docs/sre-workbench/examples/cases.json",
+  "docs/sre-workbench/examples/invalid-evidence-comparison.json",
+  "docs/sre-workbench/examples/request-evidence-comparison.json",
+  "docs/sre-workbench/schemas/README.md",
+  "docs/sre-workbench/schemas/evidence-compare-input.schema.json",
+  "docs/sre-workbench/schemas/evidence-comparison-data.schema.json",
+  "tools/verify-comparison.py"
+]

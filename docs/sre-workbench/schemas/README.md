@@ -60,3 +60,7 @@ Evidence format 1 adds strict [collection input](evidence-collect-input.schema.j
 [terminal collection data](evidence-collection-data.schema.json) and
 [manifest](evidence-manifest.schema.json). Runtime checks additionally enforce byte limits,
 identity/count consistency, digest-to-path equality and artifact/receipt integrity.
+
+`evidence-compare-input` selects two generated local references and an explicit normalization.
+`evidence-comparison-data` describes bounded returned-observation differences and their
+compatibility, omissions and source limitations; it does not establish full telemetry coverage.

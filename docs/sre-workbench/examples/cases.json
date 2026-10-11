@@ -287,5 +287,18 @@
     "schema": "evidence-collection-data",
     "valid": true,
     "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
+  },
+  {
+    "file": "request-evidence-comparison.json",
+    "schema": "request",
+    "valid": true,
+    "reason": "Explicit offline bundle references and named normalization; compatibility is checked at runtime",
+    "input_schema": "evidence-compare-input"
+  },
+  {
+    "file": "invalid-evidence-comparison.json",
+    "schema": "evidence-compare-input",
+    "valid": false,
+    "reason": "Implicit or unknown normalization cannot establish aligned observations"
   }
 ]

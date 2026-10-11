@@ -1,0 +1,32 @@
+{
+  "verdict": "fail",
+  "execution_exit_status": 1,
+  "command": "tools/test-sandbox.sh .venv/bin/python -B target/evidence-comparison/review-r1/tools/verify-comparison.py /home/hawkfire/rusty/agenticsre-rust-diagnostics/target/evidence-comparison/save-r1.data --expected-binary-sha256 7778e2dd132b9ac67115305041abea5bc54bcab3bc7e47d8b773bcfa6e2d176a --source-root /home/hawkfire/rusty/agenticsre-rust-diagnostics/target/evidence-comparison/review-r1 --source-manifest /home/hawkfire/rusty/agenticsre-rust-diagnostics/target/evidence-comparison/source-manifest-r1.json --expected-source-manifest-sha256 6978e1bf76c0989fd1d3f8ed078e174f7560419aa5b0f115bdd5fdd6ecb544f9 --evidence-dir /home/hawkfire/rusty/agenticsre-rust-diagnostics/target/evidence-comparison/installed-r1 > target/evidence-comparison/installed-r1.log 2>&1",
+  "source_manifest_sha256": "6978e1bf76c0989fd1d3f8ed078e174f7560419aa5b0f115bdd5fdd6ecb544f9",
+  "source_files": 765,
+  "binary_sha256": "7778e2dd132b9ac67115305041abea5bc54bcab3bc7e47d8b773bcfa6e2d176a",
+  "binary_bytes": 41699016,
+  "before_after_guards_passed": true,
+  "commands_completed": 4,
+  "terminal_receipts": 4,
+  "collection_receipts": 3,
+  "retained_query_receipts": 6,
+  "comparison_receipts": 1,
+  "http_requests": 18,
+  "fixture_threads_joined": true,
+  "temporary_install_and_store_cleaned": true,
+  "failure": {
+    "classification": "product/schema contract mismatch",
+    "case": "changed",
+    "product_exit_status": 0,
+    "assertion": "Canonical result schema validation requires sources[].reference, observed_at, evidence_state, untrusted; product emitted kind and bundle instead.",
+    "location": "frozen tools/verify-comparison.py:227; result.schema.json properties.sources.items"
+  },
+  "limitations": [
+    "Mission stopped at first comparison schema validation; hand-calculated change assertions and subsequent comparison cases were not executed.",
+    "No live Grafana or native Windows execution.",
+    "No source modifications or rebuild."
+  ],
+  "log": "target/evidence-comparison/installed-r1.log",
+  "artifacts": "target/evidence-comparison/installed-r1"
+}

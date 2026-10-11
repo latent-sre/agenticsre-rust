@@ -104,6 +104,7 @@ def main() -> int:
         ROOT / "docs/saved-queries-verification.md",
         ROOT / "docs/evidence.md",
         ROOT / "docs/evidence-collection-verification.md",
+        ROOT / "docs/evidence-comparison-verification.md",
     ]
     for document in [*markdown, *repository_docs]:
         text = FENCE.sub("", document.read_text(encoding="utf-8"))

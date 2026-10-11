@@ -1,0 +1,24 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Finished `test` profile [unoptimized] target(s) in 3.56s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-b9b600836e92ab5b)
+
+running 1 test
+test evidence::frames::tests::sampling_intervals_must_match_each_series_not_only_the_set ... FAILED
+
+failures:
+
+---- evidence::frames::tests::sampling_intervals_must_match_each_series_not_only_the_set stdout ----
+
+thread 'evidence::frames::tests::sampling_intervals_must_match_each_series_not_only_the_set' (165) panicked at crates/workbench-core/src/evidence/frames.rs:1292:9:
+assertion `left == right` failed
+  left: None
+ right: Some("incompatible_sampling")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    evidence::frames::tests::sampling_intervals_must_match_each_series_not_only_the_set
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 95 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p workbench-core --lib`
