@@ -1,5 +1,5 @@
 //! Linux descriptor-relative primitives. No recursive path deletion or link-following fallback.
-use super::super::StoreError;
+use super::StoreError;
 use std::{
     ffi::{CStr, CString},
     fs::{File, Metadata},
@@ -12,9 +12,9 @@ use std::{
 };
 
 #[derive(Debug)]
-pub(super) struct Directory(pub(super) File);
+pub(crate) struct Directory(pub(crate) File);
 
-pub(super) fn io_error(error: io::Error, effects: bool) -> StoreError {
+pub(crate) fn io_error(error: io::Error, effects: bool) -> StoreError {
     let code = match error.raw_os_error() {
         Some(libc::ENOSPC | libc::EDQUOT) => "store_no_space",
         Some(libc::EACCES | libc::EPERM | libc::EROFS) => "store_permission_denied",
@@ -42,7 +42,7 @@ fn from_fd(fd: i32) -> Result<File, StoreError> {
     }
 }
 
-pub(super) fn validate_metadata(
+pub(crate) fn validate_metadata(
     metadata: &Metadata,
     directory: bool,
     private: bool,
@@ -63,7 +63,7 @@ pub(super) fn validate_metadata(
 }
 
 impl Directory {
-    pub(super) fn open_at(&self, name: &str, private: bool) -> Result<Self, StoreError> {
+    pub(crate) fn open_at(&self, name: &str, private: bool) -> Result<Self, StoreError> {
         let name = c_name(name)?;
         // SAFETY: name is a live NUL-terminated component; self pins its parent directory.
         let fd = unsafe {
@@ -82,7 +82,7 @@ impl Directory {
         Ok(Self(file))
     }
 
-    pub(super) fn create_dir(&self, name: &str) -> Result<Self, StoreError> {
+    pub(crate) fn create_dir(&self, name: &str) -> Result<Self, StoreError> {
         let component = c_name(name)?;
         // SAFETY: component is NUL-terminated and parent is a live pinned directory.
         let result = unsafe { libc::mkdirat(self.0.as_raw_fd(), component.as_ptr(), 0o700) };
@@ -92,7 +92,7 @@ impl Directory {
         self.open_at(name, true).map_err(StoreError::after_effects)
     }
 
-    pub(super) fn open_file(&self, name: &str, writable: bool) -> Result<File, StoreError> {
+    pub(crate) fn open_file(&self, name: &str, writable: bool) -> Result<File, StoreError> {
         let name = c_name(name)?;
         // O_NONBLOCK ensures a malicious FIFO is refused without first blocking in openat.
         let access = if writable {
@@ -117,7 +117,7 @@ impl Directory {
         Ok(file)
     }
 
-    pub(super) fn create_file(&self, name: &str) -> Result<File, StoreError> {
+    pub(crate) fn create_file(&self, name: &str) -> Result<File, StoreError> {
         let name = c_name(name)?;
         // SAFETY: the name is a NUL-terminated component and O_EXCL never opens an existing link.
         let fd = unsafe {
@@ -138,11 +138,11 @@ impl Directory {
         Ok(file)
     }
 
-    pub(super) fn sync(&self) -> Result<(), StoreError> {
+    pub(crate) fn sync(&self) -> Result<(), StoreError> {
         self.0.sync_all().map_err(|e| io_error(e, true))
     }
 
-    pub(super) fn publish(
+    pub(crate) fn publish(
         &self,
         temporary: &str,
         destination: &str,
@@ -168,7 +168,7 @@ impl Directory {
         }
     }
 
-    pub(super) fn move_to(
+    pub(crate) fn move_to(
         &self,
         name: &str,
         directory: &Directory,
@@ -193,7 +193,7 @@ impl Directory {
         }
     }
 
-    pub(super) fn unlink(&self, name: &str, directory: bool) -> Result<(), StoreError> {
+    pub(crate) fn unlink(&self, name: &str, directory: bool) -> Result<(), StoreError> {
         let name = c_name(name)?;
         let flags = if directory { libc::AT_REMOVEDIR } else { 0 };
         // SAFETY: this removes exactly one validated component; unlinkat does not follow links.
@@ -205,7 +205,7 @@ impl Directory {
         }
     }
 
-    pub(super) fn names(&self, limit: usize) -> Result<Vec<String>, StoreError> {
+    pub(crate) fn names(&self, limit: usize) -> Result<Vec<String>, StoreError> {
         // A fresh open description avoids sharing/reusing a readdir offset between scans.
         let descriptor = self.open_at(".", false)?.0.into_raw_fd();
         // SAFETY: descriptor is uniquely owned; fdopendir consumes it only on success.
@@ -254,7 +254,7 @@ impl Directory {
     }
 }
 
-pub(super) fn open_root(path: &Path, create: bool) -> Result<(Directory, bool), StoreError> {
+pub(crate) fn open_root(path: &Path, create: bool) -> Result<(Directory, bool), StoreError> {
     let mut components = Vec::new();
     for component in path.components() {
         match component {
@@ -295,7 +295,7 @@ pub(super) fn open_root(path: &Path, create: bool) -> Result<(Directory, bool), 
     Ok((parent, false))
 }
 
-pub(super) fn lock(directory: &Directory, create: bool) -> Result<(File, bool), StoreError> {
+pub(crate) fn lock(directory: &Directory, create: bool) -> Result<(File, bool), StoreError> {
     let (file, created) = match directory.open_file("lock", true) {
         Ok(file) => (file, false),
         Err(error) if create && error.code == "store_not_found" => {
@@ -327,7 +327,7 @@ pub(super) fn lock(directory: &Directory, create: bool) -> Result<(File, bool), 
     Ok((file, created))
 }
 
-pub(super) fn read(directory: &Directory, name: &str, max: usize) -> Result<Vec<u8>, StoreError> {
+pub(crate) fn read(directory: &Directory, name: &str, max: usize) -> Result<Vec<u8>, StoreError> {
     let mut file = directory.open_file(name, false)?;
     let before = file.metadata().map_err(|e| io_error(e, false))?;
     if before.len() > max as u64 {

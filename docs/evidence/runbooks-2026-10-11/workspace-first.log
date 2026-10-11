@@ -1,0 +1,164 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+error: `for...else` loops are not supported
+   --> crates/workbench-core/src/runbooks.rs:278:11
+    |
+236 |       for (idx, step) in s.steps.iter().enumerate() {
+    |       --- `else` is attached to this loop
+...
+278 |           } else if step.receipt.is_some()
+    |  ___________^
+279 | |             || step.acknowledged_at.is_some() != (step.state == "acknowledged")
+280 | |         {
+281 | |             return Err(bad());
+282 | |         }
+    | |_________^
+    |
+    = note: consider moving this `else` clause to a separate `if` statement and use a `bool` variable to control if it should run
+
+error[E0425]: cannot find value `idx` in this scope
+   --> crates/workbench-core/src/runbooks.rs:283:12
+    |
+283 |         if idx < 3 {
+    |            ^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:284:25
+    |
+284 |             if matches!(step.state.as_str(), "waiting" | "acknowledged")
+    |                         ^^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:285:21
+    |
+285 |                 || (step.state == "skipped" && idx != 2)
+    |                     ^^^^ not found in this scope
+
+error[E0425]: cannot find value `idx` in this scope
+   --> crates/workbench-core/src/runbooks.rs:285:48
+    |
+285 |                 || (step.state == "skipped" && idx != 2)
+    |                                                ^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:288:31
+    |
+288 |             if let Some(r) = &step.receipt {
+    |                               ^^^^ not found in this scope
+
+error[E0425]: cannot find value `idx` in this scope
+   --> crates/workbench-core/src/runbooks.rs:311:20
+    |
+311 |                 if idx == 2 && serde_json::to_vec(&r["data"]).map_err(|_| bad())?.len() > 512 * 1024
+    |                    ^^^ not found in this scope
+
+error[E0425]: cannot find value `idx` in this scope
+   --> crates/workbench-core/src/runbooks.rs:329:33
+    |
+329 |                 let usable = if idx == 2 {
+    |                                 ^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:338:21
+    |
+338 |                 if (step.state == "completed") != usable {
+    |                     ^^^^ not found in this scope
+
+error[E0425]: cannot find value `idx` in this scope
+   --> crates/workbench-core/src/runbooks.rs:343:85
+    |
+343 |             let matched = observation(s) == ["complete", "partial", "incompatible"][idx - 3];
+    |                                                                                     ^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:344:25
+    |
+344 |             if matches!(step.state.as_str(), "completed" | "failed")
+    |                         ^^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:345:20
+    |
+345 |                 || step
+    |                    ^^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:349:21
+    |
+349 |                 || (step.state == "pending" && step.condition.is_some())
+    |                     ^^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:349:48
+    |
+349 |                 || (step.state == "pending" && step.condition.is_some())
+    |                                                ^^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:350:21
+    |
+350 |                 || (step.state != "pending" && step.condition != Some(matched))
+    |                     ^^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:350:48
+    |
+350 |                 || (step.state != "pending" && step.condition != Some(matched))
+    |                                                ^^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:351:30
+    |
+351 |                 || (matches!(step.state.as_str(), "waiting" | "acknowledged") && !matched)
+    |                              ^^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:352:21
+    |
+352 |                 || (step.state == "skipped" && matched)
+    |                     ^^^^ not found in this scope
+
+error[E0425]: cannot find value `idx` in this scope
+   --> crates/workbench-core/src/runbooks.rs:357:12
+    |
+357 |         if idx < s.next && matches!(step.state.as_str(), "pending" | "waiting") {
+    |            ^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:357:37
+    |
+357 |         if idx < s.next && matches!(step.state.as_str(), "pending" | "waiting") {
+    |                                     ^^^^ not found in this scope
+
+error[E0425]: cannot find value `idx` in this scope
+   --> crates/workbench-core/src/runbooks.rs:360:12
+    |
+360 |         if idx > s.next && step.state != "pending" {
+    |            ^^^ not found in this scope
+
+error[E0425]: cannot find value `step` in this scope
+   --> crates/workbench-core/src/runbooks.rs:360:28
+    |
+360 |         if idx > s.next && step.state != "pending" {
+    |                            ^^^^ not found in this scope
+
+warning: unreachable expression
+   --> crates/workbench-core/src/runbooks.rs:288:13
+    |
+287 |                   return Err(bad());
+    |                   ----------------- any code following this expression is unreachable
+288 | /             if let Some(r) = &step.receipt {
+289 | |                 if !r["coverage"]["state"]
+290 | |                     .as_str()
+291 | |                     .is_some_and(|s| s.len() <= 64)
+...   |
+341 | |             }
+    | |_____________^ unreachable expression
+    |
+    = note: `#[warn(unreachable_code)]` (part of `#[warn(unused)]`) on by default
+
+For more information about this error, try `rustc --explain E0425`.
+warning: `workbench-core` (lib) generated 1 warning
+error: could not compile `workbench-core` (lib) due to 22 previous errors; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+warning: `workbench-core` (lib test) generated 1 warning (1 duplicate)
+error: could not compile `workbench-core` (lib test) due to 22 previous errors; 1 warning emitted

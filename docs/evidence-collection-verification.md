@@ -2,7 +2,7 @@
 
 WORKBENCH-013 is complete for the Linux core/CLI fixture increment. It executes the fixed
 Prometheus/Loki pack through fresh context bindings and retains finalized sanitized receipts in
-local evidence format 1. Comparison is the next roadmap item; this record does not establish
+local evidence format 1. Comparison acceptance is recorded separately; this record does not establish
 live Grafana compatibility, native Windows support, hosted grants or release readiness.
 
 ## Tested identities
@@ -20,7 +20,7 @@ review bind snapshot r3, SHA-256
 `f88e334bafbea920fd6f693bf6e87f146365e1eb3ed8f9af3058c3885568d173`.
 R4 changes only a verifier assertion; the independent executor checked that delta and reused the
 same binary. Subsequent acceptance documentation does not alter these tested product bytes.
-All implementation remains local and uncommitted.
+Verification used an uncommitted working-tree snapshot retained in the evidence packet.
 
 ## Verification
 

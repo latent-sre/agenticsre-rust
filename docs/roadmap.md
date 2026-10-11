@@ -1368,7 +1368,7 @@ escaped credential echoes. Earlier failed checks remain in the acceptance packet
 `aea5c74c7d92a2890c0ba249589f7aa71070c9b28470c3acdcf19117e48910e8`; ordinary binary SHA-256
 `fa1cc9eff529f6f867bd3ff8a15f4056ff7c590ef96c6bff1ed41e574fb1e104`.
 All independent before/after identities matched. Subsequent acceptance documentation changes do
-not alter those product bytes. Source and evidence remain local and uncommitted.
+not alter those product bytes. Verification used an uncommitted working-tree snapshot retained in the evidence packet.
 
 **Next:** Evidence collection and comparison using versioned receipts. Browser/MCP query grants,
 live compatibility, native non-Linux acceptance and release packaging remain separate requirements.
@@ -1378,7 +1378,7 @@ live compatibility, native non-Linux acceptance and release packaging remain sep
 **Status:** Complete for the Linux core/CLI fixture increment. The
 [acceptance record](evidence-collection-verification.md) binds the implementation to independent
 source review, 260 passing workspace tests (19 existing native tests ignored), lint/format/build
-checks and a separate installed mission. The full backlog goal remains active; comparison is next.
+checks and a separate installed mission. The full product backlog remains open; comparison is recorded below.
 
 **Delivered:** Real context-bound Prometheus/Loki collection with one window and deadline, finalized
 sanitized child receipts, explicit capture/coverage/omissions, and private local store format 1.
@@ -1401,7 +1401,7 @@ that correction. Initial failed tests and both checker-only corrections are reta
 SHA-256 `df9ad3800f2d25eaa679d6ba30c39153b47543f6265df7b035b70156eb5a7be1`.
 Ordinary binary SHA-256 `c450790c52de7a7d84b200de2bf76f7953f78f417320969248b126eb7503eba2`.
 Product build/tests/review bind r3; r4 changes only the independently checked verifier assertion.
-Acceptance documentation added afterward does not change product bytes. Source remains uncommitted.
+Acceptance documentation added afterward does not change product bytes. Verification used an uncommitted working-tree snapshot.
 
 **Live prerequisites:** The owner selected the home lab. Local configuration identifies Dradis
 Grafana, organization 1, and Prometheus/Loki datasources. The existing automation identity is
@@ -1438,13 +1438,45 @@ independent review reports no unresolved findings.
 **Identity:** Snapshot `target/evidence-comparison/review-r2`, manifest SHA-256
 `e80369b5af3eb33c479c37b7270f020693f88bbe081964f6c6c595c0e85295f7`.
 Binary SHA-256 `319eabdd1a0f85d1c480362848d900c7b06abebfefaafbd4722b4c7ea8a14e70`.
-The packet retains 115 hashed artifacts. Source remains local and uncommitted; later acceptance
+The packet retains 115 hashed artifacts. Verification used an uncommitted working-tree snapshot; later acceptance
 documentation does not change tested product bytes.
 
 **Next:** Reviewed observation-only runbooks with typed branches/checkpoints and version-aware
 resume, followed by offline replay, reports, toil metadata and configuration checks. Live home-lab
 compatibility and native Windows evidence remain separate prerequisites; unchanged collection/store
 proof is reused.
+
+## WORKBENCH-015 — guided runbooks
+
+**Status:** Complete for the Linux core/CLI fixture increment. The
+[acceptance record](runbooks-verification.md) binds implementation, independent review and installed
+execution to frozen source/binary identities.
+
+**Delivered:** Installed `evidence-review`/1; actual verified before/after reads and typed comparison;
+complete/partial/incompatible human checkpoints; bounded retained comparisons and instructions;
+revision-bound resume preserving completed observations; explicit fresh attempts; separate private
+journal with durable in-flight state, CAS, quotas and no-follow filesystem access. Hosted grants
+remain unavailable. Evidence store format and immutable bundles remain unchanged.
+
+**Verification:** 317 workspace tests passed (19 existing native tests ignored), including eleven
+public runbook tests. Format, strict lint, ordinary build and 44-schema specification checks passed.
+Independent installed execution passed 14 commands and validated 29 unique canonical receipts.
+All evidence bytes and completed child receipts remained unchanged during acknowledgement;
+source/binary guards matched and fixture workers joined. Real 64 KiB private-tmpfs ENOSPC failed
+without claiming a checkpoint, preserving truthful recording/effect metadata.
+
+**Resolved findings:** Cancellation/deadline/contention classification during resume revalidation,
+and recording mode before initial publication. Independent review reports no unresolved findings.
+The packet retains 130 hashed artifacts, including initial failed checks and their corrections.
+
+**Identity:** Snapshot `target/runbooks/review-r1`, 898 files, manifest SHA-256
+`f8dd2c1b1283395f5041e2f21e8709af5026e80d38c5810bff3fa515dde373b8`.
+Binary SHA-256 `334c4bc1a876ee8873fb094b2ad15727b3bf7b2e47b95ecb15e2499d15664fad`.
+Verification used an uncommitted working-tree snapshot; later acceptance documentation does not change tested code.
+
+**Next:** Offline evidence open/replay, then reports, toil metadata and configuration checks.
+Live home-lab compatibility and native Windows evidence remain separate requirements. The complete
+backlog is not finished by this guided-runbook increment.
 
 ## Remaining product queue
 
@@ -1466,7 +1498,7 @@ and [verification](sre-workbench/verification.md).
 | CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery | Other operation recording policies, hosted views/grants and live/platform acceptance |
 | CAP-10 comparison | [Typed Linux fixture comparison](evidence-comparison-verification.md), compatibility, normalization and explicit missing/partial outcomes | Live datasource/plugin compatibility, other supported evidence kinds, hosted/platform acceptance |
 | CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted | Dependent browser/MCP grants and live/platform acceptance |
-| CAP-12 runbooks | No product runbook execution is accepted | Reviewed observation-only steps, typed branches/checkpoints and version-aware resume |
+| CAP-12 runbooks | [Installed evidence-review workflow](runbooks-verification.md), typed checkpoints, durable revision-bound resume and fresh attempts | Additional reviewed runbooks, hosted/platform acceptance; live observation workflows remain separate |
 | CAP-13 configuration checks | Dashboard task implements a supported offline validator slice | `config.check` contract, declared kind/version/digest and other supported validators |
 | CAP-14 offline investigation | No product evidence replay is accepted | Bundle validation and deterministic no-network analysis with original observation times |
 | CAP-15 reports/handoff | No product report generation is accepted | Evidence-backed Markdown/JSON, missing checks/redaction and reviewable knowledge proposals |
@@ -1484,19 +1516,19 @@ and [verification](sre-workbench/verification.md).
 The [browser diagnostics increment](diagnostics-ui-verification.md) is now qualified PASS. It grants
 explicit target aliases, pins configuration/CA identities and exposes five actual observations
 through the existing form, result and session-history flow. Generic hosted/MCP diagnostic refusal
-remains its existing boundary. The owner has resumed with installed saved queries.
+remains its existing boundary. Installed saved queries, evidence storage, comparison and guided
+runbooks are now accepted for their recorded Linux fixture scopes.
 
-Installed saved queries and the accepted collection/store increment now supply versioned,
-verified receipts with explicit provenance and partial outcomes. Next implement typed comparison
-over those bundles, followed by runbooks, offline replay, reports and
-toil metadata. Complete the configuration-check operation alongside these investigation features.
+Installed saved queries and evidence collection supply versioned, verified receipts with explicit
+provenance and partial outcomes. Typed comparison and resumable guided runbooks now use those
+bundles. Next implement offline evidence open/replay, followed by reports and toil metadata. Complete the configuration-check operation alongside these investigation features.
 Extensions/jobs, remote/fleet/scheduling and a named controlled change retain the delivery plan's
 dependency order. Connector work and native/live acceptance keep their own prerequisites; an
 unavailable live source does not block authorized offline implementation.
 
 The remaining product queue includes native Windows and
 restricted-profile namespace-refusal evidence; release/dependency clearance and the AC-36 human/
-agent pilot; actual team source selection (DEC-09); and the remaining P3 capture/compare features
+agent pilot; actual team source selection (DEC-09); and the remaining investigation features
 and live diagnostic/query acceptance. The context-containing Linux artifact now has its own source/build
 identity and installed mission evidence. Keep the earlier accepted archives and frontend/runtime
 proofs as baselines. Source-aware UI/MCP context grants and live integrations remain separate work.

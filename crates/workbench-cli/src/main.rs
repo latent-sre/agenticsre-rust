@@ -27,6 +27,13 @@ struct Cli {
         help = "Explicit absolute private evidence store; no default or wire-selected path"
     )]
     state_dir: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "DIRECTORY",
+        help = "Explicit private guided-runbook journal, separate from the evidence store"
+    )]
+    runbook_state_dir: Option<PathBuf>,
     #[arg(long, global = true, requires = "state_dir", value_parser = clap::value_parser!(u64).range(1..=1_073_741_824), help = "Evidence store byte cap, at most 1GiB; defaults to 1GiB")]
     store_max_bytes: Option<u64>,
     #[arg(long, global = true, requires = "state_dir", value_parser = clap::value_parser!(u16).range(1..=3650), help = "Unprotected sealed evidence retention in days, 1..3650; defaults to 7")]
@@ -72,7 +79,7 @@ struct Cli {
         long,
         global = true,
         default_value = "never",
-        help = "Evidence collection requires auto or always; all other operations accept never"
+        help = "Evidence collection and runbook execution require auto or always; read operations accept never"
     )]
     record: String,
     #[command(subcommand)]
@@ -81,6 +88,11 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
+    /// Run reviewed observations with typed branches and durable human checkpoints
+    Runbook {
+        #[command(subcommand)]
+        command: RunbookCommands,
+    },
     /// Collect fixed saved queries and manage private, versioned local evidence
     Evidence {
         #[command(subcommand)]
@@ -183,6 +195,49 @@ enum ContextCommands {
 enum DiagnosticsCommands {
     List,
     Describe { id: String },
+}
+
+#[derive(Subcommand)]
+enum RunbookCommands {
+    List,
+    Show {
+        id: String,
+        #[arg(long, default_value_t = 1)]
+        version: u64,
+    },
+    Run {
+        id: String,
+        #[arg(long, default_value_t = 1)]
+        version: u64,
+        #[arg(long)]
+        input: PathBuf,
+        #[arg(long)]
+        expected_definition_sha256: Option<String>,
+        #[arg(long, requires = "fresh_from_revision")]
+        fresh_from: Option<String>,
+        #[arg(long, requires = "fresh_from")]
+        fresh_from_revision: Option<u64>,
+        #[arg(long, default_value_t = 30_000)]
+        timeout_ms: u64,
+        #[arg(long, default_value_t = 1_048_576)]
+        max_output_bytes: usize,
+    },
+    Resume {
+        run_id: String,
+        #[arg(long)]
+        expected_revision: u64,
+        #[arg(long)]
+        input: PathBuf,
+        #[arg(long)]
+        acknowledge: Option<String>,
+        #[arg(long, default_value_t = 30_000)]
+        timeout_ms: u64,
+        #[arg(long, default_value_t = 1_048_576)]
+        max_output_bytes: usize,
+    },
+    Status {
+        run_id: String,
+    },
 }
 
 #[derive(Subcommand)]
@@ -506,6 +561,55 @@ fn parse_duration(value: &str) -> Result<u64, &'static str> {
 fn normalize(cli: Cli) -> Result<Request, Problem> {
     let restricted = cli.read_policy.is_some();
     let mut request = match cli.command {
+        Commands::Runbook { command } => match command {
+            RunbookCommands::List => Request::new("runbook.list", json!({})),
+            RunbookCommands::Show { id, version } => {
+                Request::new("runbook.show", json!({"id":id,"version":version}))
+            }
+            RunbookCommands::Status { run_id } => {
+                Request::new("runbook.status", json!({"run_id":run_id}))
+            }
+            RunbookCommands::Run {
+                id,
+                version,
+                input,
+                expected_definition_sha256,
+                fresh_from,
+                fresh_from_revision,
+                timeout_ms,
+                max_output_bytes,
+            } => {
+                let mut inputs =
+                    json!({"id":id,"version":version,"input":parse_json(input_file(input)?)?});
+                if let Some(pin) = expected_definition_sha256 {
+                    inputs["expected_definition_sha256"] = json!(pin);
+                }
+                if let Some(id) = fresh_from {
+                    inputs["fresh_from"] = json!({"id":id,"expected_revision":fresh_from_revision.expect("paired CLI option")});
+                }
+                let mut request = Request::new("runbook.run", inputs);
+                request.limits.timeout_ms = timeout_ms;
+                request.limits.max_output_bytes = max_output_bytes;
+                request
+            }
+            RunbookCommands::Resume {
+                run_id,
+                expected_revision,
+                input,
+                acknowledge,
+                timeout_ms,
+                max_output_bytes,
+            } => {
+                let mut inputs = json!({"run_id":run_id,"expected_revision":expected_revision,"input":parse_json(input_file(input)?)?});
+                if let Some(step) = acknowledge {
+                    inputs["acknowledge"] = json!(step);
+                }
+                let mut request = Request::new("runbook.resume", inputs);
+                request.limits.timeout_ms = timeout_ms;
+                request.limits.max_output_bytes = max_output_bytes;
+                request
+            }
+        },
         Commands::Evidence { command } => match command {
             EvidenceCommands::Packs {
                 command: EvidencePackCommands::List,
@@ -837,6 +941,7 @@ fn run() -> u8 {
         if cli.json
             || cli.record != "never"
             || cli.state_dir.is_some()
+            || cli.runbook_state_dir.is_some()
             || cli.store_max_bytes.is_some()
             || cli.retention_days.is_some()
             || cli.context_source.is_some()
@@ -867,6 +972,7 @@ fn run() -> u8 {
         if cli.json
             || cli.record != "never"
             || cli.state_dir.is_some()
+            || cli.runbook_state_dir.is_some()
             || cli.store_max_bytes.is_some()
             || cli.retention_days.is_some()
             || cli.config.is_some()
@@ -876,7 +982,7 @@ fn run() -> u8 {
                 && !allow.iter().any(|operation| operation == "diagnostics.run"))
         {
             eprintln!(
-                "ui serve does not accept --json, --config, context source or evidence store options, ungranted diagnostic configuration or recording modes other than never"
+                "ui serve does not accept --json, --config, context source, evidence store or runbook journal options, ungranted diagnostic configuration or recording modes other than never"
             );
             return 2;
         }
@@ -897,6 +1003,7 @@ fn run() -> u8 {
     }
     let json = cli.json;
     let context = OperatorContext {
+        runbook_state_dir: cli.runbook_state_dir.clone(),
         evidence_store: cli.state_dir.clone().map(|directory| {
             let mut options = EvidenceStoreOptions::new(directory);
             if let Some(max_bytes) = cli.store_max_bytes {

@@ -1,0 +1,29 @@
+{
+  "spec_version": "0.1",
+  "request_id": "guided-review-example",
+  "operation": "runbook.run",
+  "operation_version": 1,
+  "target": {
+    "kind": "local",
+    "id": "workstation"
+  },
+  "inputs": {
+    "id": "evidence-review",
+    "version": 1,
+    "input": {
+      "before": {
+        "id": "run-1-ab-1"
+      },
+      "after": {
+        "id": "run-1-ab-2"
+      },
+      "normalization": "exact-window-v1",
+      "on_failure": "stop"
+    }
+  },
+  "limits": {
+    "timeout_ms": 30000,
+    "max_output_bytes": 1048576
+  },
+  "record": "always"
+}

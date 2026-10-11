@@ -1,0 +1,40 @@
+{
+  "executor": "independent agent runbook_frozen_verify",
+  "started_at": "2026-10-11T06:11:56.625304+00:00",
+  "argv": [
+    "tools/test-sandbox.sh",
+    "--small-evidence-disk",
+    ".venv/bin/python",
+    "-B",
+    "target/runbooks/review-r1/tools/verify-runbooks.py",
+    "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/runbooks/save-r1.data",
+    "--expected-binary-sha256",
+    "334c4bc1a876ee8873fb094b2ad15727b3bf7b2e47b95ecb15e2499d15664fad",
+    "--source-root",
+    "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/runbooks/review-r1",
+    "--source-manifest",
+    "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/runbooks/source-manifest-r1.json",
+    "--expected-source-manifest-sha256",
+    "f8dd2c1b1283395f5041e2f21e8709af5026e80d38c5810bff3fa515dde373b8",
+    "--evidence-dir",
+    "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/runbooks/installed-r1",
+    "--enospc-root",
+    "/tmp/evidence-small-disk"
+  ],
+  "cwd": "/home/hawkfire/rusty/agenticsre-rust-diagnostics",
+  "exit_status": 0,
+  "duration_seconds": 1.05,
+  "verdict": "pass",
+  "harness_summary": {
+    "binary_sha256": "334c4bc1a876ee8873fb094b2ad15727b3bf7b2e47b95ecb15e2499d15664fad",
+    "commands": 14,
+    "disk_full_executed": true,
+    "fixture_threads_joined": true,
+    "http_requests": 18,
+    "offline_runbooks": "fixture closed, workers joined, configuration/context removed, provider absent",
+    "passed": true,
+    "source_manifest_sha256": "f8dd2c1b1283395f5041e2f21e8709af5026e80d38c5810bff3fa515dde373b8"
+  },
+  "log": "target/runbooks/installed-r1.log",
+  "scope": "Immutable source snapshot and ordinary installed binary; no rebuild or source edits."
+}

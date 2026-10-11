@@ -1,0 +1,51 @@
+{
+  "status": "accepted_linux_core_cli_guided_runbook_increment",
+  "definition": {
+    "id": "evidence-review",
+    "version": 1,
+    "sha256": "7bd4c25251342606602c0209404b7bc67e45a34b76ba324bc101430443672480"
+  },
+  "source_manifest_sha256": "f8dd2c1b1283395f5041e2f21e8709af5026e80d38c5810bff3fa515dde373b8",
+  "source_files": 898,
+  "binary_sha256": "334c4bc1a876ee8873fb094b2ad15727b3bf7b2e47b95ecb15e2499d15664fad",
+  "binary_bytes": 42400672,
+  "workspace": {
+    "passed": 317,
+    "failed": 0,
+    "ignored_existing_native": 19
+  },
+  "checks": [
+    "fmt",
+    "clippy_all_targets_all_features",
+    "full_workspace_all_features",
+    "44_schemas_33_positive_18_negative",
+    "ordinary_build"
+  ],
+  "installed": {
+    "exit": 0,
+    "commands": 14,
+    "collection_https_requests": 18,
+    "unique_receipts_by_operation": {
+      "runbook.resume": 6,
+      "runbook.run": 4,
+      "evidence.collect": 3,
+      "runbook.status": 1,
+      "query.run": 6,
+      "evidence.show": 6,
+      "evidence.compare": 3
+    },
+    "fixture_threads_joined": true,
+    "source_binary_guards_match": true,
+    "evidence_bytes_unchanged": true,
+    "acknowledgement_preserves_children": true,
+    "real_enospc_bytes": 65536
+  },
+  "independent_review_unresolved_findings": 0,
+  "limits": [
+    "First installed evidence-review workflow over existing bundles; no arbitrary workflow installation",
+    "Linux only; native Windows and live home-lab pilot remain separate",
+    "Hosted runbook grants unavailable",
+    "Saved active-budget snapshot precedes final publication; not exact cumulative wall-time accounting"
+  ],
+  "changes_uncommitted": true
+}

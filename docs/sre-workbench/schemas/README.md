@@ -64,3 +64,6 @@ identity/count consistency, digest-to-path equality and artifact/receipt integri
 `evidence-compare-input` selects two generated local references and an explicit normalization.
 `evidence-comparison-data` describes bounded returned-observation differences and their
 compatibility, omissions and source limitations; it does not establish full telemetry coverage.
+
+The `runbook-*` schemas describe installed guided review inputs and bounded checkpoint summaries.
+Recording and revision/source identity admission remain runtime checks.

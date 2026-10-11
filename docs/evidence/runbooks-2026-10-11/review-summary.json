@@ -1,0 +1,23 @@
+{
+  "snapshot": "target/runbooks/review-r1",
+  "source_manifest_sha256": "f8dd2c1b1283395f5041e2f21e8709af5026e80d38c5810bff3fa515dde373b8",
+  "reviewer": "runbook_review",
+  "scope": "Guided runbook runtime, separate journal, shared FS relocation, definition, dispatch, CLI, public schemas/contract and regressions; static only",
+  "unresolved_findings": 0,
+  "independent_p0_p1": 0,
+  "findings": [
+    {
+      "severity": "P2",
+      "issue": "Resume mapped cancellation/deadline/contention to source drift",
+      "resolution": "Preserve stop/timeout/lock classes; actual integrity drift remains explicit",
+      "evidence": "helper table + public evidence lock regression"
+    },
+    {
+      "severity": "P2",
+      "issue": "Failed initial journal publication could retain record_mode never",
+      "resolution": "Set requested recording mode before persistence boundary",
+      "evidence": "Independent installed-r1 real 64KiB ENOSPC passed; record always, unknown effect, no false checkpoint"
+    }
+  ],
+  "verdict": "Snapshot-specific static acceptance; no merge or publication approval"
+}

@@ -300,5 +300,18 @@
     "schema": "evidence-compare-input",
     "valid": false,
     "reason": "Implicit or unknown normalization cannot establish aligned observations"
+  },
+  {
+    "file": "request-runbook.json",
+    "schema": "request",
+    "valid": true,
+    "input_schema": "runbook-run-input",
+    "reason": "Explicit installed runbook and typed references; durable admission is checked at runtime"
+  },
+  {
+    "file": "invalid-runbook-input.json",
+    "schema": "runbook-run-input",
+    "valid": false,
+    "reason": "Caller-defined steps cannot override an installed observation-only runbook"
   }
 ]

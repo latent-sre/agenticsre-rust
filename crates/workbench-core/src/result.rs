@@ -466,7 +466,10 @@ impl OperationResult {
             for limitation in &self.coverage.limitations {
                 text.push_str(&format!("Limit: {}\n", terminal_safe(limitation)));
             }
-        } else if self.operation == "diagnostics.run" || self.operation.starts_with("evidence.") {
+        } else if self.operation == "diagnostics.run"
+            || self.operation.starts_with("evidence.")
+            || self.operation.starts_with("runbook.")
+        {
             text.push_str(&format!(
                 "Connection: {}\nObservation:\n{}\nCoverage: {} — {}\n",
                 terminal_safe(&self.target.id),

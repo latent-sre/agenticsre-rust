@@ -1,0 +1,70 @@
+[
+  {
+    "label": "fmt-final",
+    "argv": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 0.381
+  },
+  {
+    "label": "clippy-final",
+    "argv": [
+      "tools/test-sandbox.sh",
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 1.053
+  },
+  {
+    "label": "workspace-final",
+    "argv": [
+      "tools/test-sandbox.sh",
+      "cargo",
+      "test",
+      "--workspace",
+      "--all-features",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "seconds": 45.116
+  },
+  {
+    "label": "specs-final",
+    "argv": [
+      ".venv/bin/python",
+      "-B",
+      "docs/sre-workbench/verify_specs.py"
+    ],
+    "exit": 0,
+    "seconds": 0.374
+  },
+  {
+    "label": "build-final",
+    "argv": [
+      "tools/test-sandbox.sh",
+      "cargo",
+      "build",
+      "--locked",
+      "--offline",
+      "-p",
+      "workbench-cli"
+    ],
+    "exit": 0,
+    "seconds": 0.634
+  }
+]

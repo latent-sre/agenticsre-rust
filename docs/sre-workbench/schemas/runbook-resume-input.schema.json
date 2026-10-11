@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:runbook-resume-input:0.1",
+  "title": "Runbook resume input",
+  "type": "object",
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+    },
+    "expected_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "input": {
+      "$ref": "urn:sre-workbench:spec:runbook-input:0.1"
+    },
+    "acknowledge": {
+      "enum": [
+        "review-complete",
+        "review-partial",
+        "review-incompatible"
+      ]
+    }
+  },
+  "required": [
+    "run_id",
+    "expected_revision",
+    "input"
+  ],
+  "additionalProperties": false
+}

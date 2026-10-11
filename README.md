@@ -66,6 +66,9 @@ Offline `evidence compare` checks two verified bundles and reports typed metric/
 with explicit normalization, incompatibilities and missing observations; see the
 [comparison contract](docs/evidence.md#comparison-interface-and-projections) and
 [Linux fixture acceptance](docs/evidence-comparison-verification.md).
+[Guided runbooks](docs/runbooks.md) add an installed evidence-review workflow with typed
+checkpoints, durable revision-bound resume and explicit fresh attempts, with
+[Linux fixture acceptance](docs/runbooks-verification.md).
 See [development installation and rollback](docs/development.md#development-artifact-and-rollback).
 Offline [service-context fixtures](docs/context.md) are implemented through the core/CLI and
 [independently verified](docs/context-verification.md). The current development archive includes

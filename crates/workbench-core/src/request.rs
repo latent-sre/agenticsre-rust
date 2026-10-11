@@ -154,6 +154,7 @@ impl Request {
         );
         let diagnostics = self.operation == "diagnostics.run";
         let collection = self.operation == "evidence.collect";
+        let runbook_write = matches!(self.operation.as_str(), "runbook.run" | "runbook.resume");
         let target_supported = if grafana || diagnostics || collection {
             self.target.kind == "connection" && valid_operation(&self.target.id)
         } else {
@@ -165,13 +166,13 @@ impl Request {
                 "Grafana, saved queries, diagnostics and collection require a named connection; other operations require the local workstation. Environment selectors are unsupported.",
             ));
         }
-        if collection && self.record == "never" {
+        if (collection || runbook_write) && self.record == "never" {
             return Err(Problem::invalid(
                 "recording_required",
-                "Explicit durable collection requires record=auto or record=always.",
+                "Durable collection and runbook execution require record=auto or record=always.",
             ));
         }
-        if !collection && self.record != "never" {
+        if !collection && !runbook_write && self.record != "never" {
             return Err(Problem::unsupported(
                 "unsupported_record_mode",
                 "This operation does not record evidence; explicitly select record=never.",

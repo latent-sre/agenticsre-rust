@@ -18,9 +18,7 @@ use std::{
     time::{Instant, SystemTime, UNIX_EPOCH},
 };
 
-#[path = "fs.rs"]
-mod fs;
-use fs::{Directory, io_error};
+use super::fs::{self, Directory, io_error};
 
 const MAX_PAYLOAD_BYTES: usize = 128 * 1024;
 const MAX_STAGING_FILES: usize = 32;

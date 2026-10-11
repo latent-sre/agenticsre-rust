@@ -1,0 +1,110 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+error[E0277]: the trait bound `Array<u8, UInt<UInt<UInt<UInt<..., ...>, ...>, ...>, ...>>: LowerHex` is not satisfied
+  --> crates/workbench-core/src/runbooks/definition.rs:37:21
+   |
+37 |     format!("{:x}", Sha256::digest(bytes))
+   |              ----   ^^^^^^^^^^^^^^^^^^^^^ the trait `LowerHex` is not implemented for `Array<u8, UInt<UInt<UInt<UInt<UInt<..., ...>, ...>, ...>, ...>, ...>>`
+   |              |
+   |              required by this formatting parameter
+   |
+   = help: the following other types implement trait `LowerHex`:
+             &T
+             &mut T
+             Saturating<T>
+             Wrapping<T>
+             bytes::bytes::Bytes
+             bytes::bytes_mut::BytesMut
+             compiler_builtins::math::libm_math::support::big::i256
+             compiler_builtins::math::libm_math::support::big::u256
+           and 35 others
+   = note: the full name for the type has been written to '/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/debug/deps/workbench_core-47a0fb2a6b398ff7.long-type-827593218924168175.txt'
+   = note: consider using `--verbose` to print the full type name to the console
+
+error[E0277]: the trait bound `Array<u8, UInt<UInt<UInt<UInt<..., ...>, ...>, ...>, ...>>: LowerHex` is not satisfied
+   --> crates/workbench-core/src/runbooks/store.rs:128:32
+    |
+128 |         format!("sha256:{:x}", Sha256::digest(bytes))
+    |                         ----   ^^^^^^^^^^^^^^^^^^^^^ the trait `LowerHex` is not implemented for `Array<u8, UInt<UInt<UInt<UInt<UInt<..., ...>, ...>, ...>, ...>, ...>>`
+    |                         |
+    |                         required by this formatting parameter
+    |
+    = help: the following other types implement trait `LowerHex`:
+              &T
+              &mut T
+              Saturating<T>
+              Wrapping<T>
+              bytes::bytes::Bytes
+              bytes::bytes_mut::BytesMut
+              compiler_builtins::math::libm_math::support::big::i256
+              compiler_builtins::math::libm_math::support::big::u256
+            and 35 others
+    = note: the full name for the type has been written to '/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/debug/deps/workbench_core-47a0fb2a6b398ff7.long-type-827593218924168175.txt'
+    = note: consider using `--verbose` to print the full type name to the console
+
+error[E0277]: the trait bound `Array<u8, UInt<UInt<UInt<UInt<..., ...>, ...>, ...>, ...>>: LowerHex` is not satisfied
+  --> crates/workbench-core/src/runbooks/definition.rs:37:21
+   |
+37 |     format!("{:x}", Sha256::digest(bytes))
+   |              ----   ^^^^^^^^^^^^^^^^^^^^^ the trait `LowerHex` is not implemented for `Array<u8, UInt<UInt<UInt<UInt<UInt<..., ...>, ...>, ...>, ...>, ...>>`
+   |              |
+   |              required by this formatting parameter
+   |
+   = help: the following other types implement trait `LowerHex`:
+             &T
+             &mut T
+             Saturating<T>
+             Wrapping<T>
+             bytes::bytes::Bytes
+             bytes::bytes_mut::BytesMut
+             compiler_builtins::math::libm_math::support::big::i256
+             compiler_builtins::math::libm_math::support::big::u256
+           and 35 others
+   = note: the full name for the type has been written to '/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/debug/deps/workbench_core-b9b600836e92ab5b.long-type-2599137069974180696.txt'
+   = note: consider using `--verbose` to print the full type name to the console
+
+error[E0277]: the trait bound `Array<u8, UInt<UInt<UInt<UInt<..., ...>, ...>, ...>, ...>>: LowerHex` is not satisfied
+   --> crates/workbench-core/src/runbooks/store.rs:128:32
+    |
+128 |         format!("sha256:{:x}", Sha256::digest(bytes))
+    |                         ----   ^^^^^^^^^^^^^^^^^^^^^ the trait `LowerHex` is not implemented for `Array<u8, UInt<UInt<UInt<UInt<UInt<..., ...>, ...>, ...>, ...>, ...>>`
+    |                         |
+    |                         required by this formatting parameter
+    |
+    = help: the following other types implement trait `LowerHex`:
+              &T
+              &mut T
+              Saturating<T>
+              Wrapping<T>
+              bytes::bytes::Bytes
+              bytes::bytes_mut::BytesMut
+              compiler_builtins::math::libm_math::support::big::i256
+              compiler_builtins::math::libm_math::support::big::u256
+            and 35 others
+    = note: the full name for the type has been written to '/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/debug/deps/workbench_core-b9b600836e92ab5b.long-type-2599137069974180696.txt'
+    = note: consider using `--verbose` to print the full type name to the console
+
+error[E0277]: the trait bound `Array<u8, UInt<UInt<UInt<UInt<..., ...>, ...>, ...>, ...>>: LowerHex` is not satisfied
+   --> crates/workbench-core/src/runbooks/store.rs:364:54
+    |
+364 |             assert_eq!(first, format!("sha256:{:x}", Sha256::digest(&bytes)));
+    |                                               ----   ^^^^^^^^^^^^^^^^^^^^^^ the trait `LowerHex` is not implemented for `Array<u8, UInt<UInt<UInt<UInt<UInt<..., ...>, ...>, ...>, ...>, ...>>`
+    |                                               |
+    |                                               required by this formatting parameter
+    |
+    = help: the following other types implement trait `LowerHex`:
+              &T
+              &mut T
+              Saturating<T>
+              Wrapping<T>
+              bytes::bytes::Bytes
+              bytes::bytes_mut::BytesMut
+              compiler_builtins::math::libm_math::support::big::i256
+              compiler_builtins::math::libm_math::support::big::u256
+            and 35 others
+    = note: the full name for the type has been written to '/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/debug/deps/workbench_core-b9b600836e92ab5b.long-type-2599137069974180696.txt'
+    = note: consider using `--verbose` to print the full type name to the console
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `workbench-core` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `workbench-core` (lib test) due to 3 previous errors

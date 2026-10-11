@@ -1,0 +1,12 @@
+{
+  "after": {
+    "expected_manifest_sha256": "sha256:6cac837c1942335474d31a7905a6c5bf9c902b230f62f79e5fa3a21b1c78a704",
+    "id": "run-23-18dd64daae3e6ef2-1"
+  },
+  "before": {
+    "expected_manifest_sha256": "sha256:ecdbf67076af79aecdaa4c5ccc4345b6e5b91bcc93df8ed4d098e6c1b23ad40a",
+    "id": "run-9-18dd64daa8b33360-1"
+  },
+  "normalization": "exact-window-v1",
+  "on_failure": "stop"
+}

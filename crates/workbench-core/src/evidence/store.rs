@@ -109,7 +109,7 @@ impl StoreError {
         Self { code, effects }
     }
 
-    fn after_effects(mut self) -> Self {
+    pub(crate) fn after_effects(mut self) -> Self {
         self.effects = true;
         self
     }
@@ -144,6 +144,8 @@ fn lower_hex(value: &str) -> bool {
             .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
 }
 
+#[cfg(target_os = "linux")]
+pub(crate) mod fs;
 #[cfg(target_os = "linux")]
 mod linux;
 #[cfg(target_os = "linux")]

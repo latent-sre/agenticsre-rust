@@ -439,3 +439,22 @@ Comparison reads only the selected store and requires no Grafana/provider/contex
 An incomplete or incompatible comparison exits 1 and retains explicit reasons; it never asserts
 service health or log rates. The [contract](evidence.md#comparison-interface-and-projections)
 documents supported frames, provenance, limits and structured request parity.
+
+
+### Guided evidence review
+
+Prepare the typed before/after reference input described in [guided runbooks](runbooks.md), then:
+
+```sh
+target/debug/save --json --state-dir /absolute/evidence --runbook-state-dir /absolute/runbooks \
+  --record always runbook run evidence-review --input review.json
+target/debug/save --json --runbook-state-dir /absolute/runbooks runbook status RUN_ID
+target/debug/save --json --state-dir /absolute/evidence --runbook-state-dir /absolute/runbooks \
+  --record always runbook resume RUN_ID --expected-revision REVISION \
+  --input review.json --acknowledge CHECKPOINT
+```
+
+Read the retained comparison and checkpoint instructions before acknowledging. Waiting and limited
+results exit 1; successful completed review exits 0. Status is read-only and exits 0 after a valid
+read regardless of workflow state. Resume requires unchanged inputs and the current revision;
+fresh attempts use a new run ID and preserve the original journal.

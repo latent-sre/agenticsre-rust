@@ -1,0 +1,135 @@
+{
+  "id": "evidence-review",
+  "version": 1,
+  "description": "Review retained before and after evidence without collecting new observations. Acknowledgement records review, never service health.",
+  "effect": "observe",
+  "steps": [
+    {
+      "id": "before",
+      "capability": "evidence.show",
+      "version": 1,
+      "dependencies": [],
+      "description": "Verify and inspect the retained before bundle.",
+      "expected_evidence": "Verified bundle identity and capture coverage"
+    },
+    {
+      "id": "after",
+      "capability": "evidence.show",
+      "version": 1,
+      "dependencies": [],
+      "description": "Verify and inspect the retained after bundle.",
+      "expected_evidence": "Verified bundle identity and capture coverage"
+    },
+    {
+      "id": "compare",
+      "capability": "evidence.compare",
+      "version": 1,
+      "dependencies": [
+        "before",
+        "after"
+      ],
+      "description": "Compare retained observations under the selected timestamp policy.",
+      "expected_evidence": "Typed differences, compatibility and missing evidence"
+    },
+    {
+      "id": "review-complete",
+      "capability": "human.checkpoint",
+      "version": 1,
+      "dependencies": [
+        "compare"
+      ],
+      "condition": {
+        "step": "compare",
+        "pointer": "/data/state",
+        "equals": "complete"
+      },
+      "description": "Review the returned observation differences. Completion does not establish service health or full telemetry coverage.",
+      "expected_evidence": "Explicit operator acknowledgement"
+    },
+    {
+      "id": "review-partial",
+      "capability": "human.checkpoint",
+      "version": 1,
+      "dependencies": [
+        "compare"
+      ],
+      "condition": {
+        "step": "compare",
+        "pointer": "/data/state",
+        "equals": "partial"
+      },
+      "description": "Review missing or incomplete observations before drawing conclusions.",
+      "expected_evidence": "Explicit acknowledgement of partial evidence"
+    },
+    {
+      "id": "review-incompatible",
+      "capability": "human.checkpoint",
+      "version": 1,
+      "dependencies": [
+        "compare"
+      ],
+      "condition": {
+        "step": "compare",
+        "pointer": "/data/state",
+        "equals": "incompatible"
+      },
+      "description": "Review why the retained bundles cannot be compared.",
+      "expected_evidence": "Explicit acknowledgement of incompatible evidence"
+    }
+  ],
+  "input_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "before",
+      "after",
+      "normalization",
+      "on_failure"
+    ],
+    "properties": {
+      "before": {
+        "$ref": "#/$defs/evidence_ref"
+      },
+      "after": {
+        "$ref": "#/$defs/evidence_ref"
+      },
+      "normalization": {
+        "enum": [
+          "exact-window-v1",
+          "window-offset-v1"
+        ]
+      },
+      "on_failure": {
+        "enum": [
+          "stop",
+          "continue"
+        ]
+      }
+    },
+    "$defs": {
+      "evidence_ref": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Generated evidence run ID; filesystem paths are forbidden"
+          },
+          "expected_manifest_sha256": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        }
+      }
+    }
+  },
+  "limits": {
+    "max_steps": 6,
+    "max_timeout_ms": 300000,
+    "max_child_output_bytes": 262144,
+    "max_comparison_items": 100
+  }
+}

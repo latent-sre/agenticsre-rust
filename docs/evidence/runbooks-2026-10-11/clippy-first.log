@@ -1,0 +1,68 @@
+    Checking workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+error: this `if` statement can be collapsed
+  --> crates/workbench-core/src/runbooks/definition.rs:70:9
+   |
+70 | /         if let Some(c) = &s.condition {
+71 | |             if s.capability != "human.checkpoint"
+72 | |                 || c.step != "compare"
+73 | |                 || c.pointer != "/data/state"
+...  |
+79 | |         }
+   | |_________^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#collapsible_if
+   = note: `-D clippy::collapsible-if` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+   |
+70 ~         if let Some(c) = &s.condition
+71 ~             && (s.capability != "human.checkpoint"
+72 |                 || c.step != "compare"
+73 |                 || c.pointer != "/data/state"
+74 |                 || !matches!(c.equals.as_str(), "complete" | "partial" | "incompatible")
+75 ~                 || !s.dependencies.contains(&c.step))
+76 |             {
+77 |                 return Err("runbook_invalid_definition");
+78 ~             }
+   |
+
+error: this `if` statement can be collapsed
+   --> crates/workbench-core/src/runbooks.rs:262:13
+    |
+262 | /             if let Some(r) = &step.receipt {
+263 | |                 if r["operation"] != d.steps[idx].capability
+264 | |                     || r["operation_version"] != 1
+265 | |                     || r["spec_version"] != "0.1"
+...   |
+277 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+262 ~             if let Some(r) = &step.receipt
+263 ~                 && (r["operation"] != d.steps[idx].capability
+264 |                     || r["operation_version"] != 1
+...
+272 |                         .is_some_and(crate::evidence::store::valid_run_id)
+273 ~                     || r["record_mode"] != "never")
+274 |                 {
+275 |                     return Err(bad());
+276 ~                 }
+    |
+
+error: this block may be rewritten with the `?` operator
+   --> crates/workbench-core/src/runbooks.rs:841:13
+    |
+841 | /             if let Err(code) = active(control, deadline) {
+842 | |                 return Err(code);
+843 | |             }
+    | |_____________^ help: replace it with: `active(control, deadline)?;`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#question_mark
+    = note: `-D clippy::question-mark` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::question_mark)]`
+
+error: could not compile `workbench-core` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `workbench-core` (lib test) due to 3 previous errors

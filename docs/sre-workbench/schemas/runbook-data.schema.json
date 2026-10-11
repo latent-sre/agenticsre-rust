@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:runbook-data:0.1",
+  "title": "Runbook data",
+  "type": "object",
+  "properties": {
+    "journal": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96,
+          "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "digest": {
+          "type": "string",
+          "minLength": 71,
+          "maxLength": 71,
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "runbook": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "evidence-review"
+        },
+        "version": {
+          "const": 1
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "workflow_state": {
+      "enum": [
+        "ready",
+        "running",
+        "waiting",
+        "completed",
+        "failed",
+        "interrupted"
+      ]
+    },
+    "pending_checkpoint": {
+      "anyOf": [
+        {
+          "enum": [
+            "review-complete",
+            "review-partial",
+            "review-incompatible"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remaining_timeout_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 300000
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "before",
+              "after",
+              "compare",
+              "review-complete",
+              "review-partial",
+              "review-incompatible"
+            ]
+          },
+          "state": {
+            "enum": [
+              "pending",
+              "completed",
+              "failed",
+              "skipped",
+              "waiting",
+              "acknowledged"
+            ]
+          },
+          "condition": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "acknowledged_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "receipt_summary": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "run_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 96,
+                    "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+                  },
+                  "status": {
+                    "enum": [
+                      "succeeded",
+                      "failed",
+                      "partial",
+                      "denied",
+                      "unsupported",
+                      "cancelled",
+                      "timed_out",
+                      "unknown"
+                    ]
+                  },
+                  "started_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "maxLength": 64
+                  },
+                  "finished_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "maxLength": 64
+                  },
+                  "coverage": {
+                    "type": "object",
+                    "properties": {
+                      "state": {
+                        "enum": [
+                          "complete",
+                          "partial",
+                          "not_established",
+                          "not_applicable"
+                        ]
+                      },
+                      "scope": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2048
+                      },
+                      "limitations": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2048
+                        },
+                        "maxItems": 50
+                      }
+                    },
+                    "required": [
+                      "state",
+                      "scope",
+                      "limitations"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "errors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]*$",
+                          "maxLength": 128
+                        },
+                        "message": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2048
+                        },
+                        "retryable": {
+                          "type": "boolean"
+                        },
+                        "next_step": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2048
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message",
+                        "retryable"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "maxItems": 50
+                  }
+                },
+                "required": [
+                  "run_id",
+                  "status",
+                  "started_at",
+                  "finished_at",
+                  "coverage",
+                  "errors"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "condition",
+          "acknowledged_at",
+          "receipt_summary"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 6,
+      "minItems": 6
+    },
+    "observation_state": {
+      "anyOf": [
+        {
+          "enum": [
+            "complete",
+            "partial",
+            "incompatible"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "fresh_from": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 96,
+              "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+            },
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "id",
+            "expected_revision"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "cancellation_signal": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 64
+    },
+    "in_flight": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "before",
+        "after",
+        "compare",
+        null
+      ]
+    },
+    "resume_safety": {
+      "enum": [
+        "resumable",
+        "requires_fresh_attempt",
+        "terminal"
+      ]
+    },
+    "comparison": {
+      "anyOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:evidence-comparison-data:0.1"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "checkpoint_instructions": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 2048
+    }
+  },
+  "required": [
+    "journal",
+    "runbook",
+    "workflow_state",
+    "pending_checkpoint",
+    "remaining_timeout_ms",
+    "steps",
+    "observation_state",
+    "fresh_from",
+    "in_flight",
+    "resume_safety",
+    "comparison",
+    "checkpoint_instructions"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,29 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+warning: value assigned to `revision_digest` is never read
+   --> crates/workbench-core/src/runbooks.rs:723:9
+    |
+723 |         revision_digest = persist(&mut store, &mut state, deadline, result)?;
+    |         ^^^^^^^^^^^^^^^
+    |
+    = help: maybe it is overwritten before being read?
+    = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+warning: `workbench-core` (lib) generated 1 warning
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 3.63s
+     Running tests/runbooks.rs (target/debug/deps/runbooks-58b0a5d6bf7175c7)
+
+running 8 tests
+test changed_source_after_waiting_refuses_resume_without_mutating_checkpoint ... ok
+test competing_resumes_cannot_acknowledge_the_same_revision_twice ... ok
+test invalid_admission_and_readonly_discovery_never_initialize_journal ... ok
+test explicit_fresh_attempt_gets_new_id_and_preserves_old_run ... ok
+test journal_refuses_symlink_and_nonprivate_directory ... ok
+test runbook_pauses_and_resumes_across_processes_without_repeating_observations ... ok
+test runbook_partial_and_incompatible_observations_select_distinct_human_checkpoints ... ok
+test runbook_refuses_wrong_ack_stale_revision_changed_input_and_definition_without_writes ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+

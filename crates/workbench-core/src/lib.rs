@@ -16,6 +16,7 @@ mod process;
 mod queries;
 mod read_launcher;
 mod read_profile;
+mod runbooks;
 pub use read_launcher::{ReadProfileLauncher, read_launcher_entry};
 pub use read_profile::{ReadPolicyDescription, ReadPolicyRoot, read_policy_description};
 pub mod request;
@@ -35,6 +36,8 @@ use std::time::Instant;
 /// Explicit operator startup configuration, never a wire-request field or a grant.
 #[derive(Default)]
 pub struct OperatorContext {
+    /// Explicit private guided-runbook journal root, never a wire field or hosted grant.
+    pub runbook_state_dir: Option<std::path::PathBuf>,
     /// Explicit local evidence storage policy; never supplied by wire input or a hosted grant.
     pub evidence_store: Option<EvidenceStoreOptions>,
     /// Explicit startup-only diagnostics destination/configuration binding; never a wire grant.
@@ -150,6 +153,11 @@ fn execute_with_identities(
     let mut result = OperationResult::new(&request);
     if let Err(problem) = request.validate() {
         result.reject(problem);
+    } else if identities.required && request.operation.starts_with("runbook.") {
+        result.reject(Problem::unsupported(
+            "runbook_grants_unavailable",
+            "Guided runbook grants are not implemented for hosted adapters; use explicit operator CLI bindings.",
+        ));
     } else if identities.required && request.operation.starts_with("evidence.") {
         result.reject(Problem::unsupported(
             "evidence_grants_unavailable",
@@ -247,6 +255,49 @@ pub(crate) fn execute_collection_child(
     result
 }
 
+/// Only installed observation capabilities may be dispatched by guided runbooks.
+/// Keep a single parent deadline; never recurse through public execution.
+pub(crate) fn execute_runbook_child(
+    mut request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    deadline: Instant,
+) -> OperationResult {
+    let start = Instant::now();
+    let mut result = OperationResult::new(&request);
+    let remaining = deadline.saturating_duration_since(start).as_millis();
+    if remaining == 0 {
+        result.execution.status = Status::TimedOut;
+        result.error(
+            "parent_deadline_exceeded",
+            "The runbook deadline expired before this check.",
+        );
+    } else if control.signal.load(Ordering::Relaxed) != 0 {
+        result.execution.status = Status::Cancelled;
+        result.data = json!({"cancellation_signal":control.signal.load(Ordering::Relaxed)});
+        result.error("cancelled", "The runbook was cancelled before this check.");
+    } else {
+        request.limits.timeout_ms = request.limits.timeout_ms.min(remaining.min(300_000) as u64);
+        result.effective_limits.timeout_ms = request.limits.timeout_ms;
+        if let Err(problem) = request.validate() {
+            result.reject(problem);
+        } else {
+            match request.operation.as_str() {
+                "evidence.show" => evidence::manage(&request, control, context, start, &mut result),
+                "evidence.compare" => {
+                    evidence::compare::run(&request, control, context, start, &mut result)
+                }
+                _ => result.reject(Problem::unsupported(
+                    "unsupported_runbook_step",
+                    "Only installed evidence observations are permitted as runbook checks.",
+                )),
+            }
+        }
+    }
+    result.finish(start);
+    result
+}
+
 fn dispatch(
     request: &Request,
     control: &RunControl,
@@ -256,6 +307,18 @@ fn dispatch(
     result: &mut OperationResult,
 ) {
     match request.operation.as_str() {
+        "runbook.list" if request.inputs == json!({}) => {
+            result.data = runbooks::list();
+            result.effect_outcome = "not_applicable".into();
+        }
+        "runbook.list" => result.reject(Problem::invalid(
+            "invalid_runbook_input",
+            "Runbook listing accepts an empty input object only.",
+        )),
+        "runbook.show" => runbooks::show(&request.inputs, result),
+        "runbook.run" | "runbook.resume" | "runbook.status" => {
+            runbooks::run(request, control, context, start, result)
+        }
         "evidence.collect" => evidence::collect::run(request, control, context, start, result),
         "evidence.compare" => evidence::compare::run(request, control, context, start, result),
         "evidence.packs.describe" => evidence::pack::describe(&request.inputs, result),
