@@ -1,0 +1,40 @@
+{
+  "spec_version": "0.1",
+  "request_id": "saved-query-example",
+  "operation": "evidence.collect",
+  "operation_version": 1,
+  "target": {
+    "kind": "connection",
+    "id": "fixture"
+  },
+  "inputs": {
+    "service": "fixture-web",
+    "environment": "dev",
+    "pack": {
+      "id": "service-queries",
+      "version": 1
+    },
+    "window": {
+      "kind": "relative",
+      "lookback_seconds": 300
+    },
+    "metrics": {
+      "datasource": "metrics-1",
+      "parameters": {
+        "job": "fixture"
+      }
+    },
+    "logs": {
+      "datasource": "logs-1",
+      "parameters": {
+        "job": "fixture"
+      }
+    },
+    "on_failure": "continue"
+  },
+  "limits": {
+    "timeout_ms": 60000,
+    "max_output_bytes": 2097152
+  },
+  "record": "always"
+}

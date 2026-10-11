@@ -256,5 +256,36 @@
     "schema": "query-run-input",
     "valid": false,
     "reason": "Trailing newline is a control character even where regex end anchors can match before it."
+  },
+  {
+    "file": "request-evidence.json",
+    "schema": "request",
+    "valid": true,
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence.",
+    "input_schema": "evidence-collect-input"
+  },
+  {
+    "file": "invalid-evidence-input.json",
+    "schema": "evidence-collect-input",
+    "valid": false,
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
+  },
+  {
+    "file": "invalid-evidence-reference.json",
+    "schema": "evidence-reference-input",
+    "valid": false,
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
+  },
+  {
+    "file": "evidence-interrupted-manifest.json",
+    "schema": "evidence-manifest",
+    "valid": true,
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
+  },
+  {
+    "file": "evidence-cancelled-data.json",
+    "schema": "evidence-collection-data",
+    "valid": true,
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
   }
 ]

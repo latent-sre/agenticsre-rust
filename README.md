@@ -58,6 +58,10 @@ fixtures for current acceptance. [Restricted commands](docs/read-profile.md) and
 The [installed saved queries](docs/saved-queries.md) add versioned PromQL/LogQL definitions,
 literal job parameters, optional definition-digest pinning and one resolved time window to the
 core/CLI Grafana workflow.
+The [evidence collection increment](docs/evidence.md) builds on those queries with fresh context
+bindings, sanitized receipts and a private versioned local store, with
+[Linux fixture acceptance](docs/evidence-collection-verification.md). See
+[collection commands](docs/development.md#evidence-collection-and-local-store).
 See [development installation and rollback](docs/development.md#development-artifact-and-rollback).
 Offline [service-context fixtures](docs/context.md) are implemented through the core/CLI and
 [independently verified](docs/context-verification.md). The current development archive includes

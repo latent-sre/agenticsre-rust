@@ -1,0 +1,13 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Finished `test` profile [unoptimized] target(s) in 2.20s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-b9b600836e92ab5b)
+
+running 5 tests
+test evidence::collect::tests::collection_rejects_null_unknown_steps_and_digest_without_source_reads ... ok
+test evidence::collect::tests::finalization_allowance_is_fixed_at_first_transition_and_capped_by_parent ... ok
+test evidence::collect::tests::receipt_summary_must_keep_the_original_finalized_observation ... ok
+test evidence::collect::tests::rounded_child_deadline_exhausts_collection_work_before_parent_instant ... ok
+test evidence::collect::tests::collection_compiles_every_parameter_before_any_binding ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 70 filtered out; finished in 0.00s
+

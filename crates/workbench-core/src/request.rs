@@ -153,7 +153,8 @@ impl Request {
             "grafana.dashboard.get" | "grafana.query" | "query.run"
         );
         let diagnostics = self.operation == "diagnostics.run";
-        let target_supported = if grafana || diagnostics {
+        let collection = self.operation == "evidence.collect";
+        let target_supported = if grafana || diagnostics || collection {
             self.target.kind == "connection" && valid_operation(&self.target.id)
         } else {
             self.target.kind == "local" && self.target.id == "workstation"
@@ -161,13 +162,19 @@ impl Request {
         if !target_supported || self.target.environment.is_some() {
             return Err(Problem::unsupported(
                 "unsupported_target",
-                "Grafana, saved queries and diagnostics execution require a named connection; other operations require the local workstation. Environment selectors are unsupported.",
+                "Grafana, saved queries, diagnostics and collection require a named connection; other operations require the local workstation. Environment selectors are unsupported.",
             ));
         }
-        if self.record != "never" {
+        if collection && self.record == "never" {
+            return Err(Problem::invalid(
+                "recording_required",
+                "Explicit durable collection requires record=auto or record=always.",
+            ));
+        }
+        if !collection && self.record != "never" {
             return Err(Problem::unsupported(
                 "unsupported_record_mode",
-                "Persistence is unavailable; explicitly select record=never.",
+                "This operation does not record evidence; explicitly select record=never.",
             ));
         }
         if self.limits.max_items.is_some()

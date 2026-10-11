@@ -1,5 +1,7 @@
 //! Shared, bounded operation semantics for the experimental `save` CLI.
 mod context;
+mod evidence;
+pub use evidence::EvidenceStoreOptions;
 mod diagnostics;
 pub use diagnostics::{
     DiagnosticsGrant, diagnostics_grant, diagnostics_pack_metadata, normalize_diagnostics_input,
@@ -33,6 +35,8 @@ use std::time::Instant;
 /// Explicit operator startup configuration, never a wire-request field or a grant.
 #[derive(Default)]
 pub struct OperatorContext {
+    /// Explicit local evidence storage policy; never supplied by wire input or a hosted grant.
+    pub evidence_store: Option<EvidenceStoreOptions>,
     /// Explicit startup-only diagnostics destination/configuration binding; never a wire grant.
     pub diagnostics_config_path: Option<std::path::PathBuf>,
     /// Explicit offline fixture export and bounded freshness policy; never wire fields.
@@ -146,6 +150,11 @@ fn execute_with_identities(
     let mut result = OperationResult::new(&request);
     if let Err(problem) = request.validate() {
         result.reject(problem);
+    } else if identities.required && request.operation.starts_with("evidence.") {
+        result.reject(Problem::unsupported(
+            "evidence_grants_unavailable",
+            "Evidence store and collection grants are not implemented for hosted adapters; use the explicit operator CLI binding.",
+        ));
     } else if identities.required && request.operation == "query.run" {
         result.reject(Problem::unsupported(
             "query_grants_unavailable",
@@ -191,6 +200,53 @@ fn execute_with_identities(
     result
 }
 
+/// Fixed collection children only. Keep a real child clock while narrowing its work to the
+/// absolute parent deadline; no caller-selected operation, nested collection or hosted fallback.
+pub(crate) fn execute_collection_child(
+    mut request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    expected_grafana_identity: Option<&GrafanaConfigIdentity>,
+    deadline: Instant,
+) -> OperationResult {
+    let start = Instant::now();
+    let mut result = OperationResult::new(&request);
+    let remaining = deadline.saturating_duration_since(start).as_millis();
+    if remaining == 0 {
+        result.execution.status = Status::TimedOut;
+        result.error(
+            "parent_deadline_exceeded",
+            "The collection deadline expired before this child could start.",
+        );
+    } else if control.signal.load(Ordering::Relaxed) != 0 {
+        result.execution.status = Status::Cancelled;
+        result.data = json!({"cancellation_signal":control.signal.load(Ordering::Relaxed)});
+        result.error(
+            "cancelled",
+            "The collection was cancelled before this child could start.",
+        );
+    } else {
+        request.limits.timeout_ms = request.limits.timeout_ms.min(remaining.min(60_000) as u64);
+        result.effective_limits.timeout_ms = request.limits.timeout_ms;
+        if let Err(problem) = request.validate() {
+            result.reject(problem);
+        } else {
+            match request.operation.as_str() {
+                "context.resolve" => context::run(&request, control, context, start, &mut result),
+                "query.run" if expected_grafana_identity.is_some() => grafana::run_with_deadline(
+                    &request, control, context, expected_grafana_identity, start, deadline, &mut result,
+                ),
+                _ => result.reject(Problem::unsupported(
+                    "unsupported_collection_child",
+                    "Collection permits only its fixed context resolution and pinned saved queries.",
+                )),
+            }
+        }
+    }
+    result.finish(start);
+    result
+}
+
 fn dispatch(
     request: &Request,
     control: &RunControl,
@@ -200,6 +256,12 @@ fn dispatch(
     result: &mut OperationResult,
 ) {
     match request.operation.as_str() {
+        "evidence.collect" => evidence::collect::run(request, control, context, start, result),
+        "evidence.packs.describe" => evidence::pack::describe(&request.inputs, result),
+        "evidence.list" | "evidence.show" | "evidence.protect" | "evidence.unprotect"
+        | "evidence.delete" | "evidence.prune" | "evidence.recover" => {
+            evidence::manage(request, control, context, start, result)
+        }
         "diagnostics.run" => diagnostics::run(
             request,
             control,
@@ -249,10 +311,17 @@ fn dispatch(
             }
             Err(problem) => result.reject(problem),
         },
-        "capability.list" | "doctor" | "task.list" | "diagnostics.list" | "queries.list" => {
+        "capability.list"
+        | "doctor"
+        | "task.list"
+        | "diagnostics.list"
+        | "queries.list"
+        | "evidence.packs.list" => {
             if request.inputs.as_object().is_some_and(|map| map.is_empty()) {
                 result.effect_outcome = "not_applicable".into();
-                result.data = if request.operation == "queries.list" {
+                result.data = if request.operation == "evidence.packs.list" {
+                    evidence::pack::list()
+                } else if request.operation == "queries.list" {
                     queries::list()
                 } else if request.operation == "diagnostics.list" {
                     diagnostics::list()

@@ -7,6 +7,11 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 use time::{OffsetDateTime, format_description::well_known::Rfc3339};
 
+/// Grafana admits response bodies through depth 64. Retained receipts add the
+/// result/data envelope and can add credential-redaction marker objects. Readers
+/// share this bounded allowance rather than imposing a tighter response profile.
+pub(crate) const MAX_RECEIPT_DEPTH: usize = 72;
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Status {
@@ -461,7 +466,7 @@ impl OperationResult {
             for limitation in &self.coverage.limitations {
                 text.push_str(&format!("Limit: {}\n", terminal_safe(limitation)));
             }
-        } else if self.operation == "diagnostics.run" {
+        } else if self.operation == "diagnostics.run" || self.operation.starts_with("evidence.") {
             text.push_str(&format!(
                 "Connection: {}\nObservation:\n{}\nCoverage: {} — {}\n",
                 terminal_safe(&self.target.id),

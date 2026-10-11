@@ -1,0 +1,464 @@
+[
+  {
+    "case": "packs-list",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--config",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/absent.json",
+      "evidence",
+      "packs",
+      "list"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 2,
+    "stdout_sha256": "164e1ada3345f7c54e60f793f4af72cf8e8411e7b2a08f26dedef30ced022a07",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "packs-describe",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "evidence",
+      "packs",
+      "describe",
+      "service-queries",
+      "--version",
+      "1"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 2,
+    "stdout_sha256": "f4fa7208996138c195eba76403b64661a98412ceadef9a9fcbe1d4ca822b8c5f",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "wrong-pack-pin",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/store",
+      "--config",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/context.json",
+      "--context-max-age-days",
+      "30",
+      "--record",
+      "always",
+      "evidence",
+      "collect",
+      "--target",
+      "fixture",
+      "--input",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/input.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 2,
+    "duration_ms": 2,
+    "stdout_sha256": "554b85a28fff19b1890e25e5a613ccedb2b9cdad2ac2420e55d15f2cf4c3fc78",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "complete-collect",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/store",
+      "--config",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/context.json",
+      "--context-max-age-days",
+      "30",
+      "--record",
+      "always",
+      "evidence",
+      "collect",
+      "--target",
+      "fixture",
+      "--input",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/input.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 42,
+    "stdout_sha256": "b6579b741628bf62e4a5d99062e077ae417a008a8d52f7c6a3a19fe0c9e88ae9",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "show-after-restart",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/store",
+      "evidence",
+      "show",
+      "run-12-18dd5c5226672b58-1",
+      "--expected-manifest-sha256",
+      "sha256:783d5022948998a0f1b4fc85fe99bf3df1ac739b74b864483e3c8d6d89293fc9"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 6,
+    "stdout_sha256": "4ca308b71442cde741bc2c443e2828591efbfb21e3e1f1c547cb9244f4260904",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "list-after-restart",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/store",
+      "evidence",
+      "list"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 5,
+    "stdout_sha256": "81553149d6fb512e44738330491e9278af3dd0d1cb316f0994325a7b8e5af7b8",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "wrong-manifest-pin",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/store",
+      "evidence",
+      "delete",
+      "run-12-18dd5c5226672b58-1",
+      "--expected-manifest-sha256",
+      "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 1,
+    "duration_ms": 6,
+    "stdout_sha256": "9c23732b869d8c53a8f67c2136ef446bbd4d8de1d008967eb2246d2ea22558b5",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "protect",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/store",
+      "evidence",
+      "protect",
+      "run-12-18dd5c5226672b58-1"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 9,
+    "stdout_sha256": "543a0aa07af1fd931bf4687960d9579b10c6c27edad62110fa2e310dbef271d0",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "delete-protected",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/store",
+      "evidence",
+      "delete",
+      "run-12-18dd5c5226672b58-1"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 1,
+    "duration_ms": 7,
+    "stdout_sha256": "3d7590ba1ff108790c5732f2ff2e1d5f9168b33046780591a40781316e17863d",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "unprotect",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/store",
+      "evidence",
+      "unprotect",
+      "run-12-18dd5c5226672b58-1"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 9,
+    "stdout_sha256": "23ec03f76db5dd04c1172bcecccfa833df450594d6e07acbd83a91bba3325f88",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "delete",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/store",
+      "evidence",
+      "delete",
+      "run-12-18dd5c5226672b58-1"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 10,
+    "stdout_sha256": "96761a107a1c7c5875f0456ae3c0dcd7fe148b87d46a413c3153088da4f79a6e",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "list-after-delete",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/complete/store",
+      "evidence",
+      "list"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 2,
+    "stdout_sha256": "086622eedc70bf556e120a832f85609a81d14f71daaa1b30c1a74bc07c65d4ea",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "structured-redaction",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/structured-redaction/store",
+      "--config",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/structured-redaction/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/structured-redaction/context.json",
+      "--context-max-age-days",
+      "30",
+      "call",
+      "--request",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/structured-redaction/request.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 41,
+    "stdout_sha256": "22e0b07de9f9324a4a1aaa1c28fb902dbfc6a8fe50f97d0b02e60c1a04f3692b",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "partial",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/partial/store",
+      "--config",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/partial/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/partial/context.json",
+      "--context-max-age-days",
+      "30",
+      "--record",
+      "always",
+      "evidence",
+      "collect",
+      "--target",
+      "fixture",
+      "--input",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/partial/input.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 1,
+    "duration_ms": 40,
+    "stdout_sha256": "968448d9e81b1f846f4f5cf84f58bdd8423c6121a291327a9f104d14102c8bfe",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "cancellation",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/cancellation/store",
+      "--config",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/cancellation/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/cancellation/context.json",
+      "--context-max-age-days",
+      "30",
+      "--record",
+      "always",
+      "evidence",
+      "collect",
+      "--target",
+      "fixture",
+      "--input",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/cancellation/input.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 143,
+    "duration_ms": 50,
+    "stdout_sha256": "cf2a1225ce05cdc182d259932e7d106e11452ca845951258fa369f84c33a6d0a",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "interrupted",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/interrupted/store",
+      "--config",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/interrupted/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/interrupted/context.json",
+      "--context-max-age-days",
+      "30",
+      "--record",
+      "always",
+      "evidence",
+      "collect",
+      "--target",
+      "fixture",
+      "--input",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/interrupted/input.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": -9,
+    "duration_ms": 35,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "list-incomplete",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/interrupted/store",
+      "evidence",
+      "list"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 3,
+    "stdout_sha256": "b076564cb01ecf16c739576e0adc0c6000c1c1050044dc61bbc0996b7a7d2786",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "show-incomplete",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/interrupted/store",
+      "evidence",
+      "show",
+      "run-52-18dd5c523807235c-1"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 1,
+    "duration_ms": 3,
+    "stdout_sha256": "14fae058b87724e91c3ff47ebae5aa66731863b33cc2afc4340a5a003e5d06b9",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "recover",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/interrupted/store",
+      "evidence",
+      "recover"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 6,
+    "stdout_sha256": "d2fba2af7e1cd202b2deb19f29281d583abdb1b8768d3b86ecdf47b861cf9e60",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "show-recovered",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/interrupted/store",
+      "evidence",
+      "show",
+      "run-52-18dd5c523807235c-1"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 5,
+    "stdout_sha256": "11eb81d35a24d63e02fed1679bdbeaa628b3b944cc3a2c768e8587df487c1260",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "recover-idempotent",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/interrupted/store",
+      "evidence",
+      "recover"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 5,
+    "stdout_sha256": "cb3df8da1fe99a2235e068cd12bd41e48c682ebb0ff35a0fa1d8792bd25f1c1e",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "prune-interrupted",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/interrupted/store",
+      "evidence",
+      "prune"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 5,
+    "stdout_sha256": "943ade25782188d7ccc40fabe7178982ac604e198e6ff52c6016c1660ca1b324",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "disk-full",
+    "argv": [
+      "/tmp/workbench-installed-evidence-8i5pz8qj/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/evidence-small-disk/evidence-store",
+      "--config",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/disk-full/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/disk-full/context.json",
+      "--context-max-age-days",
+      "30",
+      "--record",
+      "always",
+      "evidence",
+      "collect",
+      "--target",
+      "fixture",
+      "--input",
+      "/tmp/workbench-installed-evidence-8i5pz8qj/disk-full/input.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-8i5pz8qj/unrelated-working-directory",
+    "exit_status": 1,
+    "duration_ms": 50,
+    "stdout_sha256": "1616b32cbfe260e2833b1a4b53e2518c11963079915fa68d39dc3648945f117d",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

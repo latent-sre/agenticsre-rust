@@ -1,0 +1,134 @@
+{
+  "format_version": 1,
+  "producer": {
+    "id": "save",
+    "version": "0.1.0",
+    "spec_version": "0.1"
+  },
+  "run_id": "run-1-ab-c",
+  "request_id": "illustrative-evidence",
+  "started_at": "2026-10-10T12:00:00Z",
+  "finalized_at": "2026-10-10T12:00:00Z",
+  "selection": {
+    "service": "fixture-web",
+    "environment": "dev",
+    "team": null,
+    "deployment": null
+  },
+  "connection": {
+    "id": "fixture",
+    "origin": "https://fixture.invalid",
+    "organization_id": 7
+  },
+  "provenance": {
+    "grafana_config_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "grafana_ca": {
+      "kind": "builtin",
+      "sha256": null
+    },
+    "context": {
+      "source": {
+        "kind": "fixture-export",
+        "id": "illustrative-fixture",
+        "revision": "1",
+        "sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "observed_at": "2026-10-10T12:00:00Z",
+        "evidence_state": "sourced"
+      },
+      "record": {
+        "service": "fixture-web",
+        "team": "platform",
+        "environment": "dev",
+        "deployment": null,
+        "state": "active",
+        "last_reviewed": "2026-10-10T12:00:00Z",
+        "bindings": {
+          "target": "fixture",
+          "environment": "dev",
+          "organization": "7"
+        }
+      },
+      "resolution": {
+        "state": "resolved",
+        "usable": true,
+        "max_age_days": 30,
+        "age_seconds": 0
+      }
+    }
+  },
+  "pack": {
+    "id": "service-queries",
+    "version": 1,
+    "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236"
+  },
+  "window": {
+    "from": "2026-10-10T11:55:00Z",
+    "to": "2026-10-10T12:00:00Z"
+  },
+  "on_failure": "continue",
+  "capture": {
+    "state": "none",
+    "expected_steps": 2,
+    "retained_receipts": 0
+  },
+  "steps": [
+    {
+      "id": "metrics",
+      "operation": "query.run",
+      "definition": {
+        "id": "prometheus.up-by-job",
+        "version": 1,
+        "dialect": "promql",
+        "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f"
+      },
+      "status": "omitted",
+      "run_id": null,
+      "started_at": null,
+      "finished_at": null,
+      "duration_ms": null,
+      "errors": [],
+      "coverage": null,
+      "redaction": null,
+      "truncation": {
+        "stdout": false,
+        "stderr": false
+      },
+      "artifact": null,
+      "omission": "cancelled"
+    },
+    {
+      "id": "logs",
+      "operation": "query.run",
+      "definition": {
+        "id": "loki.logs-by-job",
+        "version": 1,
+        "dialect": "logql",
+        "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019"
+      },
+      "status": "omitted",
+      "run_id": null,
+      "started_at": null,
+      "finished_at": null,
+      "duration_ms": null,
+      "errors": [],
+      "coverage": null,
+      "redaction": null,
+      "truncation": {
+        "stdout": false,
+        "stderr": false
+      },
+      "artifact": null,
+      "omission": "cancelled"
+    }
+  ],
+  "errors": [
+    "cancelled"
+  ],
+  "redaction": {
+    "applied": false,
+    "replacements": 0
+  },
+  "cancellation_signal": 2,
+  "bundle": null,
+  "delivery_cancellation_signal": null
+}

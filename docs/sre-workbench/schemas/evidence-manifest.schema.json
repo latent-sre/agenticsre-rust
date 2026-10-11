@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:evidence-manifest:0.1",
+  "title": "Local evidence format 1 immutable manifest",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+    },
+    "state": {
+      "enum": [
+        "sealed",
+        "interrupted"
+      ]
+    },
+    "created_at_unix_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "finalized_at_unix_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "artifacts": {
+      "type": "object",
+      "maxProperties": 16,
+      "propertyNames": {
+        "pattern": "^(metrics|logs|recovered-[a-f0-9]{64})$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 79,
+            "pattern": "^artifacts/[a-f0-9]{64}\\.json$"
+          },
+          "media_type": {
+            "const": "application/json"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2097152
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "minLength": 71,
+            "maxLength": 71
+          },
+          "classification": {
+            "const": "restricted"
+          }
+        },
+        "required": [
+          "path",
+          "media_type",
+          "bytes",
+          "digest",
+          "classification"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "payload": {
+      "$ref": "urn:sre-workbench:spec:evidence-collection-payload:0.1"
+    }
+  },
+  "required": [
+    "format_version",
+    "id",
+    "state",
+    "created_at_unix_ms",
+    "finalized_at_unix_ms",
+    "artifacts",
+    "payload"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "sealed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "finalized_at": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "format": "date-time"
+              }
+            }
+          },
+          "artifacts": {
+            "propertyNames": {
+              "enum": [
+                "metrics",
+                "logs"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

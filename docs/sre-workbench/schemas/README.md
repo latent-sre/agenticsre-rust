@@ -53,3 +53,10 @@ Run the repeatable planning checks from the repository root:
 
 The verifier reads only this package and linked local documents. It does not invoke tasks,
 contact Grafana, inspect credentials, install a dependency or run a model.
+
+Evidence format 1 adds strict [collection input](evidence-collect-input.schema.json),
+[reference input](evidence-reference-input.schema.json),
+[stored payload](evidence-collection-payload.schema.json),
+[terminal collection data](evidence-collection-data.schema.json) and
+[manifest](evidence-manifest.schema.json). Runtime checks additionally enforce byte limits,
+identity/count consistency, digest-to-path equality and artifact/receipt integrity.

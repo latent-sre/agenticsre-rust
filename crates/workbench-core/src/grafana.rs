@@ -8,7 +8,7 @@ pub use config::{
 
 use crate::{
     OperatorContext, RunControl, queries,
-    request::{MAX_RESULT_BYTES, Request, parse_bounded_json},
+    request::{MAX_RESULT_BYTES, Problem, Request, parse_bounded_json},
     result::{OperationResult, Status, timestamp},
 };
 use config::Prepared;
@@ -195,6 +195,77 @@ fn admitted_input(
     Ok((query_input(&compiled.input)?, Some(compiled)))
 }
 
+fn collection_problem(error: Error) -> Problem {
+    let message = "The evidence collection's Grafana binding or query could not be admitted; private configuration and query details are withheld.";
+    if error.status == Status::Unsupported {
+        Problem::unsupported(error.code, message)
+    } else {
+        Problem::invalid(error.code, message)
+    }
+}
+
+/// Exercise compilation and every legacy query guard before any context/config/store read.
+pub(crate) fn prepare_collection_query(
+    inputs: &Value,
+    started_at: &str,
+) -> Result<queries::Compiled, Problem> {
+    let compiled = queries::compile(inputs, started_at)?;
+    query_input(&compiled.input).map_err(collection_problem)?;
+    Ok(compiled)
+}
+
+/// Private admission state. No provider value, credential or original expression is
+/// serializable; callers can retain only the explicitly sanitized metadata projection.
+pub(crate) struct CollectionBinding {
+    pub identity: GrafanaConfigIdentity,
+    pub organization: String,
+    pub connection: Value,
+    pub config_sha256: Value,
+    pub ca: Value,
+    redactor: Redactor,
+}
+
+impl CollectionBinding {
+    pub fn metadata(&mut self, value: Value) -> Value {
+        self.redactor.metadata(value)
+    }
+
+    pub fn redaction(&self) -> Value {
+        json!({"applied":self.redactor.replacements > 0,"replacements":self.redactor.replacements})
+    }
+}
+
+pub(crate) fn prepare_collection_binding(
+    context: &OperatorContext,
+    alias: &str,
+) -> Result<CollectionBinding, Problem> {
+    let path = context
+        .config_path
+        .as_deref()
+        .ok_or_else(|| collection_problem(Error::admission("configuration_required")))?;
+    let (description, identity) = grafana_config_description(path)?;
+    // A changed file between description and admission is refused on the exact bytes
+    // used by the existing provider; the same identity is then supplied to every child.
+    let prepared = config::load(Some(path), alias, "grafana.query", Some(&identity))
+        .map_err(collection_problem)?;
+    let mut redactor = redactor(&prepared.secrets, true).map_err(collection_problem)?;
+    let connection = json!({"id":alias,"origin":redactor.metadata(json!(prepared.origin)),
+        "organization_id":redactor.metadata(json!(prepared.organization))});
+    let config_sha256 = redactor.metadata(json!(description.digest));
+    let ca = match identity.ca_digest(alias) {
+        Some(digest) => json!({"kind":"custom","sha256":redactor.metadata(json!(digest))}),
+        None => json!({"kind":"builtin","sha256":null}),
+    };
+    Ok(CollectionBinding {
+        identity,
+        organization: prepared.organization.to_string(),
+        connection,
+        config_sha256,
+        ca,
+        redactor,
+    })
+}
+
 // Reqwest's default Hickory wrapper falls back to public DNS when system configuration
 // fails. This resolver initializes only for names and fails closed instead. IP URLs bypass it.
 struct SystemDns;
@@ -243,6 +314,23 @@ fn check(control: &RunControl, deadline: Instant) -> Result<(), Error> {
     }
     if Instant::now() >= deadline {
         return Err(Error::timeout());
+    }
+    #[cfg(target_os = "linux")]
+    if let Some(fd) = control.result_fd {
+        let mut poll = libc::pollfd {
+            fd,
+            events: libc::POLLOUT,
+            revents: 0,
+        };
+        // SAFETY: one initialized descriptor observation is borrowed without blocking.
+        if unsafe { libc::poll(&mut poll, 1, 0) } > 0
+            && poll.revents & (libc::POLLERR | libc::POLLHUP | libc::POLLNVAL) != 0
+        {
+            return Err(Error {
+                code: "result_consumer_closed",
+                status: Status::Cancelled,
+            });
+        }
     }
     Ok(())
 }
@@ -507,10 +595,39 @@ pub(crate) fn run(
     start: Instant,
     result: &mut OperationResult,
 ) {
+    let deadline = start + Duration::from_millis(request.limits.timeout_ms.min(60_000));
+    run_with_deadline(
+        request,
+        control,
+        context,
+        expected_identity,
+        start,
+        deadline,
+        result,
+    );
+}
+
+pub(crate) fn run_with_deadline(
+    request: &Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    expected_identity: Option<&GrafanaConfigIdentity>,
+    start: Instant,
+    parent_deadline: Instant,
+    result: &mut OperationResult,
+) {
     result.effective_limits.timeout_ms = request.limits.timeout_ms.min(60_000);
     result.effective_limits.max_output_bytes =
         request.limits.max_output_bytes.min(MAX_RESULT_BYTES);
-    let deadline = start + Duration::from_millis(result.effective_limits.timeout_ms);
+    let child_deadline = start + Duration::from_millis(result.effective_limits.timeout_ms);
+    let deadline = parent_deadline.min(child_deadline);
+    result.effective_limits.timeout_ms = result.effective_limits.timeout_ms.min(
+        (deadline
+            .saturating_duration_since(start)
+            .as_millis()
+            .min(u128::from(u64::MAX)) as u64)
+            .max(1),
+    );
     result.data = json!({"adapter":{"id":"grafana","version":1,"api_profile":PROFILE,"compatibility_evidence":"fixture_only","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7","upstream_digest":"sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7"},"binding":null,"request":null,"response":null,"redaction":{"applied":false,"replacements":0},"transport":{"stage":"admission","requests_started":0,"responses_received":0,"request_timeout_ms":20000,"response_limit_bytes":result.effective_limits.max_output_bytes},"cancellation_signal":null});
     if request.operation == "query.run" {
         result.data["definition"] = Value::Null;
@@ -638,6 +755,41 @@ mod tests {
             json!({"id":"prometheus.up-by-job","version":1,"datasource":"metrics-1",
                 "parameters":{"job":job},"window":{"kind":"relative","lookback_seconds":300}}),
         )
+    }
+
+    #[test]
+    fn collection_keeps_the_absolute_parent_deadline_before_admission() {
+        let request = saved_request("fixture");
+        let mut result = OperationResult::new(&request);
+        let start = Instant::now();
+        run_with_deadline(
+            &request,
+            &RunControl::default(),
+            &OperatorContext::default(),
+            None,
+            start,
+            start - Duration::from_millis(1),
+            &mut result,
+        );
+        assert_eq!(result.execution.status, Status::TimedOut);
+        assert_eq!(result.data["transport"]["requests_started"], 0);
+        assert!(result.data["definition"].is_null());
+        assert_eq!(result.effective_limits.timeout_ms, 1);
+    }
+
+    #[cfg(target_os = "linux")]
+    #[test]
+    fn closed_result_consumer_cancels_network_admission() {
+        use std::os::{fd::AsRawFd, unix::net::UnixStream};
+        let (writer, reader) = UnixStream::pair().unwrap();
+        drop(reader);
+        let control = RunControl {
+            result_fd: Some(writer.as_raw_fd()),
+            ..RunControl::default()
+        };
+        let error = check(&control, Instant::now() + Duration::from_secs(1)).unwrap_err();
+        assert_eq!(error.code, "result_consumer_closed");
+        assert_eq!(error.status, Status::Cancelled);
     }
 
     #[test]

@@ -186,6 +186,17 @@ fn window(window: Window, started_at: &str) -> Result<(String, String), Problem>
     Ok((from.0, to.0))
 }
 
+/// Resolve once at a parent's original wall-clock anchor. Nested queries receive this
+/// absolute form, so their truthful individual start timestamps cannot move the range.
+pub(crate) fn resolve_window(value: &Value, started_at: &str) -> Result<Value, Problem> {
+    if !value.is_object() {
+        return Err(invalid());
+    }
+    let input = serde_json::from_value(value.clone()).map_err(|_| invalid())?;
+    let (from, to) = window(input, started_at)?;
+    Ok(json!({"kind":"absolute","from":from,"to":to}))
+}
+
 // For the admitted control-free Unicode subset, Go's quoted-string grammar needs
 // escaping only for the quote and backslash. JSON's optional \u escapes are not used.
 pub(crate) fn escaped_label(value: &str) -> String {

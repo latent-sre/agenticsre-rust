@@ -1373,6 +1373,47 @@ not alter those product bytes. Source and evidence remain local and uncommitted.
 **Next:** Evidence collection and comparison using versioned receipts. Browser/MCP query grants,
 live compatibility, native non-Linux acceptance and release packaging remain separate requirements.
 
+## WORKBENCH-013 — evidence collection and local storage
+
+**Status:** Complete for the Linux core/CLI fixture increment. The
+[acceptance record](evidence-collection-verification.md) binds the implementation to independent
+source review, 260 passing workspace tests (19 existing native tests ignored), lint/format/build
+checks and a separate installed mission. The full backlog goal remains active; comparison is next.
+
+**Delivered:** Real context-bound Prometheus/Loki collection with one window and deadline, finalized
+sanitized child receipts, explicit capture/coverage/omissions, and private local store format 1.
+Discovery, collection, list/show, protection, deletion, pruning and recovery share the core with
+structured calls. DEC-08 selects bounded files with seven-day/one-GiB defaults. Hosted evidence
+grants remain unavailable; read commands never initialize or recover storage.
+
+**Verification:** The installed mission produced 23 command outcomes, 34 HTTPS requests and 32
+canonical receipts, including 10 strict query receipts, five collection receipts and five manifests.
+Real ENOSPC on a private 64 KiB tmpfs preserved an earlier receipt without claiming a bundle.
+Recovery never replayed queries; source/binary guards matched and all fixture workers joined.
+
+**Resolved findings:** Four independent P2s covered receipt depth, bulk domain validation,
+management cancellation/progress and late delivery signals changing a sealed payload. Targeted
+regressions and corrected source review close them. A reproduced sub-millisecond deadline handoff
+race now enters one fixed cleanup phase; 21 repeated passes and deterministic bounds checks cover
+that correction. Initial failed tests and both checker-only corrections are retained in the packet.
+
+**Identity:** Final installed snapshot `target/evidence-collection/review-r4`, 423 files, manifest
+SHA-256 `df9ad3800f2d25eaa679d6ba30c39153b47543f6265df7b035b70156eb5a7be1`.
+Ordinary binary SHA-256 `c450790c52de7a7d84b200de2bf76f7953f78f417320969248b126eb7503eba2`.
+Product build/tests/review bind r3; r4 changes only the independently checked verifier assertion.
+Acceptance documentation added afterward does not change product bytes. Source remains uncommitted.
+
+**Live prerequisites:** The owner selected the home lab. Local configuration identifies Dradis
+Grafana, organization 1, and Prometheus/Loki datasources. The existing automation identity is
+administrative; a scoped read identity is not yet established for this pilot. Cally remains the
+isolated Linux test lane, while its source address is denied by the Grafana proxy. Use a confirmed
+controller/operator vantage for live reads without changing the firewall. Galactica appears as
+Windows Pro in backup configuration, but no native product test lane is established. These
+prerequisites do not block the remaining authorized implementation.
+
+**Next:** Typed before/after comparison over verified bundles, then runbooks, offline replay,
+reports, toil metadata and configuration checks in the preserved dependency order.
+
 ## Remaining product queue
 
 The following ledger preserves the complete requested scope. Accepted slices are evidence for
@@ -1390,7 +1431,7 @@ and [verification](sre-workbench/verification.md).
 | CAP-06 MCP | [Bounded stdio tasks, restricted commands and Grafana](mcp-verification.md) | Actual selected agent-host registration; context/diagnostic and future operation grants |
 | CAP-07 context | [Offline core/CLI source resolver](context-verification.md) | Approved real team source, hosted context grants and live target selection |
 | CAP-08 diagnostics | WORKBENCH-010 core/CLI and [WORKBENCH-011 browser](diagnostics-ui-verification.md) qualified native acceptance with frozen correctness/security reviews | Positive system-resolver fixture gap and later live/platform bindings |
-| CAP-09 evidence collection | Core bounded receipts and session-only browser history exist | Product collection, durable versioned bundles, privacy/quotas and partial-store recovery |
+| CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery | Other operation recording policies, hosted views/grants and live/platform acceptance |
 | CAP-10 comparison | No product comparison is accepted | Compatible bundle/run validation, named normalization and honest missing/incompatible comparisons |
 | CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted | Dependent browser/MCP grants and live/platform acceptance |
 | CAP-12 runbooks | No product runbook execution is accepted | Reviewed observation-only steps, typed branches/checkpoints and version-aware resume |
@@ -1413,15 +1454,15 @@ explicit target aliases, pins configuration/CA identities and exposes five actua
 through the existing form, result and session-history flow. Generic hosted/MCP diagnostic refusal
 remains its existing boundary. The owner has resumed with installed saved queries.
 
-Installed saved queries now supply the definition identity, typed inputs and one parent time
-window needed for evidence collection. Next implement collection and comparison against those
-versioned receipts, followed by runbooks, offline replay, reports and
+Installed saved queries and the accepted collection/store increment now supply versioned,
+verified receipts with explicit provenance and partial outcomes. Next implement typed comparison
+over those bundles, followed by runbooks, offline replay, reports and
 toil metadata. Complete the configuration-check operation alongside these investigation features.
 Extensions/jobs, remote/fleet/scheduling and a named controlled change retain the delivery plan's
 dependency order. Connector work and native/live acceptance keep their own prerequisites; an
 unavailable live source does not block authorized offline implementation.
 
-The remaining product queue is unchanged: native Windows and
+The remaining product queue includes native Windows and
 restricted-profile namespace-refusal evidence; release/dependency clearance and the AC-36 human/
 agent pilot; actual team source selection (DEC-09); and the remaining P3 capture/compare features
 and live diagnostic/query acceptance. The context-containing Linux artifact now has its own source/build

@@ -1,6 +1,16 @@
 use serde_json::{Value, json};
 
-pub(crate) const OPERATIONS: [&str; 17] = [
+pub(crate) const OPERATIONS: [&str; 27] = [
+    "evidence.packs.list",
+    "evidence.packs.describe",
+    "evidence.collect",
+    "evidence.list",
+    "evidence.show",
+    "evidence.protect",
+    "evidence.unprotect",
+    "evidence.delete",
+    "evidence.prune",
+    "evidence.recover",
     "queries.list",
     "queries.describe",
     "query.run",
@@ -29,7 +39,20 @@ pub fn capability(operation: &str) -> Option<Value> {
     let grafana = matches!(operation, "grafana.dashboard.get" | "grafana.query") || query;
     let context = operation == "context.resolve";
     let diagnostics = operation == "diagnostics.run";
-    let input_schema = if query {
+    let collection = operation == "evidence.collect";
+    let evidence_store =
+        operation.starts_with("evidence.") && !operation.starts_with("evidence.packs.");
+    let evidence_write = evidence_store && !matches!(operation, "evidence.list" | "evidence.show");
+    let input_schema = if collection {
+        json!({"$ref":"urn:sre-workbench:spec:evidence-collect-input:0.1"})
+    } else if operation == "evidence.packs.describe" {
+        json!({"type":"object","properties":{"id":{"const":"service-queries"},"version":{"const":1}},"required":["id","version"],"additionalProperties":false})
+    } else if matches!(
+        operation,
+        "evidence.show" | "evidence.protect" | "evidence.unprotect" | "evidence.delete"
+    ) {
+        json!({"$ref":"urn:sre-workbench:spec:evidence-reference-input:0.1"})
+    } else if query {
         json!({"$ref":"urn:sre-workbench:spec:query-run-input:0.1"})
     } else if operation == "queries.describe" {
         json!({"type":"object","properties":{"id":{"type":"string"},"version":{"const":1}},"required":["id","version"],"additionalProperties":false})
@@ -54,18 +77,21 @@ pub fn capability(operation: &str) -> Option<Value> {
     };
     Some(json!({
         "spec_version":"0.1", "id":operation, "operation_version":1,
-        "title": match operation { "queries.list" => "List installed saved queries", "queries.describe" => "Describe an installed saved query", "query.run" => "Run an installed saved query", "diagnostics.run" => "Run configured connectivity observations", "diagnostics.list" => "List installed diagnostic packs", "diagnostics.describe" => "Describe a fixed diagnostic pack", "context.resolve" => "Resolve offline service context", "grafana.dashboard.get" => "Read a Grafana dashboard", "grafana.query" => "Query a Grafana datasource", "process.exec" => "Run an operator command", "command.inspect" => "Inspect a command without running it", "capability.list" => "List installed capabilities", "capability.describe" => "Describe an installed capability", "task.run" => "Run a fixed offline task", "task.list" => "List installed tasks", "task.describe" => "Describe an installed task", _ => "Check offline runtime readiness" },
-        "description": if query { "Run a fixed installed PromQL or LogQL definition with literal typed parameters, an explicit connection/datasource and one resolved time window. Reuses the scoped Grafana query permission; no hosted grant or health assessment." } else if diagnostics { "Fixed DNS/TCP/TLS/HTTP plus exact local process observations using explicit trusted startup configuration. No health inference, wire-selected destination, grant, command, redirect, retry or persistence." } else if context { "Resolve exact service/environment selectors from an explicit offline fixture-export and bounded startup review-age policy. Source declarations remain sourced data; no live catalog, target dispatch, approval or credential authority." } else if grafana { "Native bounded HTTPS using the explicitly configured grafana-legacy-v1 profile and scoped operator environment credential. Fixture evidence only; no live server-version or service-health claim." } else if process { "Literal native commands under the operator account, optionally narrowed by a trusted launcher-attached linux-read-v1 policy. No wire-selected role, protected same-account identity or service health inference." } else if operation == "task.run" { "Run an installed dashboard-hygiene or error-budget version-1 task using fixed embedded source, isolated Python and supervised process limits." } else { "Offline metadata from this installed runtime; no external process or network probe." },
-        "effects": if operation == "process.exec" { "unclassified" } else { "observe" },
+        "title": match operation { "evidence.packs.list" => "List installed evidence packs", "evidence.packs.describe" => "Describe an installed evidence pack", "evidence.collect" => "Collect and retain saved-query evidence", "evidence.list" => "List local evidence runs", "evidence.show" => "Verify and show an evidence manifest", "evidence.protect" => "Protect retained evidence", "evidence.unprotect" => "Remove evidence retention protection", "evidence.delete" => "Delete unprotected owned evidence", "evidence.prune" => "Expire old unprotected sealed evidence", "evidence.recover" => "Recover interrupted evidence without replay", "queries.list" => "List installed saved queries", "queries.describe" => "Describe an installed saved query", "query.run" => "Run an installed saved query", "diagnostics.run" => "Run configured connectivity observations", "diagnostics.list" => "List installed diagnostic packs", "diagnostics.describe" => "Describe a fixed diagnostic pack", "context.resolve" => "Resolve offline service context", "grafana.dashboard.get" => "Read a Grafana dashboard", "grafana.query" => "Query a Grafana datasource", "process.exec" => "Run an operator command", "command.inspect" => "Inspect a command without running it", "capability.list" => "List installed capabilities", "capability.describe" => "Describe an installed capability", "task.run" => "Run a fixed offline task", "task.list" => "List installed tasks", "task.describe" => "Describe an installed task", _ => "Check offline runtime readiness" },
+        "description": if collection { "Resolve fresh service bindings and execute the installed two-query pack with one deadline and window. Retain finalized redacted receipts in the explicitly configured private store; auto or always is required. Capture completeness does not establish telemetry coverage or health." } else if evidence_store { "Access only generated references in the explicitly configured private versioned store. Verify retained bytes and preserve unknown formats. Management writes are explicit; no query replay or hosted grant." } else if query { "Run a fixed installed PromQL or LogQL definition with literal typed parameters, an explicit connection/datasource and one resolved time window. Reuses the scoped Grafana query permission; no hosted grant or health assessment." } else if diagnostics { "Fixed DNS/TCP/TLS/HTTP plus exact local process observations using explicit trusted startup configuration. No health inference, wire-selected destination, grant, command, redirect, retry or persistence." } else if context { "Resolve exact service/environment selectors from an explicit offline fixture-export and bounded startup review-age policy. Source declarations remain sourced data; no live catalog, target dispatch, approval or credential authority." } else if grafana { "Native bounded HTTPS using the explicitly configured grafana-legacy-v1 profile and scoped operator environment credential. Fixture evidence only; no live server-version or service-health claim." } else if process { "Literal native commands under the operator account, optionally narrowed by a trusted launcher-attached linux-read-v1 policy. No wire-selected role, protected same-account identity or service health inference." } else if operation == "task.run" { "Run an installed dashboard-hygiene or error-budget version-1 task using fixed embedded source, isolated Python and supervised process limits." } else { "Offline metadata from this installed runtime; no external process or network probe." },
+        "effects": if operation == "process.exec" { "unclassified" } else if evidence_write { "local_write" } else { "observe" },
         "input_schema":input_schema, "output_schema":{"$ref":"urn:sre-workbench:spec:result:0.1"},
-        "execution_modes":["foreground"], "platforms":if process || operation == "task.run" || grafana || context || diagnostics { vec!["linux"] } else { vec!["linux","windows","macos"] },
-        "dependencies":if operation == "task.run" { vec![json!({"name":"python3","kind":"interpreter","version_requirement":">=3.11"})] } else { vec![] }, "stability":"experimental", "default_timeout_ms":if grafana || diagnostics {60000} else {30000},"max_timeout_ms":if grafana || diagnostics {60000} else {300000},
-        "required_permissions": if query { vec!["grafana.query"] } else if operation == "process.exec" { vec!["command.execute"] } else { vec![] },
+        "execution_modes":["foreground"], "platforms":if process || operation == "task.run" || grafana || context || diagnostics || evidence_store { vec!["linux"] } else { vec!["linux","windows","macos"] },
+        "dependencies":if operation == "task.run" { vec![json!({"name":"python3","kind":"interpreter","version_requirement":">=3.11"})] } else { vec![] }, "stability":"experimental", "default_timeout_ms":if grafana || diagnostics || collection {60000} else {30000},"max_timeout_ms":if grafana || diagnostics || collection {60000} else {300000},
+        "required_permissions": if query || collection { vec!["grafana.query"] } else if operation == "process.exec" { vec!["command.execute"] } else { vec![] },
         "implementation":{"kind":"builtin","reference":format!("workbench-core:{operation}")}
     }))
 }
 
 pub fn availability(operation: &str) -> Value {
+    if operation.starts_with("evidence.") && !operation.starts_with("evidence.packs.") {
+        return json!({"status":if cfg!(target_os = "linux") {"requires_configuration"} else {"unsupported_platform"},"reason":"Requires an explicit private evidence store. Collection additionally requires fresh context, a pinned Grafana connection and scoped query credentials. Discovery opens no store, source, provider or network connection; hosted grants are not implemented."});
+    }
     if operation == "diagnostics.run" {
         return json!({"status":if cfg!(target_os = "linux") {"requires_configuration"} else {"unsupported_platform"},"reason":"Connectivity requires explicit trusted diagnostics configuration and allowlisted destinations. Discovery opens no source/CA file, resolver, socket or proc process metadata."});
     }
@@ -95,9 +121,9 @@ pub(crate) fn list() -> Value {
 
 pub(crate) fn doctor() -> Value {
     json!({"offline":true,"version":env!("CARGO_PKG_VERSION"), "os":std::env::consts::OS,"architecture":std::env::consts::ARCH,
-        "execution":availability("process.exec"), "tasks":crate::tasks::list()["tasks"], "grafana":availability("grafana.query"), "diagnostics":availability("diagnostics.run"), "record_modes":["never"], "default_timeout_ms":30000,"max_timeout_ms":300000,
+        "execution":availability("process.exec"), "tasks":crate::tasks::list()["tasks"], "grafana":availability("grafana.query"), "diagnostics":availability("diagnostics.run"), "record_modes":["never"], "evidence_collection_record_modes":["auto","always"], "evidence":availability("evidence.collect"), "default_timeout_ms":30000,"max_timeout_ms":300000,
         "max_capture_bytes_per_stream":1048576,"max_encoded_result_bytes":2097152,"max_request_bytes":65536,"max_request_depth":16,
         "child_environment":super::process::CHILD_ENV.into_iter().map(|(k,v)| (k.to_owned(), json!(v))).collect::<serde_json::Map<String, Value>>(),
         "stdin":"closed", "target":{"kind":"local","id":"workstation"},"profile":"operator-local",
-        "limitations":["No executable version probe or network request is performed.","Process groups are not containment for deliberately escaping programs.","No protected installation, persistence or service health assessment is provided. The optional linux-read-v1 profile requires an explicit trusted policy; this offline check does not establish its kernel availability."]})
+        "limitations":["No executable version probe or network request is performed.","Process groups are not containment for deliberately escaping programs.","No protected installation or service health assessment is provided. Explicit evidence collection can retain sanitized receipts in a private configured store; other operations do not record. The optional linux-read-v1 profile requires an explicit trusted policy; this offline check does not establish its kernel availability."]})
 }

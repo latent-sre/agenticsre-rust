@@ -1,0 +1,93 @@
+[
+  {
+    "case": "packs-list",
+    "argv": [
+      "/tmp/workbench-installed-evidence-7ljxdmnn/prefix/bin/save",
+      "--json",
+      "--config",
+      "/tmp/workbench-installed-evidence-7ljxdmnn/absent.json",
+      "evidence",
+      "packs",
+      "list"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-7ljxdmnn/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 2,
+    "stdout_sha256": "9c8432cb6e763c6e6bfb474658c37b0cb587f7381177b4c196092558b64b1d76",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "packs-describe",
+    "argv": [
+      "/tmp/workbench-installed-evidence-7ljxdmnn/prefix/bin/save",
+      "--json",
+      "evidence",
+      "packs",
+      "describe",
+      "service-queries",
+      "--version",
+      "1"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-7ljxdmnn/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 2,
+    "stdout_sha256": "b7381e819995107e129475b9f96a29b9839d44fbc65bfa9bc146ac59f7f8e934",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "wrong-pack-pin",
+    "argv": [
+      "/tmp/workbench-installed-evidence-7ljxdmnn/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-7ljxdmnn/complete/store",
+      "--config",
+      "/tmp/workbench-installed-evidence-7ljxdmnn/complete/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-7ljxdmnn/complete/context.json",
+      "--context-max-age-days",
+      "30",
+      "--record",
+      "always",
+      "evidence",
+      "collect",
+      "--target",
+      "fixture",
+      "--input",
+      "/tmp/workbench-installed-evidence-7ljxdmnn/complete/input.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-7ljxdmnn/unrelated-working-directory",
+    "exit_status": 2,
+    "duration_ms": 2,
+    "stdout_sha256": "ecd026c68f09409708bffce96fb0fef0eb46bf38da48f9aeecf7b6e2ed580bc1",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "complete-collect",
+    "argv": [
+      "/tmp/workbench-installed-evidence-7ljxdmnn/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-7ljxdmnn/complete/store",
+      "--config",
+      "/tmp/workbench-installed-evidence-7ljxdmnn/complete/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-7ljxdmnn/complete/context.json",
+      "--context-max-age-days",
+      "30",
+      "--record",
+      "always",
+      "evidence",
+      "collect",
+      "--target",
+      "fixture",
+      "--input",
+      "/tmp/workbench-installed-evidence-7ljxdmnn/complete/input.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-7ljxdmnn/unrelated-working-directory",
+    "exit_status": 2,
+    "duration_ms": 3,
+    "stdout_sha256": "6e4d33fc8434fc6fc41a183ed270423ab1b95b7e0516e42d1de66e64a4283b78",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

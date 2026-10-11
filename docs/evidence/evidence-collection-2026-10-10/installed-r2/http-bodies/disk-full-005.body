@@ -1,0 +1,1 @@
+{"from":"1791689435036","queries":[{"datasource":{"type":"loki","uid":"logs-1"},"expr":"{job=\"fixture\"}","intervalMs":1000,"maxDataPoints":1000,"maxLines":500,"queryType":"range","refId":"A"}],"to":"1791689735036"}

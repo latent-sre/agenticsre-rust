@@ -6,7 +6,7 @@ use std::fs::OpenOptions;
 use std::path::PathBuf;
 use std::sync::atomic::Ordering;
 use workbench_core::{
-    OperatorContext, RunControl, execute_with_context,
+    EvidenceStoreOptions, OperatorContext, RunControl, execute_with_context,
     request::{Problem, Request, parse_json, parse_request},
     result::OperationResult,
 };
@@ -20,6 +20,17 @@ use workbench_core::{
     after_help = "Example: save --json exec --cwd . -- /usr/bin/printf '%s\\n' 'hello workbench'\nDefaults: 30s timeout, 1MiB per pipe, 2MiB encoded JSON, record=never, closed stdin.\nChild environment: PATH=/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 TZ=UTC.\nOnly bare names from /usr/bin:/bin or absolute native executable paths are admitted.\nShells and scripts need future named-task bindings. Process groups do not contain\ndeliberately escaping programs. Cleanup allows 2s grace plus 500ms final drainage.\nExit: 0 success; 1 failed/partial/timeout/unknown; 2 usage/denied/unsupported;\n130 SIGINT; 143 SIGTERM. Child exit and signal remain separate in the receipt."
 )]
 struct Cli {
+    #[arg(
+        long,
+        global = true,
+        value_name = "DIRECTORY",
+        help = "Explicit absolute private evidence store; no default or wire-selected path"
+    )]
+    state_dir: Option<PathBuf>,
+    #[arg(long, global = true, requires = "state_dir", value_parser = clap::value_parser!(u64).range(1..=1_073_741_824), help = "Evidence store byte cap, at most 1GiB; defaults to 1GiB")]
+    store_max_bytes: Option<u64>,
+    #[arg(long, global = true, requires = "state_dir", value_parser = clap::value_parser!(u16).range(1..=3650), help = "Unprotected sealed evidence retention in days, 1..3650; defaults to 7")]
+    retention_days: Option<u16>,
     #[arg(
         long,
         global = true,
@@ -61,7 +72,7 @@ struct Cli {
         long,
         global = true,
         default_value = "never",
-        help = "Evidence recording; this increment accepts never only"
+        help = "Evidence collection requires auto or always; all other operations accept never"
     )]
     record: String,
     #[command(subcommand)]
@@ -70,6 +81,11 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
+    /// Collect fixed saved queries and manage private, versioned local evidence
+    Evidence {
+        #[command(subcommand)]
+        command: EvidenceCommands,
+    },
     /// Discover fixed installed diagnostic packs without reading configuration or probing targets
     Diagnostics {
         #[command(subcommand)]
@@ -167,6 +183,65 @@ enum ContextCommands {
 enum DiagnosticsCommands {
     List,
     Describe { id: String },
+}
+
+#[derive(Subcommand)]
+enum EvidenceCommands {
+    /// Inspect installed packs without accessing a store, credential or network
+    Packs {
+        #[command(subcommand)]
+        command: EvidencePackCommands,
+    },
+    /// Resolve context, execute the installed pack and retain sanitized receipts
+    Collect {
+        #[command(flatten)]
+        target: GrafanaTarget,
+        #[arg(
+            long,
+            value_name = "FILE",
+            help = "Strict collection selection, pack, window, metrics/logs parameters and failure policy"
+        )]
+        input: PathBuf,
+    },
+    List,
+    Show(EvidenceReference),
+    Protect(EvidenceReference),
+    Unprotect(EvidenceReference),
+    Delete(EvidenceReference),
+    /// Expire sufficiently old, unprotected sealed runs; no younger eviction
+    Prune,
+    /// Reconcile interrupted writes without repeating observations
+    Recover,
+}
+
+#[derive(Subcommand)]
+enum EvidencePackCommands {
+    List,
+    Describe {
+        id: String,
+        #[arg(long, default_value_t = 1)]
+        version: u64,
+    },
+}
+
+#[derive(Args)]
+struct EvidenceReference {
+    /// Generated run ID in the selected store, never an artifact path
+    id: String,
+    #[arg(
+        long,
+        value_name = "SHA256",
+        help = "Expected manifest digest, sha256: followed by 64 lowercase hexadecimal digits"
+    )]
+    expected_manifest_sha256: Option<String>,
+}
+
+fn evidence_reference(operation: &str, reference: EvidenceReference) -> Request {
+    let mut inputs = json!({"id":reference.id});
+    if let Some(digest) = reference.expected_manifest_sha256 {
+        inputs["expected_manifest_sha256"] = json!(digest);
+    }
+    Request::new(operation, inputs)
 }
 
 #[derive(Subcommand)]
@@ -408,6 +483,31 @@ fn parse_duration(value: &str) -> Result<u64, &'static str> {
 fn normalize(cli: Cli) -> Result<Request, Problem> {
     let restricted = cli.read_policy.is_some();
     let mut request = match cli.command {
+        Commands::Evidence { command } => match command {
+            EvidenceCommands::Packs {
+                command: EvidencePackCommands::List,
+            } => Request::new("evidence.packs.list", json!({})),
+            EvidenceCommands::Packs {
+                command: EvidencePackCommands::Describe { id, version },
+            } => Request::new(
+                "evidence.packs.describe",
+                json!({"id":id,"version":version}),
+            ),
+            EvidenceCommands::Collect { target, input } => {
+                grafana_request("evidence.collect", target, parse_json(input_file(input)?)?)
+            }
+            EvidenceCommands::List => Request::new("evidence.list", json!({})),
+            EvidenceCommands::Show(reference) => evidence_reference("evidence.show", reference),
+            EvidenceCommands::Protect(reference) => {
+                evidence_reference("evidence.protect", reference)
+            }
+            EvidenceCommands::Unprotect(reference) => {
+                evidence_reference("evidence.unprotect", reference)
+            }
+            EvidenceCommands::Delete(reference) => evidence_reference("evidence.delete", reference),
+            EvidenceCommands::Prune => Request::new("evidence.prune", json!({})),
+            EvidenceCommands::Recover => Request::new("evidence.recover", json!({})),
+        },
         Commands::Diagnostics {
             command: DiagnosticsCommands::List,
         } => Request::new("diagnostics.list", json!({})),
@@ -690,6 +790,9 @@ fn run() -> u8 {
     {
         if cli.json
             || cli.record != "never"
+            || cli.state_dir.is_some()
+            || cli.store_max_bytes.is_some()
+            || cli.retention_days.is_some()
             || cli.context_source.is_some()
             || cli.context_max_age_days.is_some()
             || cli.diagnostics_config.is_some()
@@ -717,6 +820,9 @@ fn run() -> u8 {
     {
         if cli.json
             || cli.record != "never"
+            || cli.state_dir.is_some()
+            || cli.store_max_bytes.is_some()
+            || cli.retention_days.is_some()
             || cli.config.is_some()
             || cli.context_source.is_some()
             || cli.context_max_age_days.is_some()
@@ -724,7 +830,7 @@ fn run() -> u8 {
                 && !allow.iter().any(|operation| operation == "diagnostics.run"))
         {
             eprintln!(
-                "ui serve does not accept --json, --config, context source options, ungranted diagnostic configuration or recording modes other than never"
+                "ui serve does not accept --json, --config, context source or evidence store options, ungranted diagnostic configuration or recording modes other than never"
             );
             return 2;
         }
@@ -745,6 +851,16 @@ fn run() -> u8 {
     }
     let json = cli.json;
     let context = OperatorContext {
+        evidence_store: cli.state_dir.clone().map(|directory| {
+            let mut options = EvidenceStoreOptions::new(directory);
+            if let Some(max_bytes) = cli.store_max_bytes {
+                options.max_bytes = max_bytes;
+            }
+            if let Some(retention_days) = cli.retention_days {
+                options.retention_days = retention_days;
+            }
+            options
+        }),
         diagnostics_config_path: cli.diagnostics_config.clone(),
         context_source_path: cli.context_source.clone(),
         context_max_age_days: cli.context_max_age_days,
@@ -815,11 +931,22 @@ fn run() -> u8 {
     }
 }
 
-fn deliver(mut result: OperationResult, json: bool, control: &RunControl) -> u8 {
-    let signal = control.signal.load(Ordering::Relaxed);
+fn note_delivery_signal(result: &mut OperationResult, signal: usize) {
     if signal != 0 {
-        result.data["cancellation_signal"] = json!(signal);
+        // A collection payload may already be sealed. Delivery is a later boundary:
+        // preserve its observations and capture state, and report the signal separately.
+        let field = if result.operation == "evidence.collect" && result.data.get("bundle").is_some()
+        {
+            "delivery_cancellation_signal"
+        } else {
+            "cancellation_signal"
+        };
+        result.data[field] = json!(signal);
     }
+}
+
+fn deliver(mut result: OperationResult, json: bool, control: &RunControl) -> u8 {
+    note_delivery_signal(&mut result, control.signal.load(Ordering::Relaxed));
     let code = result.exit_code();
     let bytes = if json {
         result.json_bytes()
@@ -838,5 +965,35 @@ fn deliver(mut result: OperationResult, json: bool, control: &RunControl) -> u8 
         Ok(()) => code,
         Err(_) if matches!(code, 130 | 143) => code,
         Err(_) => 1,
+    }
+}
+
+#[cfg(test)]
+mod delivery_tests {
+    use super::*;
+
+    #[test]
+    fn a_late_delivery_signal_preserves_the_sealed_collection_payload() {
+        for signal in [2, 15] {
+            let mut result = OperationResult::new(&Request::new("evidence.collect", json!({})));
+            let sealed_payload = json!({"capture":{"state":"complete","expected_steps":2,"retained_receipts":2},"cancellation_signal":null});
+            let sealed_bytes = serde_json::to_vec(&sealed_payload).unwrap();
+            result.data = sealed_payload;
+            result.data["bundle"] =
+                json!({"id":"run-1-ab-c","digest":format!("sha256:{}", "a".repeat(64))});
+            result.data["delivery_cancellation_signal"] = serde_json::Value::Null;
+            // Same hook that delivery invokes when a signal arrives after core finalization.
+            note_delivery_signal(&mut result, signal);
+            assert_eq!(result.data["delivery_cancellation_signal"], signal);
+            assert!(result.data["cancellation_signal"].is_null());
+            assert_eq!(result.data["capture"]["state"], "complete");
+            result.data.as_object_mut().unwrap().remove("bundle");
+            result
+                .data
+                .as_object_mut()
+                .unwrap()
+                .remove("delivery_cancellation_signal");
+            assert_eq!(serde_json::to_vec(&result.data).unwrap(), sealed_bytes);
+        }
     }
 }

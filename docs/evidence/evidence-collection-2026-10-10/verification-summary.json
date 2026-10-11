@@ -1,0 +1,71 @@
+{
+  "status": "qualified_pass",
+  "scope": "Linux core/CLI fixed query evidence collection and local store format 1; comparison remains next",
+  "source_manifest": "source-manifest-r4.json",
+  "source_manifest_sha256": "df9ad3800f2d25eaa679d6ba30c39153b47543f6265df7b035b70156eb5a7be1",
+  "build_provenance": "build-provenance-r3.json",
+  "binary": {
+    "bytes": 40609208,
+    "sha256": "c450790c52de7a7d84b200de2bf76f7953f78f417320969248b126eb7503eba2",
+    "local_readonly_data": "target/evidence-collection/save-r3.data"
+  },
+  "workspace": {
+    "passed": 260,
+    "failed": 0,
+    "existing_native_ignored": 19
+  },
+  "lint_format_build": "passed",
+  "specifications": {
+    "schemas": 36,
+    "positive": 31,
+    "negative": 16
+  },
+  "independent_review": "review-summary.json",
+  "independent_installed": "installed-r4/independent-verdict.json",
+  "installed": {
+    "result": "passed",
+    "binary_sha256": "c450790c52de7a7d84b200de2bf76f7953f78f417320969248b126eb7503eba2",
+    "source_manifest_sha256": "df9ad3800f2d25eaa679d6ba30c39153b47543f6265df7b035b70156eb5a7be1",
+    "base_head": "2c4e4220654d85d5be22ac42a034beb51fcc5624",
+    "source_identity": "manifest-frozen working-tree snapshot",
+    "source_files": 423,
+    "python": "3.14.7 (main, Aug 25 2026, 14:02:56) [Clang 22.1.3 ]",
+    "platform": "linux",
+    "remaining_scope": [
+      "live Grafana compatibility",
+      "native non-Linux acceptance",
+      "comparison semantics",
+      "build provenance must be established by the caller"
+    ],
+    "canonical_receipts": 32,
+    "strict_query_receipts": 10,
+    "strict_collection_receipts": 5,
+    "strict_manifests": 5,
+    "installed_copy_outside_checkout": true,
+    "source_and_binary_before_after_guards": true,
+    "fixture_threads_joined": true,
+    "disk_full_executed": true,
+    "completed_cases": [
+      "installed-pack-discovery-and-schema-identities",
+      "real-common-window-collection-durable-restart-reference-management",
+      "structured-redaction",
+      "partial",
+      "cancellation",
+      "interrupted",
+      "actual-private-tmpfs-disk-full-preserves-confirmed-receipt"
+    ]
+  },
+  "limitations": [
+    "Synchronous filesystem I/O cannot forcibly preempt an uninterruptible kernel call.",
+    "Read-only source snapshots establish tested bytes, not an authorized release.",
+    "No live Grafana, native Windows, hosted evidence grants or comparison acceptance is implied.",
+    "No commits, publishing, service registration or live lab changes."
+  ],
+  "failed_attempts_retained": [
+    "cli-all-features-first.log",
+    "cli-review-fixes-first.log",
+    "collector-deadline-before-repeated.log",
+    "installed-r1",
+    "installed-r3"
+  ]
+}

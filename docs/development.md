@@ -307,6 +307,37 @@ MCP saved-query grants are not yet available. See [the query contract](saved-que
 The retained context development archive below predates saved queries. Build current source for
 the new commands; its acceptance does not change the identity or contents of that archive.
 
+## Evidence collection and local store
+
+The [collection contract](evidence.md) executes the installed Prometheus/Loki pack using one
+resolved window. It requires a fresh unique context record whose target/environment/organization
+bindings match the selected Grafana connection. Inspect the pack before preparing its strict JSON
+input; [the example](sre-workbench/examples/request-evidence.json) shows the structured form.
+
+```bash
+target/debug/save --json evidence packs list
+target/debug/save --json evidence packs describe service-queries --version 1
+target/debug/save --json --config /absolute/path/operator.json \
+  --context-source /absolute/path/reviewed-context-export.json --context-max-age-days 30 \
+  --state-dir /absolute/private/evidence --record always \
+  evidence collect --target approved-alias --input /absolute/path/collection-input.json
+target/debug/save --json --state-dir /absolute/private/evidence evidence list
+target/debug/save --json --state-dir /absolute/private/evidence evidence show GENERATED_RUN_ID
+target/debug/save --json --state-dir /absolute/private/evidence evidence protect GENERATED_RUN_ID
+```
+
+Store policy is supplied only at startup. `--store-max-bytes` defaults to one GiB and
+`--retention-days` to seven; pruning is an explicit `evidence prune` command. Protected runs cannot
+be expired or deleted until `evidence unprotect`. `evidence recover` reconciles interrupted writes
+without repeating queries. `show`, `protect`, `unprotect` and `delete` accept
+`--expected-manifest-sha256 sha256:HEX` to pin the manifest. Read commands never initialize a store.
+The current browser and MCP launchers refuse these store options.
+
+Only a successful manifest commit yields a bundle reference. Read each step's status, retained
+artifact and omission, plus capture completeness and telemetry coverage; retained receipts do not
+establish health. The store's hashes verify bytes, not source authenticity. Implementation and
+acceptance status is tracked in [WORKBENCH-013](roadmap.md#workbench-013--evidence-collection-and-local-storage).
+
 ## Development artifact and rollback
 
 The [Linux development bundle](packaging.md) contains the ordinary `save` binary, embedded browser

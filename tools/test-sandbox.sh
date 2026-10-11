@@ -24,6 +24,11 @@ mounts=(--ro-bind /usr /usr --ro-bind /lib /lib --ro-bind /lib64 /lib64
     --ro-bind "$cargo_registry" /tmp/cargo/registry
     --ro-bind "$repo_dir" "$repo_dir"
     --bind "$repo_dir/target" "$repo_dir/target")
+# Opt-in disk-full acceptance uses a tiny private filesystem, never fills the host disk.
+if [[ ${1:-} == --small-evidence-disk ]]; then
+    shift
+    mounts+=(--size 65536 --tmpfs /tmp/evidence-small-disk)
+fi
 if [[ -x "$repo_dir/.venv/bin/python" ]]; then
     python_path=$(readlink -f -- "$repo_dir/.venv/bin/python")
     python_dir=$(dirname -- "$(dirname -- "$python_path")")

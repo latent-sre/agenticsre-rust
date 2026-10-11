@@ -1,0 +1,26 @@
+{
+  "service": "fixture-web",
+  "environment": "dev",
+  "pack": {
+    "id": "service-queries",
+    "version": 1
+  },
+  "window": {
+    "kind": "relative",
+    "lookback_seconds": 300
+  },
+  "metrics": {
+    "datasource": "metrics-1",
+    "parameters": {
+      "job": "fixture"
+    }
+  },
+  "logs": {
+    "datasource": "logs-1",
+    "parameters": {
+      "job": "fixture"
+    }
+  },
+  "on_failure": "continue",
+  "state_dir": "/untrusted/store"
+}
