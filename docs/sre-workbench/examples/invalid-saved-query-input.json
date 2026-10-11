@@ -1,0 +1,12 @@
+{
+  "id": "prometheus.up-by-job",
+  "version": 1,
+  "datasource": "metrics-1",
+  "parameters": {
+    "job": "fixture"
+  },
+  "window": {
+    "kind": "relative",
+    "lookback_seconds": null
+  }
+}

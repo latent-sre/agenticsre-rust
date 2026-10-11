@@ -1,0 +1,6 @@
+{
+  "command": "baseline installed save --json queries list (private sandbox copy)",
+  "exit_code": 2,
+  "stdout": "{\"spec_version\":\"0.1\",\"request_id\":\"request-2-18dd58328542998f-0\",\"run_id\":\"run-2-18dd5832854370d9-1\",\"operation\":\"request.invalid\",\"operation_version\":1,\"target\":{\"kind\":\"local\",\"id\":\"workstation\"},\"resolved_target\":{},\"started_at\":\"2026-10-11T02:20:00.770684271Z\",\"finished_at\":\"2026-10-11T02:20:00.770684271Z\",\"duration_ms\":0,\"execution\":{\"status\":\"denied\",\"child_exit_code\":null,\"signal\":null},\"effect_outcome\":\"not_attempted\",\"assessment\":\"not_assessed\",\"coverage\":{\"state\":\"not_applicable\",\"scope\":\"This local operation only; no service health assessment\",\"limitations\":[]},\"output\":{\"stdout\":\"\",\"stderr\":\"\",\"stdout_truncated\":false,\"stderr_truncated\":false,\"encoding\":\"utf-8\"},\"data\":{},\"errors\":[{\"code\":\"invalid_usage\",\"message\":\"Invalid CLI usage; consult save --help and the selected command's --help.\",\"retryable\":false}],\"sources\":[],\"artifacts\":[],\"effective_limits\":{\"timeout_ms\":30000,\"max_output_bytes\":1048576},\"record_mode\":\"never\"}\n",
+  "stderr": ""
+}

@@ -237,5 +237,24 @@
     "schema": "diagnostics-data",
     "valid": true,
     "reason": "Synthetic illustrative five-check data; zero source/certificate/vantage identities are not actual runtime evidence"
+  },
+  {
+    "file": "request-saved-query.json",
+    "schema": "request",
+    "input_schema": "query-run-input",
+    "valid": true,
+    "reason": "Explicit installed identity, typed literal and relative window; target authorization and window resolution require runtime checks."
+  },
+  {
+    "file": "invalid-saved-query-input.json",
+    "schema": "query-run-input",
+    "valid": false,
+    "reason": "An explicit null is not a bounded relative lookback."
+  },
+  {
+    "file": "invalid-saved-query-parameter.json",
+    "schema": "query-run-input",
+    "valid": false,
+    "reason": "Trailing newline is a control character even where regex end anchors can match before it."
   }
 ]

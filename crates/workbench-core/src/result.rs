@@ -240,7 +240,7 @@ impl OperationResult {
             // metadata. Enforce the structured limit on the complete receipt here.
             if matches!(
                 self.operation.as_str(),
-                "grafana.dashboard.get" | "grafana.query"
+                "grafana.dashboard.get" | "grafana.query" | "query.run"
             ) && self
                 .data
                 .get("response")
@@ -425,9 +425,17 @@ impl OperationResult {
             }
         } else if matches!(
             self.operation.as_str(),
-            "grafana.dashboard.get" | "grafana.query"
+            "grafana.dashboard.get" | "grafana.query" | "query.run"
         ) {
             text.push_str(&format!("Connection: {}\n", terminal_safe(&self.target.id)));
+            if self.operation == "query.run" && self.data["definition"].is_object() {
+                text.push_str(&format!(
+                    "Definition: {}\nParameters: {}\nWindow: {}\n",
+                    terminal_safe(&self.data["definition"].to_string()),
+                    terminal_safe(&self.data["parameters"].to_string()),
+                    terminal_safe(&self.data["window"].to_string())
+                ));
+            }
             if self.data["binding"].is_object() {
                 text.push_str(&format!(
                     "Origin: {}\nOrganization: {} (verified: {})\n",

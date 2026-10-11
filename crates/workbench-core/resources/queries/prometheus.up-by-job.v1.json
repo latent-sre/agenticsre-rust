@@ -1,0 +1,33 @@
+{
+  "id": "prometheus.up-by-job",
+  "version": 1,
+  "dialect": "promql",
+  "parameter_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["job"],
+    "properties": {
+      "job": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "not": {"pattern": "[\\u0000-\\u001f\\u007f-\\u009f]"},
+        "description": "One literal job label value, limited to 1-128 UTF-8 bytes with no control characters."
+      }
+    }
+  },
+  "expression_structure": {
+    "kind": "metric_selector",
+    "metric": "up",
+    "matchers": [{"label": "job", "operator": "=", "parameter": "job"}]
+  },
+  "purpose": "Observe the datasource's scrape samples for the selected job.",
+  "units": "dimensionless",
+  "expected_shape": "time_series_frames",
+  "limits": {"max_range_seconds": 86400, "max_data_points": 1000, "max_lines": null},
+  "limitations": [
+    "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+    "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+    "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+  ]
+}

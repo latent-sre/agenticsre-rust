@@ -11,6 +11,7 @@ pub use grafana::{
     grafana_config_description,
 };
 mod process;
+mod queries;
 mod read_launcher;
 mod read_profile;
 pub use read_launcher::{ReadProfileLauncher, read_launcher_entry};
@@ -145,6 +146,11 @@ fn execute_with_identities(
     let mut result = OperationResult::new(&request);
     if let Err(problem) = request.validate() {
         result.reject(problem);
+    } else if identities.required && request.operation == "query.run" {
+        result.reject(Problem::unsupported(
+            "query_grants_unavailable",
+            "Saved query grants are not implemented for hosted adapters; use the explicit operator CLI binding.",
+        ));
     } else if identities.required
         && identities.diagnostics.is_none()
         && request.operation == "diagnostics.run"
@@ -204,9 +210,10 @@ fn dispatch(
         ),
         "diagnostics.describe" => diagnostics::describe(&request.inputs, result),
         "context.resolve" => context::run(request, control, context, start, result),
-        "grafana.dashboard.get" | "grafana.query" => {
+        "grafana.dashboard.get" | "grafana.query" | "query.run" => {
             grafana::run(request, control, context, identities.grafana, start, result)
         }
+        "queries.describe" => queries::describe(&request.inputs, result),
         "task.run" => tasks::run(request, control, result),
         "task.describe" => tasks::describe(&request.inputs, result),
         "process.exec" | "command.inspect" if context.read_policy_path.is_some() => {
@@ -242,10 +249,12 @@ fn dispatch(
             }
             Err(problem) => result.reject(problem),
         },
-        "capability.list" | "doctor" | "task.list" | "diagnostics.list" => {
+        "capability.list" | "doctor" | "task.list" | "diagnostics.list" | "queries.list" => {
             if request.inputs.as_object().is_some_and(|map| map.is_empty()) {
                 result.effect_outcome = "not_applicable".into();
-                result.data = if request.operation == "diagnostics.list" {
+                result.data = if request.operation == "queries.list" {
+                    queries::list()
+                } else if request.operation == "diagnostics.list" {
                     diagnostics::list()
                 } else if request.operation == "task.list" {
                     tasks::list()

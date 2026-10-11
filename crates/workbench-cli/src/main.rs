@@ -130,6 +130,11 @@ enum Commands {
         #[command(subcommand)]
         command: GrafanaCommands,
     },
+    /// Discover or run installed versioned PromQL/LogQL queries with literal parameters
+    Queries {
+        #[command(subcommand)]
+        command: QueriesCommands,
+    },
     /// Serve the local browser workbench with explicit immutable operation and root grants
     Ui {
         #[command(subcommand)]
@@ -267,6 +272,42 @@ struct GrafanaTarget {
     timeout: u64,
     #[arg(long, default_value_t = 2_097_152)]
     max_output_bytes: usize,
+}
+
+#[derive(Subcommand)]
+enum QueriesCommands {
+    /// List installed definitions without reading configuration or contacting a server
+    List,
+    /// Inspect one installed definition and its exact SHA-256 identity
+    Describe {
+        id: String,
+        #[arg(long)]
+        version: u64,
+    },
+    /// Run an installed query using explicit target, datasource, parameters and time window
+    Run {
+        id: String,
+        #[arg(long)]
+        version: u64,
+        #[command(flatten)]
+        target: GrafanaTarget,
+        #[arg(long)]
+        datasource: String,
+        #[arg(
+            long,
+            value_name = "FILE",
+            help = "Strict JSON object containing the literal job string"
+        )]
+        parameters: PathBuf,
+        #[arg(
+            long,
+            value_name = "FILE",
+            help = "Explicit absolute from/to or relative lookback_seconds JSON window"
+        )]
+        window: PathBuf,
+        #[arg(long, value_name = "SHA256")]
+        expected_definition_sha256: Option<String>,
+    },
 }
 
 #[derive(Subcommand)]
@@ -475,6 +516,32 @@ fn normalize(cli: Cli) -> Result<Request, Problem> {
         Commands::Capabilities {
             command: CapabilityCommands::Describe { operation },
         } => Request::new("capability.describe", json!({"operation":operation})),
+        Commands::Queries {
+            command: QueriesCommands::List,
+        } => Request::new("queries.list", json!({})),
+        Commands::Queries {
+            command: QueriesCommands::Describe { id, version },
+        } => Request::new("queries.describe", json!({"id":id,"version":version})),
+        Commands::Queries {
+            command:
+                QueriesCommands::Run {
+                    id,
+                    version,
+                    target,
+                    datasource,
+                    parameters,
+                    window,
+                    expected_definition_sha256,
+                },
+        } => {
+            let parameters = parse_json(input_file(parameters)?)?;
+            let window = parse_json(input_file(window)?)?;
+            let mut input = json!({"id":id,"version":version,"datasource":datasource,"parameters":parameters,"window":window});
+            if let Some(digest) = expected_definition_sha256 {
+                input["expected_definition_sha256"] = json!(digest);
+            }
+            grafana_request("query.run", target, input)
+        }
         Commands::Grafana {
             command:
                 GrafanaCommands::Dashboard {

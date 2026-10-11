@@ -1,0 +1,11 @@
+{
+  "phase": "before",
+  "source_files": 378,
+  "source_manifest_sha256": "aea5c74c7d92a2890c0ba249589f7aa71070c9b28470c3acdcf19117e48910e8",
+  "binary_sha256": "fa1cc9eff529f6f867bd3ff8a15f4056ff7c590ef96c6bff1ed41e574fb1e104",
+  "binary_bytes": 39346720,
+  "manifest_matches": true,
+  "binary_read_only": true,
+  "capture_metadata_sha256": "960e6eb83516b340a3e62bcf8b64994aaaf8238b7df769c4a9e5010f5a4a5ee6",
+  "initial_preflight_note": "All declared file hashes passed. Initial additional-file assertion omitted capture metadata resume-changes.json; inspected and included without product or snapshot changes."
+}

@@ -1,0 +1,14 @@
+{
+  "result": "passed",
+  "binary_sha256": "fa1cc9eff529f6f867bd3ff8a15f4056ff7c590ef96c6bff1ed41e574fb1e104",
+  "canonical_receipts": 24,
+  "strict_query_data_receipts": 21,
+  "catalog_definitions": 2,
+  "installed_copy_outside_checkout": true,
+  "fixture_threads_joined": true,
+  "remaining_scope": [
+    "live compatibility",
+    "hosted query grants",
+    "native non-Linux acceptance"
+  ]
+}

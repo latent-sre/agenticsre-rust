@@ -268,6 +268,45 @@ The current development archive below includes `context resolve`. Its installed 
 request workflow passed on Cally. Earlier MCP/browser archives remain retained for rollback and
 have their own feature sets and source identities.
 
+## Installed saved queries
+
+Build the current source, then inspect its embedded query catalog without configuration or network
+access:
+
+```bash
+target/debug/save --json queries list
+target/debug/save --json queries describe prometheus.up-by-job --version 1
+target/debug/save --json queries describe loki.logs-by-job --version 1
+```
+
+Each definition reports its exact `definition_sha256`, literal parameter schema, purpose, units,
+requested limits and blind spots. To run one, supply an explicit operator Grafana configuration,
+target and datasource, plus regular JSON files for the parameters and window:
+
+```bash
+target/debug/save --json --config /absolute/operator.json \
+  queries run prometheus.up-by-job --version 1 \
+  --target fixture --datasource metrics-1 \
+  --parameters tests/fixtures/queries/parameters.json \
+  --window tests/fixtures/queries/window.json
+```
+
+The example files contain `{"job":"fixture"}` and
+`{"kind":"relative","lookback_seconds":300}`. Replace the explicit target/datasource and job
+with values authorized by your own configuration. An absolute window instead has `kind: absolute`
+and exact-millisecond RFC3339 `from`/`to` strings. Add `--expected-definition-sha256` with a digest
+from discovery to pin the inspected definition. The existing credential provider must allow
+`grafana.query`; the [Grafana contract](grafana.md) describes that binding.
+
+The equivalent structured operation is `query.run`; see the
+[request example](sre-workbench/examples/request-saved-query.json). Direct and structured calls
+use the same core, receipt, transport deadline and cancellation behavior. Parameters are literal
+label values, and relative windows resolve once from the parent receipt's start time. Browser and
+MCP saved-query grants are not yet available. See [the query contract](saved-queries.md) for limits.
+
+The retained context development archive below predates saved queries. Build current source for
+the new commands; its acceptance does not change the identity or contents of that archive.
+
 ## Development artifact and rollback
 
 The [Linux development bundle](packaging.md) contains the ordinary `save` binary, embedded browser

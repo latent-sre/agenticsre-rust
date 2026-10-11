@@ -1,0 +1,36 @@
+{
+  "source_manifest_sha256": "aea5c74c7d92a2890c0ba249589f7aa71070c9b28470c3acdcf19117e48910e8",
+  "binary_sha256": "fa1cc9eff529f6f867bd3ff8a15f4056ff7c590ef96c6bff1ed41e574fb1e104",
+  "mission_exit": 0,
+  "command": "tools/test-sandbox.sh .venv/bin/python -B target/saved-queries/review-r2/tools/verify-queries.py target/saved-queries/save.data --evidence-dir target/saved-queries/installed",
+  "artifacts": {
+    "installed-verification.log": {
+      "sha256": "16ecf772404a6d7ebc2ae1cd8ff94165d8058433258d94a4b5cfc6e79b029143",
+      "bytes": 362
+    },
+    "installed-verification.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "installed-identity-before.json": {
+      "sha256": "c296b10528f1d0e33f5142cef48b7595e9657d848cfe245330ceb2233bb36db7",
+      "bytes": 615
+    },
+    "installed-identity-after.json": {
+      "sha256": "83e73a79e8d9560f26a0208a1d61118b62ae711c0be554e7518fbee68f35f58e",
+      "bytes": 675
+    },
+    "installed/installed-query-receipts.jsonl": {
+      "sha256": "c5866694caf8e0b13758f43591a629e206f3acb97abd566d80ed17c752b2dce9",
+      "bytes": 67288
+    },
+    "installed/installed-query-ledgers.json": {
+      "sha256": "dbc9d9d69b9c1f22b22df24b4256b8802378dd8c580f874e2fd2e9da0e01e77b",
+      "bytes": 5791
+    },
+    "installed/installed-query-summary.json": {
+      "sha256": "b785f7ae41c3e0ecda06327d688d7c13d5569dba8ad2f1cebdf2834b9747a8f0",
+      "bytes": 396
+    }
+  }
+}

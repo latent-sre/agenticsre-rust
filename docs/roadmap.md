@@ -71,8 +71,16 @@ artifacts matched after cleanup. Rust/dependency caches, shared Python/browser e
 uncommitted work, screenshots and unique evidence remain. Record
 `/tmp/agenticsre-local-cleanup-gq_xicdc.json`, SHA-256
 `38a28c3a4bc096384ac2c0ed3fec4b47970f071ea9143457d904cfa23e29579b`.
-This entry is the only subsequent intentional source-document change; product work stays paused.
+At that checkpoint this was the only subsequent intentional source-document change; product work stayed paused.
 The next Trivy scan requires refreshing its removed database.
+
+**2026-10-10 continuation:** The owner resumed Rust implementation and selected continuation in
+the existing roadmap order. WORKBENCH-012 is complete for its Linux core/CLI fixture scope in the
+existing diagnostics worktree. The accepted diagnostic/browser work was preserved. Evidence
+collection and comparison are next. Local source changes and disposable checks remain
+authorized; no new publication or live installation was requested. The local private-network
+sandbox is available for the ordinary HTTPS fixtures. A pre-edit capture of the 365 existing
+source/evidence files is retained under `target/saved-queries/baseline`.
 
 ## WORKBENCH-001 — bootstrap the product
 
@@ -1338,14 +1346,32 @@ incomplete builder returns: 0. Publication still needs its own owner request.
 
 ## WORKBENCH-012 — installed saved queries
 
-**Status:** [Initial core/CLI contract](saved-queries.md) is prepared; implementation follows
-WORKBENCH-011 acceptance when the owner resumes. Implementation has not started. It retains
-CAP-11 / REQ-08 / AC-08 / AC-16 scope with two embedded
-versioned PromQL/LogQL definitions, literal typed parameters, explicit target/datasource and one
-resolved parent time window. Existing Grafana transport, permission, redaction, limits and
-cancellation are reused; browser/MCP grants remain a dependent increment. No query operation,
-binary, network result or executable acceptance is claimed yet. The contract and its specification
-registration are subsequent planning changes outside the frozen WORKBENCH-011 source.
+**Status:** Complete for the Linux core/CLI fixture increment. The
+[acceptance record](saved-queries-verification.md) binds independent correctness/security review,
+199 passing workspace tests (19 existing native tests ignored), strict lint/format checks and
+independent installed execution to frozen source and binary identities. The installed mission
+returned 24 schema-valid receipts, including 21 query-data receipts, and joined its fixture workers.
+
+**Delivered:** Two embedded version-1 PromQL/LogQL definitions, exact definition digests, offline
+discovery, literal typed parameters, explicit target/datasource and one resolved parent window.
+The CLI provides `queries list`, `queries describe` and `queries run`; structured execution uses
+`query.run`. The existing Grafana permission, transport, redaction, deadline, cancellation and
+output limits are preserved. Hosted callers cannot inherit a saved-query grant. The default human
+receipt safely displays definition, parameters, window, observation and coverage.
+
+**Resolved findings:** Independent review found one P2 in default text rendering; its real HTTPS
+control-character regression failed before the fix and passed afterward. Parameter schemas now
+reject trailing controls explicitly, and the new renderer/compiled-expression canaries cover
+escaped credential echoes. Earlier failed checks remain in the acceptance packet.
+
+**Identity:** Snapshot `target/saved-queries/review-r2`, 378 files, manifest SHA-256
+`aea5c74c7d92a2890c0ba249589f7aa71070c9b28470c3acdcf19117e48910e8`; ordinary binary SHA-256
+`fa1cc9eff529f6f867bd3ff8a15f4056ff7c590ef96c6bff1ed41e574fb1e104`.
+All independent before/after identities matched. Subsequent acceptance documentation changes do
+not alter those product bytes. Source and evidence remain local and uncommitted.
+
+**Next:** Evidence collection and comparison using versioned receipts. Browser/MCP query grants,
+live compatibility, native non-Linux acceptance and release packaging remain separate requirements.
 
 ## Remaining product queue
 
@@ -1366,7 +1392,7 @@ and [verification](sre-workbench/verification.md).
 | CAP-08 diagnostics | WORKBENCH-010 core/CLI and [WORKBENCH-011 browser](diagnostics-ui-verification.md) qualified native acceptance with frozen correctness/security reviews | Positive system-resolver fixture gap and later live/platform bindings |
 | CAP-09 evidence collection | Core bounded receipts and session-only browser history exist | Product collection, durable versioned bundles, privacy/quotas and partial-store recovery |
 | CAP-10 comparison | No product comparison is accepted | Compatible bundle/run validation, named normalization and honest missing/incompatible comparisons |
-| CAP-11 saved queries | Bounded raw Grafana query adapter is accepted | Installed versioned PromQL/LogQL catalog, typed dialect-safe parameters and one resolved time window |
+| CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted | Dependent browser/MCP grants and live/platform acceptance |
 | CAP-12 runbooks | No product runbook execution is accepted | Reviewed observation-only steps, typed branches/checkpoints and version-aware resume |
 | CAP-13 configuration checks | Dashboard task implements a supported offline validator slice | `config.check` contract, declared kind/version/digest and other supported validators |
 | CAP-14 offline investigation | No product evidence replay is accepted | Bundle validation and deterministic no-network analysis with original observation times |
@@ -1385,11 +1411,11 @@ and [verification](sre-workbench/verification.md).
 The [browser diagnostics increment](diagnostics-ui-verification.md) is now qualified PASS. It grants
 explicit target aliases, pins configuration/CA identities and exposes five actual observations
 through the existing form, result and session-history flow. Generic hosted/MCP diagnostic refusal
-remains its existing boundary. The owner paused before the next implementation increment.
+remains its existing boundary. The owner has resumed with installed saved queries.
 
-After the browser increment, build saved queries before evidence collection so captured queries
-have an installed definition, typed inputs and one parent time window. Then implement collection
-and comparison against those versioned receipts, followed by runbooks, offline replay, reports and
+Installed saved queries now supply the definition identity, typed inputs and one parent time
+window needed for evidence collection. Next implement collection and comparison against those
+versioned receipts, followed by runbooks, offline replay, reports and
 toil metadata. Complete the configuration-check operation alongside these investigation features.
 Extensions/jobs, remote/fleet/scheduling and a named controlled change retain the delivery plan's
 dependency order. Connector work and native/live acceptance keep their own prerequisites; an
@@ -1397,7 +1423,7 @@ unavailable live source does not block authorized offline implementation.
 
 The remaining product queue is unchanged: native Windows and
 restricted-profile namespace-refusal evidence; release/dependency clearance and the AC-36 human/
-agent pilot; actual team source selection (DEC-09); and the P3 diagnostic/query/capture/compare
-features in the delivery plan. The context-containing Linux artifact now has its own source/build
+agent pilot; actual team source selection (DEC-09); and the remaining P3 capture/compare features
+and live diagnostic/query acceptance. The context-containing Linux artifact now has its own source/build
 identity and installed mission evidence. Keep the earlier accepted archives and frontend/runtime
 proofs as baselines. Source-aware UI/MCP context grants and live integrations remain separate work.

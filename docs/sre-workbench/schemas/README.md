@@ -17,6 +17,8 @@ registers them locally and never retrieves schema references over the network.
 | [Context export](context-export.schema.json) | Bounded offline fixture declarations; separate dependency directions |
 | [Context data](context-data.schema.json) | Selected metadata, observed source identity and usable/coverage state |
 | [Grafana query input](grafana-query-input.schema.json) | Selected datasource/dialect and fixed timestamps |
+| [Saved query input](query-run-input.schema.json) | Installed version, literal parameters, explicit datasource and absolute/relative window |
+| [Saved query data](query-run-data.schema.json) | Definition digest, redacted parameters/resolved window and the original Grafana observation |
 | [Grafana dashboard input](grafana-dashboard-input.schema.json) | One dashboard UID |
 | [Result](result.schema.json) | Execution, assessment, coverage, effects, output and evidence |
 | [Event](event.schema.json) | Sequenced progress/event framing |

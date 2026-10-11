@@ -150,7 +150,7 @@ impl Request {
         }
         let grafana = matches!(
             self.operation.as_str(),
-            "grafana.dashboard.get" | "grafana.query"
+            "grafana.dashboard.get" | "grafana.query" | "query.run"
         );
         let diagnostics = self.operation == "diagnostics.run";
         let target_supported = if grafana || diagnostics {
@@ -161,7 +161,7 @@ impl Request {
         if !target_supported || self.target.environment.is_some() {
             return Err(Problem::unsupported(
                 "unsupported_target",
-                "Grafana and diagnostics execution require a named connection; other operations require the local workstation. Environment selectors are unsupported.",
+                "Grafana, saved queries and diagnostics execution require a named connection; other operations require the local workstation. Environment selectors are unsupported.",
             ));
         }
         if self.record != "never" {

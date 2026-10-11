@@ -7,7 +7,7 @@ pub use config::{
 };
 
 use crate::{
-    OperatorContext, RunControl,
+    OperatorContext, RunControl, queries,
     request::{MAX_RESULT_BYTES, Request, parse_bounded_json},
     result::{OperationResult, Status, timestamp},
 };
@@ -97,7 +97,7 @@ fn uid(value: &str) -> bool {
             .bytes()
             .all(|b| b.is_ascii_alphanumeric() || b == b'_' || b == b'-')
 }
-fn date(value: &str) -> Option<(String, i64)> {
+pub(crate) fn date(value: &str) -> Option<(String, i64)> {
     if value.len() > 64 {
         return None;
     }
@@ -140,7 +140,12 @@ fn input(request: &Request) -> Result<Input, Error> {
         }
         return Ok(Input::Dashboard(input));
     }
-    let mut input: Query = serde_json::from_value(request.inputs.clone()).map_err(|_| invalid())?;
+    query_input(&request.inputs)
+}
+
+fn query_input(value: &Value) -> Result<Input, Error> {
+    let invalid = || Error::admission("invalid_grafana_input");
+    let mut input: Query = serde_json::from_value(value.clone()).map_err(|_| invalid())?;
     if !uid(&input.datasource)
         || !matches!(input.kind.as_str(), "prometheus" | "loki")
         || input.expr.trim().is_empty()
@@ -169,6 +174,25 @@ fn input(request: &Request) -> Result<Input, Error> {
         to,
         interval: 1000.max((to - from + 999) / 1000),
     })
+}
+
+fn admitted_input(
+    request: &Request,
+    started_at: &str,
+) -> Result<(Input, Option<queries::Compiled>), Error> {
+    if request.operation != "query.run" {
+        return Ok((input(request)?, None));
+    }
+    let compiled = queries::compile(&request.inputs, started_at).map_err(|problem| {
+        if problem.unsupported {
+            Error::unsupported(problem.code)
+        } else {
+            Error::admission(problem.code)
+        }
+    })?;
+    // Retain every legacy guard, including macros inside a label literal, before
+    // configuration or HTTP work. This is input normalization, not a nested run.
+    Ok((query_input(&compiled.input)?, Some(compiled)))
 }
 
 // Reqwest's default Hickory wrapper falls back to public DNS when system configuration
@@ -334,17 +358,40 @@ fn transport_error(error: reqwest::Error) -> Error {
     }
 }
 
-fn metadata(input: &Input, redactor: &mut Redactor) -> Value {
+fn metadata(input: &Input, redactor: &mut Redactor, private_job: Option<&Value>) -> Value {
     match input {
         Input::Dashboard(input) => json!({"uid":redactor.metadata(json!(input.uid))}),
         Input::Query {
             input, interval, ..
-        } => json!({
-            "datasource":redactor.metadata(json!(input.datasource)),"kind":redactor.metadata(json!(input.kind)),
-            "from":redactor.metadata(json!(input.from)),"to":redactor.metadata(json!(input.to)),"expr":redactor.metadata(json!(input.expr)),
-            "max_data_points":1000,"interval_ms":interval,"max_lines":if input.kind == "loki" {Some(500)} else {None}
-        }),
+        } => {
+            // Literal encoding inserts backslashes into quotes/backslashes in a job.
+            // Keep the source value's sensitivity even if its escaped expression no
+            // longer contains the original credential as a contiguous substring.
+            let expr = if private_job.is_some_and(Value::is_object) {
+                redactor.replacements += 1;
+                json!({"redacted":true})
+            } else {
+                redactor.metadata(json!(input.expr))
+            };
+            json!({
+                "datasource":redactor.metadata(json!(input.datasource)),"kind":redactor.metadata(json!(input.kind)),
+                "from":redactor.metadata(json!(input.from)),"to":redactor.metadata(json!(input.to)),"expr":expr,
+                "max_data_points":1000,"interval_ms":interval,"max_lines":if input.kind == "loki" {Some(500)} else {None}
+            })
+        }
     }
+}
+
+fn redactor(secrets: &[String], saved_query: bool) -> Result<Redactor, Error> {
+    if !saved_query {
+        return Redactor::new(secrets);
+    }
+    let mut variants = secrets.to_vec();
+    // Grafana can echo the compiled expression in remote frame metadata. Add exactly
+    // the compiler's known literal transformation before masking metadata and payloads.
+    // No expression or original parameter copy is appended after this redactor runs.
+    variants.extend(secrets.iter().map(|secret| queries::escaped_label(secret)));
+    Redactor::new(&variants)
 }
 
 async fn observe(
@@ -465,6 +512,11 @@ pub(crate) fn run(
         request.limits.max_output_bytes.min(MAX_RESULT_BYTES);
     let deadline = start + Duration::from_millis(result.effective_limits.timeout_ms);
     result.data = json!({"adapter":{"id":"grafana","version":1,"api_profile":PROFILE,"compatibility_evidence":"fixture_only","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7","upstream_digest":"sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7"},"binding":null,"request":null,"response":null,"redaction":{"applied":false,"replacements":0},"transport":{"stage":"admission","requests_started":0,"responses_received":0,"request_timeout_ms":20000,"response_limit_bytes":result.effective_limits.max_output_bytes},"cancellation_signal":null});
+    if request.operation == "query.run" {
+        result.data["definition"] = Value::Null;
+        result.data["parameters"] = Value::Null;
+        result.data["window"] = Value::Null;
+    }
     result.coverage.state = "not_established".into();
     result.coverage.scope = if request.operation == "grafana.dashboard.get" {
         "Selected dashboard configuration from the configured Grafana connection"
@@ -483,18 +535,39 @@ pub(crate) fn run(
             return Err(Error::unsupported("unsupported_platform"));
         }
         check(control, deadline)?;
-        let input = input(request)?;
+        let (input, saved) = admitted_input(request, &result.started_at)?;
+        if let Some(saved) = &saved {
+            result.data["definition"] = saved.definition.clone();
+            result
+                .coverage
+                .limitations
+                .extend(saved.limitations.clone());
+        }
+        let permission = if saved.is_some() {
+            "grafana.query"
+        } else {
+            &request.operation
+        };
         let prepared = config::load(
             context.config_path.as_deref(),
             &request.target.id,
-            &request.operation,
+            permission,
             expected_identity,
         )?;
         check(control, deadline)?;
-        let mut redactor = Redactor::new(&prepared.secrets)?;
+        let mut redactor = redactor(&prepared.secrets, saved.is_some())?;
         result.resolved_target = json!({"connection":request.target.id,"profile":"operator-local","api_profile":PROFILE,"effects":"observe"});
         result.data["binding"] = json!({"origin":redactor.metadata(json!(prepared.origin)),"organization_id":redactor.metadata(json!(prepared.organization)),"organization_verified":false});
-        result.data["request"] = metadata(&input, &mut redactor);
+        let private_job = saved
+            .as_ref()
+            .map(|saved| redactor.metadata(json!(saved.job)));
+        result.data["request"] = metadata(&input, &mut redactor, private_job.as_ref());
+        if let Some(saved) = saved {
+            result.data["parameters"] = json!({"job":private_job.expect("compiled saved job")});
+            result.data["window"] = json!({"from":redactor.metadata(saved.input["from"].clone()),"to":redactor.metadata(saved.input["to"].clone())});
+        }
+        result.data["redaction"] =
+            json!({"applied":redactor.replacements > 0,"replacements":redactor.replacements});
         let runtime = tokio::runtime::Builder::new_current_thread()
             .enable_all()
             .build()
@@ -558,6 +631,115 @@ pub(crate) fn run(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn saved_request(job: &str) -> Request {
+        Request::new(
+            "query.run",
+            json!({"id":"prometheus.up-by-job","version":1,"datasource":"metrics-1",
+                "parameters":{"job":job},"window":{"kind":"relative","lookback_seconds":300}}),
+        )
+    }
+
+    #[test]
+    fn saved_query_admission_keeps_legacy_macro_and_datasource_guards() {
+        for job in ["$__interval", "${job}", "[[service]]", "quote\"$__interval"] {
+            let request = saved_request(job);
+            assert_eq!(
+                admitted_input(&request, "2026-10-10T00:00:00.123456Z")
+                    .err()
+                    .unwrap()
+                    .code,
+                "unresolved_expression"
+            );
+        }
+        let mut request = saved_request("checkout$");
+        assert!(admitted_input(&request, "2026-10-10T00:00:00.123456Z").is_ok());
+        request.inputs["datasource"] = json!("../other");
+        assert_eq!(
+            admitted_input(&request, "2026-10-10T00:00:00.123456Z")
+                .err()
+                .unwrap()
+                .code,
+            "invalid_grafana_input"
+        );
+    }
+
+    #[test]
+    fn saved_escaped_credential_source_masks_the_compiled_literal() {
+        for job in ["credential\"quote", "credential\\slash", "雪\"back\\slash"] {
+            let request = saved_request(job);
+            let (input, saved) = admitted_input(&request, "2026-10-10T00:00:00Z").unwrap();
+            let saved = saved.unwrap();
+            let mut redactor = redactor(&[job.into()], true).unwrap();
+            let private_job = redactor.metadata(json!(saved.job));
+            assert_eq!(private_job, json!({"redacted":true}));
+            let metadata = metadata(&input, &mut redactor, Some(&private_job));
+            assert_eq!(metadata["expr"], json!({"redacted":true}));
+            assert_eq!(metadata["max_data_points"], 1000);
+            assert_eq!(saved.definition["id"], "prometheus.up-by-job");
+            assert_eq!(redactor.replacements, 2);
+            let response = redactor
+                .payload(json!({"executedQueryString":saved.input["expr"]}))
+                .unwrap();
+            assert_eq!(response["executedQueryString"], "up{job=\"[REDACTED]\"}");
+            assert_eq!(redactor.replacements, 3);
+        }
+    }
+
+    #[test]
+    fn saved_admission_and_config_failures_do_not_echo_private_inputs() {
+        for (job, has_definition) in [("private-canary", true), ("$__interval", false)] {
+            let request = saved_request(job);
+            let mut result = OperationResult::new(&request);
+            run(
+                &request,
+                &RunControl::default(),
+                &OperatorContext::default(),
+                None,
+                Instant::now(),
+                &mut result,
+            );
+            assert_eq!(result.data["transport"]["requests_started"], 0);
+            assert!(result.data["parameters"].is_null());
+            assert!(result.data["window"].is_null());
+            assert!(result.data["request"].is_null());
+            assert_eq!(result.data["definition"].is_object(), has_definition);
+            assert!(!result.data.to_string().contains(job));
+        }
+    }
+
+    #[test]
+    fn saved_query_uses_the_existing_parent_deadline_and_signal() {
+        let request = saved_request("fixture");
+        let mut result = OperationResult::new(&request);
+        run(
+            &request,
+            &RunControl::default(),
+            &OperatorContext::default(),
+            None,
+            Instant::now() - Duration::from_secs(61),
+            &mut result,
+        );
+        assert_eq!(result.execution.status, Status::TimedOut);
+        assert_eq!(result.data["transport"]["requests_started"], 0);
+        assert!(result.data["definition"].is_null());
+        let mut result = OperationResult::new(&request);
+        let control = RunControl::default();
+        control.signal.store(15, Ordering::Relaxed);
+        run(
+            &request,
+            &control,
+            &OperatorContext::default(),
+            None,
+            Instant::now(),
+            &mut result,
+        );
+        assert_eq!(result.execution.status, Status::Cancelled);
+        assert_eq!(result.data["cancellation_signal"], 15);
+        assert_eq!(result.exit_code(), 143);
+        assert_eq!(result.data["transport"]["requests_started"], 0);
+    }
+
     #[test]
     fn review_r2_timestamp_grammar_and_fraction_precision_are_independent() {
         for separator in 0_u8..=127 {

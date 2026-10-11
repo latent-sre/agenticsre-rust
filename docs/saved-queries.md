@@ -2,8 +2,9 @@
 
 This increment implements CAP-11 / REQ-08 and the query portions of AC-08 / AC-16 through the
 shared core and CLI. It builds on the accepted [Grafana exchange profile](grafana.md).
-Implementation and acceptance status belong only in [the roadmap](roadmap.md). This contract
-does not establish a working `query.run` operation or a browser/MCP grant.
+Implementation status belongs only in [the roadmap](roadmap.md), with source-bound evidence in
+[the acceptance record](saved-queries-verification.md). Browser/MCP query grants remain a separate
+increment.
 
 ## Mission and installed definitions
 

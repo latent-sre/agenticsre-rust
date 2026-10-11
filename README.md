@@ -11,6 +11,8 @@ The bounded stdio MCP adapter is also [independently verified](docs/mcp-verifica
 launcher grants and controlled Linux fixtures.
 The [Linux development bundle](docs/packaging-verification.md) includes offline context resolution
 and is verified for versioned installation, upgrade and rollback in the tested Cally environment.
+The current source also includes [verified installed saved queries](docs/saved-queries-verification.md)
+for the Linux core/CLI fixture scope; the retained bundle predates these commands.
 The `save` CLI executes literal arguments
 with bounded output, deadlines and cancellation, or inspects commands without running them.
 It provides text/JSON receipts, structured requests, discovery and offline diagnostics. The
@@ -27,6 +29,7 @@ CARGO_INCREMENTAL=0 CARGO_PROFILE_DEV_DEBUG=0 cargo build --locked -p workbench-
 target/debug/save --json exec --cwd . -- /usr/bin/printf '%s\n' 'hello workbench'
 target/debug/save task run dashboard-hygiene --input tests/fixtures/dashboard-hygiene/clean-input.json
 target/debug/save task run error-budget --input tests/fixtures/error-budget/time-input.json
+target/debug/save --json queries list
 target/debug/save ui serve --allow task.run
 ```
 
@@ -52,6 +55,9 @@ are embedded in `save`, so running it requires no separate Node server.
 [Native Grafana observations](docs/grafana.md) use explicit operator configuration and synthetic
 fixtures for current acceptance. [Restricted commands](docs/read-profile.md) and the
 [GUI](docs/ui.md) and [stdio MCP adapter](docs/mcp.md) use the shared core.
+The [installed saved queries](docs/saved-queries.md) add versioned PromQL/LogQL definitions,
+literal job parameters, optional definition-digest pinning and one resolved time window to the
+core/CLI Grafana workflow.
 See [development installation and rollback](docs/development.md#development-artifact-and-rollback).
 Offline [service-context fixtures](docs/context.md) are implemented through the core/CLI and
 [independently verified](docs/context-verification.md). The current development archive includes
