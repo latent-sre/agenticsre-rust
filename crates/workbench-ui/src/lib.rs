@@ -135,14 +135,26 @@ async fn run(
     let worker = std::thread::Builder::new()
         .name("workbench-ui-core".into())
         .spawn(move || {
-            run_worker(receiver, worker_state, |request, control| {
-                workbench_core::execute_with_policy_identity(
-                    request,
-                    control,
-                    &worker_grants.context,
-                    worker_grants.policy_digest.as_deref(),
-                )
-            });
+            run_worker(
+                receiver,
+                worker_state,
+                |request, control| match &worker_grants.diagnostic_grant {
+                    Some(grant) => workbench_core::execute_with_diagnostic_grant(
+                        request,
+                        control,
+                        &worker_grants.context,
+                        worker_grants.policy_digest.as_deref(),
+                        grant,
+                    ),
+                    None => workbench_core::execute_with_authority_identities(
+                        request,
+                        control,
+                        &worker_grants.context,
+                        worker_grants.policy_digest.as_deref(),
+                        None,
+                    ),
+                },
+            );
         })
         .map_err(|_| "the owned execution worker could not be started")?;
     let app = Arc::new(App {
@@ -343,6 +355,7 @@ mod tests {
                 submission_id: "failure-test".into(),
                 request: workbench_core::request::Request::new("task.run", json!({})),
                 root_id: None,
+                target_id: None,
                 label: "Error budget",
                 identity: [0; 32],
             })

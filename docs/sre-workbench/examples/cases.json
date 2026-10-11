@@ -212,5 +212,30 @@
     "reason": "Offline context fixture shape; source authenticity and resolution are separately tested",
     "schema": "context-resolve-input",
     "valid": false
+  },
+  {
+    "file": "diagnostics-config.json",
+    "schema": "diagnostics-config",
+    "valid": true,
+    "reason": "Synthetic trusted bindings; no live or kernel identity established"
+  },
+  {
+    "file": "request-diagnostics.json",
+    "schema": "request",
+    "input_schema": "diagnostics-run-input",
+    "valid": true,
+    "reason": "Fixed pack selectors and typed input only; target admission is a runtime property"
+  },
+  {
+    "file": "invalid-diagnostics-input.json",
+    "schema": "diagnostics-run-input",
+    "valid": false,
+    "reason": "Wire input cannot substitute a host or other trusted binding"
+  },
+  {
+    "file": "diagnostics-data.json",
+    "schema": "diagnostics-data",
+    "valid": true,
+    "reason": "Synthetic illustrative five-check data; zero source/certificate/vantage identities are not actual runtime evidence"
   }
 ]

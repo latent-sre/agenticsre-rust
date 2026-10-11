@@ -1,0 +1,1350 @@
+{
+  "CA_PROOF_BOUNDARY": [
+    {
+      "uid": 1000,
+      "pid": 1,
+      "root_support_readonly": true,
+      "caps": 0,
+      "nnp": 1,
+      "routes": "Iface\tDestination\tGateway \tFlags\tRefCnt\tUse\tMetric\tMask\t\tMTU\tWindow\tIRTT                                                       \n",
+      "limits": {
+        "memory.max": "4294967296",
+        "cpu.max": "250000 100000",
+        "pids.max": "512"
+      },
+      "namespaces": {
+        "pid": "pid:[4026532511]",
+        "net": "net:[4026532512]",
+        "user": "user:[4026532448]",
+        "mnt": "mnt:[4026532350]"
+      },
+      "clock_utc": "2026-10-03T07:26:43.124374+00:00",
+      "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+      "python_sha256": "17b78e0a93175e86f9ac03141924fd7a7f0c0c52e66b34bfa0de20ffef989df1",
+      "kernel": {
+        "sysname": "Linux",
+        "nodename": "a2d8e9e97ef4",
+        "release": "7.0.0-34-generic",
+        "version": "#34-Ubuntu SMP PREEMPT_DYNAMIC Wed Sep  2 14:29:37 UTC 2026",
+        "machine": "x86_64"
+      },
+      "openssl_sha256": "38633817061f9d161c8b14c1ff72c9f223e8208d977a4c15d843010611a5dded",
+      "support_sha256": {
+        "prove-ca.py": "9622b6fe91e2c99b590c730863f62597b91893aace97127be6413a7dac9c14fc",
+        "old-fixtures.py": "f74dc6192c37e60d74cfd407c156b8e9a6b7858140ac47326b75b7a6e2db030e",
+        "fixtures.py": "bb472e4713eabe855e5c16b11c3baf54170fff0e5750030411c3df63fc4b5642"
+      }
+    }
+  ],
+  "CA_PROOF_COMMAND": [
+    {
+      "phase": "runtime",
+      "argv": [
+        "/usr/bin/openssl",
+        "version",
+        "-a"
+      ],
+      "cwd": "/opt/verification",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "OpenSSL 3.5.6 7 Apr 2026 (Library: OpenSSL 3.5.6 7 Apr 2026)\nbuilt on: Sat Jun  6 19:55:35 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -Wa,--noexecstack -g -O2 -Werror=implicit-function-declaration -ffile-prefix-map=/build/reproducible-path/openssl-3.5.6=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZSTD -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=2\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific\nCPUINFO: OPENSSL_ia32cap=0x82b82201078bfffd:0x0000000000000000:0x0000000000000000:0x0000000000000000:0x0000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "req",
+        "-x509",
+        "-newkey",
+        "rsa:2048",
+        "-nodes",
+        "-keyout",
+        "ca.key",
+        "-out",
+        "ca.pem",
+        "-days",
+        "2",
+        "-subj",
+        "/CN=Independent diagnostics CA"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null"
+      },
+      "own_exit": 0,
+      "stdout": "",
+      "stderr": ".......+++++++++++++++++++++++++++++++++++++++*..+...+....+...+...+.....+.......+..............+...+.......+...+..+...+...+...+.+..................+...+.....+++++++++++++++++++++++++++++++++++++++*.............+...+.....+.+.....+...+.............+.........+.....+.+..+......+......+......++++++\n.........+............+........+.......+...+...+..+.+..+.........+...+.+...........+.+..............+.+.....+...+.+...+...+++++++++++++++++++++++++++++++++++++++*...+...+....................+++++++++++++++++++++++++++++++++++++++*.......+......+...........+.+.........+...........+....+......+...+.........+...+...+......+.....+.........+.........+...+..........+........+.+..............+.+...+..+......+.........+.........+......+...+...............+............................+...+......+.....+......+...+....+..+......+...+............+.........+...+.......+...+.....+.++++++\n-----\n"
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "req",
+        "-newkey",
+        "rsa:2048",
+        "-nodes",
+        "-keyout",
+        "server.key",
+        "-out",
+        "server.csr",
+        "-subj",
+        "/CN=diagnostics.workbench.test"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null"
+      },
+      "own_exit": 0,
+      "stdout": "",
+      "stderr": "....+++++++++++++++++++++++++++++++++++++++*.+...+...+......+...+.....+...+....+++++++++++++++++++++++++++++++++++++++*...........+.....+...............+...+.+..................+...+...+...........+.+..+...+...+....+.................+....+..............+...+....+...+..+.........+.........+...+...................+.....+.+..+...+....+......+.....+...............++++++\n..+.......+.....+.+..+++++++++++++++++++++++++++++++++++++++*....+....+++++++++++++++++++++++++++++++++++++++*..+...........+.+...+....................+.....................+...+.......+.....+.+.........+...+...+.....+.......+..+....+..+...+....+.....+.+.........+..+......+...+..........+..+...+....+.....+.+.....+.+.....+......+...+....+........+.......+...+..............+.+...+..+.........+..........+.........+......+.....+.........+.......+..+...+...+....+..+...+.......+.....................+..+................+......+...+...+..+...............+.+.....+.........+.......+......+..+...+.........+....+..+.........+....+......+...+..+...+......+.......+.....+....+......+...+........................+...+...........................+.....+.+...............+.....+.+........+...+..........+.........+..............+......+...+......+......+.+.....+...+.........+.+......+...+..+....+.....+............+.......+...+...+...........+...............+...+...+...+.+.....+.............+.....+.+..+....+.........+............+..+.............+..+...............+......+....+..+.........+....+...........+....+..+.+...+..+.........+.............+.................+.+...+............+..+...+...+....+...........+.......+...+............+............+.....+.............+............+..+.+........+.+......+...+..+...+.........+......+.+......+...+........................+..+...+...+...+.+........+..........+..+.+.........+.....+...+..................+.........+....+...........+.+.........+........+......+.......+...+.....+.......+........+.+.....+.............+..+......+..................+....+..+.........................+..............+.+...+..+..........+......+.....+...+.+......+........+....+..+...................+...............+..+....+...+........+...+.+...+..+...+.+.....+.........+...+.........+.........+.......+...+..+...+....+...+..+.+.........+............+......+........+.......+..+...............+.+.....+.+...............+...+..+.+....................+.........+.........+....+.....+...+...+.+......+........+.......++++++\n-----\n"
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-req",
+        "-in",
+        "server.csr",
+        "-CA",
+        "ca.pem",
+        "-CAkey",
+        "ca.key",
+        "-CAcreateserial",
+        "-out",
+        "server.pem",
+        "-days",
+        "2",
+        "-sha256",
+        "-extfile",
+        "server.ext"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null"
+      },
+      "own_exit": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN=diagnostics.workbench.test\n"
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "ca.pem",
+        "-noout",
+        "-text"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            09:b2:82:19:5f:cd:5a:a8:3e:06:37:da:a9:81:a1:a2:ee:a9:9a:1b\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Oct  3 07:26:43 2026 GMT\n            Not After : Oct  5 07:26:43 2026 GMT\n        Subject: CN=Independent diagnostics CA\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:d8:56:3a:ae:b9:7d:91:e1:31:da:54:10:32:8d:\n                    57:00:7a:a2:7f:aa:80:be:26:55:2e:ab:0a:32:08:\n                    2d:36:d2:c8:bb:c8:d1:03:3d:b3:a2:7f:0f:33:1e:\n                    ce:97:f4:8a:e8:98:68:cb:f3:c2:b8:e5:c9:bc:43:\n                    aa:0a:ec:8e:f1:f9:a3:13:2d:b3:d1:71:ce:9d:d8:\n                    cc:6e:90:95:f8:c7:e3:ef:dd:f4:ba:96:c5:65:eb:\n                    7c:a4:75:db:58:05:90:9f:07:6f:5c:0f:36:ce:c3:\n                    84:3c:c2:af:7a:bd:75:9e:64:a7:08:a7:7a:20:7d:\n                    03:e2:3f:ee:84:6c:2e:ea:52:fd:90:8c:2d:22:c5:\n                    ff:0c:ef:be:3a:8b:d2:6c:83:c3:71:4e:2e:6a:f3:\n                    91:8e:e7:c1:6c:77:5d:93:1f:c1:32:b3:ab:d5:25:\n                    e4:59:ec:bd:ec:55:7d:30:0a:ea:c9:ae:b7:ae:31:\n                    94:34:df:f9:93:3f:2e:c4:ab:21:ba:3e:83:30:f6:\n                    56:55:9b:25:a6:ef:d9:31:fe:b8:11:38:10:e2:0d:\n                    27:e4:d3:a4:dc:e5:f7:0d:1f:32:97:ab:36:1e:3a:\n                    fd:75:a9:c6:9a:e8:ce:f6:85:e3:bf:b2:7f:bc:76:\n                    87:15:00:f2:15:bb:bb:3a:ef:a6:f5:5e:a2:94:ef:\n                    c3:5d\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Subject Key Identifier: \n                8F:7E:55:27:E4:BB:66:3F:F9:30:79:47:3F:31:86:FC:E4:A9:13:E8\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        9c:94:18:64:d6:b2:b9:3d:b0:73:58:21:85:3b:65:09:9b:9e:\n        29:65:7c:7d:66:09:0c:8e:19:a9:09:4e:a7:f6:a0:22:07:73:\n        d6:51:3b:95:f4:a2:4f:62:e8:05:6d:4e:51:73:29:2f:8b:d0:\n        39:f9:e0:88:be:61:4c:60:18:11:2e:39:a4:f8:4a:a0:23:33:\n        a3:79:23:91:e4:cb:0e:6a:7e:6b:fe:99:20:6a:a8:d4:01:ab:\n        75:b2:55:78:a7:83:2d:90:72:af:ee:f7:be:56:1e:a5:da:a4:\n        f4:da:fc:e0:9b:8b:5b:47:3c:bb:8c:66:a2:ea:70:a3:df:d6:\n        8b:80:3c:18:ad:b8:8a:47:67:1b:aa:24:0e:ca:ae:14:9c:bf:\n        8c:50:ac:40:08:de:b2:ec:7e:1f:06:51:58:54:41:b9:38:ed:\n        94:01:7a:fc:b5:3b:5b:d2:16:64:c7:cb:39:73:3b:4a:1e:87:\n        d8:34:e5:49:3e:c2:d6:a7:8b:43:ae:4e:65:a7:94:d7:38:d9:\n        75:a2:fb:28:cd:04:f4:88:3f:85:36:9f:c2:5c:d7:a6:45:f3:\n        60:b9:b9:16:8e:88:6e:a8:59:16:ac:65:65:4f:ce:3d:9d:ff:\n        b3:bd:fd:45:a7:0b:5e:7e:61:3f:d5:d8:de:79:70:43:ba:1c:\n        a1:56:91:de\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "ca.pem",
+        "-noout",
+        "-startdate",
+        "-enddate",
+        "-subject",
+        "-issuer",
+        "-fingerprint",
+        "-sha256"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "notBefore=Oct  3 07:26:43 2026 GMT\nnotAfter=Oct  5 07:26:43 2026 GMT\nsubject=CN=Independent diagnostics CA\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=91:13:30:CB:C3:F5:50:CD:D1:4A:45:64:AE:F0:7D:60:3E:22:1B:73:93:61:EE:80:8C:BC:C4:92:B7:6F:AB:74\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "ca.pem",
+        "-noout",
+        "-pubkey"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2FY6rrl9keEx2lQQMo1X\nAHqif6qAviZVLqsKMggtNtLIu8jRAz2zon8PMx7Ol/SK6Jhoy/PCuOXJvEOqCuyO\n8fmjEy2z0XHOndjMbpCV+Mfj7930upbFZet8pHXbWAWQnwdvXA82zsOEPMKver11\nnmSnCKd6IH0D4j/uhGwu6lL9kIwtIsX/DO++OovSbIPDcU4uavORjufBbHddkx/B\nMrOr1SXkWey97FV9MArqya63rjGUNN/5kz8uxKshuj6DMPZWVZslpu/ZMf64ETgQ\n4g0n5NOk3OX3DR8yl6s2Hjr9danGmujO9oXjv7J/vHaHFQDyFbu7Ou+m9V6ilO/D\nXQIDAQAB\n-----END PUBLIC KEY-----\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "server.pem",
+        "-noout",
+        "-text"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            14:b5:fe:a4:81:04:3e:23:af:0d:85:80:5b:86:9e:5e:d9:12:b6:4c\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Oct  3 07:26:43 2026 GMT\n            Not After : Oct  5 07:26:43 2026 GMT\n        Subject: CN=diagnostics.workbench.test\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:96:5a:e9:b1:07:b4:2b:e9:a5:1d:a9:b2:91:b6:\n                    4d:4b:44:eb:a0:9d:d5:62:ad:99:4b:e3:36:9f:11:\n                    74:e7:81:51:50:ca:03:44:a6:fb:d9:c1:f7:15:47:\n                    1f:77:84:8c:4b:19:d3:64:58:bb:81:63:6f:8b:6e:\n                    2c:6c:19:0e:16:7d:34:a2:53:6e:97:cd:56:c6:ab:\n                    ea:1d:86:55:f4:7e:a1:aa:bc:43:1a:33:a6:7c:c6:\n                    c3:87:31:b7:43:2e:f5:7a:56:e6:39:95:a6:09:35:\n                    4b:84:51:d5:1f:2d:20:a5:b1:11:cc:d8:2c:81:0a:\n                    46:22:3e:f0:39:74:1d:3f:cf:04:37:70:3e:0a:1c:\n                    d9:ae:6e:f8:5f:fd:ae:25:d7:2d:5b:53:e2:9a:35:\n                    2e:3f:6d:4c:ee:85:db:80:4f:1f:ae:2a:27:5b:96:\n                    19:ee:2c:24:72:de:92:ae:fb:ba:9e:b5:3d:5c:40:\n                    f0:6e:ee:9f:4c:73:87:a9:32:34:7f:e1:8b:c7:05:\n                    66:86:c2:21:84:3c:c5:81:e1:35:eb:80:8d:2d:de:\n                    34:26:eb:3c:5f:59:ef:15:77:31:0e:f8:29:8e:34:\n                    4b:10:bc:86:e6:48:48:66:62:16:62:14:72:03:dd:\n                    a1:37:2e:d0:c2:31:6f:eb:a3:c1:ab:83:6d:f2:5e:\n                    e1:33\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Subject Alternative Name: \n                DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n            X509v3 Basic Constraints: critical\n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature, Key Encipherment\n            X509v3 Extended Key Usage: \n                TLS Web Server Authentication\n            X509v3 Subject Key Identifier: \n                2E:52:97:AA:A9:E3:43:61:84:F3:9C:3D:BC:3C:AA:19:80:04:0F:59\n            X509v3 Authority Key Identifier: \n                8F:7E:55:27:E4:BB:66:3F:F9:30:79:47:3F:31:86:FC:E4:A9:13:E8\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        17:23:6e:33:4c:e9:f6:58:bb:67:4d:bc:b0:ae:e0:ec:82:7e:\n        15:86:4f:ab:55:36:68:22:3c:09:fc:0b:c7:ee:55:78:11:92:\n        08:bb:23:1d:ca:a9:61:1c:bf:ec:5e:1c:95:bf:f7:63:ed:d6:\n        f4:0d:6e:f5:20:68:a1:2e:1f:37:2f:83:ae:cd:3c:d5:78:8c:\n        2d:56:ba:a1:79:e5:a3:40:c4:27:30:81:7e:21:fc:c7:8a:7e:\n        75:5c:a4:95:f8:8e:d6:18:f8:b4:b6:d3:bf:e9:76:cc:93:a8:\n        42:c6:f7:b0:d6:d7:ef:1b:1b:44:05:25:53:c0:86:aa:c9:f6:\n        26:96:6d:61:45:59:18:c1:3c:7e:06:f4:3f:d4:d7:9b:ee:ec:\n        e8:4e:65:7f:37:69:c3:90:46:60:5d:f2:d8:f6:f0:38:6d:34:\n        37:91:88:78:1b:bc:0a:0f:03:c7:bc:c1:61:b4:f3:7d:32:93:\n        e1:9f:7a:b2:0f:56:0b:7a:ef:e9:36:c5:1b:a2:6c:78:49:d0:\n        e6:49:7b:a7:0b:c7:4a:ad:b0:27:41:3f:41:e8:0b:23:02:71:\n        03:58:07:4d:f6:ae:56:51:7e:f0:74:9f:96:3e:21:9e:ba:61:\n        48:7d:1e:a9:7f:69:9d:68:22:5e:64:1b:fe:56:72:ac:3e:8f:\n        89:00:db:d1\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "server.pem",
+        "-noout",
+        "-startdate",
+        "-enddate",
+        "-subject",
+        "-issuer",
+        "-fingerprint",
+        "-sha256"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "notBefore=Oct  3 07:26:43 2026 GMT\nnotAfter=Oct  5 07:26:43 2026 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=14:AE:C1:10:F4:9E:04:40:54:3A:83:44:18:3D:82:63:AA:37:13:A7:7C:96:89:D7:55:3C:92:5D:E2:D8:01:BB\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "server.pem",
+        "-noout",
+        "-pubkey"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAllrpsQe0K+mlHamykbZN\nS0TroJ3VYq2ZS+M2nxF054FRUMoDRKb72cH3FUcfd4SMSxnTZFi7gWNvi24sbBkO\nFn00olNul81WxqvqHYZV9H6hqrxDGjOmfMbDhzG3Qy71elbmOZWmCTVLhFHVHy0g\npbERzNgsgQpGIj7wOXQdP88EN3A+ChzZrm74X/2uJdctW1PimjUuP21M7oXbgE8f\nrionW5YZ7iwkct6Srvu6nrU9XEDwbu6fTHOHqTI0f+GLxwVmhsIhhDzFgeE164CN\nLd40Jus8X1nvFXcxDvgpjjRLELyG5khIZmIWYhRyA92hNy7QwjFv66PBq4Nt8l7h\nMwIDAQAB\n-----END PUBLIC KEY-----\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "verify",
+        "-verify_hostname",
+        "diagnostics.workbench.test",
+        "-CAfile",
+        "ca.pem",
+        "server.pem"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 2,
+      "stdout": "",
+      "stderr": "CN=Independent diagnostics CA\nerror 79 at 1 depth lookup: invalid CA certificate\nerror server.pem: verification failed\n"
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "version",
+        "-a"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "OpenSSL 3.5.6 7 Apr 2026 (Library: OpenSSL 3.5.6 7 Apr 2026)\nbuilt on: Sat Jun  6 19:55:35 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -Wa,--noexecstack -g -O2 -Werror=implicit-function-declaration -ffile-prefix-map=/build/reproducible-path/openssl-3.5.6=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZSTD -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=2\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific\nCPUINFO: OPENSSL_ia32cap=0x82b82201078bfffd:0x0000000000000000:0x0000000000000000:0x0000000000000000:0x0000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "ca",
+        "-batch",
+        "-config",
+        "expired-ca.cnf",
+        "-in",
+        "server.csr",
+        "-out",
+        "independent-expired.pem",
+        "-startdate",
+        "20200101000000Z",
+        "-enddate",
+        "20210101000000Z",
+        "-notext",
+        "-md",
+        "sha256"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "",
+      "stderr": "Using configuration from expired-ca.cnf\nWarning: -enddate or -not_after option overriding -days option\nCheck that the request matches the signature\nSignature ok\nThe Subject's Distinguished Name is as follows\ncommonName            :ASN.1 12:'diagnostics.workbench.test'\nCertificate is to be certified until Jan  1 00:00:00 2021 GMT (-2101 days)\n\nWrite out database with 1 new entries\nDatabase updated\n"
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "independent-expired.pem",
+        "-noout",
+        "-startdate",
+        "-enddate",
+        "-subject",
+        "-issuer",
+        "-ext",
+        "subjectAltName"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "notBefore=Jan  1 00:00:00 2020 GMT\nnotAfter=Jan  1 00:00:00 2021 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nX509v3 Subject Alternative Name: \n    DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "independent-expired.pem",
+        "-noout",
+        "-pubkey"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAllrpsQe0K+mlHamykbZN\nS0TroJ3VYq2ZS+M2nxF054FRUMoDRKb72cH3FUcfd4SMSxnTZFi7gWNvi24sbBkO\nFn00olNul81WxqvqHYZV9H6hqrxDGjOmfMbDhzG3Qy71elbmOZWmCTVLhFHVHy0g\npbERzNgsgQpGIj7wOXQdP88EN3A+ChzZrm74X/2uJdctW1PimjUuP21M7oXbgE8f\nrionW5YZ7iwkct6Srvu6nrU9XEDwbu6fTHOHqTI0f+GLxwVmhsIhhDzFgeE164CN\nLd40Jus8X1nvFXcxDvgpjjRLELyG5khIZmIWYhRyA92hNy7QwjFv66PBq4Nt8l7h\nMwIDAQAB\n-----END PUBLIC KEY-----\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "pkey",
+        "-in",
+        "server.key",
+        "-pubout"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAllrpsQe0K+mlHamykbZN\nS0TroJ3VYq2ZS+M2nxF054FRUMoDRKb72cH3FUcfd4SMSxnTZFi7gWNvi24sbBkO\nFn00olNul81WxqvqHYZV9H6hqrxDGjOmfMbDhzG3Qy71elbmOZWmCTVLhFHVHy0g\npbERzNgsgQpGIj7wOXQdP88EN3A+ChzZrm74X/2uJdctW1PimjUuP21M7oXbgE8f\nrionW5YZ7iwkct6Srvu6nrU9XEDwbu6fTHOHqTI0f+GLxwVmhsIhhDzFgeE164CN\nLd40Jus8X1nvFXcxDvgpjjRLELyG5khIZmIWYhRyA92hNy7QwjFv66PBq4Nt8l7h\nMwIDAQAB\n-----END PUBLIC KEY-----\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "verify",
+        "-no_check_time",
+        "-verify_hostname",
+        "diagnostics.workbench.test",
+        "-CAfile",
+        "ca.pem",
+        "independent-expired.pem"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 2,
+      "stdout": "",
+      "stderr": "CN=Independent diagnostics CA\nerror 79 at 1 depth lookup: invalid CA certificate\nerror independent-expired.pem: verification failed\n"
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "independent-expired.pem",
+        "-noout",
+        "-text"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number: 4096 (0x1000)\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Jan  1 00:00:00 2020 GMT\n            Not After : Jan  1 00:00:00 2021 GMT\n        Subject: CN=diagnostics.workbench.test\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:96:5a:e9:b1:07:b4:2b:e9:a5:1d:a9:b2:91:b6:\n                    4d:4b:44:eb:a0:9d:d5:62:ad:99:4b:e3:36:9f:11:\n                    74:e7:81:51:50:ca:03:44:a6:fb:d9:c1:f7:15:47:\n                    1f:77:84:8c:4b:19:d3:64:58:bb:81:63:6f:8b:6e:\n                    2c:6c:19:0e:16:7d:34:a2:53:6e:97:cd:56:c6:ab:\n                    ea:1d:86:55:f4:7e:a1:aa:bc:43:1a:33:a6:7c:c6:\n                    c3:87:31:b7:43:2e:f5:7a:56:e6:39:95:a6:09:35:\n                    4b:84:51:d5:1f:2d:20:a5:b1:11:cc:d8:2c:81:0a:\n                    46:22:3e:f0:39:74:1d:3f:cf:04:37:70:3e:0a:1c:\n                    d9:ae:6e:f8:5f:fd:ae:25:d7:2d:5b:53:e2:9a:35:\n                    2e:3f:6d:4c:ee:85:db:80:4f:1f:ae:2a:27:5b:96:\n                    19:ee:2c:24:72:de:92:ae:fb:ba:9e:b5:3d:5c:40:\n                    f0:6e:ee:9f:4c:73:87:a9:32:34:7f:e1:8b:c7:05:\n                    66:86:c2:21:84:3c:c5:81:e1:35:eb:80:8d:2d:de:\n                    34:26:eb:3c:5f:59:ef:15:77:31:0e:f8:29:8e:34:\n                    4b:10:bc:86:e6:48:48:66:62:16:62:14:72:03:dd:\n                    a1:37:2e:d0:c2:31:6f:eb:a3:c1:ab:83:6d:f2:5e:\n                    e1:33\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Subject Alternative Name: \n                DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n            X509v3 Basic Constraints: critical\n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature, Key Encipherment\n            X509v3 Extended Key Usage: \n                TLS Web Server Authentication\n            X509v3 Subject Key Identifier: \n                2E:52:97:AA:A9:E3:43:61:84:F3:9C:3D:BC:3C:AA:19:80:04:0F:59\n            X509v3 Authority Key Identifier: \n                8F:7E:55:27:E4:BB:66:3F:F9:30:79:47:3F:31:86:FC:E4:A9:13:E8\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        ab:9c:11:67:c0:d0:3d:e1:bd:9b:e7:6b:79:af:b2:3e:ef:68:\n        8a:c0:2d:3e:1d:96:ea:0a:59:20:44:5c:52:0c:f9:61:0d:f1:\n        b1:e3:d3:4a:3a:a5:4f:cf:3b:c8:ae:ac:4f:0a:8c:0f:be:79:\n        e2:a4:c6:eb:1e:13:0f:e6:d0:4c:42:44:f9:fd:c9:d9:ab:1b:\n        7f:11:b6:8f:53:af:c0:2f:57:63:c2:13:83:2a:0a:6c:7f:71:\n        8c:8f:76:04:7a:bb:fe:9e:01:6b:d1:8d:3f:2e:2a:8c:1d:92:\n        a7:d7:64:24:36:c7:b4:1e:cd:d2:b4:2f:7c:94:2c:d5:2f:58:\n        7b:94:28:ce:f7:b9:c5:98:df:05:ef:5e:dd:bc:7f:7b:d4:e4:\n        cf:ea:2f:fe:31:12:06:2b:48:10:77:20:28:35:59:8c:e0:d4:\n        b8:d7:9f:79:1d:b0:19:d7:06:e4:03:b4:0d:7a:45:9e:2f:2b:\n        9d:06:66:00:5e:48:3c:df:27:fb:b1:ac:ea:7c:6a:53:c0:86:\n        9e:76:cf:90:3a:5a:44:76:4b:94:46:43:8b:ca:d1:5b:93:2d:\n        aa:ac:41:b4:ad:7f:50:54:d2:33:e3:ae:5a:98:44:83:28:41:\n        5c:01:92:6b:74:64:a4:59:b3:c5:72:61:34:19:40:d6:e3:3a:\n        5d:68:7b:84\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "independent-expired.pem",
+        "-noout",
+        "-startdate",
+        "-enddate",
+        "-subject",
+        "-issuer",
+        "-fingerprint",
+        "-sha256"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "notBefore=Jan  1 00:00:00 2020 GMT\nnotAfter=Jan  1 00:00:00 2021 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=73:50:45:B1:D3:20:41:0F:EF:4C:9C:AE:22:44:F5:9E:36:6D:9B:E8:B6:1F:69:3E:80:6E:96:20:A2:94:80:7F\n",
+      "stderr": ""
+    },
+    {
+      "phase": "unchanged-old-generator-red",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "independent-expired.pem",
+        "-noout",
+        "-pubkey"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/red",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAllrpsQe0K+mlHamykbZN\nS0TroJ3VYq2ZS+M2nxF054FRUMoDRKb72cH3FUcfd4SMSxnTZFi7gWNvi24sbBkO\nFn00olNul81WxqvqHYZV9H6hqrxDGjOmfMbDhzG3Qy71elbmOZWmCTVLhFHVHy0g\npbERzNgsgQpGIj7wOXQdP88EN3A+ChzZrm74X/2uJdctW1PimjUuP21M7oXbgE8f\nrionW5YZ7iwkct6Srvu6nrU9XEDwbu6fTHOHqTI0f+GLxwVmhsIhhDzFgeE164CN\nLd40Jus8X1nvFXcxDvgpjjRLELyG5khIZmIWYhRyA92hNy7QwjFv66PBq4Nt8l7h\nMwIDAQAB\n-----END PUBLIC KEY-----\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "req",
+        "-x509",
+        "-newkey",
+        "rsa:2048",
+        "-nodes",
+        "-keyout",
+        "ca.key",
+        "-out",
+        "ca.pem",
+        "-days",
+        "2",
+        "-subj",
+        "/CN=Independent diagnostics CA",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE",
+        "-addext",
+        "keyUsage=critical,keyCertSign,cRLSign"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null"
+      },
+      "own_exit": 0,
+      "stdout": "",
+      "stderr": ".+...+.....+...+++++++++++++++++++++++++++++++++++++++*.....+...+..........+..+...+......+.+...+...+...+..+............+.+..+....+........+.......+...............+...+..+++++++++++++++++++++++++++++++++++++++*........+......+......+.....+...+....+...+.....+....+...+..+.+........+...................+..+...+..........+.....+...........................++++++\n..+...+......+..........+...+..+......+.......+...............+++++++++++++++++++++++++++++++++++++++*.+...+..+....+.....+...............+....+++++++++++++++++++++++++++++++++++++++*......+..............+............................+.....+.........+...+......+..........+......+.....+.+.....+.......+...+...+.....+....+.....................+...............+......+........+.......+......+..+.+..+...............+.......+........+...+....+..+..................+.+.................+..........+.........+.....+...+...+...+.........+..........+.................+.++++++\n-----\n"
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "req",
+        "-newkey",
+        "rsa:2048",
+        "-nodes",
+        "-keyout",
+        "server.key",
+        "-out",
+        "server.csr",
+        "-subj",
+        "/CN=diagnostics.workbench.test"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null"
+      },
+      "own_exit": 0,
+      "stdout": "",
+      "stderr": "....+..........+...+..+++++++++++++++++++++++++++++++++++++++*......+..................+.....+.......+..+...+.....................+.+...+.....+...+........................+.+++++++++++++++++++++++++++++++++++++++*....+.....+.............+.........+..+..........+...+........+....+...+..+...+.+.....+.......+..+......+......+.+.....+...+...................+..+......+....+...+.....+.+.....+.+...+......+..+....+........................+..+.........+.+.....+....+.....+....+...........+.+..............+..........+.........+..+...+........................+..........+.....+......+.+...+...........+......+..................+.+..+...++++++\n.+...+++++++++++++++++++++++++++++++++++++++*....+..+..........+++++++++++++++++++++++++++++++++++++++*..+......+..+...+............+.......+........+.+.....+....+........+.............+..+...+..........+...........+...+.+..+...+.......+..+.......+...+..+.+...+.................+...+....+..+.+........+.......+.....+...................+...+..+...+.+..+..........+........+.+...+.....+......+.......+.................+............+.+...+..+.......+...+...+..+.........+...+......+....+.....+............+.+...............+.........+........+............+.+.....+............+.+...........+...+.+.....+..........+..+.............+......+.....+..........+........+...+...+.+...+..+.+..............+.+.....+.......+......+.....+....+........+....+...+...+.................+.+..+.........+...+................++++++\n-----\n"
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-req",
+        "-in",
+        "server.csr",
+        "-CA",
+        "ca.pem",
+        "-CAkey",
+        "ca.key",
+        "-CAcreateserial",
+        "-out",
+        "server.pem",
+        "-days",
+        "2",
+        "-sha256",
+        "-extfile",
+        "server.ext"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null"
+      },
+      "own_exit": 0,
+      "stdout": "",
+      "stderr": "Certificate request self-signature ok\nsubject=CN=diagnostics.workbench.test\n"
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "ca.pem",
+        "-noout",
+        "-text"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            15:01:1f:d9:a5:1c:16:68:1f:c3:69:7b:07:6d:a1:f5:29:0a:ae:b0\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Oct  3 07:26:43 2026 GMT\n            Not After : Oct  5 07:26:43 2026 GMT\n        Subject: CN=Independent diagnostics CA\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:b8:c6:4b:88:68:03:31:0b:b4:bb:f9:e1:f4:30:\n                    8d:73:61:2b:22:39:38:8b:13:26:ac:34:32:8d:e3:\n                    8b:2f:ed:1f:47:2c:7f:ce:f0:ff:27:d4:04:53:80:\n                    3a:5e:7f:58:fd:83:21:48:22:58:f1:6e:8b:e7:f0:\n                    e7:e5:7a:15:ce:a3:e8:18:95:c5:5e:be:cb:29:24:\n                    d0:cd:4e:5f:91:05:df:5a:73:32:63:3f:aa:bd:32:\n                    fb:c8:f4:13:d2:f9:cd:b8:f2:2a:b1:9a:c3:84:77:\n                    a2:5a:ba:ff:86:28:3a:bf:96:f8:42:fd:ec:d5:db:\n                    6a:0f:cf:9f:82:49:fa:e0:82:0c:75:e0:9c:7c:62:\n                    59:c2:41:2c:1d:bf:30:3a:7d:e7:5e:62:5b:23:6f:\n                    1a:a1:f4:b1:20:4c:7b:a7:73:fc:58:29:64:b5:25:\n                    66:ff:aa:07:4b:a6:19:04:0c:41:9d:87:2d:15:21:\n                    e5:5e:cd:80:03:a0:92:3f:fe:09:db:f7:e3:b8:ba:\n                    a5:88:ce:fc:70:87:ab:16:c3:93:5a:e6:ed:30:26:\n                    ce:69:91:01:d2:d1:3a:65:f9:bf:c8:49:10:20:86:\n                    d6:c7:98:4a:a7:b7:27:9c:41:09:e8:4c:3b:d8:d8:\n                    8a:c0:33:e9:73:1b:b4:0e:48:73:5c:15:4e:fe:8b:\n                    3b:9b\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Basic Constraints: critical\n                CA:TRUE\n            X509v3 Key Usage: critical\n                Certificate Sign, CRL Sign\n            X509v3 Subject Key Identifier: \n                3A:CD:30:28:49:09:8C:04:6D:26:8F:40:40:B3:02:83:73:67:A6:A4\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        2c:c5:d8:3d:1c:99:31:00:cb:c8:38:e7:09:9d:27:66:b8:09:\n        2c:f7:0b:5c:57:f8:ea:5e:dd:3f:e2:36:3f:01:de:80:de:bb:\n        f1:17:df:0d:38:aa:a2:1a:3b:45:2b:d8:e2:71:c5:58:1d:0d:\n        94:bc:76:31:c7:c1:fb:2a:07:24:f3:65:bd:4b:fe:fe:b1:1d:\n        4e:27:60:6e:b7:5d:1e:b2:f8:32:0a:8f:20:15:6f:66:c7:41:\n        25:1b:95:cb:95:63:20:5c:f0:74:07:9c:3d:50:19:84:e8:d8:\n        ac:b0:c3:be:78:f1:57:7f:22:30:e4:ca:d3:fc:03:ba:da:30:\n        6d:25:80:71:8e:3f:1f:67:be:e5:ec:e9:bb:24:8b:7a:68:d1:\n        fc:b3:ad:11:29:3d:74:dc:d0:0c:eb:1a:27:2e:0c:aa:2a:f2:\n        d5:18:1b:9d:73:93:0e:1e:b1:d8:a8:ef:23:55:60:27:1b:85:\n        1f:39:9f:a5:d6:f9:4b:8f:e1:f8:19:45:ab:18:33:d5:86:15:\n        39:79:bd:81:aa:24:09:d8:74:8e:fd:e8:6c:19:b9:24:ee:f4:\n        b0:24:19:d2:87:97:d5:8f:1f:d6:99:f7:82:32:26:b8:11:bd:\n        3e:96:b2:20:c6:82:11:cd:e8:82:cf:bc:f1:ff:67:36:91:1e:\n        1b:9c:c6:03\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "ca.pem",
+        "-noout",
+        "-startdate",
+        "-enddate",
+        "-subject",
+        "-issuer",
+        "-fingerprint",
+        "-sha256"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "notBefore=Oct  3 07:26:43 2026 GMT\nnotAfter=Oct  5 07:26:43 2026 GMT\nsubject=CN=Independent diagnostics CA\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=A4:9A:CF:CC:F7:69:86:67:17:FD:A9:9A:78:27:8A:15:B1:22:74:E2:E4:CF:8B:18:0C:80:66:C7:46:0E:D2:AC\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "ca.pem",
+        "-noout",
+        "-pubkey"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuMZLiGgDMQu0u/nh9DCN\nc2ErIjk4ixMmrDQyjeOLL+0fRyx/zvD/J9QEU4A6Xn9Y/YMhSCJY8W6L5/Dn5XoV\nzqPoGJXFXr7LKSTQzU5fkQXfWnMyYz+qvTL7yPQT0vnNuPIqsZrDhHeiWrr/hig6\nv5b4Qv3s1dtqD8+fgkn64IIMdeCcfGJZwkEsHb8wOn3nXmJbI28aofSxIEx7p3P8\nWClktSVm/6oHS6YZBAxBnYctFSHlXs2AA6CSP/4J2/fjuLqliM78cIerFsOTWubt\nMCbOaZEB0tE6Zfm/yEkQIIbWx5hKp7cnnEEJ6Ew72NiKwDPpcxu0DkhzXBVO/os7\nmwIDAQAB\n-----END PUBLIC KEY-----\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "server.pem",
+        "-noout",
+        "-text"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            29:76:5c:54:1f:a4:87:d9:f2:01:c3:e4:11:d4:35:7d:c9:55:76:79\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Oct  3 07:26:43 2026 GMT\n            Not After : Oct  5 07:26:43 2026 GMT\n        Subject: CN=diagnostics.workbench.test\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:f3:68:26:0b:28:2c:6b:ed:a5:56:d4:c3:d4:25:\n                    81:35:a8:37:e9:0e:54:38:5f:f6:47:43:3a:45:e5:\n                    d3:3d:3e:e9:c7:99:39:c1:99:2f:f8:8c:ca:e2:65:\n                    b7:5d:31:af:d4:98:bb:ed:ed:9c:95:9b:8b:0e:c2:\n                    a7:92:40:3a:87:8d:fe:df:c4:b0:be:24:4a:02:26:\n                    cc:bc:cd:11:95:ab:b9:ca:24:92:2e:4a:c1:56:89:\n                    3a:a5:b8:11:7c:48:15:50:0d:f6:30:af:da:17:cc:\n                    69:03:f2:e9:0c:33:42:86:6d:6b:02:de:d1:2b:01:\n                    cc:05:5a:a3:1f:26:c8:cc:c6:14:d2:8a:9a:ce:a6:\n                    6d:4d:f9:c9:76:34:c7:2c:27:de:47:51:ca:50:bb:\n                    dc:c7:af:ee:0e:a4:95:c1:bc:d9:cb:21:75:db:16:\n                    6a:22:eb:61:4e:99:53:23:3e:bc:7f:3d:cd:62:f6:\n                    a0:6a:cf:5c:46:d8:ac:e0:af:db:c8:5f:bf:21:b8:\n                    f7:16:04:23:0f:ec:f2:b3:14:69:87:84:de:18:ea:\n                    02:d9:b6:8d:0f:7b:60:23:92:2c:ec:78:49:ca:31:\n                    e8:78:21:88:0d:36:20:69:3e:bc:f9:2b:b7:86:3d:\n                    e2:2f:86:68:01:45:e1:f7:fa:81:c9:90:c5:3c:22:\n                    49:e1\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Subject Alternative Name: \n                DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n            X509v3 Basic Constraints: critical\n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature, Key Encipherment\n            X509v3 Extended Key Usage: \n                TLS Web Server Authentication\n            X509v3 Subject Key Identifier: \n                0B:8F:A4:70:D1:B2:7A:EE:EB:2F:43:2B:68:AC:3E:65:EF:88:C6:8A\n            X509v3 Authority Key Identifier: \n                3A:CD:30:28:49:09:8C:04:6D:26:8F:40:40:B3:02:83:73:67:A6:A4\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        a0:95:fc:02:4f:ee:bb:ad:a0:b7:60:b7:89:e1:af:b0:dc:31:\n        71:60:55:e2:81:34:e9:58:30:78:c7:b6:a0:ad:5d:99:aa:4c:\n        16:40:89:c0:c6:6c:94:c9:71:bc:73:85:1c:d4:e9:1a:66:27:\n        5f:af:27:83:c6:3a:38:b9:16:9e:e1:0a:d9:68:7e:60:d2:f1:\n        8d:31:e6:67:1a:ae:f3:26:c4:6d:f1:63:cf:ab:a1:15:a1:3f:\n        4e:80:5f:91:e6:85:27:f8:aa:41:9a:b2:0b:06:36:36:d5:b1:\n        9b:18:bf:3f:ff:41:d2:50:b7:04:55:c3:3e:38:88:7f:24:d2:\n        53:9a:a0:af:6b:46:cf:90:5b:e6:ed:7b:bf:f5:01:2c:51:c8:\n        c2:69:fe:e5:de:44:d1:44:72:ab:2f:37:a4:dc:ea:fa:fa:a6:\n        95:13:8a:22:7d:d1:e3:f2:5b:b6:52:06:8c:7c:f3:3d:10:9d:\n        73:24:33:31:9e:7a:a8:0c:4a:43:76:f4:ae:e2:e0:3f:d6:53:\n        78:a4:8e:51:0b:d6:39:d7:b3:29:c7:16:bb:a7:aa:f9:1a:5d:\n        b2:26:46:21:4b:c5:3d:37:6f:42:fc:41:44:f1:4e:7c:7d:87:\n        5d:54:db:b7:00:9b:32:26:60:32:8d:55:a0:83:9b:ed:3e:98:\n        64:57:ca:5f\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "server.pem",
+        "-noout",
+        "-startdate",
+        "-enddate",
+        "-subject",
+        "-issuer",
+        "-fingerprint",
+        "-sha256"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "notBefore=Oct  3 07:26:43 2026 GMT\nnotAfter=Oct  5 07:26:43 2026 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=08:60:B4:05:7E:01:D4:C5:14:92:B4:8C:73:5E:24:BC:D3:36:1B:75:C6:6E:A7:B5:C4:E4:02:3D:CC:3D:3C:07\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "server.pem",
+        "-noout",
+        "-pubkey"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA82gmCygsa+2lVtTD1CWB\nNag36Q5UOF/2R0M6ReXTPT7px5k5wZkv+IzK4mW3XTGv1Ji77e2clZuLDsKnkkA6\nh43+38SwviRKAibMvM0Rlau5yiSSLkrBVok6pbgRfEgVUA32MK/aF8xpA/LpDDNC\nhm1rAt7RKwHMBVqjHybIzMYU0oqazqZtTfnJdjTHLCfeR1HKULvcx6/uDqSVwbzZ\nyyF12xZqIuthTplTIz68fz3NYvagas9cRtis4K/byF+/Ibj3FgQjD+zysxRph4Te\nGOoC2baND3tgI5Is7HhJyjHoeCGIDTYgaT68+Su3hj3iL4ZoAUXh9/qByZDFPCJJ\n4QIDAQAB\n-----END PUBLIC KEY-----\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "verify",
+        "-check_ss_sig",
+        "-CAfile",
+        "ca.pem",
+        "ca.pem"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "ca.pem: OK\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "verify",
+        "-purpose",
+        "sslserver",
+        "-verify_hostname",
+        "diagnostics.workbench.test",
+        "-CAfile",
+        "ca.pem",
+        "server.pem"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "server.pem: OK\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "verify",
+        "-purpose",
+        "sslserver",
+        "-verify_hostname",
+        "wrong.workbench.test",
+        "-CAfile",
+        "ca.pem",
+        "server.pem"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 2,
+      "stdout": "",
+      "stderr": "CN=diagnostics.workbench.test\nerror 62 at 0 depth lookup: hostname mismatch\nerror server.pem: verification failed\n"
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "version",
+        "-a"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "OpenSSL 3.5.6 7 Apr 2026 (Library: OpenSSL 3.5.6 7 Apr 2026)\nbuilt on: Sat Jun  6 19:55:35 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -Wa,--noexecstack -g -O2 -Werror=implicit-function-declaration -ffile-prefix-map=/build/reproducible-path/openssl-3.5.6=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZSTD -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=2\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific\nCPUINFO: OPENSSL_ia32cap=0x82b82201078bfffd:0x0000000000000000:0x0000000000000000:0x0000000000000000:0x0000000000000000\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "ca",
+        "-batch",
+        "-config",
+        "expired-ca.cnf",
+        "-in",
+        "server.csr",
+        "-out",
+        "independent-expired.pem",
+        "-startdate",
+        "20200101000000Z",
+        "-enddate",
+        "20210101000000Z",
+        "-notext",
+        "-md",
+        "sha256"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "",
+      "stderr": "Using configuration from expired-ca.cnf\nWarning: -enddate or -not_after option overriding -days option\nCheck that the request matches the signature\nSignature ok\nThe Subject's Distinguished Name is as follows\ncommonName            :ASN.1 12:'diagnostics.workbench.test'\nCertificate is to be certified until Jan  1 00:00:00 2021 GMT (-2101 days)\n\nWrite out database with 1 new entries\nDatabase updated\n"
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "independent-expired.pem",
+        "-noout",
+        "-startdate",
+        "-enddate",
+        "-subject",
+        "-issuer",
+        "-ext",
+        "subjectAltName"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "notBefore=Jan  1 00:00:00 2020 GMT\nnotAfter=Jan  1 00:00:00 2021 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nX509v3 Subject Alternative Name: \n    DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "independent-expired.pem",
+        "-noout",
+        "-pubkey"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA82gmCygsa+2lVtTD1CWB\nNag36Q5UOF/2R0M6ReXTPT7px5k5wZkv+IzK4mW3XTGv1Ji77e2clZuLDsKnkkA6\nh43+38SwviRKAibMvM0Rlau5yiSSLkrBVok6pbgRfEgVUA32MK/aF8xpA/LpDDNC\nhm1rAt7RKwHMBVqjHybIzMYU0oqazqZtTfnJdjTHLCfeR1HKULvcx6/uDqSVwbzZ\nyyF12xZqIuthTplTIz68fz3NYvagas9cRtis4K/byF+/Ibj3FgQjD+zysxRph4Te\nGOoC2baND3tgI5Is7HhJyjHoeCGIDTYgaT68+Su3hj3iL4ZoAUXh9/qByZDFPCJJ\n4QIDAQAB\n-----END PUBLIC KEY-----\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "pkey",
+        "-in",
+        "server.key",
+        "-pubout"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA82gmCygsa+2lVtTD1CWB\nNag36Q5UOF/2R0M6ReXTPT7px5k5wZkv+IzK4mW3XTGv1Ji77e2clZuLDsKnkkA6\nh43+38SwviRKAibMvM0Rlau5yiSSLkrBVok6pbgRfEgVUA32MK/aF8xpA/LpDDNC\nhm1rAt7RKwHMBVqjHybIzMYU0oqazqZtTfnJdjTHLCfeR1HKULvcx6/uDqSVwbzZ\nyyF12xZqIuthTplTIz68fz3NYvagas9cRtis4K/byF+/Ibj3FgQjD+zysxRph4Te\nGOoC2baND3tgI5Is7HhJyjHoeCGIDTYgaT68+Su3hj3iL4ZoAUXh9/qByZDFPCJJ\n4QIDAQAB\n-----END PUBLIC KEY-----\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "verify",
+        "-no_check_time",
+        "-verify_hostname",
+        "diagnostics.workbench.test",
+        "-CAfile",
+        "ca.pem",
+        "independent-expired.pem"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "independent-expired.pem: OK\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "verify",
+        "-verify_hostname",
+        "diagnostics.workbench.test",
+        "-CAfile",
+        "ca.pem",
+        "independent-expired.pem"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 2,
+      "stdout": "",
+      "stderr": "CN=diagnostics.workbench.test\nerror 10 at 0 depth lookup: certificate has expired\nerror independent-expired.pem: verification failed\n"
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "independent-expired.pem",
+        "-noout",
+        "-text"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number: 4096 (0x1000)\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Jan  1 00:00:00 2020 GMT\n            Not After : Jan  1 00:00:00 2021 GMT\n        Subject: CN=diagnostics.workbench.test\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:f3:68:26:0b:28:2c:6b:ed:a5:56:d4:c3:d4:25:\n                    81:35:a8:37:e9:0e:54:38:5f:f6:47:43:3a:45:e5:\n                    d3:3d:3e:e9:c7:99:39:c1:99:2f:f8:8c:ca:e2:65:\n                    b7:5d:31:af:d4:98:bb:ed:ed:9c:95:9b:8b:0e:c2:\n                    a7:92:40:3a:87:8d:fe:df:c4:b0:be:24:4a:02:26:\n                    cc:bc:cd:11:95:ab:b9:ca:24:92:2e:4a:c1:56:89:\n                    3a:a5:b8:11:7c:48:15:50:0d:f6:30:af:da:17:cc:\n                    69:03:f2:e9:0c:33:42:86:6d:6b:02:de:d1:2b:01:\n                    cc:05:5a:a3:1f:26:c8:cc:c6:14:d2:8a:9a:ce:a6:\n                    6d:4d:f9:c9:76:34:c7:2c:27:de:47:51:ca:50:bb:\n                    dc:c7:af:ee:0e:a4:95:c1:bc:d9:cb:21:75:db:16:\n                    6a:22:eb:61:4e:99:53:23:3e:bc:7f:3d:cd:62:f6:\n                    a0:6a:cf:5c:46:d8:ac:e0:af:db:c8:5f:bf:21:b8:\n                    f7:16:04:23:0f:ec:f2:b3:14:69:87:84:de:18:ea:\n                    02:d9:b6:8d:0f:7b:60:23:92:2c:ec:78:49:ca:31:\n                    e8:78:21:88:0d:36:20:69:3e:bc:f9:2b:b7:86:3d:\n                    e2:2f:86:68:01:45:e1:f7:fa:81:c9:90:c5:3c:22:\n                    49:e1\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Subject Alternative Name: \n                DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n            X509v3 Basic Constraints: critical\n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature, Key Encipherment\n            X509v3 Extended Key Usage: \n                TLS Web Server Authentication\n            X509v3 Subject Key Identifier: \n                0B:8F:A4:70:D1:B2:7A:EE:EB:2F:43:2B:68:AC:3E:65:EF:88:C6:8A\n            X509v3 Authority Key Identifier: \n                3A:CD:30:28:49:09:8C:04:6D:26:8F:40:40:B3:02:83:73:67:A6:A4\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        00:5d:03:4f:c8:9f:63:ff:54:82:16:a1:11:47:33:0f:c4:95:\n        f5:a9:fd:69:da:cf:92:31:05:b4:9d:be:0e:ae:94:6d:5d:b2:\n        6d:49:fb:73:18:12:5d:2c:46:0c:39:b0:49:f4:31:70:89:82:\n        05:24:c2:80:42:3d:8c:7c:dc:aa:f7:88:66:26:85:0b:d0:69:\n        06:c2:7d:fa:20:78:3f:6a:87:29:41:c1:bb:42:9f:88:0b:77:\n        66:19:07:6d:a8:3a:d8:aa:ef:23:90:9b:cd:c2:0a:d6:0b:54:\n        f4:7e:e5:31:7a:66:84:08:cf:6e:39:13:a6:ae:93:ca:8c:6c:\n        f7:68:3e:5c:36:78:95:5b:3a:49:e9:8e:83:88:3f:60:7d:a1:\n        e7:16:78:b2:64:31:ec:7b:7b:33:b6:60:82:76:e6:1e:95:73:\n        a2:c2:a9:7c:e7:3a:97:ed:b5:0a:e3:e3:21:5c:bb:a4:d6:26:\n        31:c1:45:37:c8:bd:d9:47:64:a2:e4:a3:39:6e:3a:7f:8c:7d:\n        81:bb:2c:d6:46:1d:34:08:a6:c1:2a:2c:9e:e4:37:ff:f4:03:\n        1e:e6:7e:23:e9:5b:a1:4a:cb:45:e1:63:3f:38:01:30:f4:79:\n        a9:0a:36:b2:19:7c:06:c7:5d:08:c0:41:f3:f1:37:42:87:9b:\n        f9:8c:90:72\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "independent-expired.pem",
+        "-noout",
+        "-startdate",
+        "-enddate",
+        "-subject",
+        "-issuer",
+        "-fingerprint",
+        "-sha256"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "notBefore=Jan  1 00:00:00 2020 GMT\nnotAfter=Jan  1 00:00:00 2021 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=24:39:3F:B8:C3:D7:F3:A2:93:E4:F6:ED:56:C6:AB:E3:DD:D2:2C:11:AE:79:8A:65:72:05:47:99:ED:C4:B7:50\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "x509",
+        "-in",
+        "independent-expired.pem",
+        "-noout",
+        "-pubkey"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA82gmCygsa+2lVtTD1CWB\nNag36Q5UOF/2R0M6ReXTPT7px5k5wZkv+IzK4mW3XTGv1Ji77e2clZuLDsKnkkA6\nh43+38SwviRKAibMvM0Rlau5yiSSLkrBVok6pbgRfEgVUA32MK/aF8xpA/LpDDNC\nhm1rAt7RKwHMBVqjHybIzMYU0oqazqZtTfnJdjTHLCfeR1HKULvcx6/uDqSVwbzZ\nyyF12xZqIuthTplTIz68fz3NYvagas9cRtis4K/byF+/Ibj3FgQjD+zysxRph4Te\nGOoC2baND3tgI5Is7HhJyjHoeCGIDTYgaT68+Su3hj3iL4ZoAUXh9/qByZDFPCJJ\n4QIDAQAB\n-----END PUBLIC KEY-----\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "verify",
+        "-purpose",
+        "sslserver",
+        "-no_check_time",
+        "-verify_hostname",
+        "diagnostics.workbench.test",
+        "-CAfile",
+        "ca.pem",
+        "independent-expired.pem"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 0,
+      "stdout": "independent-expired.pem: OK\n",
+      "stderr": ""
+    },
+    {
+      "phase": "explicit-ca-extensions-green",
+      "argv": [
+        "/usr/bin/openssl",
+        "verify",
+        "-purpose",
+        "sslserver",
+        "-verify_hostname",
+        "diagnostics.workbench.test",
+        "-CAfile",
+        "ca.pem",
+        "independent-expired.pem"
+      ],
+      "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+      "env": {
+        "PATH": "/usr/bin:/bin",
+        "OPENSSL_CONF": "/dev/null",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "own_exit": 2,
+      "stdout": "",
+      "stderr": "CN=diagnostics.workbench.test\nerror 10 at 0 depth lookup: certificate has expired\nerror independent-expired.pem: verification failed\n"
+    }
+  ],
+  "CA_PROOF_PUBLIC_CERTIFICATE": [
+    {
+      "label": "old-ca",
+      "pem": "-----BEGIN CERTIFICATE-----\nMIIC+TCCAeGgAwIBAgIUCbKCGV/NWqg+BjfaqYGhou6pmhswDQYJKoZIhvcNAQEL\nBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjYx\nMDAzMDcyNjQzWhcNMjYxMDA1MDcyNjQzWjAlMSMwIQYDVQQDDBpJbmRlcGVuZGVu\ndCBkaWFnbm9zdGljcyBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\nANhWOq65fZHhMdpUEDKNVwB6on+qgL4mVS6rCjIILTbSyLvI0QM9s6J/DzMezpf0\niuiYaMvzwrjlybxDqgrsjvH5oxMts9Fxzp3YzG6QlfjH4+/d9LqWxWXrfKR121gF\nkJ8Hb1wPNs7DhDzCr3q9dZ5kpwineiB9A+I/7oRsLupS/ZCMLSLF/wzvvjqL0myD\nw3FOLmrzkY7nwWx3XZMfwTKzq9Ul5FnsvexVfTAK6smut64xlDTf+ZM/LsSrIbo+\ngzD2VlWbJabv2TH+uBE4EOINJ+TTpNzl9w0fMperNh46/XWpxprozvaF47+yf7x2\nhxUA8hW7uzrvpvVeopTvw10CAwEAAaMhMB8wHQYDVR0OBBYEFI9+VSfku2Y/+TB5\nRz8xhvzkqRPoMA0GCSqGSIb3DQEBCwUAA4IBAQCclBhk1rK5PbBzWCGFO2UJm54p\nZXx9ZgkMjhmpCU6n9qAiB3PWUTuV9KJPYugFbU5Rcykvi9A5+eCIvmFMYBgRLjmk\n+EqgIzOjeSOR5MsOan5r/pkgaqjUAat1slV4p4MtkHKv7ve+Vh6l2qT02vzgm4tb\nRzy7jGai6nCj39aLgDwYrbiKR2cbqiQOyq4UnL+MUKxACN6y7H4fBlFYVEG5OO2U\nAXr8tTtb0hZkx8s5cztKHofYNOVJPsLWp4tDrk5lp5TXONl1ovsozQT0iD+FNp/C\nXNemRfNgubkWjohuqFkWrGVlT849nf+zvf1FpwtefmE/1djeeXBDuhyhVpHe\n-----END CERTIFICATE-----\n",
+      "pem_sha256": "9d7993ba3061c8a167db97905139c560410b7702edf53e7a660e06fb7c6fe8cd",
+      "der_base64": "MIIC+TCCAeGgAwIBAgIUCbKCGV/NWqg+BjfaqYGhou6pmhswDQYJKoZIhvcNAQELBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjYxMDAzMDcyNjQzWhcNMjYxMDA1MDcyNjQzWjAlMSMwIQYDVQQDDBpJbmRlcGVuZGVudCBkaWFnbm9zdGljcyBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANhWOq65fZHhMdpUEDKNVwB6on+qgL4mVS6rCjIILTbSyLvI0QM9s6J/DzMezpf0iuiYaMvzwrjlybxDqgrsjvH5oxMts9Fxzp3YzG6QlfjH4+/d9LqWxWXrfKR121gFkJ8Hb1wPNs7DhDzCr3q9dZ5kpwineiB9A+I/7oRsLupS/ZCMLSLF/wzvvjqL0myDw3FOLmrzkY7nwWx3XZMfwTKzq9Ul5FnsvexVfTAK6smut64xlDTf+ZM/LsSrIbo+gzD2VlWbJabv2TH+uBE4EOINJ+TTpNzl9w0fMperNh46/XWpxprozvaF47+yf7x2hxUA8hW7uzrvpvVeopTvw10CAwEAAaMhMB8wHQYDVR0OBBYEFI9+VSfku2Y/+TB5Rz8xhvzkqRPoMA0GCSqGSIb3DQEBCwUAA4IBAQCclBhk1rK5PbBzWCGFO2UJm54pZXx9ZgkMjhmpCU6n9qAiB3PWUTuV9KJPYugFbU5Rcykvi9A5+eCIvmFMYBgRLjmk+EqgIzOjeSOR5MsOan5r/pkgaqjUAat1slV4p4MtkHKv7ve+Vh6l2qT02vzgm4tbRzy7jGai6nCj39aLgDwYrbiKR2cbqiQOyq4UnL+MUKxACN6y7H4fBlFYVEG5OO2UAXr8tTtb0hZkx8s5cztKHofYNOVJPsLWp4tDrk5lp5TXONl1ovsozQT0iD+FNp/CXNemRfNgubkWjohuqFkWrGVlT849nf+zvf1FpwtefmE/1djeeXBDuhyhVpHe",
+      "der_sha256": "911330cbc3f550cdd14a4564aef07d603e221b739361ee808cbcc492b76fab74",
+      "text": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            09:b2:82:19:5f:cd:5a:a8:3e:06:37:da:a9:81:a1:a2:ee:a9:9a:1b\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Oct  3 07:26:43 2026 GMT\n            Not After : Oct  5 07:26:43 2026 GMT\n        Subject: CN=Independent diagnostics CA\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:d8:56:3a:ae:b9:7d:91:e1:31:da:54:10:32:8d:\n                    57:00:7a:a2:7f:aa:80:be:26:55:2e:ab:0a:32:08:\n                    2d:36:d2:c8:bb:c8:d1:03:3d:b3:a2:7f:0f:33:1e:\n                    ce:97:f4:8a:e8:98:68:cb:f3:c2:b8:e5:c9:bc:43:\n                    aa:0a:ec:8e:f1:f9:a3:13:2d:b3:d1:71:ce:9d:d8:\n                    cc:6e:90:95:f8:c7:e3:ef:dd:f4:ba:96:c5:65:eb:\n                    7c:a4:75:db:58:05:90:9f:07:6f:5c:0f:36:ce:c3:\n                    84:3c:c2:af:7a:bd:75:9e:64:a7:08:a7:7a:20:7d:\n                    03:e2:3f:ee:84:6c:2e:ea:52:fd:90:8c:2d:22:c5:\n                    ff:0c:ef:be:3a:8b:d2:6c:83:c3:71:4e:2e:6a:f3:\n                    91:8e:e7:c1:6c:77:5d:93:1f:c1:32:b3:ab:d5:25:\n                    e4:59:ec:bd:ec:55:7d:30:0a:ea:c9:ae:b7:ae:31:\n                    94:34:df:f9:93:3f:2e:c4:ab:21:ba:3e:83:30:f6:\n                    56:55:9b:25:a6:ef:d9:31:fe:b8:11:38:10:e2:0d:\n                    27:e4:d3:a4:dc:e5:f7:0d:1f:32:97:ab:36:1e:3a:\n                    fd:75:a9:c6:9a:e8:ce:f6:85:e3:bf:b2:7f:bc:76:\n                    87:15:00:f2:15:bb:bb:3a:ef:a6:f5:5e:a2:94:ef:\n                    c3:5d\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Subject Key Identifier: \n                8F:7E:55:27:E4:BB:66:3F:F9:30:79:47:3F:31:86:FC:E4:A9:13:E8\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        9c:94:18:64:d6:b2:b9:3d:b0:73:58:21:85:3b:65:09:9b:9e:\n        29:65:7c:7d:66:09:0c:8e:19:a9:09:4e:a7:f6:a0:22:07:73:\n        d6:51:3b:95:f4:a2:4f:62:e8:05:6d:4e:51:73:29:2f:8b:d0:\n        39:f9:e0:88:be:61:4c:60:18:11:2e:39:a4:f8:4a:a0:23:33:\n        a3:79:23:91:e4:cb:0e:6a:7e:6b:fe:99:20:6a:a8:d4:01:ab:\n        75:b2:55:78:a7:83:2d:90:72:af:ee:f7:be:56:1e:a5:da:a4:\n        f4:da:fc:e0:9b:8b:5b:47:3c:bb:8c:66:a2:ea:70:a3:df:d6:\n        8b:80:3c:18:ad:b8:8a:47:67:1b:aa:24:0e:ca:ae:14:9c:bf:\n        8c:50:ac:40:08:de:b2:ec:7e:1f:06:51:58:54:41:b9:38:ed:\n        94:01:7a:fc:b5:3b:5b:d2:16:64:c7:cb:39:73:3b:4a:1e:87:\n        d8:34:e5:49:3e:c2:d6:a7:8b:43:ae:4e:65:a7:94:d7:38:d9:\n        75:a2:fb:28:cd:04:f4:88:3f:85:36:9f:c2:5c:d7:a6:45:f3:\n        60:b9:b9:16:8e:88:6e:a8:59:16:ac:65:65:4f:ce:3d:9d:ff:\n        b3:bd:fd:45:a7:0b:5e:7e:61:3f:d5:d8:de:79:70:43:ba:1c:\n        a1:56:91:de\n",
+      "facts": "notBefore=Oct  3 07:26:43 2026 GMT\nnotAfter=Oct  5 07:26:43 2026 GMT\nsubject=CN=Independent diagnostics CA\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=91:13:30:CB:C3:F5:50:CD:D1:4A:45:64:AE:F0:7D:60:3E:22:1B:73:93:61:EE:80:8C:BC:C4:92:B7:6F:AB:74\n",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2FY6rrl9keEx2lQQMo1X\nAHqif6qAviZVLqsKMggtNtLIu8jRAz2zon8PMx7Ol/SK6Jhoy/PCuOXJvEOqCuyO\n8fmjEy2z0XHOndjMbpCV+Mfj7930upbFZet8pHXbWAWQnwdvXA82zsOEPMKver11\nnmSnCKd6IH0D4j/uhGwu6lL9kIwtIsX/DO++OovSbIPDcU4uavORjufBbHddkx/B\nMrOr1SXkWey97FV9MArqya63rjGUNN/5kz8uxKshuj6DMPZWVZslpu/ZMf64ETgQ\n4g0n5NOk3OX3DR8yl6s2Hjr9danGmujO9oXjv7J/vHaHFQDyFbu7Ou+m9V6ilO/D\nXQIDAQAB\n-----END PUBLIC KEY-----\n"
+    },
+    {
+      "label": "old-current-leaf",
+      "pem": "-----BEGIN CERTIFICATE-----\nMIIDjjCCAnagAwIBAgIUFLX+pIEEPiOvDYWAW4aeXtkStkwwDQYJKoZIhvcNAQEL\nBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjYx\nMDAzMDcyNjQzWhcNMjYxMDA1MDcyNjQzWjAlMSMwIQYDVQQDDBpkaWFnbm9zdGlj\ncy53b3JrYmVuY2gudGVzdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\nAJZa6bEHtCvppR2pspG2TUtE66Cd1WKtmUvjNp8RdOeBUVDKA0Sm+9nB9xVHH3eE\njEsZ02RYu4Fjb4tuLGwZDhZ9NKJTbpfNVsar6h2GVfR+oaq8QxozpnzGw4cxt0Mu\n9XpW5jmVpgk1S4RR1R8tIKWxEczYLIEKRiI+8Dl0HT/PBDdwPgoc2a5u+F/9riXX\nLVtT4po1Lj9tTO6F24BPH64qJ1uWGe4sJHLekq77up61PVxA8G7un0xzh6kyNH/h\ni8cFZobCIYQ8xYHhNeuAjS3eNCbrPF9Z7xV3MQ74KY40SxC8huZISGZiFmIUcgPd\noTcu0MIxb+ujwauDbfJe4TMCAwEAAaOBtTCBsjA9BgNVHREENjA0ghpkaWFnbm9z\ndGljcy53b3JrYmVuY2gudGVzdIcEfwAAAYcQAAAAAAAAAAAAAAAAAAAAATAMBgNV\nHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAd\nBgNVHQ4EFgQULlKXqqnjQ2GE85w9vDyqGYAED1kwHwYDVR0jBBgwFoAUj35VJ+S7\nZj/5MHlHPzGG/OSpE+gwDQYJKoZIhvcNAQELBQADggEBABcjbjNM6fZYu2dNvLCu\n4OyCfhWGT6tVNmgiPAn8C8fuVXgRkgi7Ix3KqWEcv+xeHJW/92Pt1vQNbvUgaKEu\nHzcvg67NPNV4jC1WuqF55aNAxCcwgX4h/MeKfnVcpJX4jtYY+LS207/pdsyTqELG\n97DW1+8bG0QFJVPAhqrJ9iaWbWFFWRjBPH4G9D/U15vu7OhOZX83acOQRmBd8tj2\n8DhtNDeRiHgbvAoPA8e8wWG0830yk+GferIPVgt67+k2xRuibHhJ0OZJe6cLx0qt\nsCdBP0HoCyMCcQNYB032rlZRfvB0n5Y+IZ66YUh9Hql/aZ1oIl5kG/5Wcqw+j4kA\n29E=\n-----END CERTIFICATE-----\n",
+      "pem_sha256": "3c06e4c913046ecd3484e9241dca79089c6433105c2d0355ebb663e91a44460b",
+      "der_base64": "MIIDjjCCAnagAwIBAgIUFLX+pIEEPiOvDYWAW4aeXtkStkwwDQYJKoZIhvcNAQELBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjYxMDAzMDcyNjQzWhcNMjYxMDA1MDcyNjQzWjAlMSMwIQYDVQQDDBpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJZa6bEHtCvppR2pspG2TUtE66Cd1WKtmUvjNp8RdOeBUVDKA0Sm+9nB9xVHH3eEjEsZ02RYu4Fjb4tuLGwZDhZ9NKJTbpfNVsar6h2GVfR+oaq8QxozpnzGw4cxt0Mu9XpW5jmVpgk1S4RR1R8tIKWxEczYLIEKRiI+8Dl0HT/PBDdwPgoc2a5u+F/9riXXLVtT4po1Lj9tTO6F24BPH64qJ1uWGe4sJHLekq77up61PVxA8G7un0xzh6kyNH/hi8cFZobCIYQ8xYHhNeuAjS3eNCbrPF9Z7xV3MQ74KY40SxC8huZISGZiFmIUcgPdoTcu0MIxb+ujwauDbfJe4TMCAwEAAaOBtTCBsjA9BgNVHREENjA0ghpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdIcEfwAAAYcQAAAAAAAAAAAAAAAAAAAAATAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAdBgNVHQ4EFgQULlKXqqnjQ2GE85w9vDyqGYAED1kwHwYDVR0jBBgwFoAUj35VJ+S7Zj/5MHlHPzGG/OSpE+gwDQYJKoZIhvcNAQELBQADggEBABcjbjNM6fZYu2dNvLCu4OyCfhWGT6tVNmgiPAn8C8fuVXgRkgi7Ix3KqWEcv+xeHJW/92Pt1vQNbvUgaKEuHzcvg67NPNV4jC1WuqF55aNAxCcwgX4h/MeKfnVcpJX4jtYY+LS207/pdsyTqELG97DW1+8bG0QFJVPAhqrJ9iaWbWFFWRjBPH4G9D/U15vu7OhOZX83acOQRmBd8tj28DhtNDeRiHgbvAoPA8e8wWG0830yk+GferIPVgt67+k2xRuibHhJ0OZJe6cLx0qtsCdBP0HoCyMCcQNYB032rlZRfvB0n5Y+IZ66YUh9Hql/aZ1oIl5kG/5Wcqw+j4kA29E=",
+      "der_sha256": "14aec110f49e0440543a8344183d8263aa3713a77c9689d7553c925de2d801bb",
+      "text": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            14:b5:fe:a4:81:04:3e:23:af:0d:85:80:5b:86:9e:5e:d9:12:b6:4c\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Oct  3 07:26:43 2026 GMT\n            Not After : Oct  5 07:26:43 2026 GMT\n        Subject: CN=diagnostics.workbench.test\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:96:5a:e9:b1:07:b4:2b:e9:a5:1d:a9:b2:91:b6:\n                    4d:4b:44:eb:a0:9d:d5:62:ad:99:4b:e3:36:9f:11:\n                    74:e7:81:51:50:ca:03:44:a6:fb:d9:c1:f7:15:47:\n                    1f:77:84:8c:4b:19:d3:64:58:bb:81:63:6f:8b:6e:\n                    2c:6c:19:0e:16:7d:34:a2:53:6e:97:cd:56:c6:ab:\n                    ea:1d:86:55:f4:7e:a1:aa:bc:43:1a:33:a6:7c:c6:\n                    c3:87:31:b7:43:2e:f5:7a:56:e6:39:95:a6:09:35:\n                    4b:84:51:d5:1f:2d:20:a5:b1:11:cc:d8:2c:81:0a:\n                    46:22:3e:f0:39:74:1d:3f:cf:04:37:70:3e:0a:1c:\n                    d9:ae:6e:f8:5f:fd:ae:25:d7:2d:5b:53:e2:9a:35:\n                    2e:3f:6d:4c:ee:85:db:80:4f:1f:ae:2a:27:5b:96:\n                    19:ee:2c:24:72:de:92:ae:fb:ba:9e:b5:3d:5c:40:\n                    f0:6e:ee:9f:4c:73:87:a9:32:34:7f:e1:8b:c7:05:\n                    66:86:c2:21:84:3c:c5:81:e1:35:eb:80:8d:2d:de:\n                    34:26:eb:3c:5f:59:ef:15:77:31:0e:f8:29:8e:34:\n                    4b:10:bc:86:e6:48:48:66:62:16:62:14:72:03:dd:\n                    a1:37:2e:d0:c2:31:6f:eb:a3:c1:ab:83:6d:f2:5e:\n                    e1:33\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Subject Alternative Name: \n                DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n            X509v3 Basic Constraints: critical\n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature, Key Encipherment\n            X509v3 Extended Key Usage: \n                TLS Web Server Authentication\n            X509v3 Subject Key Identifier: \n                2E:52:97:AA:A9:E3:43:61:84:F3:9C:3D:BC:3C:AA:19:80:04:0F:59\n            X509v3 Authority Key Identifier: \n                8F:7E:55:27:E4:BB:66:3F:F9:30:79:47:3F:31:86:FC:E4:A9:13:E8\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        17:23:6e:33:4c:e9:f6:58:bb:67:4d:bc:b0:ae:e0:ec:82:7e:\n        15:86:4f:ab:55:36:68:22:3c:09:fc:0b:c7:ee:55:78:11:92:\n        08:bb:23:1d:ca:a9:61:1c:bf:ec:5e:1c:95:bf:f7:63:ed:d6:\n        f4:0d:6e:f5:20:68:a1:2e:1f:37:2f:83:ae:cd:3c:d5:78:8c:\n        2d:56:ba:a1:79:e5:a3:40:c4:27:30:81:7e:21:fc:c7:8a:7e:\n        75:5c:a4:95:f8:8e:d6:18:f8:b4:b6:d3:bf:e9:76:cc:93:a8:\n        42:c6:f7:b0:d6:d7:ef:1b:1b:44:05:25:53:c0:86:aa:c9:f6:\n        26:96:6d:61:45:59:18:c1:3c:7e:06:f4:3f:d4:d7:9b:ee:ec:\n        e8:4e:65:7f:37:69:c3:90:46:60:5d:f2:d8:f6:f0:38:6d:34:\n        37:91:88:78:1b:bc:0a:0f:03:c7:bc:c1:61:b4:f3:7d:32:93:\n        e1:9f:7a:b2:0f:56:0b:7a:ef:e9:36:c5:1b:a2:6c:78:49:d0:\n        e6:49:7b:a7:0b:c7:4a:ad:b0:27:41:3f:41:e8:0b:23:02:71:\n        03:58:07:4d:f6:ae:56:51:7e:f0:74:9f:96:3e:21:9e:ba:61:\n        48:7d:1e:a9:7f:69:9d:68:22:5e:64:1b:fe:56:72:ac:3e:8f:\n        89:00:db:d1\n",
+      "facts": "notBefore=Oct  3 07:26:43 2026 GMT\nnotAfter=Oct  5 07:26:43 2026 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=14:AE:C1:10:F4:9E:04:40:54:3A:83:44:18:3D:82:63:AA:37:13:A7:7C:96:89:D7:55:3C:92:5D:E2:D8:01:BB\n",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAllrpsQe0K+mlHamykbZN\nS0TroJ3VYq2ZS+M2nxF054FRUMoDRKb72cH3FUcfd4SMSxnTZFi7gWNvi24sbBkO\nFn00olNul81WxqvqHYZV9H6hqrxDGjOmfMbDhzG3Qy71elbmOZWmCTVLhFHVHy0g\npbERzNgsgQpGIj7wOXQdP88EN3A+ChzZrm74X/2uJdctW1PimjUuP21M7oXbgE8f\nrionW5YZ7iwkct6Srvu6nrU9XEDwbu6fTHOHqTI0f+GLxwVmhsIhhDzFgeE164CN\nLd40Jus8X1nvFXcxDvgpjjRLELyG5khIZmIWYhRyA92hNy7QwjFv66PBq4Nt8l7h\nMwIDAQAB\n-----END PUBLIC KEY-----\n"
+    },
+    {
+      "label": "old-expired-leaf",
+      "pem": "-----BEGIN CERTIFICATE-----\nMIIDfDCCAmSgAwIBAgICEAAwDQYJKoZIhvcNAQELBQAwJTEjMCEGA1UEAwwaSW5k\nZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjAwMTAxMDAwMDAwWhcNMjEwMTAx\nMDAwMDAwWjAlMSMwIQYDVQQDDBpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdDCC\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJZa6bEHtCvppR2pspG2TUtE\n66Cd1WKtmUvjNp8RdOeBUVDKA0Sm+9nB9xVHH3eEjEsZ02RYu4Fjb4tuLGwZDhZ9\nNKJTbpfNVsar6h2GVfR+oaq8QxozpnzGw4cxt0Mu9XpW5jmVpgk1S4RR1R8tIKWx\nEczYLIEKRiI+8Dl0HT/PBDdwPgoc2a5u+F/9riXXLVtT4po1Lj9tTO6F24BPH64q\nJ1uWGe4sJHLekq77up61PVxA8G7un0xzh6kyNH/hi8cFZobCIYQ8xYHhNeuAjS3e\nNCbrPF9Z7xV3MQ74KY40SxC8huZISGZiFmIUcgPdoTcu0MIxb+ujwauDbfJe4TMC\nAwEAAaOBtTCBsjA9BgNVHREENjA0ghpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVz\ndIcEfwAAAYcQAAAAAAAAAAAAAAAAAAAAATAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB\n/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAdBgNVHQ4EFgQULlKXqqnjQ2GE\n85w9vDyqGYAED1kwHwYDVR0jBBgwFoAUj35VJ+S7Zj/5MHlHPzGG/OSpE+gwDQYJ\nKoZIhvcNAQELBQADggEBAKucEWfA0D3hvZvna3mvsj7vaIrALT4dluoKWSBEXFIM\n+WEN8bHj00o6pU/PO8iurE8KjA++eeKkxuseEw/m0ExCRPn9ydmrG38Rto9Tr8Av\nV2PCE4MqCmx/cYyPdgR6u/6eAWvRjT8uKowdkqfXZCQ2x7QezdK0L3yULNUvWHuU\nKM73ucWY3wXvXt28f3vU5M/qL/4xEgYrSBB3ICg1WYzg1LjXn3kdsBnXBuQDtA16\nRZ4vK50GZgBeSDzfJ/uxrOp8alPAhp52z5A6WkR2S5RGQ4vK0VuTLaqsQbStf1BU\n0jPjrlqYRIMoQVwBkmt0ZKRZs8VyYTQZQNbjOl1oe4Q=\n-----END CERTIFICATE-----\n",
+      "pem_sha256": "12fbf0882d0b35c214009a4c558ea53b97118a85177e38b38debd48468249697",
+      "der_base64": "MIIDfDCCAmSgAwIBAgICEAAwDQYJKoZIhvcNAQELBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjAwMTAxMDAwMDAwWhcNMjEwMTAxMDAwMDAwWjAlMSMwIQYDVQQDDBpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJZa6bEHtCvppR2pspG2TUtE66Cd1WKtmUvjNp8RdOeBUVDKA0Sm+9nB9xVHH3eEjEsZ02RYu4Fjb4tuLGwZDhZ9NKJTbpfNVsar6h2GVfR+oaq8QxozpnzGw4cxt0Mu9XpW5jmVpgk1S4RR1R8tIKWxEczYLIEKRiI+8Dl0HT/PBDdwPgoc2a5u+F/9riXXLVtT4po1Lj9tTO6F24BPH64qJ1uWGe4sJHLekq77up61PVxA8G7un0xzh6kyNH/hi8cFZobCIYQ8xYHhNeuAjS3eNCbrPF9Z7xV3MQ74KY40SxC8huZISGZiFmIUcgPdoTcu0MIxb+ujwauDbfJe4TMCAwEAAaOBtTCBsjA9BgNVHREENjA0ghpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdIcEfwAAAYcQAAAAAAAAAAAAAAAAAAAAATAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAdBgNVHQ4EFgQULlKXqqnjQ2GE85w9vDyqGYAED1kwHwYDVR0jBBgwFoAUj35VJ+S7Zj/5MHlHPzGG/OSpE+gwDQYJKoZIhvcNAQELBQADggEBAKucEWfA0D3hvZvna3mvsj7vaIrALT4dluoKWSBEXFIM+WEN8bHj00o6pU/PO8iurE8KjA++eeKkxuseEw/m0ExCRPn9ydmrG38Rto9Tr8AvV2PCE4MqCmx/cYyPdgR6u/6eAWvRjT8uKowdkqfXZCQ2x7QezdK0L3yULNUvWHuUKM73ucWY3wXvXt28f3vU5M/qL/4xEgYrSBB3ICg1WYzg1LjXn3kdsBnXBuQDtA16RZ4vK50GZgBeSDzfJ/uxrOp8alPAhp52z5A6WkR2S5RGQ4vK0VuTLaqsQbStf1BU0jPjrlqYRIMoQVwBkmt0ZKRZs8VyYTQZQNbjOl1oe4Q=",
+      "der_sha256": "735045b1d320410fef4c9cae2244f59e366d9be8b61f693e806e9620a294807f",
+      "text": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number: 4096 (0x1000)\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Jan  1 00:00:00 2020 GMT\n            Not After : Jan  1 00:00:00 2021 GMT\n        Subject: CN=diagnostics.workbench.test\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:96:5a:e9:b1:07:b4:2b:e9:a5:1d:a9:b2:91:b6:\n                    4d:4b:44:eb:a0:9d:d5:62:ad:99:4b:e3:36:9f:11:\n                    74:e7:81:51:50:ca:03:44:a6:fb:d9:c1:f7:15:47:\n                    1f:77:84:8c:4b:19:d3:64:58:bb:81:63:6f:8b:6e:\n                    2c:6c:19:0e:16:7d:34:a2:53:6e:97:cd:56:c6:ab:\n                    ea:1d:86:55:f4:7e:a1:aa:bc:43:1a:33:a6:7c:c6:\n                    c3:87:31:b7:43:2e:f5:7a:56:e6:39:95:a6:09:35:\n                    4b:84:51:d5:1f:2d:20:a5:b1:11:cc:d8:2c:81:0a:\n                    46:22:3e:f0:39:74:1d:3f:cf:04:37:70:3e:0a:1c:\n                    d9:ae:6e:f8:5f:fd:ae:25:d7:2d:5b:53:e2:9a:35:\n                    2e:3f:6d:4c:ee:85:db:80:4f:1f:ae:2a:27:5b:96:\n                    19:ee:2c:24:72:de:92:ae:fb:ba:9e:b5:3d:5c:40:\n                    f0:6e:ee:9f:4c:73:87:a9:32:34:7f:e1:8b:c7:05:\n                    66:86:c2:21:84:3c:c5:81:e1:35:eb:80:8d:2d:de:\n                    34:26:eb:3c:5f:59:ef:15:77:31:0e:f8:29:8e:34:\n                    4b:10:bc:86:e6:48:48:66:62:16:62:14:72:03:dd:\n                    a1:37:2e:d0:c2:31:6f:eb:a3:c1:ab:83:6d:f2:5e:\n                    e1:33\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Subject Alternative Name: \n                DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n            X509v3 Basic Constraints: critical\n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature, Key Encipherment\n            X509v3 Extended Key Usage: \n                TLS Web Server Authentication\n            X509v3 Subject Key Identifier: \n                2E:52:97:AA:A9:E3:43:61:84:F3:9C:3D:BC:3C:AA:19:80:04:0F:59\n            X509v3 Authority Key Identifier: \n                8F:7E:55:27:E4:BB:66:3F:F9:30:79:47:3F:31:86:FC:E4:A9:13:E8\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        ab:9c:11:67:c0:d0:3d:e1:bd:9b:e7:6b:79:af:b2:3e:ef:68:\n        8a:c0:2d:3e:1d:96:ea:0a:59:20:44:5c:52:0c:f9:61:0d:f1:\n        b1:e3:d3:4a:3a:a5:4f:cf:3b:c8:ae:ac:4f:0a:8c:0f:be:79:\n        e2:a4:c6:eb:1e:13:0f:e6:d0:4c:42:44:f9:fd:c9:d9:ab:1b:\n        7f:11:b6:8f:53:af:c0:2f:57:63:c2:13:83:2a:0a:6c:7f:71:\n        8c:8f:76:04:7a:bb:fe:9e:01:6b:d1:8d:3f:2e:2a:8c:1d:92:\n        a7:d7:64:24:36:c7:b4:1e:cd:d2:b4:2f:7c:94:2c:d5:2f:58:\n        7b:94:28:ce:f7:b9:c5:98:df:05:ef:5e:dd:bc:7f:7b:d4:e4:\n        cf:ea:2f:fe:31:12:06:2b:48:10:77:20:28:35:59:8c:e0:d4:\n        b8:d7:9f:79:1d:b0:19:d7:06:e4:03:b4:0d:7a:45:9e:2f:2b:\n        9d:06:66:00:5e:48:3c:df:27:fb:b1:ac:ea:7c:6a:53:c0:86:\n        9e:76:cf:90:3a:5a:44:76:4b:94:46:43:8b:ca:d1:5b:93:2d:\n        aa:ac:41:b4:ad:7f:50:54:d2:33:e3:ae:5a:98:44:83:28:41:\n        5c:01:92:6b:74:64:a4:59:b3:c5:72:61:34:19:40:d6:e3:3a:\n        5d:68:7b:84\n",
+      "facts": "notBefore=Jan  1 00:00:00 2020 GMT\nnotAfter=Jan  1 00:00:00 2021 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=73:50:45:B1:D3:20:41:0F:EF:4C:9C:AE:22:44:F5:9E:36:6D:9B:E8:B6:1F:69:3E:80:6E:96:20:A2:94:80:7F\n",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAllrpsQe0K+mlHamykbZN\nS0TroJ3VYq2ZS+M2nxF054FRUMoDRKb72cH3FUcfd4SMSxnTZFi7gWNvi24sbBkO\nFn00olNul81WxqvqHYZV9H6hqrxDGjOmfMbDhzG3Qy71elbmOZWmCTVLhFHVHy0g\npbERzNgsgQpGIj7wOXQdP88EN3A+ChzZrm74X/2uJdctW1PimjUuP21M7oXbgE8f\nrionW5YZ7iwkct6Srvu6nrU9XEDwbu6fTHOHqTI0f+GLxwVmhsIhhDzFgeE164CN\nLd40Jus8X1nvFXcxDvgpjjRLELyG5khIZmIWYhRyA92hNy7QwjFv66PBq4Nt8l7h\nMwIDAQAB\n-----END PUBLIC KEY-----\n"
+    },
+    {
+      "label": "corrected-ca",
+      "pem": "-----BEGIN CERTIFICATE-----\nMIIDGjCCAgKgAwIBAgIUFQEf2aUcFmgfw2l7B22h9SkKrrAwDQYJKoZIhvcNAQEL\nBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjYx\nMDAzMDcyNjQzWhcNMjYxMDA1MDcyNjQzWjAlMSMwIQYDVQQDDBpJbmRlcGVuZGVu\ndCBkaWFnbm9zdGljcyBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\nALjGS4hoAzELtLv54fQwjXNhKyI5OIsTJqw0Mo3jiy/tH0csf87w/yfUBFOAOl5/\nWP2DIUgiWPFui+fw5+V6Fc6j6BiVxV6+yykk0M1OX5EF31pzMmM/qr0y+8j0E9L5\nzbjyKrGaw4R3olq6/4YoOr+W+EL97NXbag/Pn4JJ+uCCDHXgnHxiWcJBLB2/MDp9\n515iWyNvGqH0sSBMe6dz/FgpZLUlZv+qB0umGQQMQZ2HLRUh5V7NgAOgkj/+Cdv3\n47i6pYjO/HCHqxbDk1rm7TAmzmmRAdLROmX5v8hJECCG1seYSqe3J5xBCehMO9jY\nisAz6XMbtA5Ic1wVTv6LO5sCAwEAAaNCMEAwDwYDVR0TAQH/BAUwAwEB/zAOBgNV\nHQ8BAf8EBAMCAQYwHQYDVR0OBBYEFDrNMChJCYwEbSaPQECzAoNzZ6akMA0GCSqG\nSIb3DQEBCwUAA4IBAQAsxdg9HJkxAMvIOOcJnSdmuAks9wtcV/jqXt0/4jY/Ad6A\n3rvxF98NOKqiGjtFK9jiccVYHQ2UvHYxx8H7Kgck82W9S/7+sR1OJ2But10esvgy\nCo8gFW9mx0ElG5XLlWMgXPB0B5w9UBmE6NissMO+ePFXfyIw5MrT/AO62jBtJYBx\njj8fZ77l7Om7JIt6aNH8s60RKT103NAM6xonLgyqKvLVGBudc5MOHrHYqO8jVWAn\nG4UfOZ+l1vlLj+H4GUWrGDPVhhU5eb2BqiQJ2HSO/ehsGbkk7vSwJBnSh5fVjx/W\nmfeCMia4Eb0+lrIgxoIRzeiCz7zx/2c2kR4bnMYD\n-----END CERTIFICATE-----\n",
+      "pem_sha256": "094aa3ffcff78a5aba4bb781b9fd0925ccc45c18a1d62b10b38834835f832c57",
+      "der_base64": "MIIDGjCCAgKgAwIBAgIUFQEf2aUcFmgfw2l7B22h9SkKrrAwDQYJKoZIhvcNAQELBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjYxMDAzMDcyNjQzWhcNMjYxMDA1MDcyNjQzWjAlMSMwIQYDVQQDDBpJbmRlcGVuZGVudCBkaWFnbm9zdGljcyBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALjGS4hoAzELtLv54fQwjXNhKyI5OIsTJqw0Mo3jiy/tH0csf87w/yfUBFOAOl5/WP2DIUgiWPFui+fw5+V6Fc6j6BiVxV6+yykk0M1OX5EF31pzMmM/qr0y+8j0E9L5zbjyKrGaw4R3olq6/4YoOr+W+EL97NXbag/Pn4JJ+uCCDHXgnHxiWcJBLB2/MDp9515iWyNvGqH0sSBMe6dz/FgpZLUlZv+qB0umGQQMQZ2HLRUh5V7NgAOgkj/+Cdv347i6pYjO/HCHqxbDk1rm7TAmzmmRAdLROmX5v8hJECCG1seYSqe3J5xBCehMO9jYisAz6XMbtA5Ic1wVTv6LO5sCAwEAAaNCMEAwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYwHQYDVR0OBBYEFDrNMChJCYwEbSaPQECzAoNzZ6akMA0GCSqGSIb3DQEBCwUAA4IBAQAsxdg9HJkxAMvIOOcJnSdmuAks9wtcV/jqXt0/4jY/Ad6A3rvxF98NOKqiGjtFK9jiccVYHQ2UvHYxx8H7Kgck82W9S/7+sR1OJ2But10esvgyCo8gFW9mx0ElG5XLlWMgXPB0B5w9UBmE6NissMO+ePFXfyIw5MrT/AO62jBtJYBxjj8fZ77l7Om7JIt6aNH8s60RKT103NAM6xonLgyqKvLVGBudc5MOHrHYqO8jVWAnG4UfOZ+l1vlLj+H4GUWrGDPVhhU5eb2BqiQJ2HSO/ehsGbkk7vSwJBnSh5fVjx/WmfeCMia4Eb0+lrIgxoIRzeiCz7zx/2c2kR4bnMYD",
+      "der_sha256": "a49acfccf769866717fda99a78278a15b12274e2e4cf8b180c8066c7460ed2ac",
+      "text": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            15:01:1f:d9:a5:1c:16:68:1f:c3:69:7b:07:6d:a1:f5:29:0a:ae:b0\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Oct  3 07:26:43 2026 GMT\n            Not After : Oct  5 07:26:43 2026 GMT\n        Subject: CN=Independent diagnostics CA\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:b8:c6:4b:88:68:03:31:0b:b4:bb:f9:e1:f4:30:\n                    8d:73:61:2b:22:39:38:8b:13:26:ac:34:32:8d:e3:\n                    8b:2f:ed:1f:47:2c:7f:ce:f0:ff:27:d4:04:53:80:\n                    3a:5e:7f:58:fd:83:21:48:22:58:f1:6e:8b:e7:f0:\n                    e7:e5:7a:15:ce:a3:e8:18:95:c5:5e:be:cb:29:24:\n                    d0:cd:4e:5f:91:05:df:5a:73:32:63:3f:aa:bd:32:\n                    fb:c8:f4:13:d2:f9:cd:b8:f2:2a:b1:9a:c3:84:77:\n                    a2:5a:ba:ff:86:28:3a:bf:96:f8:42:fd:ec:d5:db:\n                    6a:0f:cf:9f:82:49:fa:e0:82:0c:75:e0:9c:7c:62:\n                    59:c2:41:2c:1d:bf:30:3a:7d:e7:5e:62:5b:23:6f:\n                    1a:a1:f4:b1:20:4c:7b:a7:73:fc:58:29:64:b5:25:\n                    66:ff:aa:07:4b:a6:19:04:0c:41:9d:87:2d:15:21:\n                    e5:5e:cd:80:03:a0:92:3f:fe:09:db:f7:e3:b8:ba:\n                    a5:88:ce:fc:70:87:ab:16:c3:93:5a:e6:ed:30:26:\n                    ce:69:91:01:d2:d1:3a:65:f9:bf:c8:49:10:20:86:\n                    d6:c7:98:4a:a7:b7:27:9c:41:09:e8:4c:3b:d8:d8:\n                    8a:c0:33:e9:73:1b:b4:0e:48:73:5c:15:4e:fe:8b:\n                    3b:9b\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Basic Constraints: critical\n                CA:TRUE\n            X509v3 Key Usage: critical\n                Certificate Sign, CRL Sign\n            X509v3 Subject Key Identifier: \n                3A:CD:30:28:49:09:8C:04:6D:26:8F:40:40:B3:02:83:73:67:A6:A4\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        2c:c5:d8:3d:1c:99:31:00:cb:c8:38:e7:09:9d:27:66:b8:09:\n        2c:f7:0b:5c:57:f8:ea:5e:dd:3f:e2:36:3f:01:de:80:de:bb:\n        f1:17:df:0d:38:aa:a2:1a:3b:45:2b:d8:e2:71:c5:58:1d:0d:\n        94:bc:76:31:c7:c1:fb:2a:07:24:f3:65:bd:4b:fe:fe:b1:1d:\n        4e:27:60:6e:b7:5d:1e:b2:f8:32:0a:8f:20:15:6f:66:c7:41:\n        25:1b:95:cb:95:63:20:5c:f0:74:07:9c:3d:50:19:84:e8:d8:\n        ac:b0:c3:be:78:f1:57:7f:22:30:e4:ca:d3:fc:03:ba:da:30:\n        6d:25:80:71:8e:3f:1f:67:be:e5:ec:e9:bb:24:8b:7a:68:d1:\n        fc:b3:ad:11:29:3d:74:dc:d0:0c:eb:1a:27:2e:0c:aa:2a:f2:\n        d5:18:1b:9d:73:93:0e:1e:b1:d8:a8:ef:23:55:60:27:1b:85:\n        1f:39:9f:a5:d6:f9:4b:8f:e1:f8:19:45:ab:18:33:d5:86:15:\n        39:79:bd:81:aa:24:09:d8:74:8e:fd:e8:6c:19:b9:24:ee:f4:\n        b0:24:19:d2:87:97:d5:8f:1f:d6:99:f7:82:32:26:b8:11:bd:\n        3e:96:b2:20:c6:82:11:cd:e8:82:cf:bc:f1:ff:67:36:91:1e:\n        1b:9c:c6:03\n",
+      "facts": "notBefore=Oct  3 07:26:43 2026 GMT\nnotAfter=Oct  5 07:26:43 2026 GMT\nsubject=CN=Independent diagnostics CA\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=A4:9A:CF:CC:F7:69:86:67:17:FD:A9:9A:78:27:8A:15:B1:22:74:E2:E4:CF:8B:18:0C:80:66:C7:46:0E:D2:AC\n",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuMZLiGgDMQu0u/nh9DCN\nc2ErIjk4ixMmrDQyjeOLL+0fRyx/zvD/J9QEU4A6Xn9Y/YMhSCJY8W6L5/Dn5XoV\nzqPoGJXFXr7LKSTQzU5fkQXfWnMyYz+qvTL7yPQT0vnNuPIqsZrDhHeiWrr/hig6\nv5b4Qv3s1dtqD8+fgkn64IIMdeCcfGJZwkEsHb8wOn3nXmJbI28aofSxIEx7p3P8\nWClktSVm/6oHS6YZBAxBnYctFSHlXs2AA6CSP/4J2/fjuLqliM78cIerFsOTWubt\nMCbOaZEB0tE6Zfm/yEkQIIbWx5hKp7cnnEEJ6Ew72NiKwDPpcxu0DkhzXBVO/os7\nmwIDAQAB\n-----END PUBLIC KEY-----\n"
+    },
+    {
+      "label": "corrected-current-leaf",
+      "pem": "-----BEGIN CERTIFICATE-----\nMIIDjjCCAnagAwIBAgIUKXZcVB+kh9nyAcPkEdQ1fclVdnkwDQYJKoZIhvcNAQEL\nBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjYx\nMDAzMDcyNjQzWhcNMjYxMDA1MDcyNjQzWjAlMSMwIQYDVQQDDBpkaWFnbm9zdGlj\ncy53b3JrYmVuY2gudGVzdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\nAPNoJgsoLGvtpVbUw9QlgTWoN+kOVDhf9kdDOkXl0z0+6ceZOcGZL/iMyuJlt10x\nr9SYu+3tnJWbiw7Cp5JAOoeN/t/EsL4kSgImzLzNEZWrucokki5KwVaJOqW4EXxI\nFVAN9jCv2hfMaQPy6QwzQoZtawLe0SsBzAVaox8myMzGFNKKms6mbU35yXY0xywn\n3kdRylC73Mev7g6klcG82cshddsWaiLrYU6ZUyM+vH89zWL2oGrPXEbYrOCv28hf\nvyG49xYEIw/s8rMUaYeE3hjqAtm2jQ97YCOSLOx4Scox6HghiA02IGk+vPkrt4Y9\n4i+GaAFF4ff6gcmQxTwiSeECAwEAAaOBtTCBsjA9BgNVHREENjA0ghpkaWFnbm9z\ndGljcy53b3JrYmVuY2gudGVzdIcEfwAAAYcQAAAAAAAAAAAAAAAAAAAAATAMBgNV\nHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAd\nBgNVHQ4EFgQUC4+kcNGyeu7rL0MraKw+Ze+IxoowHwYDVR0jBBgwFoAUOs0wKEkJ\njARtJo9AQLMCg3NnpqQwDQYJKoZIhvcNAQELBQADggEBAKCV/AJP7rutoLdgt4nh\nr7DcMXFgVeKBNOlYMHjHtqCtXZmqTBZAicDGbJTJcbxzhRzU6RpmJ1+vJ4PGOji5\nFp7hCtlofmDS8Y0x5mcarvMmxG3xY8+roRWhP06AX5HmhSf4qkGasgsGNjbVsZsY\nvz//QdJQtwRVwz44iH8k0lOaoK9rRs+QW+bte7/1ASxRyMJp/uXeRNFEcqsvN6Tc\n6vr6ppUTiiJ90ePyW7ZSBox88z0QnXMkMzGeeqgMSkN29K7i4D/WU3ikjlEL1jnX\nsynHFrunqvkaXbImRiFLxT03b0L8QUTxTnx9h11U27cAmzImYDKNVaCDm+0+mGRX\nyl8=\n-----END CERTIFICATE-----\n",
+      "pem_sha256": "4e66a3b588ad402d799fa6d0ad67309c8e9512e701e3d17cc7d4bad6e14fe7ae",
+      "der_base64": "MIIDjjCCAnagAwIBAgIUKXZcVB+kh9nyAcPkEdQ1fclVdnkwDQYJKoZIhvcNAQELBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjYxMDAzMDcyNjQzWhcNMjYxMDA1MDcyNjQzWjAlMSMwIQYDVQQDDBpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPNoJgsoLGvtpVbUw9QlgTWoN+kOVDhf9kdDOkXl0z0+6ceZOcGZL/iMyuJlt10xr9SYu+3tnJWbiw7Cp5JAOoeN/t/EsL4kSgImzLzNEZWrucokki5KwVaJOqW4EXxIFVAN9jCv2hfMaQPy6QwzQoZtawLe0SsBzAVaox8myMzGFNKKms6mbU35yXY0xywn3kdRylC73Mev7g6klcG82cshddsWaiLrYU6ZUyM+vH89zWL2oGrPXEbYrOCv28hfvyG49xYEIw/s8rMUaYeE3hjqAtm2jQ97YCOSLOx4Scox6HghiA02IGk+vPkrt4Y94i+GaAFF4ff6gcmQxTwiSeECAwEAAaOBtTCBsjA9BgNVHREENjA0ghpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdIcEfwAAAYcQAAAAAAAAAAAAAAAAAAAAATAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAdBgNVHQ4EFgQUC4+kcNGyeu7rL0MraKw+Ze+IxoowHwYDVR0jBBgwFoAUOs0wKEkJjARtJo9AQLMCg3NnpqQwDQYJKoZIhvcNAQELBQADggEBAKCV/AJP7rutoLdgt4nhr7DcMXFgVeKBNOlYMHjHtqCtXZmqTBZAicDGbJTJcbxzhRzU6RpmJ1+vJ4PGOji5Fp7hCtlofmDS8Y0x5mcarvMmxG3xY8+roRWhP06AX5HmhSf4qkGasgsGNjbVsZsYvz//QdJQtwRVwz44iH8k0lOaoK9rRs+QW+bte7/1ASxRyMJp/uXeRNFEcqsvN6Tc6vr6ppUTiiJ90ePyW7ZSBox88z0QnXMkMzGeeqgMSkN29K7i4D/WU3ikjlEL1jnXsynHFrunqvkaXbImRiFLxT03b0L8QUTxTnx9h11U27cAmzImYDKNVaCDm+0+mGRXyl8=",
+      "der_sha256": "0860b4057e01d4c51492b48c735e24bcd3361b75c66ea7b5c4e4023dcc3d3c07",
+      "text": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number:\n            29:76:5c:54:1f:a4:87:d9:f2:01:c3:e4:11:d4:35:7d:c9:55:76:79\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Oct  3 07:26:43 2026 GMT\n            Not After : Oct  5 07:26:43 2026 GMT\n        Subject: CN=diagnostics.workbench.test\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:f3:68:26:0b:28:2c:6b:ed:a5:56:d4:c3:d4:25:\n                    81:35:a8:37:e9:0e:54:38:5f:f6:47:43:3a:45:e5:\n                    d3:3d:3e:e9:c7:99:39:c1:99:2f:f8:8c:ca:e2:65:\n                    b7:5d:31:af:d4:98:bb:ed:ed:9c:95:9b:8b:0e:c2:\n                    a7:92:40:3a:87:8d:fe:df:c4:b0:be:24:4a:02:26:\n                    cc:bc:cd:11:95:ab:b9:ca:24:92:2e:4a:c1:56:89:\n                    3a:a5:b8:11:7c:48:15:50:0d:f6:30:af:da:17:cc:\n                    69:03:f2:e9:0c:33:42:86:6d:6b:02:de:d1:2b:01:\n                    cc:05:5a:a3:1f:26:c8:cc:c6:14:d2:8a:9a:ce:a6:\n                    6d:4d:f9:c9:76:34:c7:2c:27:de:47:51:ca:50:bb:\n                    dc:c7:af:ee:0e:a4:95:c1:bc:d9:cb:21:75:db:16:\n                    6a:22:eb:61:4e:99:53:23:3e:bc:7f:3d:cd:62:f6:\n                    a0:6a:cf:5c:46:d8:ac:e0:af:db:c8:5f:bf:21:b8:\n                    f7:16:04:23:0f:ec:f2:b3:14:69:87:84:de:18:ea:\n                    02:d9:b6:8d:0f:7b:60:23:92:2c:ec:78:49:ca:31:\n                    e8:78:21:88:0d:36:20:69:3e:bc:f9:2b:b7:86:3d:\n                    e2:2f:86:68:01:45:e1:f7:fa:81:c9:90:c5:3c:22:\n                    49:e1\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Subject Alternative Name: \n                DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n            X509v3 Basic Constraints: critical\n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature, Key Encipherment\n            X509v3 Extended Key Usage: \n                TLS Web Server Authentication\n            X509v3 Subject Key Identifier: \n                0B:8F:A4:70:D1:B2:7A:EE:EB:2F:43:2B:68:AC:3E:65:EF:88:C6:8A\n            X509v3 Authority Key Identifier: \n                3A:CD:30:28:49:09:8C:04:6D:26:8F:40:40:B3:02:83:73:67:A6:A4\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        a0:95:fc:02:4f:ee:bb:ad:a0:b7:60:b7:89:e1:af:b0:dc:31:\n        71:60:55:e2:81:34:e9:58:30:78:c7:b6:a0:ad:5d:99:aa:4c:\n        16:40:89:c0:c6:6c:94:c9:71:bc:73:85:1c:d4:e9:1a:66:27:\n        5f:af:27:83:c6:3a:38:b9:16:9e:e1:0a:d9:68:7e:60:d2:f1:\n        8d:31:e6:67:1a:ae:f3:26:c4:6d:f1:63:cf:ab:a1:15:a1:3f:\n        4e:80:5f:91:e6:85:27:f8:aa:41:9a:b2:0b:06:36:36:d5:b1:\n        9b:18:bf:3f:ff:41:d2:50:b7:04:55:c3:3e:38:88:7f:24:d2:\n        53:9a:a0:af:6b:46:cf:90:5b:e6:ed:7b:bf:f5:01:2c:51:c8:\n        c2:69:fe:e5:de:44:d1:44:72:ab:2f:37:a4:dc:ea:fa:fa:a6:\n        95:13:8a:22:7d:d1:e3:f2:5b:b6:52:06:8c:7c:f3:3d:10:9d:\n        73:24:33:31:9e:7a:a8:0c:4a:43:76:f4:ae:e2:e0:3f:d6:53:\n        78:a4:8e:51:0b:d6:39:d7:b3:29:c7:16:bb:a7:aa:f9:1a:5d:\n        b2:26:46:21:4b:c5:3d:37:6f:42:fc:41:44:f1:4e:7c:7d:87:\n        5d:54:db:b7:00:9b:32:26:60:32:8d:55:a0:83:9b:ed:3e:98:\n        64:57:ca:5f\n",
+      "facts": "notBefore=Oct  3 07:26:43 2026 GMT\nnotAfter=Oct  5 07:26:43 2026 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=08:60:B4:05:7E:01:D4:C5:14:92:B4:8C:73:5E:24:BC:D3:36:1B:75:C6:6E:A7:B5:C4:E4:02:3D:CC:3D:3C:07\n",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA82gmCygsa+2lVtTD1CWB\nNag36Q5UOF/2R0M6ReXTPT7px5k5wZkv+IzK4mW3XTGv1Ji77e2clZuLDsKnkkA6\nh43+38SwviRKAibMvM0Rlau5yiSSLkrBVok6pbgRfEgVUA32MK/aF8xpA/LpDDNC\nhm1rAt7RKwHMBVqjHybIzMYU0oqazqZtTfnJdjTHLCfeR1HKULvcx6/uDqSVwbzZ\nyyF12xZqIuthTplTIz68fz3NYvagas9cRtis4K/byF+/Ibj3FgQjD+zysxRph4Te\nGOoC2baND3tgI5Is7HhJyjHoeCGIDTYgaT68+Su3hj3iL4ZoAUXh9/qByZDFPCJJ\n4QIDAQAB\n-----END PUBLIC KEY-----\n"
+    },
+    {
+      "label": "corrected-expired-leaf",
+      "pem": "-----BEGIN CERTIFICATE-----\nMIIDfDCCAmSgAwIBAgICEAAwDQYJKoZIhvcNAQELBQAwJTEjMCEGA1UEAwwaSW5k\nZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjAwMTAxMDAwMDAwWhcNMjEwMTAx\nMDAwMDAwWjAlMSMwIQYDVQQDDBpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdDCC\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPNoJgsoLGvtpVbUw9QlgTWo\nN+kOVDhf9kdDOkXl0z0+6ceZOcGZL/iMyuJlt10xr9SYu+3tnJWbiw7Cp5JAOoeN\n/t/EsL4kSgImzLzNEZWrucokki5KwVaJOqW4EXxIFVAN9jCv2hfMaQPy6QwzQoZt\nawLe0SsBzAVaox8myMzGFNKKms6mbU35yXY0xywn3kdRylC73Mev7g6klcG82csh\nddsWaiLrYU6ZUyM+vH89zWL2oGrPXEbYrOCv28hfvyG49xYEIw/s8rMUaYeE3hjq\nAtm2jQ97YCOSLOx4Scox6HghiA02IGk+vPkrt4Y94i+GaAFF4ff6gcmQxTwiSeEC\nAwEAAaOBtTCBsjA9BgNVHREENjA0ghpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVz\ndIcEfwAAAYcQAAAAAAAAAAAAAAAAAAAAATAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB\n/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAdBgNVHQ4EFgQUC4+kcNGyeu7r\nL0MraKw+Ze+IxoowHwYDVR0jBBgwFoAUOs0wKEkJjARtJo9AQLMCg3NnpqQwDQYJ\nKoZIhvcNAQELBQADggEBAABdA0/In2P/VIIWoRFHMw/ElfWp/Wnaz5IxBbSdvg6u\nlG1dsm1J+3MYEl0sRgw5sEn0MXCJggUkwoBCPYx83Kr3iGYmhQvQaQbCffogeD9q\nhylBwbtCn4gLd2YZB22oOtiq7yOQm83CCtYLVPR+5TF6ZoQIz245E6auk8qMbPdo\nPlw2eJVbOknpjoOIP2B9oecWeLJkMex7ezO2YIJ25h6Vc6LCqXznOpfttQrj4yFc\nu6TWJjHBRTfIvdlHZKLkozluOn+MfYG7LNZGHTQIpsEqLJ7kN//0Ax7mfiPpW6FK\ny0XhYz84ATD0eakKNrIZfAbHXQjAQfPxN0KHm/mMkHI=\n-----END CERTIFICATE-----\n",
+      "pem_sha256": "3da3eef5866f59bd0baa48a51f0df800294eb21044172caf15eaaf1ae331f610",
+      "der_base64": "MIIDfDCCAmSgAwIBAgICEAAwDQYJKoZIhvcNAQELBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjAwMTAxMDAwMDAwWhcNMjEwMTAxMDAwMDAwWjAlMSMwIQYDVQQDDBpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPNoJgsoLGvtpVbUw9QlgTWoN+kOVDhf9kdDOkXl0z0+6ceZOcGZL/iMyuJlt10xr9SYu+3tnJWbiw7Cp5JAOoeN/t/EsL4kSgImzLzNEZWrucokki5KwVaJOqW4EXxIFVAN9jCv2hfMaQPy6QwzQoZtawLe0SsBzAVaox8myMzGFNKKms6mbU35yXY0xywn3kdRylC73Mev7g6klcG82cshddsWaiLrYU6ZUyM+vH89zWL2oGrPXEbYrOCv28hfvyG49xYEIw/s8rMUaYeE3hjqAtm2jQ97YCOSLOx4Scox6HghiA02IGk+vPkrt4Y94i+GaAFF4ff6gcmQxTwiSeECAwEAAaOBtTCBsjA9BgNVHREENjA0ghpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdIcEfwAAAYcQAAAAAAAAAAAAAAAAAAAAATAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAdBgNVHQ4EFgQUC4+kcNGyeu7rL0MraKw+Ze+IxoowHwYDVR0jBBgwFoAUOs0wKEkJjARtJo9AQLMCg3NnpqQwDQYJKoZIhvcNAQELBQADggEBAABdA0/In2P/VIIWoRFHMw/ElfWp/Wnaz5IxBbSdvg6ulG1dsm1J+3MYEl0sRgw5sEn0MXCJggUkwoBCPYx83Kr3iGYmhQvQaQbCffogeD9qhylBwbtCn4gLd2YZB22oOtiq7yOQm83CCtYLVPR+5TF6ZoQIz245E6auk8qMbPdoPlw2eJVbOknpjoOIP2B9oecWeLJkMex7ezO2YIJ25h6Vc6LCqXznOpfttQrj4yFcu6TWJjHBRTfIvdlHZKLkozluOn+MfYG7LNZGHTQIpsEqLJ7kN//0Ax7mfiPpW6FKy0XhYz84ATD0eakKNrIZfAbHXQjAQfPxN0KHm/mMkHI=",
+      "der_sha256": "24393fb8c3d7f3a293e4f6ed56c6abe3ddd22c11ae798a6572054799edc4b750",
+      "text": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number: 4096 (0x1000)\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: CN=Independent diagnostics CA\n        Validity\n            Not Before: Jan  1 00:00:00 2020 GMT\n            Not After : Jan  1 00:00:00 2021 GMT\n        Subject: CN=diagnostics.workbench.test\n        Subject Public Key Info:\n            Public Key Algorithm: rsaEncryption\n                Public-Key: (2048 bit)\n                Modulus:\n                    00:f3:68:26:0b:28:2c:6b:ed:a5:56:d4:c3:d4:25:\n                    81:35:a8:37:e9:0e:54:38:5f:f6:47:43:3a:45:e5:\n                    d3:3d:3e:e9:c7:99:39:c1:99:2f:f8:8c:ca:e2:65:\n                    b7:5d:31:af:d4:98:bb:ed:ed:9c:95:9b:8b:0e:c2:\n                    a7:92:40:3a:87:8d:fe:df:c4:b0:be:24:4a:02:26:\n                    cc:bc:cd:11:95:ab:b9:ca:24:92:2e:4a:c1:56:89:\n                    3a:a5:b8:11:7c:48:15:50:0d:f6:30:af:da:17:cc:\n                    69:03:f2:e9:0c:33:42:86:6d:6b:02:de:d1:2b:01:\n                    cc:05:5a:a3:1f:26:c8:cc:c6:14:d2:8a:9a:ce:a6:\n                    6d:4d:f9:c9:76:34:c7:2c:27:de:47:51:ca:50:bb:\n                    dc:c7:af:ee:0e:a4:95:c1:bc:d9:cb:21:75:db:16:\n                    6a:22:eb:61:4e:99:53:23:3e:bc:7f:3d:cd:62:f6:\n                    a0:6a:cf:5c:46:d8:ac:e0:af:db:c8:5f:bf:21:b8:\n                    f7:16:04:23:0f:ec:f2:b3:14:69:87:84:de:18:ea:\n                    02:d9:b6:8d:0f:7b:60:23:92:2c:ec:78:49:ca:31:\n                    e8:78:21:88:0d:36:20:69:3e:bc:f9:2b:b7:86:3d:\n                    e2:2f:86:68:01:45:e1:f7:fa:81:c9:90:c5:3c:22:\n                    49:e1\n                Exponent: 65537 (0x10001)\n        X509v3 extensions:\n            X509v3 Subject Alternative Name: \n                DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n            X509v3 Basic Constraints: critical\n                CA:FALSE\n            X509v3 Key Usage: critical\n                Digital Signature, Key Encipherment\n            X509v3 Extended Key Usage: \n                TLS Web Server Authentication\n            X509v3 Subject Key Identifier: \n                0B:8F:A4:70:D1:B2:7A:EE:EB:2F:43:2B:68:AC:3E:65:EF:88:C6:8A\n            X509v3 Authority Key Identifier: \n                3A:CD:30:28:49:09:8C:04:6D:26:8F:40:40:B3:02:83:73:67:A6:A4\n    Signature Algorithm: sha256WithRSAEncryption\n    Signature Value:\n        00:5d:03:4f:c8:9f:63:ff:54:82:16:a1:11:47:33:0f:c4:95:\n        f5:a9:fd:69:da:cf:92:31:05:b4:9d:be:0e:ae:94:6d:5d:b2:\n        6d:49:fb:73:18:12:5d:2c:46:0c:39:b0:49:f4:31:70:89:82:\n        05:24:c2:80:42:3d:8c:7c:dc:aa:f7:88:66:26:85:0b:d0:69:\n        06:c2:7d:fa:20:78:3f:6a:87:29:41:c1:bb:42:9f:88:0b:77:\n        66:19:07:6d:a8:3a:d8:aa:ef:23:90:9b:cd:c2:0a:d6:0b:54:\n        f4:7e:e5:31:7a:66:84:08:cf:6e:39:13:a6:ae:93:ca:8c:6c:\n        f7:68:3e:5c:36:78:95:5b:3a:49:e9:8e:83:88:3f:60:7d:a1:\n        e7:16:78:b2:64:31:ec:7b:7b:33:b6:60:82:76:e6:1e:95:73:\n        a2:c2:a9:7c:e7:3a:97:ed:b5:0a:e3:e3:21:5c:bb:a4:d6:26:\n        31:c1:45:37:c8:bd:d9:47:64:a2:e4:a3:39:6e:3a:7f:8c:7d:\n        81:bb:2c:d6:46:1d:34:08:a6:c1:2a:2c:9e:e4:37:ff:f4:03:\n        1e:e6:7e:23:e9:5b:a1:4a:cb:45:e1:63:3f:38:01:30:f4:79:\n        a9:0a:36:b2:19:7c:06:c7:5d:08:c0:41:f3:f1:37:42:87:9b:\n        f9:8c:90:72\n",
+      "facts": "notBefore=Jan  1 00:00:00 2020 GMT\nnotAfter=Jan  1 00:00:00 2021 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nsha256 Fingerprint=24:39:3F:B8:C3:D7:F3:A2:93:E4:F6:ED:56:C6:AB:E3:DD:D2:2C:11:AE:79:8A:65:72:05:47:99:ED:C4:B7:50\n",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA82gmCygsa+2lVtTD1CWB\nNag36Q5UOF/2R0M6ReXTPT7px5k5wZkv+IzK4mW3XTGv1Ji77e2clZuLDsKnkkA6\nh43+38SwviRKAibMvM0Rlau5yiSSLkrBVok6pbgRfEgVUA32MK/aF8xpA/LpDDNC\nhm1rAt7RKwHMBVqjHybIzMYU0oqazqZtTfnJdjTHLCfeR1HKULvcx6/uDqSVwbzZ\nyyF12xZqIuthTplTIz68fz3NYvagas9cRtis4K/byF+/Ibj3FgQjD+zysxRph4Te\nGOoC2baND3tgI5Is7HhJyjHoeCGIDTYgaT68+Su3hj3iL4ZoAUXh9/qByZDFPCJJ\n4QIDAQAB\n-----END PUBLIC KEY-----\n"
+    }
+  ],
+  "CA_PROOF_RED": [
+    {
+      "status": "reproduced",
+      "error": 79,
+      "depth": 1,
+      "ca_version": 3,
+      "ca_basic_constraints_present": false,
+      "ca_key_usage_present": false,
+      "old_ca_der_sha256": "911330cbc3f550cdd14a4564aef07d603e221b739361ee808cbcc492b76fab74"
+    }
+  ],
+  "CA_PROOF_GREEN": [
+    {
+      "status": "passed",
+      "explicit_ca_extensions": [
+        "critical CA:TRUE",
+        "critical keyCertSign,cRLSign"
+      ],
+      "normal_ca_self_signature_and_current_chain_name": "passed",
+      "wrong_name": "refused error62 depth0",
+      "expired_same_ca_key_name_with_time_disabled": "passed",
+      "normal_expired": [
+        "error 10 at 0 depth lookup: certificate has expired"
+      ],
+      "corrected_ca_der_sha256": "a49acfccf769866717fda99a78278a15b12274e2e4cf8b180c8066c7460ed2ac",
+      "current_der_sha256": "0860b4057e01d4c51492b48c735e24bcd3361b75c66ea7b5c4e4023dcc3d3c07",
+      "expired_der_sha256": "24393fb8c3d7f3a293e4f6ed56c6abe3ddd22c11ae798a6572054799edc4b750",
+      "ordered_expiry_witness": {
+        "ca_sha256": "sha256:094aa3ffcff78a5aba4bb781b9fd0925ccc45c18a1d62b10b38834835f832c57",
+        "certificate_sha256": "sha256:24393fb8c3d7f3a293e4f6ed56c6abe3ddd22c11ae798a6572054799edc4b750",
+        "ca_certificate_pem": "-----BEGIN CERTIFICATE-----\nMIIDGjCCAgKgAwIBAgIUFQEf2aUcFmgfw2l7B22h9SkKrrAwDQYJKoZIhvcNAQEL\nBQAwJTEjMCEGA1UEAwwaSW5kZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjYx\nMDAzMDcyNjQzWhcNMjYxMDA1MDcyNjQzWjAlMSMwIQYDVQQDDBpJbmRlcGVuZGVu\ndCBkaWFnbm9zdGljcyBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\nALjGS4hoAzELtLv54fQwjXNhKyI5OIsTJqw0Mo3jiy/tH0csf87w/yfUBFOAOl5/\nWP2DIUgiWPFui+fw5+V6Fc6j6BiVxV6+yykk0M1OX5EF31pzMmM/qr0y+8j0E9L5\nzbjyKrGaw4R3olq6/4YoOr+W+EL97NXbag/Pn4JJ+uCCDHXgnHxiWcJBLB2/MDp9\n515iWyNvGqH0sSBMe6dz/FgpZLUlZv+qB0umGQQMQZ2HLRUh5V7NgAOgkj/+Cdv3\n47i6pYjO/HCHqxbDk1rm7TAmzmmRAdLROmX5v8hJECCG1seYSqe3J5xBCehMO9jY\nisAz6XMbtA5Ic1wVTv6LO5sCAwEAAaNCMEAwDwYDVR0TAQH/BAUwAwEB/zAOBgNV\nHQ8BAf8EBAMCAQYwHQYDVR0OBBYEFDrNMChJCYwEbSaPQECzAoNzZ6akMA0GCSqG\nSIb3DQEBCwUAA4IBAQAsxdg9HJkxAMvIOOcJnSdmuAks9wtcV/jqXt0/4jY/Ad6A\n3rvxF98NOKqiGjtFK9jiccVYHQ2UvHYxx8H7Kgck82W9S/7+sR1OJ2But10esvgy\nCo8gFW9mx0ElG5XLlWMgXPB0B5w9UBmE6NissMO+ePFXfyIw5MrT/AO62jBtJYBx\njj8fZ77l7Om7JIt6aNH8s60RKT103NAM6xonLgyqKvLVGBudc5MOHrHYqO8jVWAn\nG4UfOZ+l1vlLj+H4GUWrGDPVhhU5eb2BqiQJ2HSO/ehsGbkk7vSwJBnSh5fVjx/W\nmfeCMia4Eb0+lrIgxoIRzeiCz7zx/2c2kR4bnMYD\n-----END CERTIFICATE-----\n",
+        "certificate_pem": "-----BEGIN CERTIFICATE-----\nMIIDfDCCAmSgAwIBAgICEAAwDQYJKoZIhvcNAQELBQAwJTEjMCEGA1UEAwwaSW5k\nZXBlbmRlbnQgZGlhZ25vc3RpY3MgQ0EwHhcNMjAwMTAxMDAwMDAwWhcNMjEwMTAx\nMDAwMDAwWjAlMSMwIQYDVQQDDBpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVzdDCC\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPNoJgsoLGvtpVbUw9QlgTWo\nN+kOVDhf9kdDOkXl0z0+6ceZOcGZL/iMyuJlt10xr9SYu+3tnJWbiw7Cp5JAOoeN\n/t/EsL4kSgImzLzNEZWrucokki5KwVaJOqW4EXxIFVAN9jCv2hfMaQPy6QwzQoZt\nawLe0SsBzAVaox8myMzGFNKKms6mbU35yXY0xywn3kdRylC73Mev7g6klcG82csh\nddsWaiLrYU6ZUyM+vH89zWL2oGrPXEbYrOCv28hfvyG49xYEIw/s8rMUaYeE3hjq\nAtm2jQ97YCOSLOx4Scox6HghiA02IGk+vPkrt4Y94i+GaAFF4ff6gcmQxTwiSeEC\nAwEAAaOBtTCBsjA9BgNVHREENjA0ghpkaWFnbm9zdGljcy53b3JrYmVuY2gudGVz\ndIcEfwAAAYcQAAAAAAAAAAAAAAAAAAAAATAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB\n/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAdBgNVHQ4EFgQUC4+kcNGyeu7r\nL0MraKw+Ze+IxoowHwYDVR0jBBgwFoAUOs0wKEkJjARtJo9AQLMCg3NnpqQwDQYJ\nKoZIhvcNAQELBQADggEBAABdA0/In2P/VIIWoRFHMw/ElfWp/Wnaz5IxBbSdvg6u\nlG1dsm1J+3MYEl0sRgw5sEn0MXCJggUkwoBCPYx83Kr3iGYmhQvQaQbCffogeD9q\nhylBwbtCn4gLd2YZB22oOtiq7yOQm83CCtYLVPR+5TF6ZoQIz245E6auk8qMbPdo\nPlw2eJVbOknpjoOIP2B9oecWeLJkMex7ezO2YIJ25h6Vc6LCqXznOpfttQrj4yFc\nu6TWJjHBRTfIvdlHZKLkozluOn+MfYG7LNZGHTQIpsEqLJ7kN//0Ax7mfiPpW6FK\ny0XhYz84ATD0eakKNrIZfAbHXQjAQfPxN0KHm/mMkHI=\n-----END CERTIFICATE-----\n",
+        "not_before": "Jan  1 00:00:00 2020 GMT",
+        "not_after": "Jan  1 00:00:00 2021 GMT",
+        "observed_unix": 1791012403.4737341,
+        "same_ca_and_hostname_verified_with_only_time_check_disabled": true,
+        "commands": [
+          {
+            "label": "openssl-runtime",
+            "command": [
+              "/usr/bin/openssl",
+              "version",
+              "-a"
+            ],
+            "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+            "exit": 0,
+            "stdout": "OpenSSL 3.5.6 7 Apr 2026 (Library: OpenSSL 3.5.6 7 Apr 2026)\nbuilt on: Sat Jun  6 19:55:35 2026 UTC\nplatform: debian-amd64\noptions:  bn(64,64)\ncompiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -Wa,--noexecstack -g -O2 -Werror=implicit-function-declaration -ffile-prefix-map=/build/reproducible-path/openssl-3.5.6=. -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_PIC -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZSTD -DNDEBUG -Wdate-time -D_FORTIFY_SOURCE=2\nOPENSSLDIR: \"/usr/lib/ssl\"\nENGINESDIR: \"/usr/lib/x86_64-linux-gnu/engines-3\"\nMODULESDIR: \"/usr/lib/x86_64-linux-gnu/ossl-modules\"\nSeeding source: os-specific\nCPUINFO: OPENSSL_ia32cap=0x82b82201078bfffd:0x0000000000000000:0x0000000000000000:0x0000000000000000:0x0000000000000000\n",
+            "stderr": ""
+          },
+          {
+            "label": "create",
+            "command": [
+              "/usr/bin/openssl",
+              "ca",
+              "-batch",
+              "-config",
+              "expired-ca.cnf",
+              "-in",
+              "server.csr",
+              "-out",
+              "independent-expired.pem",
+              "-startdate",
+              "20200101000000Z",
+              "-enddate",
+              "20210101000000Z",
+              "-notext",
+              "-md",
+              "sha256"
+            ],
+            "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+            "exit": 0,
+            "stdout": "",
+            "stderr": "Using configuration from expired-ca.cnf\nWarning: -enddate or -not_after option overriding -days option\nCheck that the request matches the signature\nSignature ok\nThe Subject's Distinguished Name is as follows\ncommonName            :ASN.1 12:'diagnostics.workbench.test'\nCertificate is to be certified until Jan  1 00:00:00 2021 GMT (-2101 days)\n\nWrite out database with 1 new entries\nDatabase updated\n"
+          },
+          {
+            "label": "certificate-facts",
+            "command": [
+              "/usr/bin/openssl",
+              "x509",
+              "-in",
+              "independent-expired.pem",
+              "-noout",
+              "-startdate",
+              "-enddate",
+              "-subject",
+              "-issuer",
+              "-ext",
+              "subjectAltName"
+            ],
+            "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+            "exit": 0,
+            "stdout": "notBefore=Jan  1 00:00:00 2020 GMT\nnotAfter=Jan  1 00:00:00 2021 GMT\nsubject=CN=diagnostics.workbench.test\nissuer=CN=Independent diagnostics CA\nX509v3 Subject Alternative Name: \n    DNS:diagnostics.workbench.test, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1\n",
+            "stderr": ""
+          },
+          {
+            "label": "leaf-public-key",
+            "command": [
+              "/usr/bin/openssl",
+              "x509",
+              "-in",
+              "independent-expired.pem",
+              "-noout",
+              "-pubkey"
+            ],
+            "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+            "exit": 0,
+            "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA82gmCygsa+2lVtTD1CWB\nNag36Q5UOF/2R0M6ReXTPT7px5k5wZkv+IzK4mW3XTGv1Ji77e2clZuLDsKnkkA6\nh43+38SwviRKAibMvM0Rlau5yiSSLkrBVok6pbgRfEgVUA32MK/aF8xpA/LpDDNC\nhm1rAt7RKwHMBVqjHybIzMYU0oqazqZtTfnJdjTHLCfeR1HKULvcx6/uDqSVwbzZ\nyyF12xZqIuthTplTIz68fz3NYvagas9cRtis4K/byF+/Ibj3FgQjD+zysxRph4Te\nGOoC2baND3tgI5Is7HhJyjHoeCGIDTYgaT68+Su3hj3iL4ZoAUXh9/qByZDFPCJJ\n4QIDAQAB\n-----END PUBLIC KEY-----\n",
+            "stderr": ""
+          },
+          {
+            "label": "fixture-public-key",
+            "command": [
+              "/usr/bin/openssl",
+              "pkey",
+              "-in",
+              "server.key",
+              "-pubout"
+            ],
+            "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+            "exit": 0,
+            "stdout": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA82gmCygsa+2lVtTD1CWB\nNag36Q5UOF/2R0M6ReXTPT7px5k5wZkv+IzK4mW3XTGv1Ji77e2clZuLDsKnkkA6\nh43+38SwviRKAibMvM0Rlau5yiSSLkrBVok6pbgRfEgVUA32MK/aF8xpA/LpDDNC\nhm1rAt7RKwHMBVqjHybIzMYU0oqazqZtTfnJdjTHLCfeR1HKULvcx6/uDqSVwbzZ\nyyF12xZqIuthTplTIz68fz3NYvagas9cRtis4K/byF+/Ibj3FgQjD+zysxRph4Te\nGOoC2baND3tgI5Is7HhJyjHoeCGIDTYgaT68+Su3hj3iL4ZoAUXh9/qByZDFPCJJ\n4QIDAQAB\n-----END PUBLIC KEY-----\n",
+            "stderr": ""
+          },
+          {
+            "label": "chain-and-name-with-time-disabled",
+            "command": [
+              "/usr/bin/openssl",
+              "verify",
+              "-no_check_time",
+              "-verify_hostname",
+              "diagnostics.workbench.test",
+              "-CAfile",
+              "ca.pem",
+              "independent-expired.pem"
+            ],
+            "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+            "exit": 0,
+            "stdout": "independent-expired.pem: OK\n",
+            "stderr": ""
+          },
+          {
+            "label": "actual-expired-verification",
+            "command": [
+              "/usr/bin/openssl",
+              "verify",
+              "-verify_hostname",
+              "diagnostics.workbench.test",
+              "-CAfile",
+              "ca.pem",
+              "independent-expired.pem"
+            ],
+            "cwd": "/tmp/diagnostics-ca-proof-88j0robf/green",
+            "exit": 2,
+            "stdout": "",
+            "stderr": "CN=diagnostics.workbench.test\nerror 10 at 0 depth lookup: certificate has expired\nerror independent-expired.pem: verification failed\n"
+          }
+        ]
+      }
+    }
+  ],
+  "CA_PROOF_RESIDUE": [
+    {
+      "processes": [],
+      "temporary_fixture_directory_removed": true
+    }
+  ],
+  "CA_PROOF_SUMMARY": [
+    {
+      "status": "passed",
+      "openssl_commands": 44,
+      "product_invocations": 0,
+      "diagnosis": "Unextended V3 CA was missing CA Basic Constraints and signing Key Usage; explicit critical CA/signing extensions repair the fixture under unchanged verification policy"
+    }
+  ],
+  "CA_PROOF_FINAL_PROCESS_INVENTORY": [
+    []
+  ]
+}

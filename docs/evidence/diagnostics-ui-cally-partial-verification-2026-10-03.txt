@@ -1,0 +1,46 @@
+# INCONCLUSIVE — WORKBENCH-011 native attempt 2
+
+[verified] The private API verifier failed on an unsupported startup exit-code expectation. No product finding is established. The corrected COPY staging, cold workspace, native MCP regression, ordinary build and installed literal mission passed; the remaining API/browser acceptance did not execute.
+
+Target: `latent-sre/agenticsre-rust`, sealed source `bca5b19a8d448ac72202f30ff120446127582a38`, tree `4f221ff5cad9fe78342e25c866a0258529e4622c`, base `2c4e4220654d85d5be22ac42a034beb51fcc5624`. Source manifest SHA256 `0b942d654f4013ed59e3b9e895ca08ee108eb4bd3a1c6c1dea7a7fb08bf11477`; 358 regular source files, 5,391,853 bytes. Original snapshot `/tmp/agenticsre-diagnostics-ui-r1-snapshot-0rzjumlc` was never modified; the COPY image was the separate execution copy. Both static gates were accepted by root in the retained release envelope.
+
+## Checks executed
+
+[verified] Authoritative driver handle59978 completed with own exit1. Exact invocation: `python3 -I -B /tmp/agenticsre-diagnostics-ui-stage-repair-prep-258mryHc/prepare-ui.py --evidence-parent /tmp`. Native command arrays, working directories, own statuses and timings are retained in `verification.json`; outer commands are in `commands.json`. Raw output is `diagnostics-cally.log`.
+
+| Criterion | Verdict | Actual evidence |
+|---|---|---|
+| Frozen source, accepted support, COPY stream and private runtime identity | PASS | Before/after358 source hashes, refs/modes; all14 support identities; initial native source/runtime readback |
+| Corrected180s stage clock and remote build ownership/quiescence | PASS for observed successful stage | COPY build own0 in29.727s; exact timeout/sudo/Podman group553232 witnessed; tagged/group processes absent before image cleanup |
+| Cold workspace all features | PASS | 175passed,0failed,19ignored; own0; ignored checks are not counted as passes |
+| Native MCP restricted-grant regression | PASS | 1passed,8filtered; own0 |
+| Ordinary CLI build | PASS | locked/offline ordinary build own0 after native all-feature test |
+| Installed literal mission | PASS | child0/succeeded/not_assessed/never, exact `hello workbench\n`; own0 |
+| Exact canonical schema | PASS for one receipt | Frozen result schema plus offline references; `receipts.jsonl` retains exact emitted JSON bytes |
+| Startup missing-target refusal | Observed clear refusal; no-effects criterion incomplete | exit1, empty stdout and explicit stderr; independent ledger assertion was not reached |
+| Independent public API checker | FAIL (verifier expectation) | own1, first startup assertion requires2 although serving error path returns1 |
+| API admission, pinning, parity, outcomes, lifecycle | INCONCLUSIVE | Not reached; no API response records emitted |
+| Real browser, captions, themes/mobile/keyboard, history/download, hostile content | INCONCLUSIVE | Not run; zero PNGs; exported browser tar explicitly complete=false/files={} |
+| Fixed bounded DATA export | PASS | All3 actual regular exports matched size/SHA, cp own0; retained local mode0444 |
+| Final runtime source/browser/binary post-check block | INCONCLUSIVE | Skipped on API exception; initial runtime check and exported binary hash are observed; host original source postreadback passed |
+| Native owned-child cleanup and remote/local cleanup | PASS | PID1 reaped only adopted exited children, after[]; independently confirmed exact container/tag/ID/process group absent and base unchanged |
+
+[verified] Ordinary binary `save`: SHA256 `566b320c424ecc583a846baeda4fccaa594ed264e6d122dbed3b321ec253344d`, 38,993,736 bytes; native installed0755, exported nonexecuting DATA0444. Native report `verification.json`: SHA256 `f5f9b3279d8e185c0c809304952028c48ac337efd88e1ac6051df32b999dd1f4`,17,301bytes. Browser bundle SHA256 `dae7117a52158cfc4e2a6fe01782ec861e4fef5e296b18804d4cd4060f78e90c`,10,240bytes. Data format validation of an explicitly incomplete browser bundle does not establish browser acceptance.
+
+## Expected versus observed
+
+[verified] First API startup argv was `save --diagnostics-config /tmp/ui-api/config.json ui serve --allow diagnostics.run`. The product returned1, empty stdout, and `ui serve: diagnostics.run requires --diagnostics-config and at least one explicit --target ID`. Private `verify-ui-api.py:34` required2. [sourced] Frozen `crates/workbench-cli/src/main.rs:671`–676 maps `workbench_ui::serve` errors to1; `docs/ui.md:44` and `docs/diagnostics-ui.md:26` require clear refusal, not universal exit2. The assertion stopped before `m.no_dispatch`, so no first-case no-dispatch claim is made. The correction belongs only in private verifier code. The original failing script and traceback remain retained.
+
+## Execution isolation and cleanup
+
+[verified] All target tests/build/product/fixtures executed only in image `sha256:c17b76163b9eebcae02f5524c970c540fb64bf7d69bb962995a9a9e7de758376`, named container `agenticsre-diagnostics-ui-zg8qx5ix`, derived COPY-only from pinned cached Rust digest `620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959`/imageID `ab239914c9d2fbe5ef024c5314dae21e2a2c43618086e169d78a754429978b97`. No downloads, RUN instruction, host mounts, product listeners on host, credentials/live targets or host product execution. UID1000/PID1, root+source read-only, private network/PID, routes empty, capabilities0/NNP1,2.5CPU/4GiB/512PIDs, /tmp512MiB and target2GiB. One Cargo builder jobs2/testthreads2/debug0/incremental0. Stage180s with remote160sTERM+10sKILL and30s cleanup-only margin; native900s/work800s. Fresh staging floor8,592,797,696bytes met exact8GiB requirement.
+
+[verified] Rust/Cargo1.98, Python3.13.5, glibc2.41 and OpenSSL3.5.6 identities are retained exactly in native report; browser runtime was checked as1376root-owned immutable files/485,411,895bytes, but browser was not started. Export caps remained64MiB save/1MiB report/32MiB browser tar; stdout16MiB with bounded line/read/queue. Primary API failure survived export/cleanup. Exact tag/group quiescence was established before image removal; independent postreadback found no container/image/source/support/local owned process residue. No broad cleanup was performed.
+
+## Failure coverage and carried evidence
+
+[verified] Prior staging-failure packet `/tmp/agenticsre-diagnostics-ui-cally-0rwh7ay6/VERIFICATION.md` SHA256 `61c5828d3bac8f7fb58daa6602499727f9d61ea8e8ac87dc0920440d755fab2e` and all44 retained artifact hashes remain unchanged. Its late-image race is not erased by this successful stage. Current run preserves the new assertion failure and all statuses/exports.
+
+[sourced] Earlier core diagnostics/Grafana acceptance is carried only at packet SHA256 `685da9ea4aa1b038b01966b90052cf666b484162ac9a61e3f46d02920379884b`; it is not a browser verdict. The positive system-resolver port53EACCES prerequisite gap remains open and was not retried. [unverified] The unexecuted API/browser criteria must be completed against this exact exported binary in a separately released continuation before WORKBENCH-011 can be accepted.
+
+No production files were edited. The DATA-only partial validator was authored to validate the one actual receipt and exact cleanup; it did not alter the full acceptance validator or execute product code. `postverify.py` own exit0; schema/cleanup outputs are retained. No new native retry was started.

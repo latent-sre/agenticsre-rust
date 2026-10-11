@@ -1,0 +1,31 @@
+# Native CA fixture diagnosis — PASS (fixture scope only)
+
+[verified] The CA-fixture cause is reproduced and the minimal correction is green on the exact cached Cally runtime. This proof contains44actual OpenSSL commands and zero product invocations. Product acceptance remains INCONCLUSIVE until the remaining diagnostics matrix is executed.
+
+## Reproduction and diagnosis
+
+[verified] The unchanged attempt2 generator (`old-fixtures.py` SHA256 `f74dc6192c37e60d74cfd407c156b8e9a6b7858140ac47326b75b7a6e2db030e`) ran with `OPENSSL_CONF=/dev/null`. Its actual self-signed certificate was X509V3 with key identifiers but no Basic Constraints or Key Usage. The current leaf failed normal chain/name verification with error79 at depth1. The same original expired-leaf helper reproduced error79 at depth1 even with only time checking disabled. Public CA/current/expired PEM and DER are retained, with SHA256 independently checked against each native emission. Old CA DER SHA256 `911330cbc3f550cdd14a4564aef07d603e221b739361ee808cbcc492b76fab74`.
+
+[verified] The changed helper adds only two CA-generation argv extensions: `-addext basicConstraints=critical,CA:TRUE` and `-addext keyUsage=critical,keyCertSign,cRLSign`. All other helper AST and all server SAN/EKU/ordered-past-date logic are unchanged. Corrected helper SHA256 `bb472e4713eabe855e5c16b11c3baf54170fff0e5750030411c3df63fc4b5642`; exact minimal change in `minimal-ca-fix.diff`.
+
+[sourced] OpenSSL documents that req-x509 produces V3 certificates with key identifiers by default and accepts explicit extensions through configuration or -addext: https://docs.openssl.org/3.5/man1/openssl-req/#options . That explains the fixture hypothesis; the native bytes and failures establish the diagnosis. This is a verifier CA-profile correction under OpenSSL reference-validation policy, not a product defect or a claim that every explicit trust-anchor implementation must use the same CA checks.
+
+## Green and policy controls
+
+[verified] Actual corrected CA has critical CA:TRUE and critical Certificate Sign/CRL Sign. Self-signature verification (`verify -check_ss_sig -CAfile ca.pem ca.pem`) returned0. The current leaf passed normal time, SSL-server purpose and exact-hostname verification. Wrong hostname still returned2 with error62 at depth0, proving the test did not turn off hostname policy.
+
+[verified] Current and expired leaves have the same public key, hostname/SAN and CA. The expired interval is explicitly2020-01-01 through2021-01-01; native UTC observation was2026-10-03T07:26:43.124374+00:00. Same-chain/name/purpose verification passes with only time checking disabled; normal verification returned2 with exactly one certificate error: error10 at depth0, certificate expired. No CA-depth, not-yet-valid or hostname error was accepted as the expiry proof.
+
+[verified] Corrected CA DER SHA256 `a49acfccf769866717fda99a78278a15b12274e2e4cf8b180c8066c7460ed2ac`; current leaf `0860b4057e01d4c51492b48c735e24bcd3361b75c66ea7b5c4e4023dcc3d3c07`; expired leaf `24393fb8c3d7f3a293e4f6ed56c6abe3ddd22c11ae798a6572054799edc4b750`. Full public bytes/text/facts are in `public-certificates/`, `observations.json`, and `native-fixture.log`. `certificate-commands.jsonl` retains exact argv/cwd/env/own exit/stdout/stderr for all44commands. Private key bytes were never logged/exported; synthetic keys existed only in private tmpfs and were destroyed.
+
+## Target, checks and boundary
+
+[verified] Authoritative handle79172, native command ownexit0 and controllerexit0. The exact commands and statuses are in `commands.json`; native runtime was OpenSSL3.5.6, Python3.13.5 with interpreter SHA256 `17b78e0a93175e86f9ac03141924fd7a7f0c0c52e66b34bfa0de20ffef989df1`, Linux7.0.0-34-generic/x86_64. Proof SHA256 `9622b6fe91e2c99b590c730863f62597b91893aace97127be6413a7dac9c14fc`, controller `dd55cd02d499aa589f9c783d5486686fbccea5546b8fca02cc3c0c1f442f39b7`. The logging instrumentation uses only module-local proxies; stdlib subprocess remains unchanged and os.uname supplies kernel provenance without a hidden subprocess.
+
+[verified] Container `agenticsre-diagnostics-ca-t_kyyd89`, image `sha256:dc26f7e32f3cd6fb08bc7d83b99d2a8d665f7868be0dddbc07a0acad4fc0f496`; cached base digest `sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959`/ID `sha256:ab239914c9d2fbe5ef024c5314dae21e2a2c43618086e169d78a754429978b97`. COPY-only streaming/no RUN/pull/download; UID1000/PID1, root/support/sourceRO, capeff0/NNP1, privatePID/net/nohostmounts/emptyroutes,2.5CPU4GiB512PIDs/tmp512MiB/target2GiB. Runtime cap120seconds. Fresh8GiB pre-staging floor passed; exactfreebytes in identity.json. No product binary/source, Cargo/vendor or host-executed fixtures were involved.
+
+## Cleanup and retained failures
+
+[verified] Final kernel process inventory empty; temporary fixture directory removed. Exact container/tag/imageID cleanup passed and independent readbacks repeated absence; cachedbase unchanged, local context/controller absent. `independent-cleanup.json` SHA256 `06b1b2472a3b0142b2ac8c4467aa7914044f549f45773221e020c86036bb5bd1` also rechecked all79first-attempt,65second-attempt and26instrumentation-failure packet files unchanged. Earlier failures remain sealed; this fixture green neither erases them nor upgrades any unexecuted product criterion.
+
+[unverified] Remaining diagnostics HTTP/body/process/signals/consumer/privateviews and affected Grafana acceptance are still pending. No full product continuation is released by this packet. The minimal proposed lane reuses exact frozen source0e7ec538/tree d9d64fc0/manifestc2a4100c and first-built b33d7f2d binary; its only native helper change is the proven CA argv correction. No cold build or passed-prefix replay is necessary.

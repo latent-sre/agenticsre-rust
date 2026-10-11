@@ -24,6 +24,13 @@ struct Cli {
         long,
         global = true,
         value_name = "FILE",
+        help = "Explicit absolute diagnostics target configuration; no target, resolver, CA or PID can come from wire input"
+    )]
+    diagnostics_config: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "FILE",
         requires = "context_max_age_days",
         help = "Explicit absolute offline fixture export; no source discovery or dispatch authority"
     )]
@@ -63,6 +70,30 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
+    /// Discover fixed installed diagnostic packs without reading configuration or probing targets
+    Diagnostics {
+        #[command(subcommand)]
+        command: DiagnosticsCommands,
+    },
+    /// Observe DNS, TCP, TLS, HTTP and one exact configured local process; no health assessment
+    Diagnose {
+        #[arg(long)]
+        target: String,
+        #[arg(long, default_value = "connectivity")]
+        pack: String,
+        #[arg(
+            long,
+            value_name = "FILE",
+            help = "Typed JSON input: optional capture_body boolean and on_failure continue/stop only"
+        )]
+        input: PathBuf,
+        #[arg(long, default_value = "60s", value_parser = parse_duration)]
+        timeout: u64,
+        #[arg(long, default_value_t = 16384)]
+        max_output_bytes: usize,
+        #[arg(long, default_value_t = 2, value_parser = clap::value_parser!(u64).range(1..=2))]
+        concurrency: u64,
+    },
     /// Resolve offline service metadata without selecting a live execution target
     Context {
         #[command(subcommand)]
@@ -128,6 +159,12 @@ enum ContextCommands {
 }
 
 #[derive(Subcommand)]
+enum DiagnosticsCommands {
+    List,
+    Describe { id: String },
+}
+
+#[derive(Subcommand)]
 enum McpCommands {
     /// Stdout is protocol-only. Close stdin to stop; history and retries are not provided.
     Serve {
@@ -167,7 +204,7 @@ enum UiCommands {
         #[arg(
             long,
             value_name = "OPERATION",
-            help = "Repeat process.exec, command.inspect or task.run; empty grants expose no checks"
+            help = "Repeat process.exec, command.inspect, task.run or diagnostics.run; empty grants expose no checks"
         )]
         allow: Vec<String>,
         #[arg(
@@ -176,6 +213,12 @@ enum UiCommands {
             help = "Repeat trusted policy root IDs; commands also require --read-policy"
         )]
         root: Vec<String>,
+        #[arg(
+            long,
+            value_name = "TARGET_ID",
+            help = "Repeat unique trusted diagnostic aliases; requires diagnostics.run and --diagnostics-config"
+        )]
+        target: Vec<String>,
     },
 }
 
@@ -324,6 +367,32 @@ fn parse_duration(value: &str) -> Result<u64, &'static str> {
 fn normalize(cli: Cli) -> Result<Request, Problem> {
     let restricted = cli.read_policy.is_some();
     let mut request = match cli.command {
+        Commands::Diagnostics {
+            command: DiagnosticsCommands::List,
+        } => Request::new("diagnostics.list", json!({})),
+        Commands::Diagnostics {
+            command: DiagnosticsCommands::Describe { id },
+        } => Request::new("diagnostics.describe", json!({"id":id})),
+        Commands::Diagnose {
+            target,
+            pack,
+            input,
+            timeout,
+            max_output_bytes,
+            concurrency,
+        } => {
+            let input = parse_json(input_file(input)?)?;
+            let mut request = Request::new(
+                "diagnostics.run",
+                json!({"id":pack,"version":1,"input":input}),
+            );
+            request.target.kind = "connection".into();
+            request.target.id = target;
+            request.limits.timeout_ms = timeout;
+            request.limits.max_output_bytes = max_output_bytes;
+            request.limits.concurrency = Some(concurrency);
+            request
+        }
         Commands::Context {
             command:
                 ContextCommands::Resolve {
@@ -556,6 +625,7 @@ fn run() -> u8 {
             || cli.record != "never"
             || cli.context_source.is_some()
             || cli.context_max_age_days.is_some()
+            || cli.diagnostics_config.is_some()
         {
             workbench_mcp::invalid_startup();
             return 2;
@@ -569,7 +639,13 @@ fn run() -> u8 {
         });
     }
     if let Commands::Ui {
-        command: UiCommands::Serve { port, allow, root },
+        command:
+            UiCommands::Serve {
+                port,
+                allow,
+                root,
+                target,
+            },
     } = &cli.command
     {
         if cli.json
@@ -577,9 +653,11 @@ fn run() -> u8 {
             || cli.config.is_some()
             || cli.context_source.is_some()
             || cli.context_max_age_days.is_some()
+            || (cli.diagnostics_config.is_some()
+                && !allow.iter().any(|operation| operation == "diagnostics.run"))
         {
             eprintln!(
-                "ui serve does not accept --json, --config, context source options or recording modes other than never"
+                "ui serve does not accept --json, --config, context source options, ungranted diagnostic configuration or recording modes other than never"
             );
             return 2;
         }
@@ -588,6 +666,8 @@ fn run() -> u8 {
             allow: allow.clone(),
             roots: root.clone(),
             read_policy: cli.read_policy.clone(),
+            diagnostics_config: cli.diagnostics_config.clone(),
+            targets: target.clone(),
         }) {
             Ok(code) => code,
             Err(message) => {
@@ -598,6 +678,7 @@ fn run() -> u8 {
     }
     let json = cli.json;
     let context = OperatorContext {
+        diagnostics_config_path: cli.diagnostics_config.clone(),
         context_source_path: cli.context_source.clone(),
         context_max_age_days: cli.context_max_age_days,
         config_path: cli.config.clone(),

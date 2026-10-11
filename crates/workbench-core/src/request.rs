@@ -152,7 +152,8 @@ impl Request {
             self.operation.as_str(),
             "grafana.dashboard.get" | "grafana.query"
         );
-        let target_supported = if grafana {
+        let diagnostics = self.operation == "diagnostics.run";
+        let target_supported = if grafana || diagnostics {
             self.target.kind == "connection" && valid_operation(&self.target.id)
         } else {
             self.target.kind == "local" && self.target.id == "workstation"
@@ -160,7 +161,7 @@ impl Request {
         if !target_supported || self.target.environment.is_some() {
             return Err(Problem::unsupported(
                 "unsupported_target",
-                "Grafana requires a named connection; other operations require the local workstation. Environment selectors are unsupported.",
+                "Grafana and diagnostics execution require a named connection; other operations require the local workstation. Environment selectors are unsupported.",
             ));
         }
         if self.record != "never" {
@@ -169,10 +170,15 @@ impl Request {
                 "Persistence is unavailable; explicitly select record=never.",
             ));
         }
-        if self.limits.max_items.is_some() || self.limits.concurrency.is_some() {
+        if self.limits.max_items.is_some()
+            || self
+                .limits
+                .concurrency
+                .is_some_and(|value| !diagnostics || value > 2)
+        {
             return Err(Problem::unsupported(
                 "unsupported_limits",
-                "These operations do not accept max_items or concurrency controls.",
+                "max_items is unsupported; only diagnostics.run accepts concurrency, with a ceiling of two checks.",
             ));
         }
         Ok(())

@@ -3,13 +3,17 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     path::PathBuf,
 };
-use workbench_core::{OperatorContext, RunControl, request::Request, result::Status};
+use workbench_core::{
+    DiagnosticsGrant, OperatorContext, RunControl, request::Request, result::Status,
+};
 
 pub struct Options {
     pub port: u16,
     pub allow: Vec<String>,
     pub roots: Vec<String>,
     pub read_policy: Option<PathBuf>,
+    pub diagnostics_config: Option<PathBuf>,
+    pub targets: Vec<String>,
 }
 
 pub(crate) struct Root {
@@ -22,6 +26,7 @@ pub(crate) struct Grants {
     pub roots: BTreeMap<String, Root>,
     pub context: OperatorContext,
     pub policy_digest: Option<String>,
+    pub diagnostic_grant: Option<DiagnosticsGrant>,
 }
 
 impl Grants {
@@ -30,15 +35,17 @@ impl Grants {
         for operation in &options.allow {
             if !matches!(
                 operation.as_str(),
-                "process.exec" | "command.inspect" | "task.run"
+                "process.exec" | "command.inspect" | "task.run" | "diagnostics.run"
             ) || !operations.insert(operation.clone())
             {
                 return Err(
-                    "--allow requires unique process.exec, command.inspect or task.run IDs",
+                    "--allow requires unique process.exec, command.inspect, task.run or diagnostics.run IDs",
                 );
             }
         }
-        let commands = operations.iter().any(|op| op != "task.run");
+        let commands = operations
+            .iter()
+            .any(|op| matches!(op.as_str(), "process.exec" | "command.inspect"));
         if commands && (options.read_policy.is_none() || options.roots.is_empty()) {
             return Err(
                 "command grants require an explicit --read-policy and at least one --root ID",
@@ -47,9 +54,26 @@ impl Grants {
         if !commands && (!options.roots.is_empty() || options.read_policy.is_some()) {
             return Err("--root and --read-policy require a command grant");
         }
+        let diagnostics = operations.contains("diagnostics.run");
+        if diagnostics && (options.diagnostics_config.is_none() || options.targets.is_empty()) {
+            return Err(
+                "diagnostics.run requires --diagnostics-config and at least one explicit --target ID",
+            );
+        }
+        if !diagnostics && (options.diagnostics_config.is_some() || !options.targets.is_empty()) {
+            return Err("--diagnostics-config and --target require a diagnostics.run grant");
+        }
         let mut context = OperatorContext::default();
         let mut roots = BTreeMap::new();
         let mut policy_digest = None;
+        let diagnostic_grant = if let Some(path) = &options.diagnostics_config {
+            let grant = workbench_core::diagnostics_grant(path, &options.targets)
+                .map_err(|_| "the diagnostic configuration, selected targets or CA could not be admitted; start a new session with valid regular files and unique known aliases")?;
+            context.diagnostics_config_path = Some(path.clone());
+            Some(grant)
+        } else {
+            None
+        };
         if let Some(path) = &options.read_policy {
             let policy = workbench_core::read_policy_description(path)
                 .map_err(|_| "the explicit read policy is unavailable or invalid")?;
@@ -118,14 +142,18 @@ impl Grants {
             roots,
             context,
             policy_digest,
+            diagnostic_grant,
         })
     }
 
     pub fn session(&self, id: &str) -> Value {
         json!({"api_version":"0.1","session_id":id,
             "roots":self.roots.iter().map(|(id, root)| json!({"id":id,"label":root.label})).collect::<Vec<_>>(),
+            "targets":self.diagnostic_grant.iter().flat_map(|grant| grant.target_ids()).map(|id|json!({"id":id,"label":id})).collect::<Vec<_>>(),
             "operations":self.operations.iter().map(|operation| if operation == "task.run" {
                 json!({"id":operation,"version":1,"tasks":["error-budget"]})
+            } else if operation == "diagnostics.run" {
+                json!({"id":operation,"version":1,"packs":[workbench_core::diagnostics_pack_metadata()]})
             } else { json!({"id":operation,"version":1,"profile":"linux-read-v1"}) }).collect::<Vec<_>>(),
             "limits":{"active_runs":1,"history_entries":50,"history_bytes":16777216,"max_request_bytes":65536,"max_submissions":1024}})
     }

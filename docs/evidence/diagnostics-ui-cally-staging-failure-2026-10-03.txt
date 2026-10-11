@@ -1,0 +1,103 @@
+# INCONCLUSIVE — WORKBENCH-011 R1 native acceptance
+
+**[verified] The verifier staging driver failed before any product execution.**
+Authoritative handle67887 terminated with its own exit1. There were **zero Cargo/product/API/
+browser runs, zero canonical receipts and zero screenshots**. No product finding was established.
+All failed/predecessor evidence remains preserved. No retry or source change was performed.
+
+## Target and authority
+
+- **[verified]** Repository latent-sre/agenticsre-rust; sealed original
+  `/tmp/agenticsre-diagnostics-ui-r1-snapshot-0rzjumlc`.
+- **[verified]** Candidate`bca5b19a8d448ac72202f30ff120446127582a38`,
+  tree`4f221ff5cad9fe78342e25c866a0258529e4622c`, base`2c4e4220654d85d5be22ac42a034beb51fcc5624`.
+  All358regular files/5,391,853bytes and sealed0444/0555 modes matched before staging;
+  all source hashes and clean Git identity matched after cleanup.
+- **[verified]** Manifest SHA`0b942d654f4013ed59e3b9e895ca08ee108eb4bd3a1c6c1dea7a7fb08bf11477`.
+- **[sourced]** Both affected R1 reviews accepted, carried in root release record
+  `native-release.json`, SHA`601208acff8555c45eff3a051318969835400c353256cedd093bf664e14d11db`.
+- **[verified]** Prepared driver SHA`c25cec5beec6f14d49cdcfbb7ebac8c990f1fdd3ae6bf052f3572aff65c30b80`;
+  native lane SHA`e1955eff333ec469ccc73b06f5201cf5407cc31d477510df617c85a0995cf841`.
+  All19sealed support entries matched at invocation; their originals remain unchanged.
+
+The acceptance criteria are the real five-check browser/API mission, admission/grant and pinned
+config/CA behavior, CLI/call parity, exact receipt history/download, truthful failure captions,
+partial/stop/concurrency/body bounds, witnessed cancellation/shutdown, inert rendering,
+themes/mobile/keyboard, actual screenshots, schema-valid receipts and owned cleanup. Their exact
+prepared commands and limits remain in release-preparation.json. Runtime criteria remain open.
+
+## Executed checks and failure
+
+**[verified]** Exact released host orchestration command (trusted DATA-only driver):
+
+```text
+python3 -I -B /tmp/agenticsre-diagnostics-ui-r1-release-prep-lQUHzLBM/prepare-ui.py --evidence-parent /tmp
+```
+
+**[verified]** Fresh preallocation free space was8,609,234,944bytes, above8,589,934,592.
+Cached base inspect and exact container/image-name absence checks passed. The driver checked and
+packaged260cached locked crates, streamed358frozen product files and1,376cached browser files
+(485,411,895bytes), and prepared the accepted root-owned bwrap/rg DATA. No Cargo, package hook,
+Node, browser, fixture or product code executed on Adama. No download, local runtime copy,
+second product checkout, source.tar or build.tar was created.
+
+**[verified]** `image-build.log` reached the final COPY-only image commit and blob copying.
+The driver then raised `TimeoutExpired` from `process.wait(timeout=20)` after closing the
+streamed context. This shorter verifier wait ended the attempt before the declared180second
+staging limit. The build command's own terminal status was **not retained**; it must not be
+reported as124, successful or a native test failure. The driver's own exit1 is observed.
+
+**[verified]** The driver's initial cleanup reported the exact tag absent. A subsequent independent
+readback found that the remote build had completed later, publishing:
+
+```text
+localhost/agenticsre-diagnostics-ui:0rwh7ay6
+sha256:72ae02f732700ad0f59c9e2290a67b3c9074d3348a550033f3fe46c4a99498e9
+```
+
+Its label matched the exact R1 manifest. This demonstrates a cleanup race after local timeout;
+the initial absence check alone was insufficient. The exact owned late image was removed with
+the engine's `image rm --ignore --no-prune` command, own exit0. The primary timeout and initial
+cleanup record remain intact, with reconciliation in separate evidence files.
+
+**[sourced]** The private driver requires a single staging deadline covering stream transfer and
+image completion before another attempt. Its timeout failure path also needs authoritative build
+termination/completion reconciliation before declaring cleanup. Those are verifier orchestration
+repairs, not product changes. No repair or additional lane was run in this attempt.
+
+## Isolation and attribution
+
+**[verified]** Only cached COPY-only image construction was attempted, through the existing strict
+SSH/engine seam, `--pull=never --network=none --http-proxy=false --layers=false --force-rm`.
+The base was and remains:
+
+```text
+docker.io/library/rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959
+sha256:ab239914c9d2fbe5ef024c5314dae21e2a2c43618086e169d78a754429978b97
+```
+
+**[unverified]** The planned UID1000/read-only source+root/private PID+network/cap-dropALL/NNP/
+2.5CPU/4GiB/512PIDs/tmp512MiB/target2GiB/900second runtime boundary was **not launched**.
+No runtime-version observations or final ordinary binary identity exist for this attempt.
+The local368f… development binary remains predecessor DATA only and was not substituted.
+
+**[sourced]** Accepted core/DNS/Grafana and earlier GUI proofs remain attributable only to their
+original revisions/packets. They were not replayed or turned into a new UI acceptance claim.
+The inherited positive system-resolver port53EACCES gap remains open and was not retried.
+
+## Final residue and evidence
+
+**[verified]** Independent readbacks establish the exact container, late image tag, observed image
+ID and exact manifest-label image query absent. The engine's all/external container listing is
+empty. Cached base identity is unchanged. No matching local driver/build process remains;
+only this run's source/support staging directories were removed. Original snapshot hashes/refs
+and all checked prior preparation seals are unchanged. Final cleanup is confirmed **after**
+late-image reconciliation, not by the initial driver report.
+
+Exact raw command/status/readback evidence is retained in commands.json,
+driver-primary-error.json, image-build.log, independent-late-build-readback.json,
+independent-final-cleanup.json, independent-local-readback.json and invariant-readback.json.
+criterion-verdicts.json distinguishes passed DATA/isolation preparation, failed verifier staging,
+unrun runtime criteria and reconciled cleanup. No receipt schema or PNG validator ran because
+there were no returned receipts or images. This packet has no automatic product-verdict schema;
+its artifact manifest binds the retained bytes only.

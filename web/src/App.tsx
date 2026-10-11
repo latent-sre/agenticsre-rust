@@ -5,7 +5,7 @@ import { admissionUnknown, ApiError, errorMessage, requestSignal, responseData }
 import type { Api } from './api';
 import { CheckForm } from './CheckForm';
 import { Badge, Icon, Notice } from './components';
-import { availableChecks, plainText } from './model';
+import { availableChecks, plainText, runScope } from './model';
 import type { Run, Session, Submission, Theme } from './model';
 import { Result } from './Result';
 
@@ -90,7 +90,7 @@ export function App({ api, initialTheme }: { api: Api | null; initialTheme: Them
       <Link to="/checks" search={previous => previous} className={!historyPage ? 'active' : ''} aria-current={!historyPage ? 'page' : undefined}><Icon name="terminal" />Workbench</Link>
       <Link to="/history" search={previous => ({ ...previous, run: undefined })} className={historyPage ? 'active' : ''} aria-current={historyPage ? 'page' : undefined}><Icon name="history" />Run history{runs.length > 0 && <span className="nav-count">{runs.length}</span>}</Link>
     </nav>
-    <div className="rail-section"><span className="eyebrow">THIS SESSION</span><p className="rail-note">{session ? `${session.roots.length} granted workspace${session.roots.length === 1 ? '' : 's'}` : 'Local browser session'}</p><p className="small-note">Checks and results stay in this server session.</p></div>
+    <div className="rail-section"><span className="eyebrow">THIS SESSION</span><p className="rail-note">{session ? `${session.roots.length} granted workspace${session.roots.length === 1 ? '' : 's'} · ${session.targets.length} diagnostic target${session.targets.length === 1 ? '' : 's'}` : 'Local browser session'}</p><p className="small-note">Checks and results stay in this server session.</p></div>
     {runs[0] && <div className="rail-section"><span className="eyebrow">LATEST CHECK</span><button className="recent-run" onClick={() => { if (runs[0]) select(runs[0]); }}><span>{plainText(runs[0].check_label)}</span><Badge status={runs[0].execution_status ?? runs[0].state} /></button></div>}
     <div className="rail-bottom"><div className="theme-picker" role="group" aria-label="Appearance">{(['light', 'dark', 'system'] as const).map(choice => <button key={choice} type="button" className={theme === choice ? 'selected' : ''} aria-pressed={theme === choice} onClick={() => setTheme(choice)}>{choice.slice(0, 1).toUpperCase() + choice.slice(1)}</button>)}</div>
       <div className="session-indicator"><span className={`status-dot ${session && !runsQuery.isError ? 'connected' : ''}`} />{api && !unauthorized ? 'Local session' : 'Launch link required'}</div></div>
@@ -112,11 +112,11 @@ export function App({ api, initialTheme }: { api: Api | null; initialTheme: Them
                 {historyPage ? <History runs={runs} loading={runsQuery.isPending} evicted={runsQuery.data?.evicted_count ?? 0} session={session} onSelect={select} onClear={() => setClearConfirm(true)} />
                   : <>
                     {active && active.id !== selected?.id && <Notice title="A check is running" action={<button className="button secondary" onClick={() => select(active)}>View active check</button>}><p>{plainText(active.check_label)}. Wait for it to finish or cancel it before starting another.</p></Notice>}
-                    {availableChecks(session).length === 0 ? <Notice title="No checks are granted"><p>Start a new workbench session with the checks and workspaces you want to allow. This session cannot start work.</p></Notice>
-                      : <CheckForm session={session} check={search.check} root={search.root} busy={Boolean(active || pendingSubmission)} submitting={submission.isPending}
+                    {availableChecks(session).length === 0 ? <Notice title="No checks are granted"><p>Start a new workbench session with the checks, workspaces or diagnostic targets you want to allow. Diagnostics need an explicit operation grant and a target alias. This session cannot start work.</p></Notice>
+                      : <CheckForm session={session} check={search.check} root={search.root} target={search.target} busy={Boolean(active || pendingSubmission)} submitting={submission.isPending}
                         problem={submission.error instanceof ApiError ? submission.error.problem : undefined}
                         onSubmit={request => { setPendingSubmission(request); setActionError(null); submission.mutate(request); }}
-                        onSelection={(check, root) => { navigate({ to: '/checks', search: previous => ({ ...previous, check, root }) }).catch(() => setActionError('Could not update the selected check.')); }} />}
+                        onSelection={(check, root, target) => { navigate({ to: '/checks', search: previous => ({ ...previous, check, root, target }) }).catch(() => setActionError('Could not update the selected check.')); }} />}
                     {selected ? <Result key={selected.id} api={api} run={selected} session={session} tab={search.tab ?? 'output'} onCancel={id => cancellation.mutate(id)} cancelling={cancellation.isPending} />
                       : search.run && runQuery.isPending ? <div className="loading-state" role="status">Loading check…</div>
                         : search.run && runQuery.isError ? <Notice title="Check unavailable" danger><p>{errorMessage(runQuery.error)}</p></Notice>
@@ -132,7 +132,7 @@ export function App({ api, initialTheme }: { api: Api | null; initialTheme: Them
 function History({ runs, loading, evicted, session, onSelect, onClear }: { runs: Run[]; loading: boolean; evicted: number; session: Session; onSelect: (run: Run) => void; onClear: () => void }) {
   return <section className="card history-card" aria-label="Session history"><div className="card-heading"><div><h2>Recent checks</h2><p>Up to 50 completed results, within the session’s memory limit.</p></div><button className="button secondary" disabled={!runs.some(run => run.state === 'terminal')} onClick={onClear}>Clear history</button></div>
     {loading ? <div className="loading-state" role="status">Loading history…</div> : runs.length === 0 ? <div className="first-result"><Icon name="history" size={28} /><h3>No checks in this session</h3><p>Run a check from the workbench to see its result here.</p><Link to="/checks" search={{}} className="button secondary">Go to workbench</Link></div>
-      : <ul className="history-list">{runs.map(run => <li key={run.id}><button className="history-row" onClick={() => onSelect(run)}><Icon name={run.operation === 'task.run' ? 'check' : 'terminal'} /><div className="history-title"><strong>{plainText(run.check_label)}</strong><span>{run.root_id ? plainText(session.roots.find(root => root.id === run.root_id)?.label ?? run.root_id) : 'Numerical input'} · {new Date(run.submitted_at).toLocaleString()}</span></div><Badge status={run.execution_status ?? run.state} /><Icon name="arrow" size={16} /></button></li>)}</ul>}
+      : <ul className="history-list">{runs.map(run => <li key={run.id}><button className="history-row" onClick={() => onSelect(run)}><Icon name={run.operation === 'task.run' || run.operation === 'diagnostics.run' ? 'check' : 'terminal'} /><div className="history-title"><strong>{plainText(run.check_label)}</strong><span>{runScope(run, session)} · {new Date(run.submitted_at).toLocaleString()}</span></div><Badge status={run.execution_status ?? run.state} /><Icon name="arrow" size={16} /></button></li>)}</ul>}
     <footer className="history-footer">Closing the server clears this history.{evicted > 0 && <span> {evicted} older result{evicted === 1 ? ' was' : 's were'} evicted.</span>}</footer>
   </section>;
 }

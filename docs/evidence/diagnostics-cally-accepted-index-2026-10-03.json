@@ -1,0 +1,54 @@
+{
+  "qualified_main_and_Grafana_acceptance": "PASS within testedprivateLinuxscope",
+  "open_gap": "Positivefirst-system-nameserver/no-fallbacktraffic INCONCLUSIVE because UID1000 bindprivate53 EACCES13; notretried",
+  "accepted_canonical_selection": 271,
+  "main_plus_resolver_canonical": 175,
+  "full_Grafana_canonical": 96,
+  "diagnostics_data": 109,
+  "full_Grafana_data": 89,
+  "historical_extra_complete_Grafana_canonical": 87,
+  "all_retained_complete_canonical_observations": 358,
+  "receipts": [
+    {
+      "label": "baseline/publicprefix",
+      "path": "/tmp/agenticsre-diagnostics-cally-rb6dntnd/schema-validation/receipts.jsonl",
+      "sha256": "506f5496eb6ddb3837e6c112ea09abd49579bea7326b9482d8a5f54f7f35ad8b",
+      "canonical_count": 117,
+      "selection": "all exact raw envelopes"
+    },
+    {
+      "label": "expiry/framing/301",
+      "path": "/tmp/agenticsre-diagnostics-cont-cally-byxkg61s/schema-validation/receipts.jsonl",
+      "sha256": "fd9df06bab178fdf165dba7aa6624f08dc9d8540efc41615a334a50df9a2118a",
+      "canonical_count": 29,
+      "selection": "all exact raw envelopes"
+    },
+    {
+      "label": "completeddiagnosticssuffix",
+      "path": "/tmp/agenticsre-diagnostics-cont-cally-rumhrsvh/schema-validation/receipts.jsonl",
+      "sha256": "e4c0dbb796537e89417180e569a1572a987dec2f95a8ac5eb1056a404a2dc880",
+      "canonical_count": 27,
+      "selection": "all exact raw envelopes"
+    },
+    {
+      "label": "malformed/emptyresolver",
+      "path": "/tmp/agenticsre-diagnostics-cont-cally-i5soqfo6/schema-validation/receipts.jsonl",
+      "sha256": "1896dade0b74289f5c2fee6d62f767fdfc140bdc8761ee70bc13a2e24a234e87",
+      "canonical_count": 2,
+      "selection": "all exact raw envelopes"
+    },
+    {
+      "label": "successfulcompleteGrafanaregression",
+      "path": "/tmp/agenticsre-diagnostics-cont-cally-i5soqfo6/schema-validation/grafana-schema-data.jsonl",
+      "sha256": "caf68dc1a8e32b21bcd65772ea575931e2f71b8ba0e4127955e4ef94c2bc3dc1",
+      "canonical_count": 96,
+      "selection": "exact envelopes with schema=result; data envelopes also retained",
+      "data_counts": {
+        "result": 96,
+        "grafana-dashboard-data": 56,
+        "grafana-query-data": 33
+      }
+    }
+  ],
+  "final_schema_validation_sha256": "d54b434c5ca22c5fc881b63014b6cdf60c74f86a242ebf0e9a282b99e6eead1f"
+}

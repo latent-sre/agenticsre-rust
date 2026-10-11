@@ -1,5 +1,9 @@
 //! Shared, bounded operation semantics for the experimental `save` CLI.
 mod context;
+mod diagnostics;
+pub use diagnostics::{
+    DiagnosticsGrant, diagnostics_grant, diagnostics_pack_metadata, normalize_diagnostics_input,
+};
 pub mod discovery;
 mod grafana;
 pub use grafana::{
@@ -28,6 +32,8 @@ use std::time::Instant;
 /// Explicit operator startup configuration, never a wire-request field or a grant.
 #[derive(Default)]
 pub struct OperatorContext {
+    /// Explicit startup-only diagnostics destination/configuration binding; never a wire grant.
+    pub diagnostics_config_path: Option<std::path::PathBuf>,
     /// Explicit offline fixture export and bounded freshness policy; never wire fields.
     pub context_source_path: Option<std::path::PathBuf>,
     pub context_max_age_days: Option<u16>,
@@ -69,9 +75,10 @@ pub fn execute_with_policy_identity(
         request,
         control,
         context,
-        expected_policy_digest,
-        None,
-        false,
+        Identities {
+            policy: expected_policy_digest,
+            ..Identities::default()
+        },
     )
 }
 
@@ -89,41 +96,77 @@ pub fn execute_with_authority_identities(
         request,
         control,
         context,
-        expected_policy_digest,
-        expected_grafana_identity,
-        true,
+        Identities {
+            policy: expected_policy_digest,
+            grafana: expected_grafana_identity,
+            required: true,
+            ..Identities::default()
+        },
     )
+}
+
+/// Explicit hosted diagnostic grant path. The caller admits the selected aliases with
+/// `diagnostics_grant`; generic hosted execution continues to refuse diagnostics.
+pub fn execute_with_diagnostic_grant(
+    request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    expected_policy_digest: Option<&str>,
+    grant: &DiagnosticsGrant,
+) -> OperationResult {
+    execute_with_identities(
+        request,
+        control,
+        context,
+        Identities {
+            policy: expected_policy_digest,
+            diagnostics: Some(grant),
+            required: true,
+            ..Identities::default()
+        },
+    )
+}
+
+#[derive(Default)]
+struct Identities<'a> {
+    policy: Option<&'a str>,
+    grafana: Option<&'a GrafanaConfigIdentity>,
+    diagnostics: Option<&'a DiagnosticsGrant>,
+    required: bool,
 }
 
 fn execute_with_identities(
     request: Request,
     control: &RunControl,
     context: &OperatorContext,
-    expected_policy_digest: Option<&str>,
-    expected_grafana_identity: Option<&GrafanaConfigIdentity>,
-    require_identities: bool,
+    identities: Identities<'_>,
 ) -> OperationResult {
     let start = Instant::now();
     let mut result = OperationResult::new(&request);
     if let Err(problem) = request.validate() {
         result.reject(problem);
-    } else if require_identities
-        && expected_policy_digest.is_none()
+    } else if identities.required
+        && identities.diagnostics.is_none()
+        && request.operation == "diagnostics.run"
+    {
+        result.reject(Problem::unsupported("diagnostics_grants_unavailable", "Diagnostics grants are not implemented for hosted adapters; use the explicit operator CLI binding."));
+    } else if identities.required
+        && identities.policy.is_none()
         && matches!(
             request.operation.as_str(),
             "process.exec" | "command.inspect"
         )
     {
         result.reject(Problem::invalid("read_policy_identity_required", "A pinned command grant requires its trusted policy identity; unpinned execution is refused."));
-    } else if require_identities
-        && expected_grafana_identity.is_none()
+    } else if identities.required
+        && identities.grafana.is_none()
         && matches!(
             request.operation.as_str(),
             "grafana.dashboard.get" | "grafana.query"
         )
     {
         result.reject(Problem::invalid("grafana_identity_required", "A pinned Grafana grant requires its trusted configuration identity; unpinned execution is refused."));
-    } else if expected_policy_digest.is_some()
+    } else if identities.policy.is_some()
         && context.read_policy_path.is_none()
         && matches!(
             request.operation.as_str(),
@@ -136,15 +179,7 @@ fn execute_with_identities(
         result.error("cancelled", "The invocation was cancelled before dispatch.");
         result.data = json!({"cancellation_signal":control.signal.load(Ordering::Relaxed)});
     } else {
-        dispatch(
-            &request,
-            control,
-            context,
-            expected_policy_digest,
-            expected_grafana_identity,
-            start,
-            &mut result,
-        );
+        dispatch(&request, control, context, &identities, start, &mut result);
     }
     result.finish(start);
     result
@@ -154,21 +189,24 @@ fn dispatch(
     request: &Request,
     control: &RunControl,
     context: &OperatorContext,
-    expected_policy_digest: Option<&str>,
-    expected_grafana_identity: Option<&GrafanaConfigIdentity>,
+    identities: &Identities<'_>,
     start: Instant,
     result: &mut OperationResult,
 ) {
     match request.operation.as_str() {
-        "context.resolve" => context::run(request, control, context, start, result),
-        "grafana.dashboard.get" | "grafana.query" => grafana::run(
+        "diagnostics.run" => diagnostics::run(
             request,
             control,
             context,
-            expected_grafana_identity,
+            identities.diagnostics,
             start,
             result,
         ),
+        "diagnostics.describe" => diagnostics::describe(&request.inputs, result),
+        "context.resolve" => context::run(request, control, context, start, result),
+        "grafana.dashboard.get" | "grafana.query" => {
+            grafana::run(request, control, context, identities.grafana, start, result)
+        }
         "task.run" => tasks::run(request, control, result),
         "task.describe" => tasks::describe(&request.inputs, result),
         "process.exec" | "command.inspect" if context.read_policy_path.is_some() => {
@@ -180,7 +218,7 @@ fn dispatch(
                     .as_deref()
                     .expect("guarded read policy"),
                 context.read_profile_launcher.as_ref(),
-                expected_policy_digest,
+                identities.policy,
                 start,
                 result,
             );
@@ -204,10 +242,12 @@ fn dispatch(
             }
             Err(problem) => result.reject(problem),
         },
-        "capability.list" | "doctor" | "task.list" => {
+        "capability.list" | "doctor" | "task.list" | "diagnostics.list" => {
             if request.inputs.as_object().is_some_and(|map| map.is_empty()) {
                 result.effect_outcome = "not_applicable".into();
-                result.data = if request.operation == "task.list" {
+                result.data = if request.operation == "diagnostics.list" {
+                    diagnostics::list()
+                } else if request.operation == "task.list" {
                     tasks::list()
                 } else if request.operation == "doctor" {
                     discovery::doctor()

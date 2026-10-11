@@ -223,12 +223,102 @@ export interface components {
             version: 1;
             tasks: "error-budget"[];
         };
+        /**
+         * @example {
+         *       "api_version": "0.1",
+         *       "session_id": "s-example",
+         *       "roots": [],
+         *       "targets": [
+         *         {
+         *           "id": "fixture-web",
+         *           "label": "fixture-web"
+         *         }
+         *       ],
+         *       "operations": [
+         *         {
+         *           "id": "diagnostics.run",
+         *           "version": 1,
+         *           "packs": [
+         *             {
+         *               "definition": {
+         *                 "id": "connectivity",
+         *                 "version": 1,
+         *                 "steps": [
+         *                   {
+         *                     "id": "dns",
+         *                     "operation": "network.dns.lookup",
+         *                     "operation_version": 1,
+         *                     "prerequisites": [],
+         *                     "max_timeout_ms": 10000
+         *                   },
+         *                   {
+         *                     "id": "tcp",
+         *                     "operation": "network.tcp.connect",
+         *                     "operation_version": 1,
+         *                     "prerequisites": [
+         *                       "dns"
+         *                     ],
+         *                     "max_timeout_ms": 10000
+         *                   },
+         *                   {
+         *                     "id": "tls",
+         *                     "operation": "network.tls.handshake",
+         *                     "operation_version": 1,
+         *                     "prerequisites": [
+         *                       "tcp"
+         *                     ],
+         *                     "max_timeout_ms": 10000
+         *                   },
+         *                   {
+         *                     "id": "http",
+         *                     "operation": "network.http.get",
+         *                     "operation_version": 1,
+         *                     "prerequisites": [
+         *                       "tls"
+         *                     ],
+         *                     "max_timeout_ms": 10000
+         *                   },
+         *                   {
+         *                     "id": "process",
+         *                     "operation": "local.process.observe",
+         *                     "operation_version": 1,
+         *                     "prerequisites": [],
+         *                     "max_timeout_ms": 10000
+         *                   }
+         *                 ],
+         *                 "max_concurrency": 2,
+         *                 "max_timeout_ms": 60000,
+         *                 "input_schema": {
+         *                   "$ref": "urn:sre-workbench:spec:diagnostics-pack-input:0.1"
+         *                 },
+         *                 "output_schema": {
+         *                   "$ref": "urn:sre-workbench:spec:diagnostics-data:0.1"
+         *                 },
+         *                 "effects": "observe",
+         *                 "platforms": [
+         *                   "linux"
+         *                 ]
+         *               },
+         *               "sha256": "sha256:a9f9ca23c192d7c300c802df458fde42c4fb2fbc76b1ffac9a2cd9c632672338"
+         *             }
+         *           ]
+         *         }
+         *       ],
+         *       "limits": {
+         *         "active_runs": 1,
+         *         "history_entries": 50,
+         *         "history_bytes": 16777216,
+         *         "max_request_bytes": 65536,
+         *         "max_submissions": 1024
+         *       }
+         *     }
+         */
         Session: {
             /** @constant */
             api_version: "0.1";
             session_id: string;
             roots: components["schemas"]["Root"][];
-            operations: (components["schemas"]["CommandOperation"] | components["schemas"]["TaskOperation"])[];
+            operations: (components["schemas"]["CommandOperation"] | components["schemas"]["TaskOperation"] | components["schemas"]["DiagnosticOperation"])[];
             limits: {
                 /** @constant */
                 active_runs: 1;
@@ -241,6 +331,7 @@ export interface components {
                 /** @constant */
                 max_submissions: 1024;
             };
+            targets: components["schemas"]["DiagnosticTarget"][];
         };
         Limits: {
             timeout_ms: number;
@@ -279,11 +370,35 @@ export interface components {
             operation: "task.run";
             inputs: components["schemas"]["TaskInputs"];
         };
-        RunSubmission: components["schemas"]["CommandSubmission"] | components["schemas"]["TaskSubmission"];
+        RunSubmission: components["schemas"]["CommandSubmission"] | components["schemas"]["TaskSubmission"] | components["schemas"]["DiagnosticSubmission"];
+        /**
+         * @example {
+         *       "id": "inv-example",
+         *       "operation": "diagnostics.run",
+         *       "check_label": "Connectivity diagnostics",
+         *       "root_id": null,
+         *       "target_id": "fixture-web",
+         *       "state": "running",
+         *       "submitted_at": "2026-10-03T12:00:00Z",
+         *       "execution_status": null,
+         *       "receipt_url": null
+         *     }
+         * @example {
+         *       "id": "inv-example",
+         *       "operation": "diagnostics.run",
+         *       "check_label": "Connectivity diagnostics",
+         *       "root_id": null,
+         *       "target_id": "fixture-web",
+         *       "state": "terminal",
+         *       "submitted_at": "2026-10-03T12:00:00Z",
+         *       "execution_status": "succeeded",
+         *       "receipt_url": "/api/v1/runs/inv-example/receipt"
+         *     }
+         */
         RunSummary: {
             id: string;
             /** @enum {unknown} */
-            operation: "process.exec" | "command.inspect" | "task.run";
+            operation: "process.exec" | "command.inspect" | "task.run" | "diagnostics.run";
             check_label: string;
             root_id: string | null;
             /** @enum {unknown} */
@@ -292,7 +407,9 @@ export interface components {
             submitted_at: string;
             execution_status: string | null;
             receipt_url: string | null;
-        };
+            /** @description The selected diagnostic alias; null for commands/tasks. Never substituted for root_id. */
+            target_id: components["schemas"]["DiagnosticTarget"]["id"] | null;
+        } & unknown;
         RunList: {
             runs: components["schemas"]["RunSummary"][];
             next_offset: number | null;
@@ -315,6 +432,267 @@ export interface components {
             }[];
         };
         Empty: Record<string, never>;
+        CoreDiagnosticsPackInput: {
+            capture_body?: boolean;
+            /** @enum {unknown} */
+            on_failure?: "continue" | "stop";
+        };
+        CoreDiagnosticsRunInput: {
+            /** @constant */
+            id: "connectivity";
+            input: components["schemas"]["CoreDiagnosticsPackInput"];
+            /** @constant */
+            version: 1;
+        };
+        CoreDiagnosticsData: {
+            binding: {
+                allowed_ips: string[];
+                hostname: string;
+                identity: {
+                    additional_ca_sha256: string | null;
+                    bundled_roots: {
+                        /** @constant */
+                        package: "webpki-root-certs";
+                        sha256: string;
+                        /** @constant */
+                        version: "1.0.9";
+                    };
+                    configuration_sha256: string;
+                };
+                path: string;
+                port: number;
+                target: string;
+            };
+            cancellation_signal: number | null;
+            input: components["schemas"]["CoreDiagnosticsPackInput"];
+            pack: {
+                definition: {
+                    /** @constant */
+                    effects: "observe";
+                    /** @constant */
+                    id: "connectivity";
+                    /** @constant */
+                    input_schema: {
+                        $ref: "urn:sre-workbench:spec:diagnostics-pack-input:0.1";
+                    };
+                    /** @constant */
+                    max_concurrency: 2;
+                    /** @constant */
+                    max_timeout_ms: 60000;
+                    /** @constant */
+                    output_schema: {
+                        $ref: "urn:sre-workbench:spec:diagnostics-data:0.1";
+                    };
+                    /** @constant */
+                    platforms: [
+                        "linux"
+                    ];
+                    steps: [
+                        {
+                            /** @constant */
+                            id: "dns";
+                            /** @constant */
+                            max_timeout_ms: 10000;
+                            /** @constant */
+                            operation: "network.dns.lookup";
+                            /** @constant */
+                            operation_version: 1;
+                            /** @constant */
+                            prerequisites: never[];
+                        },
+                        {
+                            /** @constant */
+                            id: "tcp";
+                            /** @constant */
+                            max_timeout_ms: 10000;
+                            /** @constant */
+                            operation: "network.tcp.connect";
+                            /** @constant */
+                            operation_version: 1;
+                            /** @constant */
+                            prerequisites: [
+                                "dns"
+                            ];
+                        },
+                        {
+                            /** @constant */
+                            id: "tls";
+                            /** @constant */
+                            max_timeout_ms: 10000;
+                            /** @constant */
+                            operation: "network.tls.handshake";
+                            /** @constant */
+                            operation_version: 1;
+                            /** @constant */
+                            prerequisites: [
+                                "tcp"
+                            ];
+                        },
+                        {
+                            /** @constant */
+                            id: "http";
+                            /** @constant */
+                            max_timeout_ms: 10000;
+                            /** @constant */
+                            operation: "network.http.get";
+                            /** @constant */
+                            operation_version: 1;
+                            /** @constant */
+                            prerequisites: [
+                                "tls"
+                            ];
+                        },
+                        {
+                            /** @constant */
+                            id: "process";
+                            /** @constant */
+                            max_timeout_ms: 10000;
+                            /** @constant */
+                            operation: "local.process.observe";
+                            /** @constant */
+                            operation_version: 1;
+                            /** @constant */
+                            prerequisites: never[];
+                        }
+                    ];
+                    /** @constant */
+                    version: 1;
+                };
+                sha256: string;
+            };
+            redaction: {
+                /** @constant */
+                applied: false;
+                /** @constant */
+                sensitive_content_detection: false;
+            };
+            steps: [
+                components["schemas"]["CoreDiagnosticsStep"] & {
+                    /** @constant */
+                    id?: "dns";
+                },
+                components["schemas"]["CoreDiagnosticsStep"] & {
+                    /** @constant */
+                    id?: "tcp";
+                },
+                components["schemas"]["CoreDiagnosticsStep"] & {
+                    /** @constant */
+                    id?: "tls";
+                },
+                components["schemas"]["CoreDiagnosticsStep"] & {
+                    /** @constant */
+                    id?: "http";
+                },
+                components["schemas"]["CoreDiagnosticsStep"] & {
+                    /** @constant */
+                    id?: "process";
+                }
+            ];
+            vantage: {
+                effective_uid: number;
+                namespaces: {
+                    mnt: {
+                        device: string;
+                        inode: string;
+                    } | null;
+                    net: {
+                        device: string;
+                        inode: string;
+                    } | null;
+                    pid: {
+                        device: string;
+                        inode: string;
+                    } | null;
+                    user: {
+                        device: string;
+                        inode: string;
+                    } | null;
+                };
+                observer_pid: number;
+                /** @constant */
+                platform: "linux";
+                uid: number;
+            };
+        };
+        /** @description Only launcher-granted alias IDs. Labels equal the alias ID; no configured destination, path, process selector or CA is exposed. */
+        DiagnosticTarget: {
+            id: string;
+            label: string;
+        };
+        DiagnosticOperation: {
+            /** @constant */
+            id: "diagnostics.run";
+            /** @constant */
+            version: 1;
+            packs: components["schemas"]["CoreDiagnosticsData"]["pack"][];
+        };
+        /** @description Timeout 1–60000ms; output uses the existing core request bounds 1024–2097152 bytes and normalizes to the effective diagnostics ceiling of 16384 bytes before fingerprinting/dispatch. Omitted concurrency normalizes to 2; null is invalid. */
+        DiagnosticLimits: {
+            timeout_ms: number;
+            max_output_bytes: number;
+            /**
+             * @default 2
+             * @enum {integer}
+             */
+            concurrency: 1 | 2;
+        };
+        /**
+         * @description Only the fixed connectivity v1 pack and a granted target alias. root_id is forbidden even when null. Pack input omissions normalize to capture_body=false,on_failure=continue. No endpoint/path/PID/trust override exists. The submission fingerprint includes operation/version, alias, normalized pack input and every effective core limit.
+         * @example {
+         *       "submission_id": "d23a5a58-5e88-4729-a142-0f3cb6339200",
+         *       "operation": "diagnostics.run",
+         *       "operation_version": 1,
+         *       "target_id": "fixture-web",
+         *       "inputs": {
+         *         "id": "connectivity",
+         *         "version": 1,
+         *         "input": {
+         *           "capture_body": false,
+         *           "on_failure": "continue"
+         *         }
+         *       },
+         *       "limits": {
+         *         "timeout_ms": 30000,
+         *         "max_output_bytes": 16384,
+         *         "concurrency": 2
+         *       }
+         *     }
+         */
+        DiagnosticSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation: "diagnostics.run";
+            /** @constant */
+            operation_version: 1;
+            target_id: components["schemas"]["DiagnosticTarget"]["id"];
+            inputs: components["schemas"]["CoreDiagnosticsRunInput"];
+            limits: components["schemas"]["DiagnosticLimits"];
+        };
+        CoreDiagnosticsStep: {
+            attempted: boolean;
+            duration_ms: number | null;
+            /** @enum {unknown} */
+            id: "dns" | "tcp" | "tls" | "http" | "process";
+            observation: {
+                [key: string]: unknown;
+            };
+            /** Format: date-time */
+            observed_at: string | null;
+            operation: string;
+            /** @constant */
+            operation_version: 1;
+            prerequisites: ("dns" | "tcp" | "tls")[];
+            reason: string | null;
+            started_offset_ms: number | null;
+            /** @enum {unknown} */
+            state: "succeeded" | "failed" | "partial" | "blocked" | "unconfigured" | "unsupported" | "cancelled" | "timed_out";
+            timeout_ms: number;
+        } & (unknown & unknown & unknown & unknown & unknown & unknown & unknown & unknown & unknown & unknown & unknown);
+        CoreDiagnosticsCnameChains: {
+            a: string[];
+            aaaa: string[];
+        };
     };
     responses: never;
     parameters: never;

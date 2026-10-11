@@ -8,6 +8,10 @@ registers them locally and never retrieves schema references over the network.
 |---|---|
 | [Common](common.schema.json) | Reusable target, limit, artifact and source definitions |
 | [Request](request.schema.json) | Shared operation envelope; no caller identity or grant override |
+| [Diagnostics pack input](diagnostics-pack-input.schema.json) | Typed body capture and stop/continue policy only |
+| [Diagnostics run input](diagnostics-run-input.schema.json) | Fixed installed connectivity pack/version |
+| [Diagnostics configuration](diagnostics-config.schema.json) | Trusted startup aliases, allowlisted destinations, resolver/CA/process bindings |
+| [Diagnostics data](diagnostics-data.schema.json) | Five typed observations, prerequisite states, timings and provenance |
 | [Process input](process-input.schema.json) | Explicit program, argument vector and absolute working directory |
 | [Context input](context-resolve-input.schema.json) | Explicit service/environment selectors; no wire source or grant |
 | [Context export](context-export.schema.json) | Bounded offline fixture declarations; separate dependency directions |

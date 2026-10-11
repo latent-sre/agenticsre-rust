@@ -1,0 +1,18 @@
+{
+  "$id": "urn:sre-workbench:spec:diagnostics-pack-input:0.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "capture_body": {
+      "type": "boolean"
+    },
+    "on_failure": {
+      "enum": [
+        "continue",
+        "stop"
+      ]
+    }
+  },
+  "required": [],
+  "type": "object"
+}

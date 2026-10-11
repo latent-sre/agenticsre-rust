@@ -1,0 +1,155 @@
+{
+  "$id": "urn:sre-workbench:spec:diagnostics-config:0.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "targets": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "allowed_ips": {
+            "items": {
+              "maxLength": 45,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 16,
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "host": {
+            "maxLength": 253,
+            "minLength": 1,
+            "type": "string"
+          },
+          "id": {
+            "maxLength": 128,
+            "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "path": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "type": "string"
+          },
+          "port": {
+            "maximum": 65535,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "process": {
+            "additionalProperties": false,
+            "properties": {
+              "backend": {
+                "maxLength": 128,
+                "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+                "type": "string"
+              },
+              "pid": {
+                "maximum": 2147483647,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "start_time_ticks": {
+                "pattern": "^(?:0|[1-9][0-9]{0,19})$",
+                "type": "string"
+              },
+              "uid": {
+                "maximum": 4294967295,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "backend",
+              "pid",
+              "start_time_ticks",
+              "uid"
+            ],
+            "type": "object"
+          },
+          "resolver": {
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "system"
+                  },
+                  "transport": {
+                    "enum": [
+                      "udp",
+                      "tcp"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "transport"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "address": {
+                    "maxLength": 45,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "kind": {
+                    "const": "explicit"
+                  },
+                  "port": {
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "transport": {
+                    "enum": [
+                      "udp",
+                      "tcp"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "address",
+                  "port",
+                  "transport"
+                ],
+                "type": "object"
+              }
+            ]
+          },
+          "tls_ca_file": {
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "host",
+          "port",
+          "path",
+          "allowed_ips",
+          "resolver"
+        ],
+        "type": "object"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "targets"
+  ],
+  "type": "object"
+}

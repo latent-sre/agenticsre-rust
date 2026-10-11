@@ -453,6 +453,17 @@ impl OperationResult {
             for limitation in &self.coverage.limitations {
                 text.push_str(&format!("Limit: {}\n", terminal_safe(limitation)));
             }
+        } else if self.operation == "diagnostics.run" {
+            text.push_str(&format!(
+                "Connection: {}\nObservation:\n{}\nCoverage: {} — {}\n",
+                terminal_safe(&self.target.id),
+                terminal_safe(&self.data.to_string()),
+                self.coverage.state,
+                terminal_safe(&self.coverage.scope)
+            ));
+            for limitation in &self.coverage.limitations {
+                text.push_str(&format!("Limit: {}\n", terminal_safe(limitation)));
+            }
         } else if self.operation != "process.exec" {
             text.push_str(&format!("{}\n", self.data));
         }

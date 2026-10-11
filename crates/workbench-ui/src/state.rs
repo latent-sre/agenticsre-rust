@@ -21,6 +21,7 @@ pub(crate) struct Summary {
     operation: String,
     check_label: &'static str,
     root_id: Option<String>,
+    target_id: Option<String>,
     state: &'static str,
     submitted_at: String,
     execution_status: Option<Status>,
@@ -93,6 +94,7 @@ impl State {
             operation: input.request.operation.clone(),
             check_label: input.label,
             root_id: input.root_id,
+            target_id: input.target_id,
             state: "running",
             submitted_at: timestamp(),
             execution_status: None,
@@ -239,6 +241,7 @@ mod tests {
             submission_id: format!("00000000-0000-0000-0000-{id:012}"),
             request: workbench_core::request::Request::new("task.run", json!({})),
             root_id: None,
+            target_id: None,
             label: "Error budget",
             identity: [0; 32],
         }

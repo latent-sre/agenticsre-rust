@@ -1,0 +1,65 @@
+# Independent diagnostics R1 checkpoint
+
+**INCONCLUSIVE overall product acceptance. Verification execution: FAIL.**
+
+[verified] The single native run stopped on a verifier certificate fixture incompatibility, then exposed verifier PID1 reaping and local staging-permission defects. No product defect was established. Passed evidence is retained; the remaining matrix was not run and no retry occurred.
+
+## Target and authority
+
+[verified] Repository `/home/hawkfire/rusty/agenticsre-rust-diagnostics`; immutable candidate `0e7ec5388bcc96def61571b500e8159deea00621`, tree `d9d64fc09a80f27a327718fa7892fba927c9d688`, base `2c4e4220654d85d5be22ac42a034beb51fcc5624`. Manifest SHA256 `c2a4100c4f209575e7f47e58a45e5df551e3a03824fff4192a395df9fc9416ce`:340 regular files. A separate execution copy matched the sealed original and was clean. Both sealed R0/R1 originals remained unchanged after cleanup.
+
+[sourced] Root released this exact candidate after independent correctness and security ACCEPT gates. `approval-envelope.json` records repository/base/candidate/tree, scope and criteria. The live source roadmap changed after capture; it was not used for execution. The acceptance contracts are the frozen AGENTS.md, docs/diagnostics.md, docs/diagnostics-config.md and the private `ACCEPTANCE.md`/root task. Package/browser proof from older revisions is not relabelled as new diagnostics evidence.
+
+## Criterion verdicts
+
+| Criterion | Verdict and observed evidence |
+|---|---|
+| Source identity and enforced boundary | **PASS** [verified] Exact copy, manifest, cached/derived image and native boundary assertions. |
+| Cold workspace gate | **PASS** [verified]167 passed,0 failed,19 explicitly ignored; own command exit0. Ignore names remain in observed-summary.json; ignored native cases were not rerun by implication. |
+| Native MCP grant regression | **PASS** [verified]1 passed,8 filtered; own exit0. |
+| Ordinary installed CLI/literal mission | **PASS** [verified] Ordinary build and exact `printf '%s\n' 'hello workbench'` receipt:stdout `hello workbench\n`, child0/succeeded/not_assessed/never. |
+| Five-check mission/parity | **PASS** [verified] Builder direct/call pair and independent direct/call; real DNS/TCP/TLS/HTTP, exact sleep PID/start/UID, CA/leaf/config/pack digests and packet/socket ledgers. |
+| Completed independent public portion | **PASS** [verified]114 receipts, plus2 offline discovery and2 UI/MCP startup refusal checks; exact labels in observed-summary.json. Includes explicit UDP/TCP, literal IPv4/IPv6, mixed denied answers, name/CA TLS refusal, config/input/path/authority admission and mid-run snapshot pinning. |
+| R1 corrections | **PASS** [verified]33 named cases: delayed/lost packet counts; real original+alias TCP traffic on one stream before closure; no reconnect/resend; reverse-zone synthesis refusal; owner/class/type/section association; CNAME order/case/conflict/cycle/8-hop limits; live alias parent/step deadlines; exact8192/8193-byte framing including trailing chunk CRLF. |
+| Exact returned schemas | **PASS** [verified]117 canonical receipts and51 nonempty diagnostics data objects validated against frozen schemas. Host validator exit0; no target import/execution or external reference fetch. |
+| Expired-certificate fixture | **FAIL, verifier** [verified] Pinned OpenSSL rejected `-days -1` with `Error: end date before start date`; no expired-leaf product call occurred. |
+| Remaining native acceptance | **INCONCLUSIVE** [verified] Subsequent broad HTTP/body matrix, stopped/zombie/gone/identity negative process cases, public diagnostics SIGINT/SIGTERM/closed-output cases, supplemental resolver/proc views and public Grafana regression were not reached. Earlier passing unit tests do not substitute for these public cases. |
+| Internal process residue | **FAIL, verifier** [verified]19 entries, all stateZ with PPid1. [sourced] This Python PID1 lane had no adoption reaper. No live state was present; this is not erased from the failed record. |
+| Fixed export and final cleanup | **PASS** [verified] Both exact files exported/checksum-checked before tmpfs destruction; container/name/image-ID absent, cached base unchanged, local copies/vendor removed, controller terminal. Initial readonly-copy cleanup failure was reconciled only within this run-owned staging. |
+
+## Executed commands and identities
+
+[verified] Native handle15536; container `agenticsre-diagnostics-rb6dntnd`; derived image `sha256:f127ed4bfe9dcfd5aabef2480ef20a70af2cbd2f3a089024bd677dcefc3d10d2`. Exact argv/cwd/own statuses are in `commands.json`, `verification.json` and the raw log; no pipeline status is substituted.
+
+| Command label | Own exit | Elapsed |
+|---|---:|---:|
+| `runtime-rustc` | `0` | 0.008s |
+| `runtime-cargo` | `0` | 0.004s |
+| `workspace-all-features` | `0` | 85.809s |
+| `native-mcp-grant-regression` | `0` | 5.315s |
+| `ordinary-cli-build` | `0` | 0.458s |
+| `literal-installed-mission` | `0` | 0.023s |
+| `builder-public-five-check` | `0` | 0.526s |
+| `independent-public-diagnostics` | `1` | 26.903s |
+
+[verified] `cargo test --workspace --all-features --locked --offline`, focused ignored native MCP test, then `cargo build -p workbench-cli --locked --offline`. Ordinary build happens after test-feature builds. Fresh ordinary native binary SHA256 `b33d7f2dc713cfb4e2682d6db48d9a2c91a45771c0412c126ceda92480674eea`,38,908,104 bytes; it was0755 in Cally and is0444 DATA at `/tmp/agenticsre-diagnostics-cally-rb6dntnd/save`. This observed native identity differs from the separately retained local builder binary; no equivalence is invented.
+
+[verified] `verification.json` SHA256 `b1c73f831738ad10f1aaf367c1693f6e599789c16606dfd0477b5323829462a5`,10,957 bytes. Source archive SHA256 `434a1cfd039b3a6d56ab4875a2f586c24bdf33775e8c0816e8ba4df0da41e0ec`. Raw log SHA256 `cf717c0a68003f9c883da4a2622c07f109cc9d9dee00c27699c72a70d4393bbc`.
+
+[verified] Runtime:Rust1.98.0 `88d9e12ae178fab0fb5cc050a94da85685d449ea`; Cargo1.98.0 `797e8a9bc`; Python3.13.5; Linux x86_64, glibc2.41. Full observed values are in verification.json. The OpenSSL version string was not separately queried; the exact image and failed command/output bind the incompatibility. Host data validator:Python3.14.7/jsonschema4.26.0/referencing0.37.0.
+
+## Execution isolation and tests authored
+
+[verified] Pinned base `docker.io/library/rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959`, actual cached ID `sha256:ab239914c9d2fbe5ef024c5314dae21e2a2c43618086e169d78a754429978b97`. COPY-only, no pull/download/host mounts; private PID/net, UID1000, root/source read-only, NNP, zero effective capabilities, empty route table,2.5CPU/4GiB/512PIDs/900s,512MiB/tmp and2GiB target tmpfs. Cargo jobs2/tests2/debug0/incremental0, locked/offline. The pre-staging floor was8,683,814,912 bytes. All product/build/dependency/fixture execution occurred inside Cally. Host actions were trusted source/archive/hash/schema inspection and orchestration only.
+
+[verified] Private fixture/driver files are retained with hashes. They did not alter tracked product bytes. The six data-only codec/framing proofs, unchanged export-parser proofs, pre-view input copies and complete executed private scripts remain in this packet. Copied-metadata views were prepared but never executed. [sourced] The earlier preparation hypothesis that only `/proc` root was checked was withdrawn after the frozen per-file fstatfs/type checks were read; it is not a finding.
+
+## Failure and cleanup retention
+
+[verified] The first fixture failure is raw log lines918–931; the independent public command itself exited1. The original aggregate exit1, all raw receipts/ledgers and19 Z-state kernel records are retained. An exported build is not acceptance of the unfinished matrix.
+
+[verified] The driver removed the exact container/image and read back absence, then could not remove copied readonly `.git` directories. `driver-cleanup-reconciliation.json` records making only those disposable directories owner-writable and removing the remaining execution-copy/support. Source/vendor was already absent. Fresh `final-cleanup-readback.json` plus `final-image-id-readback.json` confirm container/name/image-ID absence, unchanged base and no local controller. Both original snapshots were hash-checked unchanged. No disposable run resources remain.
+
+[unverified] No unavailable system-resolver/proc prerequisite, expired-leaf product refusal, remaining HTTP/process/signal case or public Grafana result is claimed from this attempt. A future artifact-only continuation may reuse the exact exported binary and passed evidence after repairing the private verifier fixture/reaper/cleanup; no second native job has been started.
+
+Machine evidence:criterion-verdicts.json records statuses; no additional evidence-schema conformance is claimed. schema-validation/validation.json validates product receipt contracts only. `artifact-manifest.json` seals retained file bytes; sealing is separate from acceptance.

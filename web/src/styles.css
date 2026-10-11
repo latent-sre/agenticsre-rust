@@ -81,6 +81,25 @@
   .checkbox-row input { width:16px;height:16px; }
   .advanced summary { font-size:11px;color:var(--muted);min-height:28px;display:list-item;list-style:revert;list-style-position:inside; }
   .advanced-fields { max-width:310px;padding:12px 0 0; }
+  .advanced-fields>.field+.field { margin-top:14px; }
+  .diagnostic-pack { border-left:2px solid var(--accent);padding:4px 0 4px 14px; }
+  .diagnostic-pack p { color:var(--muted);font-size:12px;line-height:1.7;margin-top:6px; }
+  .diagnostic-steps { list-style:none;padding:0;margin:18px 0 0;display:grid;gap:12px; }
+  .diagnostic-step { border:1px solid var(--line);border-radius:6px;padding:16px;min-width:0; }
+  .diagnostic-step>header { display:flex;justify-content:space-between;gap:12px;align-items:center; }
+  .step-timing,.step-summary,.step-reason { font-size:12px;line-height:1.7;overflow-wrap:anywhere;margin-top:7px; }
+  .step-timing { color:var(--quiet);font-size:11px; }
+  .step-reason { color:var(--warn); }
+  .step-observation summary { font-size:11px;color:var(--muted);min-height:44px;padding:12px 0;list-style:revert; }
+  .observation-fields { margin:8px 0;display:grid;gap:10px;min-width:0; }
+  .observation-fields>div { min-width:0; }
+  .observation-fields dt { font-size:10px;color:var(--quiet); }
+  .observation-fields dd { margin-top:4px;font-size:12px;overflow-wrap:anywhere; }
+  .observation-fields .observation-fields { border-left:1px solid var(--line);padding-left:12px; }
+  .observation-fields pre { background:var(--code);border:1px solid var(--line);padding:12px;border-radius:5px;max-height:320px; }
+  .diagnostic-provenance>h3 { margin-top:20px; }
+  .diagnostic-provenance>.observation-fields { margin:14px 0; }
+  .detail-pairs dd { overflow-wrap:anywhere; }
   .form-footer { display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding:16px 24px;background:var(--field);border-radius:0 0 10px 10px; }
   .command-preview { font-size:11px;line-height:1.6;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere;min-width:0; }
   .actions { display:flex;gap:9px;flex-shrink:0; }

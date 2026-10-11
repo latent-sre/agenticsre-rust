@@ -1,0 +1,9 @@
+# Pure fixture diagnosis — INCONCLUSIVE
+
+[verified] Tool handle85339/native command/controller each reached terminal exit1. No product or OpenSSL certificate command executed. The logging hook assigned globally to subprocess.run intercepted platform.platform() -> platform.processor() -> subprocess.check_output([uname,-p]); its OpenSSL-only guard raised before invocation. This is a private instrumentation failure, not evidence for or against the CA hypothesis. Exact trace is native-fixture.log.
+
+[verified] COPY-only image was based on the accepted cached digest620dbcd... and used the same UID1000/readonly/privatePID+net/capdropALL/NNP/nohostmounts/resource/tmp controls, reduced120s timeout. Exact argv/own statuses and image identity are in commands.json/frozen-image.log; source/product/binary were not staged. No CA bytes were created.
+
+[verified] Exact container agenticsre-diagnostics-ca-bx2ijvi0 and image324f13ec0dd7ecd006b2327787d66fee57c04816736b57febcba6c6da249a2c0 were removed, tag/ID readbacks passed, stagingcontext absent. Independent container/ID readbacks are in independent-cleanup.json. No retry occurred under this release. Both earlier product-verification attempts remain sealed unchanged.
+
+[sourced] Corrective instrumentation plan: remove global subprocess mutation; use a run-only proxy on each imported private fixture module, and obtain kernel provenance from os.uname() without a subprocess. Generator and verify commands stay unchanged. Native red/green proof remains required before remaining product acceptance.
