@@ -78,6 +78,7 @@ class Fixture(http.server.ThreadingHTTPServer):
         self.large_logs = False
         super().__init__(("127.0.0.1", 0), Handler)
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        context.minimum_version = ssl.TLSVersion.TLSv1_2
         context.load_cert_chain(certificate, key)
         self.socket = context.wrap_socket(self.socket, server_side=True)
         self.origin = f"https://127.0.0.1:{self.server_port}/grafana"
