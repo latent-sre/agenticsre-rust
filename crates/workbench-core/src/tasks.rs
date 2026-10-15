@@ -10,7 +10,9 @@ use sha2::{Digest, Sha256};
 use std::path::Path;
 use std::sync::OnceLock;
 
+pub(crate) mod config_check;
 mod error_budget;
+mod prometheus_rules;
 
 /// Validate and normalize only the installed numerical task schema, without spawning work.
 pub fn normalize_error_budget_input(input: &Value) -> Result<Value, Problem> {
@@ -259,6 +261,9 @@ fn model_error(code: &str) -> Option<&'static str> {
             "The selected Python runtime is older than the required version 3.11."
         }
         "invalid_task_input" => "The fixed task received invalid input arguments.",
+        "input_digest_mismatch" => {
+            "The consumed model bytes do not match the expected SHA-256 digest; no parsing or checks were performed."
+        }
         "non_regular_model" => {
             "The model must be a regular file; directories and FIFOs are not accepted."
         }
@@ -271,6 +276,9 @@ fn model_error(code: &str) -> Option<&'static str> {
         "invalid_model" => {
             "The model contains missing or incorrectly typed fields required by this checker."
         }
+        "unsupported_model_schema" => {
+            "The declared model envelope is unknown or ambiguous; this config-check binding accepts only its documented local dashboard forms."
+        }
         "unsupported_model_v2" => {
             "V2 dashboard models require a V2-capable checker and are not checked by this task."
         }
@@ -282,6 +290,70 @@ fn model_error(code: &str) -> Option<&'static str> {
         }
         _ => return None,
     })
+}
+
+/// Preflight the fixed task contract and interpreter without dispatching a child.
+pub(crate) fn normalize_fleet_task(inputs: &Value) -> Result<Value, Problem> {
+    if !inputs.is_object() || !inputs["input"].is_object() {
+        return Err(Problem::invalid(
+            "invalid_fleet_task",
+            "The fixed remote task and numerical input must be objects.",
+        ));
+    }
+    let task: TaskInput = serde_json::from_value(inputs.clone()).map_err(|_| {
+        Problem::invalid(
+            "invalid_fleet_task",
+            "Supply exactly task id, version and numerical input.",
+        )
+    })?;
+    if task.id != "error-budget" || task.version != 1 {
+        return Err(Problem::invalid(
+            "invalid_fleet_task",
+            "Fleet collection admits only the fixed installed error-budget task.",
+        ));
+    }
+    Ok(json!({"id":"error-budget","version":1,"input":error_budget::normalize_input(&task.input)?}))
+}
+
+pub(crate) fn validate_installed_input(inputs: &Value) -> Result<(), Problem> {
+    // Serde accepts positional arrays for structs; the public contract requires
+    // explicit object shapes before any dependency/store access or dispatch.
+    if !inputs.is_object() || !inputs["input"].is_object() {
+        return Err(Problem::invalid(
+            "invalid_task_input",
+            "The task envelope and its input must be JSON objects.",
+        ));
+    }
+    let parsed: TaskInput = serde_json::from_value(inputs.clone()).map_err(|_| {
+        Problem::invalid(
+            "invalid_task_input",
+            "Supply exactly installed task id, version and input.",
+        )
+    })?;
+    if parsed.version != 1 || !matches!(parsed.id.as_str(), "dashboard-hygiene" | "error-budget") {
+        return Err(Problem::unsupported(
+            "unsupported_task",
+            "Only installed task version 1 bindings may be captured.",
+        ));
+    }
+    if parsed.id == "error-budget" {
+        error_budget::normalize_input(&parsed.input)?;
+    } else {
+        let model: ModelInput = serde_json::from_value(parsed.input).map_err(|_| {
+            Problem::invalid(
+                "invalid_task_input",
+                "Dashboard hygiene accepts only input.file.",
+            )
+        })?;
+        if !bounded(&model.file, 1, 1024) || !Path::new(&model.file).is_absolute() {
+            return Err(Problem::invalid(
+                "absolute_model_path_required",
+                "Supply an absolute bounded dashboard path.",
+            ));
+        }
+    }
+    python()?;
+    Ok(())
 }
 
 pub(crate) fn run(request: &Request, control: &RunControl, result: &mut OperationResult) {
@@ -387,6 +459,17 @@ fn run_fixed_python(
     control: &RunControl,
     result: &mut OperationResult,
 ) -> Option<(String, String)> {
+    run_fixed_python_arguments(id, source, identity, vec![argument], control, result)
+}
+
+fn run_fixed_python_arguments(
+    id: &str,
+    source: &str,
+    identity: Value,
+    arguments: Vec<String>,
+    control: &RunControl,
+    result: &mut OperationResult,
+) -> Option<(String, String)> {
     result.data = json!({"task":{"id":id,"version":1},"source":identity});
     let mut prepared = match python() {
         Ok(prepared) => prepared,
@@ -408,8 +491,8 @@ fn run_fixed_python(
         "-B".into(),
         "-c".into(),
         source.into(),
-        argument,
     ];
+    prepared.input.args.extend(arguments);
     result.data = json!({});
     #[cfg(target_os = "linux")]
     process::run(prepared, result, control);

@@ -513,13 +513,25 @@ impl Server {
                     .name("workbench-mcp-core".into())
                     .spawn(move || {
                         std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                            let result = workbench_core::execute_with_authority_identities(
-                                request,
-                                &worker_control,
-                                &grants.context,
-                                grants.policy_digest.as_deref(),
-                                grants.grafana_identity.as_ref(),
-                            );
+                            let result = if let Some(grant) = grants
+                                .investigation_grant
+                                .as_ref()
+                                .filter(|grant| grant.allows(&request.operation))
+                            {
+                                workbench_core::execute_with_investigation_grant(
+                                    request,
+                                    &worker_control,
+                                    grant,
+                                )
+                            } else {
+                                workbench_core::execute_with_authority_identities(
+                                    request,
+                                    &worker_control,
+                                    &grants.context,
+                                    grants.policy_digest.as_deref(),
+                                    grants.grafana_identity.as_ref(),
+                                )
+                            };
                             finish_work(&worker_id, modern, &result)
                         }))
                         .map_err(|_| ())?

@@ -1,0 +1,82 @@
+{
+  "workspace": {
+    "command": "tools/test-sandbox.sh cargo test --workspace --all-features --locked --offline --no-fail-fast",
+    "passed": 550,
+    "failed": 0,
+    "ignored": 33,
+    "log": "investigation-workspace-tests.log",
+    "qualification": "Before frontend prototype-key fix and backend display-label alignment; final frontend and installed workflow checked those changes."
+  },
+  "frontend": {
+    "commands": [
+      "npm --prefix web test",
+      "npm --prefix web run typecheck",
+      "npm --prefix web run lint",
+      "npm --prefix web run build"
+    ],
+    "boundary": "tools/test-ui-sandbox.sh, pinned cached dependencies",
+    "passed": 71,
+    "failed": 0,
+    "reported_by": "investigation_frontend worker",
+    "qualification": "Final prototype-key regressions included; command outputs reported directly by builder, not persisted as logs."
+  },
+  "final_ui_unit": {
+    "passed": 10,
+    "failed": 0,
+    "log": "investigation-ui-final-tests.log"
+  },
+  "strict_workspace_clippy": {
+    "status": "passed",
+    "log": "investigation-clippy.log"
+  },
+  "format": {
+    "command": "cargo fmt --all -- --check",
+    "status": "passed"
+  },
+  "canonical_schema_and_session": {
+    "status": "passed",
+    "receipts": 14,
+    "openapi_components": 54,
+    "log": "schema-validation.txt"
+  },
+  "generated_types": {
+    "status": "passed",
+    "log": "investigation-generated.log"
+  },
+  "final_lint": {
+    "status": "passed",
+    "log": "investigation-final-lint.log"
+  },
+  "schema_closure": {
+    "command": "python3 tools/sync-ui-core-schemas.py --check",
+    "status": "passed"
+  },
+  "specification": {
+    "status": "passed",
+    "schemas": 108,
+    "positive_fixtures": 72,
+    "negative_fixtures": 63,
+    "log": "investigation-specs-final.log"
+  },
+  "installed_browser_api": {
+    "status": "passed",
+    "groups": 15,
+    "log": "investigation-browser.log"
+  },
+  "visual_inspection": {
+    "status": "passed",
+    "reviewer": "root",
+    "screenshots": [
+      "context-light.png",
+      "evidence-light.png",
+      "compare-dark.png",
+      "report-mobile-dark.png"
+    ],
+    "observations": "Readable original-source fields, dark/light distinction, inert hostile text, mobile report wrapping and explicit download control; no material visual finding."
+  },
+  "attempts": {
+    "harness_root_selector": "Initial harness selector #root matched app root; corrected to select#root.",
+    "history_labels": "Earlier history assertion exposed inconsistent labels. Forms and result/history labels aligned; final workflow passes.",
+    "schema_lookup": "An initial post-run checker assumed URL schema IDs; selecting the canonical result file fixed that checker lookup before successful validation."
+  }
+}

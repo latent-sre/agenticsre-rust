@@ -1,0 +1,45 @@
+{
+  "review": "Independent static review; path control-character parity finding fixed and confirmed closed; final timeout delta reviewed; no unresolved material findings.",
+  "resolved": [
+    "Input paths reject ASCII controls and DEL to match published schemas",
+    "Expired budgets keep positive effective timeout and null no-signal cancellation field",
+    "Config-only mode rejects unsupported or ambiguous declared envelopes"
+  ],
+  "checks": [
+    {
+      "command": "tools/test-sandbox.sh cargo test --workspace --all-features --locked --offline",
+      "passed": 376,
+      "failed": 0,
+      "ignored": 19,
+      "scope": "Final integrated product source; exact output retained in workspace.log"
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo test -p workbench-cli --test config_check --locked --offline",
+      "passed": 6,
+      "failed": 0
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+      "exit": 0
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo build -p workbench-cli --locked --offline",
+      "exit": 0
+    },
+    {
+      "command": ".venv/bin/python -B docs/sre-workbench/verify_specs.py",
+      "exit": 0,
+      "schemas": 58,
+      "positive": 41,
+      "negative": 26
+    }
+  ],
+  "initial_installed_failure": {
+    "case": "capture-limited",
+    "expected_exit": 1,
+    "actual_exit": 0,
+    "cause": "The original one-finding fixture fit in the requested 1024-byte child capture budget; expected truncation was not exercised.",
+    "correction": "Use20 panels to exceed that budget. Only verifier bytes changed between r1 and r2; product binary unchanged."
+  },
+  "scope": "Linux synthetic offline dashboard fixtures; source and binary identity in verification.json. No full Grafana schema validation, live deployment or native Windows claim."
+}

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-schedules.py", line 591, in <module>
+    main()
+    ~~~~^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-schedules.py", line 583, in main
+    assert sha(original.read_bytes()) == options.expected_binary_sha256
+               ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'read_bytes'

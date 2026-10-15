@@ -1,0 +1,50 @@
+{
+  "boundary": "tools/test-sandbox.sh; private network/PID/user namespaces, read-only source and no host credentials",
+  "build": {
+    "command": "cargo build -p workbench-cli --locked --offline",
+    "exit": 0
+  },
+  "clippy": {
+    "command": "cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+    "exit": 0
+  },
+  "format": {
+    "command": "cargo fmt --all -- --check",
+    "exit": 0
+  },
+  "independent_static_review": {
+    "execution": "Coordinator executed integrated checks; reviewer did not run tests.",
+    "p0_p1": 0,
+    "scope": "Revised private unlinked executable snapshot, source replacement, descriptors, cleanup, binding identity and documentation",
+    "unresolved_material_findings": 0
+  },
+  "installed": {
+    "commands": 21,
+    "exit": 0,
+    "source_manifest": "source-manifest.json",
+    "verifier": "tools/verify-prometheus-rules.py"
+  },
+  "native_cli": {
+    "command": "env WORKBENCH_TEST_PROMTOOL=<verified official executable> cargo test -p workbench-cli --test prometheus_rules --locked --offline -- --include-ignored",
+    "exit": 0,
+    "failed": 0,
+    "ignored": 0,
+    "passed": 5,
+    "timing": "Before the final two printf fixture-only corrections; final installed acceptance covers the resulting binding identity."
+  },
+  "resolved_verifier_issue": "Initial installed verifier incorrectly expected timeout exit 124; documented common CLI exit is 1. Only verifier expectation changed; product binary unchanged.",
+  "specification": {
+    "command": ".venv/bin/python -B docs/sre-workbench/verify_specs.py",
+    "exit": 0,
+    "negative": 28,
+    "positive": 42,
+    "schemas": 60
+  },
+  "workspace": {
+    "command": "cargo test --workspace --all-features --locked --offline",
+    "exit": 0,
+    "failed": 0,
+    "ignored": 22,
+    "passed": 387
+  }
+}

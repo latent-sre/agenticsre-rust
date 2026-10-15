@@ -1,0 +1,11 @@
+{
+  "protocol": 1,
+  "method": "status",
+  "inputs": {
+    "request_id": "known-before-send"
+  },
+  "expected": {
+    "principal": "fleet.observer",
+    "policy_sha256": null
+  }
+}

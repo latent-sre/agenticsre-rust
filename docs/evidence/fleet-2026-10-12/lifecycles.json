@@ -1,0 +1,37 @@
+[
+  {
+    "case": "persistent-rotation",
+    "concurrency": 1,
+    "failure_threshold": 1,
+    "first_admissions": [
+      "target.1",
+      "target.0"
+    ]
+  },
+  {
+    "case": "controller-sigkill-after-admission",
+    "original_request_ids_preserved": true,
+    "principal_remap_refused": true,
+    "profile_drift_refused": true,
+    "remote_job_sets_unchanged": true
+  },
+  {
+    "all_targets_accounted_for": true,
+    "case": "active-cancellation"
+  },
+  {
+    "all_targets_accounted_for": true,
+    "case": "global-deadline",
+    "deadline_ms": 300
+  },
+  {
+    "bytes_preserved": true,
+    "case": "unknown-partial-store",
+    "fixture_injected": true
+  },
+  {
+    "bytes_preserved": true,
+    "case": "private-64kib-enospc",
+    "uncertainty_disclosed": true
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "workflow": "dashboard-review",
+  "cohort": "candidate",
+  "observed_at": "2026-10-11T01:02:03Z",
+  "measurement": "measured",
+  "outcome": "succeeded",
+  "effort_ms": null
+}

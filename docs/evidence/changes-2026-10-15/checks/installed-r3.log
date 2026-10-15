@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-changes.py", line 445, in <module>
+    main()
+    ~~~~^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-changes.py", line 350, in main
+    lost = finish("interrupted-apply", subprocess.CompletedProcess(args, child.returncode, stdout, stderr), expected=None, args=args)
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-changes.py", line 138, in finish
+    value = validate(completed.stdout)
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-changes.py", line 126, in validate
+    validators["change-data"].validate(value["data"])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/.venv/lib/python3.14/site-packages/jsonschema/validators.py", line 450, in validate
+    raise error
+jsonschema.exceptions.ValidationError: None is not of type 'object'
+
+Failed validating 'type' in schema['properties']['runner']:
+    {'type': 'object',
+     'properties': {'id': {'$ref': 'urn:sre-workbench:spec:common:0.1#/$defs/operation'},
+                    'server_certificate_sha256': {'$ref': 'urn:sre-workbench:spec:common:0.1#/$defs/digest'},
+                    'policy_sha256': {'$ref': 'urn:sre-workbench:spec:common:0.1#/$defs/digest'}},
+     'required': ['id', 'server_certificate_sha256', 'policy_sha256'],
+     'additionalProperties': False}
+
+On instance['runner']:
+    None

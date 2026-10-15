@@ -1,0 +1,25 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 5.72s
+     Running tests/changes.rs (target/debug/deps/changes-43f3c3cdef1c3836)
+
+running 1 test
+test mtls_exact_approval_replacement_readback_and_replay_preserve_original_attempt ... FAILED
+
+failures:
+
+---- mtls_exact_approval_replacement_readback_and_replay_preserve_original_attempt stdout ----
+
+thread 'mtls_exact_approval_replacement_readback_and_replay_preserve_original_attempt' (120) panicked at crates/workbench-cli/tests/changes.rs:486:5:
+unknown receipts must explain the uncertainty
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    mtls_exact_approval_replacement_readback_and_replay_preserve_original_attempt
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 11.56s
+
+error: test failed, to rerun pass `-p workbench-cli --test changes`

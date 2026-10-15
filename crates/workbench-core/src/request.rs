@@ -104,7 +104,14 @@ impl Request {
             operation_version: 1,
             target: Target::default(),
             inputs,
-            limits: Limits::default(),
+            limits: if operation == "report.create" {
+                Limits {
+                    max_output_bytes: MAX_STREAM_BYTES,
+                    ..Limits::default()
+                }
+            } else {
+                Limits::default()
+            },
             record: "never".into(),
         }
     }
@@ -154,31 +161,77 @@ impl Request {
         );
         let diagnostics = self.operation == "diagnostics.run";
         let collection = self.operation == "evidence.collect";
+        let toil_write = matches!(
+            self.operation.as_str(),
+            "toil.configure"
+                | "toil.record"
+                | "toil.capture"
+                | "toil.annotate"
+                | "toil.prune"
+                | "toil.delete"
+        );
+        let job_write = matches!(
+            self.operation.as_str(),
+            "job.submit"
+                | "job.cancel"
+                | "job.work"
+                | "runner.submit"
+                | "runner.cancel"
+                | "change.plan"
+                | "change.approve"
+                | "change.apply"
+                | "change.reconcile"
+                | "fleet.collect"
+                | "fleet.resume"
+                | "fleet.cancel"
+                | "schedule.create"
+                | "schedule.update"
+                | "schedule.pause"
+                | "schedule.run-now"
+                | "schedule.cancel-active"
+                | "schedule.work"
+        );
         let runbook_write = matches!(self.operation.as_str(), "runbook.run" | "runbook.resume");
-        let target_supported = if grafana || diagnostics || collection {
-            self.target.kind == "connection" && valid_operation(&self.target.id)
-        } else {
-            self.target.kind == "local" && self.target.id == "workstation"
-        };
+        let target_supported =
+            if self.operation.starts_with("runner.") || self.operation.starts_with("change.") {
+                self.target.kind == "runner" && valid_operation(&self.target.id)
+            } else if grafana || diagnostics || collection {
+                self.target.kind == "connection" && valid_operation(&self.target.id)
+            } else {
+                self.target.kind == "local" && self.target.id == "workstation"
+            };
         if !target_supported || self.target.environment.is_some() {
             return Err(Problem::unsupported(
                 "unsupported_target",
                 "Grafana, saved queries, diagnostics and collection require a named connection; other operations require the local workstation. Environment selectors are unsupported.",
             ));
         }
-        if (collection || runbook_write) && self.record == "never" {
+        if self.operation.starts_with("change.")
+            && self.operation != "change.status"
+            && self.record != "always"
+        {
             return Err(Problem::invalid(
                 "recording_required",
-                "Durable collection and runbook execution require record=auto or record=always.",
+                "Controlled change ledger writes require explicit record=always.",
             ));
         }
-        if !collection && !runbook_write && self.record != "never" {
+        if (collection || runbook_write || toil_write || job_write) && self.record == "never" {
+            return Err(Problem::invalid(
+                "recording_required",
+                "Durable collection, runbook execution, jobs and toil writes require record=auto or record=always.",
+            ));
+        }
+        if !collection && !runbook_write && !toil_write && !job_write && self.record != "never" {
             return Err(Problem::unsupported(
                 "unsupported_record_mode",
                 "This operation does not record evidence; explicitly select record=never.",
             ));
         }
-        if (self.limits.max_items.is_some() && self.operation != "evidence.compare")
+        if (self.limits.max_items.is_some()
+            && !matches!(
+                self.operation.as_str(),
+                "evidence.compare" | "evidence.open" | "evidence.replay"
+            ))
             || self
                 .limits
                 .concurrency
@@ -186,7 +239,7 @@ impl Request {
         {
             return Err(Problem::unsupported(
                 "unsupported_limits",
-                "Only evidence.compare accepts max_items; only diagnostics.run accepts concurrency, with a ceiling of two checks.",
+                "Only evidence.compare, evidence.open and evidence.replay accept max_items; only diagnostics.run accepts concurrency, with a ceiling of two checks.",
             ));
         }
         Ok(())

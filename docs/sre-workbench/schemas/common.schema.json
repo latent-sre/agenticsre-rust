@@ -167,6 +167,37 @@
       "type": "string",
       "pattern": "^(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]*$",
       "maxLength": 1024
+    },
+    "effective_limits": {
+      "type": "object",
+      "properties": {
+        "timeout_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600000
+        },
+        "max_output_bytes": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 2097152
+        },
+        "max_items": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        }
+      },
+      "required": [
+        "timeout_ms",
+        "max_output_bytes"
+      ],
+      "additionalProperties": false,
+      "description": "Effective execution limits; explicit durable jobs may use up to one hour. Foreground request admission retains the separate 300-second limits definition."
     }
   }
 }

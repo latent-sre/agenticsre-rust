@@ -1,0 +1,12 @@
+{
+  "alpn": "save-runner/1",
+  "leaf_sha256": {
+    "a": "sha256:4262406cc2887aab62219adea2bb2e973b01e755cbd4ccbb76208ecbf585f3cb",
+    "b": "sha256:aedf849524d09a5b2d591692cbb3b5be1f5bb05cbbefd736a77d32e6226e0c79",
+    "server": "sha256:ec8c73b3e1a968d92ff1b4ee9e9060af9dc58b0b00ab688df4afe0bb9962a8a1",
+    "unknown": "sha256:d5a8a34b2227b5553e9bf20c58f614f38bf51a4564e8e8492c12bce707636d78"
+  },
+  "openssl_version": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)",
+  "private_material_retained": false,
+  "tls_version": "TLSv1.3"
+}

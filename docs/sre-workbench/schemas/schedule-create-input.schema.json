@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:schedule-create-input:0.1",
+  "title": "schedule.create input",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation",
+      "maxLength": 64
+    },
+    "definition": {
+      "$ref": "urn:sre-workbench:spec:schedule-definition:0.1"
+    }
+  },
+  "required": [
+    "id",
+    "definition"
+  ],
+  "additionalProperties": false
+}

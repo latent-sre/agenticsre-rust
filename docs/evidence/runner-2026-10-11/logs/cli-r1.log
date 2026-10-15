@@ -1,0 +1,18 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 7.11s
+     Running tests/remote_runner.rs (target/debug/deps/remote_runner-4a455e051e0f6e81)
+
+running 7 tests
+test expired_server_certificate_refuses_even_with_matching_leaf_pin ... ok
+test hosted_adapters_refuse_runner_credentials_before_startup ... ok
+test grant_revocation_keeps_owned_historical_result_observable_after_restart ... ok
+test lost_ack_is_reconciled_by_status_without_resubmission_and_invalid_wire_never_dispatches ... ok
+test server_bind_failure_discloses_retained_startup_writes ... ok
+test tls_identity_and_unknown_principal_refusals_leave_no_owned_admission ... ok
+test principal_owned_requests_deduplicate_conflict_and_reconnect_without_cross_account_lookup ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.61s
+

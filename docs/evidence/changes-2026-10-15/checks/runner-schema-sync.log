@@ -1,0 +1,48 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Finished `test` profile [unoptimized] target(s) in 5.77s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-3566ffb7bd3d67a7)
+
+running 21 tests
+test runner::config::tests::root_path_and_cancelled_reads_refuse_without_panic ... ok
+test runner::config::tests::strict_server_rejects_array_principals_and_unknown_grants ... ok
+test runner::response::tests::embedded_contracts_match_published_schemas ... ok
+test runner::response::tests::canonical_receipt_fields_and_effect_consistency_are_checked ... FAILED
+test runner::response::tests::unsupported_schema_constructs_and_external_refs_fail_closed ... ok
+test runner::server::tests::disabled_change_refusal_keeps_bounded_request_identity ... ok
+test runner::server::tests::namespace_binding_detects_replacement_and_preserves_unknown_layout ... ok
+test runner::response::tests::real_error_budget_receipt_and_input_dependencies_are_validated ... ok
+test runner::server::tests::unconfirmed_submit_writes_keep_admission_unknown_without_a_job_handle ... ok
+test runner::tests::invalid_protocol_input_has_no_command_or_identity_authority ... ok
+test runner::tests::uncertain_writes_never_become_safe_retries ... ok
+test runner::transport::tests::already_cancelled_connect_has_no_application_delivery ... ok
+test runner::server::tests::real_durable_response_rejects_mutated_nested_receipts_and_bindings ... FAILED
+test runner::transport::tests::certificate_name_and_alpn_mismatch_refuse_before_rpc ... ok
+test runner::transport::tests::client_certificate_is_mandatory_before_server_exposes_channel ... ok
+test runner::transport::tests::framing_bounds_declared_sizes_and_truncated_payloads_before_allocation ... ok
+test runner::transport::tests::preflight_expiry_and_request_oversize_never_connect_or_claim_delivery ... ok
+test runner::transport::tests::controlled_wait_cancels_promptly_after_request_without_claiming_no_delivery ... ok
+test runner::transport::tests::tls_roundtrip_authenticates_both_leaf_identities_and_allows_one_exchange ... ok
+test runner::transport::tests::wrong_server_pin_sends_no_application_frame_after_valid_mtls ... ok
+test runner::transport::tests::slow_dribble_cannot_restart_absolute_frame_deadline ... ok
+
+failures:
+
+---- runner::response::tests::canonical_receipt_fields_and_effect_consistency_are_checked stdout ----
+
+thread 'runner::response::tests::canonical_receipt_fields_and_effect_consistency_are_checked' (43) panicked at crates/workbench-core/src/runner/response.rs:421:9:
+assertion failed: check(&value, schema, schema, 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- runner::server::tests::real_durable_response_rejects_mutated_nested_receipts_and_bindings stdout ----
+
+thread 'runner::server::tests::real_durable_response_rejects_mutated_nested_receipts_and_bindings' (49) panicked at crates/workbench-core/src/runner/server.rs:619:9:
+{"data":{"action":"submitted","admission":"accepted","admission_expires_at":"2026-10-15T05:32:09.89770319Z","binding":{"expires_at":"2026-10-15T05:32:09.89770319Z","implementation":{"id":"error-budget","kind":"task","source":{"adapter_digest":"sha256:e7938a81478ea47bb2568a2d24b303e8bc1767612ccdac9ffeb7da95df17a17f","binding_digest":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","upstream_digest":"sha256:4e55475e6b10a4a2e195b1a6f162d688b093664c06bee69cb09435f1931cf5c2","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7"},"version":1},"kind":"remote","scope":{"grant":{"max_runtime_ms":1000,"operation":"task.run","operation_version":1,"principal":"alice","target":"test","task":{"binding_sha256":"sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4","id":"error-budget","version":1}},"grant_sha256":"sha256:3b046f5477be8cf0228ba18f97e1c0d39d77fbbbccfcd7b86a2c6c37cb6195e5","policy_sha256":"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","principal":"alice","runner_id":"runner","target":{"id":"test","snapshot":{"environment":"test","name":"test"},"snapshot_sha256":"sha256:44801daab4e5bc021ea0fa5f18f0639d79f0c0c7052e95af56eb0be8cf461f8f"}},"submission_sha256":"sha256:99310033c47a9b24cae02d01af1f694a42a5b0565581dccbca9eb9870c80d023"},"cancellation_signal":null,"capabilities":[],"clock":{"offset_established":false,"runner_at":"2026-10-15T05:31:09.896637488Z"},"cursor":{"after_sequence":1,"first_available_sequence":1,"gap":null,"has_more":false,"last_sequence":1,"next_sequence":1},"events":[],"format_version":1,"job":{"attempt_id":null,"cancel_requested":false,"created_at":"2026-10-15T05:31:09.89779842Z","dispatched_at":null,"effect_outcome":"not_attempted","execution_location":{"device":63,"inode":21,"kind":"local","root":"/tmp/runner-response-test-40-18de9cf3279cceca-6/principal-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/jobs","store_id":"jobstore-40-18de9cf327ab6592-9"},"execution_status":null,"finished_at":null,"job_id":"job-40-18de9cf327be2cdb-15","last_sequence":1,"max_runtime_ms":1000,"operation":"task.run","operation_version":1,"owner":{"kind":"local_uid","uid":1000},"request_id":"known","request_sha256":"sha256:fadc65b0c679851ebf67a4d1b2d54f86cf511cfafdd9163d71caf7bda7266d59","retain_events":2,"run_id":"run-40-18de9cf327be3133-16","state":"queued","stored_state":"queued"},"limits":{"max_connections":8,"max_request_bytes":65536,"max_response_bytes":2097152,"max_runtime_ms":3600000,"max_workers":2},"management_effect_outcome":"succeeded","principal":{"client_certificate_sha256":"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","id":"alice"},"remote_error":null,"request_id":"known","request_sha256":"sha256:fadc65b0c679851ebf67a4d1b2d54f86cf511cfafdd9163d71caf7bda7266d59","result":null,"result_omitted":false,"result_sha256":null,"runner":{"id":"runner","platform":"linux-x86_64","policy_sha256":"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","protocol":1,"server_certificate_sha256":"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},"target":{"id":"test","snapshot":{"environment":"test","name":"test"},"snapshot_sha256":"sha256:44801daab4e5bc021ea0fa5f18f0639d79f0c0c7052e95af56eb0be8cf461f8f"}},"error":null,"ok":true,"protocol":1}
+
+
+failures:
+    runner::response::tests::canonical_receipt_fields_and_effect_consistency_are_checked
+    runner::server::tests::real_durable_response_rejects_mutated_nested_receipts_and_bindings
+
+test result: FAILED. 19 passed; 2 failed; 0 ignored; 0 measured; 225 filtered out; finished in 0.25s
+
+error: test failed, to rerun pass `-p workbench-core --lib`

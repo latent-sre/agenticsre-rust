@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:config-check-data:0.1",
+  "title": "config-check-data",
+  "oneOf": [
+    {
+      "$ref": "urn:sre-workbench:spec:dashboard-config-data:0.1"
+    },
+    {
+      "$ref": "urn:sre-workbench:spec:prometheus-config-data:0.1"
+    }
+  ]
+}

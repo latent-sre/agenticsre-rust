@@ -1,0 +1,11 @@
+    Finished `test` profile [unoptimized] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-80584c977bc04def)
+
+running 4 tests
+test runner::response::tests::embedded_contracts_match_published_schemas ... ok
+test runner::response::tests::real_error_budget_receipt_and_input_dependencies_are_validated ... ok
+test runner::response::tests::unsupported_schema_constructs_and_external_refs_fail_closed ... ok
+test runner::response::tests::canonical_receipt_fields_and_effect_consistency_are_checked ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 190 filtered out; finished in 0.00s
+

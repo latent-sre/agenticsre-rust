@@ -14,27 +14,33 @@ export const diagnosticStepNames: Record<DiagnosticStep['id'], string> = {
   dns: 'DNS lookup', tcp: 'TCP connection', tls: 'TLS validation',
   http: 'HTTP response', process: 'Local process',
 };
-export type Check = 'status' | 'diff' | 'log' | 'files' | 'search' | 'budget' | 'diagnostics';
+export type Check = 'status' | 'diff' | 'log' | 'files' | 'search' | 'budget' | 'diagnostics' | 'context' | 'evidence-list' | 'evidence-open' | 'evidence-compare' | 'evidence-report';
 export type Theme = 'light' | 'dark' | 'system';
 export const checkNames: Record<Check, string> = {
   status: 'Working tree status', diff: 'Working tree diff', log: 'Recent commits',
   files: 'List files', search: 'Find literal text', budget: 'Error budget', diagnostics: 'Diagnostics',
+  context: 'Service context', 'evidence-list': 'Saved evidence', 'evidence-open': 'Inspect evidence',
+  'evidence-compare': 'Compare evidence', 'evidence-report': 'Evidence report',
 };
 export const checkOptions = Object.keys(checkNames) as Check[];
 export const isCheck = (value: unknown): value is Check =>
   typeof value === 'string' && checkOptions.includes(value as Check);
 
+export const investigationOperations = { context: 'context.resolve', 'evidence-list': 'evidence.list',
+  'evidence-open': 'evidence.open', 'evidence-compare': 'evidence.compare', 'evidence-report': 'report.create' } as const;
+export const isInvestigation = (check: Check): check is keyof typeof investigationOperations => Object.hasOwn(investigationOperations, check);
+export const isBundleId = (value: unknown): value is string => typeof value === 'string' && value.length <= 96 && /^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$/u.test(value);
 export function availableChecks(session: Session): Check[] {
   const commands = session.roots.length > 0 && session.operations.some(op =>
     op.id === 'process.exec' || op.id === 'command.inspect');
-  return checkOptions.filter(check => check === 'budget'
+  return checkOptions.filter(check => isInvestigation(check) ? session.operations.some(op => op.id === investigationOperations[check]) : check === 'budget'
     ? session.operations.some(op => op.id === 'task.run')
     : check === 'diagnostics' ? session.targets.length > 0 && diagnosticPack(session) !== undefined : commands);
 }
 export const diagnosticPack = (session: Session) => session.operations.find(op => op.id === 'diagnostics.run')?.packs[0];
 export const runScope = (run: Run, session: Session) => run.operation === 'diagnostics.run'
   ? plainText(session.targets.find(target => target.id === run.target_id)?.label ?? run.target_id ?? 'Diagnostic target unavailable')
-  : run.root_id ? plainText(session.roots.find(root => root.id === run.root_id)?.label ?? run.root_id) : 'Numerical input';
+  : Object.values(investigationOperations).some(operation => operation === run.operation) ? 'Historical / offline evidence' : run.root_id ? plainText(session.roots.find(root => root.id === run.root_id)?.label ?? run.root_id) : 'Numerical input';
 
 export type FormValues = {
   check: Check; root: string; path: string; pattern: string; count: string;
@@ -42,26 +48,57 @@ export type FormValues = {
   diffFormat: 'patch' | 'stat' | 'name-status'; slo: string; days: string;
   minutes: string; timeout: string; target: string; captureBody: boolean;
   onFailure: 'continue' | 'stop'; concurrency: 1 | 2; outputLimit: string;
+  service: string; environment: string; team: string; deployment: string;
+  bundleId: string; bundlePin: string; beforeId: string; beforePin: string; afterId: string; afterPin: string;
+  normalization: 'exact-window-v1' | 'window-offset-v1'; maxItems: string;
+  reportId1: string; reportPin1: string; reportId2: string; reportPin2: string; reportId3: string; reportPin3: string; reportId4: string; reportPin4: string;
+  reportFormat: 'markdown' | 'json'; reportTitle: string;
 };
 export const initialValues: FormValues = {
   check: 'status', root: '', path: '', pattern: '', count: '20', cached: false,
   hidden: false, ignoreCase: false, diffFormat: 'patch', slo: '99.9', days: '28',
   minutes: '20', timeout: '30', target: '', captureBody: false,
   onFailure: 'continue', concurrency: 2, outputLimit: '16384',
+  service: '', environment: '', team: '', deployment: '', bundleId: '', bundlePin: '',
+  beforeId: '', beforePin: '', afterId: '', afterPin: '', normalization: 'exact-window-v1', maxItems: '100',
+  reportId1: '', reportPin1: '', reportId2: '', reportPin2: '', reportId3: '', reportPin3: '', reportId4: '', reportPin4: '', reportFormat: 'markdown', reportTitle: '',
 };
 export type FieldErrors = Partial<Record<keyof FormValues, string>>;
+const hasControl = (value: string) => Array.from(value).some(character => character.charCodeAt(0) <= 31 || character.charCodeAt(0) === 127);
 const utf8Length = (value: string) => new TextEncoder().encode(value).length;
 
 export function validateForm(values: FormValues): FieldErrors {
   const errors: FieldErrors = {};
-  const number = (field: 'slo' | 'days' | 'minutes' | 'timeout' | 'count' | 'outputLimit', valid: (v: number) => boolean, message: string) => {
+  const number = (field: 'slo' | 'days' | 'minutes' | 'timeout' | 'count' | 'outputLimit' | 'maxItems', valid: (v: number) => boolean, message: string) => {
     const raw = values[field].trim();
     const value = Number(raw);
     if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/u.test(raw) || !Number.isFinite(value) || !valid(value)) errors[field] = message;
   };
   const timeoutCeiling = values.check === 'diagnostics' ? 60 : 300;
   number('timeout', v => v >= 0.001 && v <= timeoutCeiling && /^\d+(?:\.\d{1,3})?$/u.test(values.timeout.trim()), `Use 0.001–${timeoutCeiling} seconds, to the nearest millisecond.`);
-  if (values.check === 'budget') {
+  if (isInvestigation(values.check)) {
+    number('outputLimit', v => Number.isInteger(v) && v >= 1024 && v <= 1_048_576 && /^\d+$/u.test(values.outputLimit), 'Use a whole number from 1,024 to 1,048,576 bytes.');
+    const reference = (id: 'bundleId' | 'beforeId' | 'afterId' | 'reportId1' | 'reportId2' | 'reportId3' | 'reportId4', pin: 'bundlePin' | 'beforePin' | 'afterPin' | 'reportPin1' | 'reportPin2' | 'reportPin3' | 'reportPin4', required = true) => {
+      if ((required || values[id] || values[pin]) && !isBundleId(values[id])) errors[id] = 'Enter a saved evidence ID, such as run-1-ab-c. Paths are not accepted.';
+      if (values[pin] && !/^sha256:[a-f0-9]{64}$/u.test(values[pin])) errors[pin] = 'Use sha256: followed by 64 lowercase hexadecimal characters, or leave blank.';
+    };
+    if (values.check === 'context') for (const field of ['service', 'environment', 'team', 'deployment'] as const) {
+      if ((!values[field] && (field === 'service' || field === 'environment')) || values[field].length > 128 || hasControl(values[field])) errors[field] = 'Use 1–128 characters without control characters.';
+    }
+    if (values.check === 'evidence-open') reference('bundleId', 'bundlePin');
+    if (values.check === 'evidence-compare') { reference('beforeId', 'beforePin'); reference('afterId', 'afterPin'); }
+    if (values.check === 'evidence-open' || values.check === 'evidence-compare') number('maxItems', v => Number.isInteger(v) && v >= 1 && v <= 1000 && /^\d+$/u.test(values.maxItems), 'Use a whole number from 1 to 1,000.');
+    if (values.check === 'evidence-report') {
+      const ids: string[] = [];
+      for (const index of [1, 2, 3, 4] as const) {
+        const key = `reportId${index}` as const;
+        reference(key, `reportPin${index}`, index === 1);
+        if (values[key] && ids.includes(values[key])) errors[key] = 'Choose each evidence ID once.';
+        ids.push(values[key]);
+      }
+      if (values.reportTitle.length > 160 || hasControl(values.reportTitle)) errors.reportTitle = 'Use up to 160 characters without control characters.';
+    }
+  } else if (values.check === 'budget') {
     number('slo', v => v > 0 && v < 100, 'Enter an SLO greater than 0 and less than 100%.');
     number('days', v => v > 0, 'Enter a positive number of days.');
     number('minutes', v => v >= 0, 'Enter zero or a positive number of minutes.');
@@ -93,6 +130,7 @@ export function commandInput(values: FormValues): components['schemas']['Command
     case 'files': args = ['--files', ...(values.hidden ? ['--hidden'] : [])]; break;
     case 'search': args = ['-F', ...(values.ignoreCase ? ['-i'] : []), ...(values.hidden ? ['--hidden'] : []), '-e', values.pattern]; break;
     case 'budget': throw new Error('A calculation has no command arguments.');
+    case 'context': case 'evidence-list': case 'evidence-open': case 'evidence-compare': case 'evidence-report': throw new Error('Offline investigation has no command arguments.');
     case 'diagnostics': throw new Error('Diagnostics have no command arguments.');
   }
   if (values.path) args.push('--', values.path);
@@ -102,6 +140,16 @@ export function commandInput(values: FormValues): components['schemas']['Command
 export function makeSubmission(values: FormValues, operation: Submission['operation'], id: string): Submission {
   const shared = { submission_id: id, operation_version: 1 as const,
     limits: { timeout_ms: Math.round(Number(values.timeout) * 1000), max_output_bytes: 1_048_576 } };
+  if (isInvestigation(values.check)) {
+    const reference = (id: string, pin: string) => ({ id, ...(pin ? { expected_manifest_sha256: pin } : {}) });
+    const limits = { ...shared.limits, max_output_bytes: Number(values.outputLimit) };
+    const offline = { ...shared, limits };
+    if (values.check === 'context') return { ...offline, operation: 'context.resolve', inputs: { service: values.service, environment: values.environment, ...(values.team ? { team: values.team } : {}), ...(values.deployment ? { deployment: values.deployment } : {}) } };
+    if (values.check === 'evidence-list') return { ...offline, operation: 'evidence.list', inputs: {} };
+    if (values.check === 'evidence-open') return { ...offline, operation: 'evidence.open', inputs: reference(values.bundleId, values.bundlePin), limits: { ...limits, max_items: Number(values.maxItems) } };
+    if (values.check === 'evidence-compare') return { ...offline, operation: 'evidence.compare', inputs: { before: reference(values.beforeId, values.beforePin), after: reference(values.afterId, values.afterPin), normalization: values.normalization }, limits: { ...limits, max_items: Number(values.maxItems) } };
+    return { ...offline, operation: 'report.create', inputs: { bundles: ([1, 2, 3, 4] as const).filter(index => values[`reportId${index}`]).map(index => reference(values[`reportId${index}`], values[`reportPin${index}`])), format: values.reportFormat, ...(values.reportTitle ? { title: values.reportTitle } : {}) } };
+  }
   if (values.check === 'diagnostics') return { ...shared, operation: 'diagnostics.run', target_id: values.target,
     inputs: { id: 'connectivity', version: 1, input: { capture_body: values.captureBody, on_failure: values.onFailure } },
     limits: { ...shared.limits, max_output_bytes: Number(values.outputLimit), concurrency: values.concurrency },
@@ -109,7 +157,7 @@ export function makeSubmission(values: FormValues, operation: Submission['operat
   if (values.check === 'budget') return { ...shared, operation: 'task.run', inputs: {
     id: 'error-budget', version: 1, input: { slo: Number(values.slo), window_days: Number(values.days), bad_minutes: Number(values.minutes) },
   } };
-  if (operation === 'task.run' || operation === 'diagnostics.run') throw new Error('Select a command operation.');
+  if (operation !== 'process.exec' && operation !== 'command.inspect') throw new Error('Select a command operation.');
   return { ...shared, operation, root_id: values.root, inputs: commandInput(values) };
 }
 

@@ -1,0 +1,11 @@
+PASS Explicit discovery: five private offline tools, bounded self-contained schemas and read-only hints
+PASS Modern protocol: all five canonical receipts match installed CLI semantics
+PASS Legacy protocol: all five canonical receipts match installed CLI semantics
+PASS Discovery/runtime agree on unknown/null authority fields, limits and hidden tool refusals
+PASS Missing/pinned/bounded/incompatible evidence and JSON reports retain accurate error/coverage semantics
+PASS All observations preserve context and retained store bytes/modes
+PASS Consumed-byte source pin and descriptor-bound store identity reject replacement
+PASS Independent mixed grants preserve numerical tasks and cancellation suppresses the queued evidence result
+PASS Default empty discovery and direct hidden-tool denial remain unchanged
+PASS Corrupt retained evidence fails without repair or mutation
+PASS Installed binary and complete scoped source identities stay unchanged throughout acceptance

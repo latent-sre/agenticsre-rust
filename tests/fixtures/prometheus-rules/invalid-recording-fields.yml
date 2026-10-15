@@ -1,0 +1,6 @@
+groups:
+  - name: invalid.rules
+    rules:
+      - record: rate:requests
+        expr: rate(http_requests_total[5m])
+        for: 1m

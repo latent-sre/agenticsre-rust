@@ -1,0 +1,12 @@
+{
+  "policy_version": 1,
+  "execution_profile": "operator-reviewed-v1",
+  "packages": [
+    {
+      "package_sha256": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "capabilities": [
+        "ext.example.capacity.project"
+      ]
+    }
+  ]
+}

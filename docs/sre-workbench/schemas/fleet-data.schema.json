@@ -1,0 +1,341 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:fleet-data:0.1",
+  "title": "Frozen multiple-target collection and explicit per-target outcomes",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "action": {
+      "enum": [
+        "collect",
+        "existing",
+        "status",
+        "resume",
+        "cancel_requested",
+        "cancelled"
+      ]
+    },
+    "run": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "owner_uid": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "inventory_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            },
+            "inventory_revision": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "selection_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            },
+            "task_binding_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            },
+            "state": {
+              "enum": [
+                "active",
+                "recovery_required",
+                "terminal"
+              ]
+            },
+            "created_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "expires_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "timeout_ms": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300000
+            },
+            "concurrency": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4
+            },
+            "failure_threshold": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 16
+            },
+            "ordinal": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "cancel_requested": {
+              "type": "boolean"
+            },
+            "stop_reason": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "maxLength": 256
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "request_id",
+            "owner_uid",
+            "inventory_sha256",
+            "inventory_revision",
+            "selection_sha256",
+            "task_binding_sha256",
+            "state",
+            "created_at",
+            "expires_at",
+            "timeout_ms",
+            "concurrency",
+            "failure_threshold",
+            "ordinal",
+            "cancel_requested",
+            "stop_reason"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "succeeded": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "failed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "unknown": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "skipped": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "pending": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        }
+      },
+      "required": [
+        "succeeded",
+        "failed",
+        "unknown",
+        "skipped",
+        "pending"
+      ],
+      "additionalProperties": false
+    },
+    "targets": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          },
+          "runner_id": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          },
+          "target": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          },
+          "principal": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "phase": {
+            "enum": [
+              "queued",
+              "intent",
+              "admitted",
+              "finalizing",
+              "terminal",
+              "skipped"
+            ]
+          },
+          "outcome": {
+            "enum": [
+              null,
+              "succeeded",
+              "failed",
+              "unknown",
+              "skipped"
+            ]
+          },
+          "reason": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "maxLength": 256
+              }
+            ]
+          },
+          "job_id": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            ]
+          },
+          "attempt_id": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            ]
+          },
+          "result_sha256": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+              }
+            ]
+          },
+          "evidence_ref": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "pattern": "^fleet-run:[a-z0-9-]+/target-[0-9]{2}\\.json@sha256:[0-9a-f]{64}$",
+                "maxLength": 256
+              }
+            ]
+          },
+          "receipt": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "urn:sre-workbench:spec:result:0.1"
+                  },
+                  {
+                    "properties": {
+                      "data": {
+                        "$ref": "urn:sre-workbench:spec:runner-data:0.1"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "receipt_omitted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "runner_id",
+          "target",
+          "principal",
+          "request_id",
+          "phase",
+          "outcome",
+          "reason",
+          "job_id",
+          "attempt_id",
+          "result_sha256",
+          "evidence_ref",
+          "receipt",
+          "receipt_omitted"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "aggregate": {
+      "enum": [
+        "succeeded",
+        "partial",
+        "failed",
+        "unknown"
+      ]
+    },
+    "aggregate_effect_outcome": {
+      "$ref": "urn:sre-workbench:spec:result:0.1#/properties/effect_outcome"
+    },
+    "cancellation_signal": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 64
+    }
+  },
+  "required": [
+    "format_version",
+    "action",
+    "run",
+    "counts",
+    "targets",
+    "aggregate",
+    "aggregate_effect_outcome",
+    "cancellation_signal"
+  ],
+  "additionalProperties": false
+}

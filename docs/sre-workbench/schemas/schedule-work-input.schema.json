@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:schedule-work-input:0.1",
+  "title": "schedule.work input",
+  "type": "object",
+  "properties": {
+    "max_occurrences": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16
+    }
+  },
+  "required": [
+    "max_occurrences"
+  ],
+  "additionalProperties": false
+}

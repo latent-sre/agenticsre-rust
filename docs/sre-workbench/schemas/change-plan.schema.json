@@ -1,0 +1,366 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:change-plan:0.1",
+  "title": "change-plan",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "prometheus-rules-file-replacement"
+    },
+    "requester": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$"
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^/[^\\u0000-\\u001f\\u007f-\\u009f]*$",
+          "minLength": 2,
+          "maxLength": 1024
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "runner": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+        },
+        "server_certificate_sha256": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        "policy_sha256": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        }
+      },
+      "required": [
+        "id",
+        "server_certificate_sha256",
+        "policy_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "ledger": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inode": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "device",
+        "inode"
+      ],
+      "additionalProperties": false
+    },
+    "original_identity": {
+      "type": "object",
+      "properties": {
+        "parent": {
+          "type": "object",
+          "properties": {
+            "dev": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "ino": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "uid": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "gid": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "mode": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "nlink": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "ctime_sec": {
+              "type": "integer"
+            },
+            "ctime_nsec": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 999999999
+            },
+            "mtime_sec": {
+              "type": "integer"
+            },
+            "mtime_nsec": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 999999999
+            }
+          },
+          "required": [
+            "dev",
+            "ino",
+            "uid",
+            "gid",
+            "mode",
+            "nlink",
+            "size",
+            "ctime_sec",
+            "ctime_nsec",
+            "mtime_sec",
+            "mtime_nsec"
+          ],
+          "additionalProperties": false
+        },
+        "file": {
+          "type": "object",
+          "properties": {
+            "dev": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "ino": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "uid": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "gid": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "mode": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "nlink": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "ctime_sec": {
+              "type": "integer"
+            },
+            "ctime_nsec": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 999999999
+            },
+            "mtime_sec": {
+              "type": "integer"
+            },
+            "mtime_nsec": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 999999999
+            }
+          },
+          "required": [
+            "dev",
+            "ino",
+            "uid",
+            "gid",
+            "mode",
+            "nlink",
+            "size",
+            "ctime_sec",
+            "ctime_nsec",
+            "mtime_sec",
+            "mtime_nsec"
+          ],
+          "additionalProperties": false
+        },
+        "sha256": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        }
+      },
+      "required": [
+        "parent",
+        "file",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "original_base64": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 43692,
+      "pattern": "^(?:[A-Za-z0-9+/]{4}){0,10922}(?:[A-Za-z0-9+/][AQgw]==|[A-Za-z0-9+/]{2}[AEIMQUYcgkosw048]=)?$",
+      "description": "Canonical RFC 4648 base64 with at most 32768 decoded bytes; exact bytes and digest remain runtime checks."
+    },
+    "original_sha256": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+    },
+    "proposed_base64": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 43692,
+      "pattern": "^(?:[A-Za-z0-9+/]{4}){0,10922}(?:[A-Za-z0-9+/][AQgw]==|[A-Za-z0-9+/]{2}[AEIMQUYcgkosw048]=)?$",
+      "description": "Canonical RFC 4648 base64 with at most 32768 decoded bytes; exact bytes and digest remain runtime checks."
+    },
+    "proposed_sha256": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+    },
+    "validator_binding_sha256": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+    },
+    "validation": {
+      "allOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:result:0.1"
+        },
+        {
+          "properties": {
+            "operation": {
+              "const": "config.check"
+            },
+            "execution": {
+              "properties": {
+                "status": {
+                  "const": "succeeded"
+                },
+                "child_exit_code": {
+                  "const": 0
+                },
+                "signal": {
+                  "type": "null"
+                }
+              }
+            },
+            "data": {
+              "allOf": [
+                {
+                  "$ref": "urn:sre-workbench:spec:prometheus-config-data:0.1"
+                },
+                {
+                  "properties": {
+                    "validation_outcome": {
+                      "const": "valid"
+                    },
+                    "checked_rules": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "findings_total": {
+                      "const": 0
+                    },
+                    "validation_state": {
+                      "const": "complete"
+                    },
+                    "findings": {
+                      "maxItems": 0
+                    },
+                    "diagnostics": {
+                      "properties": {
+                        "truncated": {
+                          "const": false
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "coverage": {
+              "properties": {
+                "state": {
+                  "const": "complete"
+                }
+              }
+            },
+            "effect_outcome": {
+              "const": "not_applicable"
+            },
+            "errors": {
+              "maxItems": 0
+            }
+          }
+        }
+      ]
+    },
+    "created_at": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expires_at": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expires_in_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 900
+    },
+    "readback": {
+      "const": "prepared_inode_and_exact_bytes"
+    },
+    "recovery": {
+      "const": "new_approved_plan_using_original_bytes"
+    },
+    "implementation_sha256": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+    },
+    "requester_certificate_sha256": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+    }
+  },
+  "required": [
+    "format_version",
+    "kind",
+    "requester",
+    "request_id",
+    "target",
+    "runner",
+    "ledger",
+    "original_identity",
+    "original_base64",
+    "original_sha256",
+    "proposed_base64",
+    "proposed_sha256",
+    "validator_binding_sha256",
+    "validation",
+    "created_at",
+    "expires_at",
+    "expires_in_seconds",
+    "readback",
+    "recovery",
+    "implementation_sha256",
+    "requester_certificate_sha256"
+  ],
+  "additionalProperties": false
+}

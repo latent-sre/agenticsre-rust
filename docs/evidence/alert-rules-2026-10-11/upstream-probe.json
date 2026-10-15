@@ -1,0 +1,50 @@
+[
+  {
+    "fixture": "clean.yml",
+    "exit": 0,
+    "stdout": "Checking /home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/clean.yml\n  SUCCESS: 2 rules found\n\n",
+    "stderr": ""
+  },
+  {
+    "fixture": "duplicate.yml",
+    "exit": 3,
+    "stdout": "Checking /home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/duplicate.yml\n\n",
+    "stderr": "  FAILED:\nlint error 1 duplicate rule(s) found.\nMetric: job:requests:rate5m\nLabel(s):\nMight cause inconsistency while recording expressions\n"
+  },
+  {
+    "fixture": "empty.yml",
+    "exit": 0,
+    "stdout": "Checking /home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/empty.yml\n  SUCCESS: 0 rules found\n\n",
+    "stderr": ""
+  },
+  {
+    "fixture": "invalid-promql.yml",
+    "exit": 1,
+    "stdout": "Checking /home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/invalid-promql.yml\n",
+    "stderr": "  FAILED:\n/home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/invalid-promql.yml: 6:15: group \"service.rules\", rule 1, \"InstanceDown\": could not parse expression: 1:5: parse error: unclosed left parenthesis\n"
+  },
+  {
+    "fixture": "invalid-recording-fields.yml",
+    "exit": 1,
+    "stdout": "Checking /home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/invalid-recording-fields.yml\n",
+    "stderr": "  FAILED:\n/home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/invalid-recording-fields.yml: 4:17: group \"invalid.rules\", rule 1, \"rate:requests\": invalid field 'for' in recording rule\n"
+  },
+  {
+    "fixture": "invalid-template.yml",
+    "exit": 1,
+    "stdout": "Checking /home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/invalid-template.yml\n",
+    "stderr": "  FAILED:\n/home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/invalid-template.yml: group \"service.rules\", rule 1, \"InstanceDown\": annotation \"summary\": template: __alert_InstanceDown:1: function \"invalid_function\" not defined\n"
+  },
+  {
+    "fixture": "multiple-documents.yml",
+    "exit": 0,
+    "stdout": "Checking /home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/multiple-documents.yml\n  SUCCESS: 2 rules found\n\n",
+    "stderr": "time=2026-10-12T01:35:00.626Z level=WARN source=rulefmt.go:369 msg=\"Multiple document yaml rules files are not supported, only the first document is processed\"\n"
+  },
+  {
+    "fixture": "unknown-field.yml",
+    "exit": 1,
+    "stdout": "Checking /home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/unknown-field.yml\n",
+    "stderr": "  FAILED:\n/home/hawkfire/rusty/agenticsre-rust-diagnostics/tests/fixtures/prometheus-rules/unknown-field.yml: yaml: unmarshal errors:\n  line 4: field unexpected_field not found in type rulefmt.RuleGroup\n"
+  }
+]

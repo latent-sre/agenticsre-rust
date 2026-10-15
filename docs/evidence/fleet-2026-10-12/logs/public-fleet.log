@@ -1,0 +1,19 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 4.90s
+     Running tests/fleet.rs (target/debug/deps/fleet-b4b8499dcb09bc39)
+
+running 8 tests
+test empty_duplicate_and_unknown_target_selections_are_refused ... ok
+test active_cancellation_keeps_all_selected_targets_visible ... ok
+test frozen_selection_deduplicates_and_survives_current_inventory_changes ... ok
+test failure_threshold_stops_future_admission_and_persisted_rotation_changes_first_target ... ok
+test one_controller_deadline_keeps_the_complete_selected_set_visible ... ok
+test interrupted_controller_preserves_ids_and_profile_drift_cannot_authorize_resubmission ... ok
+test remote_job_timeout_is_a_visible_failure_alongside_success ... ok
+test unreachable_selected_runner_remains_visible_and_does_not_hide_success ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.62s
+

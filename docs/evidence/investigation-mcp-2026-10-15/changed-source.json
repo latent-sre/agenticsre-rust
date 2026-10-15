@@ -1,0 +1,63 @@
+{
+  "jsonrpc": "2.0",
+  "id": "changed-source",
+  "result": {
+    "resultType": "complete",
+    "content": [
+      {
+        "text": "Workbench execution denied; assessment not_assessed. Inspect structuredContent for the complete receipt.",
+        "type": "text"
+      }
+    ],
+    "structuredContent": {
+      "spec_version": "0.1",
+      "request_id": "request-3-18de9fe2f1139e6e-32",
+      "run_id": "run-3-18de9fe2f115ab10-33",
+      "operation": "context.resolve",
+      "operation_version": 1,
+      "target": {
+        "kind": "local",
+        "id": "workstation"
+      },
+      "resolved_target": {},
+      "started_at": "2026-10-15T06:24:58.796178186Z",
+      "finished_at": "2026-10-15T06:24:58.796272034Z",
+      "duration_ms": 0,
+      "execution": {
+        "status": "denied",
+        "child_exit_code": null,
+        "signal": null
+      },
+      "effect_outcome": "not_attempted",
+      "assessment": "not_assessed",
+      "coverage": {
+        "state": "not_applicable",
+        "scope": "This local operation only; no service health assessment",
+        "limitations": []
+      },
+      "output": {
+        "stdout": "",
+        "stderr": "",
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "encoding": "utf-8"
+      },
+      "data": {},
+      "errors": [
+        {
+          "code": "context_source_changed",
+          "message": "The offline context source or selectors could not be resolved; no target was dispatched.",
+          "retryable": false
+        }
+      ],
+      "sources": [],
+      "artifacts": [],
+      "effective_limits": {
+        "timeout_ms": 30000,
+        "max_output_bytes": 1048576
+      },
+      "record_mode": "never"
+    },
+    "isError": true
+  }
+}

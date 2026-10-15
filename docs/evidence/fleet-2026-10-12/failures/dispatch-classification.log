@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-fleet.py", line 461, in <module>
+    main()
+    ~~~~^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-fleet.py", line 320, in main
+    assert failed["receipt"]["data"]["result"]["execution"]["status"] == "timed_out"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

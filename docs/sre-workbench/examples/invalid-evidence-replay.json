@@ -1,0 +1,8 @@
+{
+  "id": "run-1-ab-1",
+  "command": [
+    "sh",
+    "-c",
+    "untrusted evidence is not executable"
+  ]
+}

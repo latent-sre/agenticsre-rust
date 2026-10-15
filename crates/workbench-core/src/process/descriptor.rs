@@ -8,6 +8,8 @@ use std::{
 };
 
 pub(crate) struct DescriptorLaunch {
+    /// Fixed built-in program name; never populated from wire input.
+    pub argv0: &'static str,
     pub executable: File,
     pub inherited: Vec<File>,
 }
@@ -16,7 +18,7 @@ impl DescriptorLaunch {
     pub(super) fn configure(&self, command: &mut Command, args: &[String]) -> io::Result<()> {
         let executable = self.executable.as_raw_fd();
         let fds: Vec<i32> = self.inherited.iter().map(AsRawFd::as_raw_fd).collect();
-        let argv: Vec<CString> = std::iter::once("bwrap")
+        let argv: Vec<CString> = std::iter::once(self.argv0)
             .chain(args.iter().map(String::as_str))
             .map(CString::new)
             .collect::<Result<_, _>>()
@@ -72,5 +74,37 @@ impl DescriptorLaunch {
             });
         }
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn pinned_descriptor_executes_when_the_command_path_does_not_exist() {
+        // Some hosts install a uutils shim that rejects descriptor execution.
+        // Prefer the ordinary GNU fixture there; standard Linux uses /usr/bin/printf.
+        let fixture = if std::path::Path::new("/usr/bin/gnuprintf").exists() {
+            "/usr/bin/gnuprintf"
+        } else {
+            "/usr/bin/printf"
+        };
+        let launch = DescriptorLaunch {
+            argv0: "printf",
+            executable: File::open(fixture).unwrap(),
+            inherited: vec![],
+        };
+        let args = vec!["%s".into(), "descriptor-bound".into()];
+        let mut command = Command::new("/definitely/absent/executable");
+        command.args(&args);
+        launch.configure(&mut command, &args).unwrap();
+        let output = command.output().unwrap();
+        assert!(
+            output.status.success(),
+            "stderr: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+        assert_eq!(output.stdout, b"descriptor-bound");
+        assert!(output.stderr.is_empty());
     }
 }

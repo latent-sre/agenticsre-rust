@@ -1,0 +1,75 @@
+{
+  "acceptance_scope": "Linux x86-64 operator-reviewed external protocol and capacity-projection experiment; no untrusted-code sandbox, live use, hosted grants or distribution clearance.",
+  "boundary": "tools/test-sandbox.sh; private user/network/PID namespaces, read-only source, no host credentials",
+  "clippy": {
+    "command": "cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+    "exit": 0
+  },
+  "consumer_unit": {
+    "command": "cargo test -p capacity-projector --all-features --locked --offline",
+    "exit": 0,
+    "failed": 0,
+    "passed": 6
+  },
+  "dependency_change": "One new local workspace member; no existing external dependency version changed.",
+  "final_discovery_regression": {
+    "command": "cargo test -p workbench-core --test extensions execution_policy_is_separate_and_dynamic_discovery_reports_effective_authority --locked --offline",
+    "exit": 0,
+    "failed": 0,
+    "passed": 1
+  },
+  "format": {
+    "command": "cargo fmt --all -- --check",
+    "exit": 0
+  },
+  "installed": {
+    "advertised_output_schema_validates_actual_receipt": true,
+    "closed_consumer_cleanup": true,
+    "commands": 45,
+    "exit": 0,
+    "peer_compatibility_checks": 3,
+    "source_manifest": "source-manifest.json"
+  },
+  "native_cli": {
+    "command": "env WORKBENCH_TEST_CAPACITY_PEER=<built peer> WORKBENCH_TEST_EXTENSION_ADVERSARY=<built test peer> cargo test -p workbench-cli --test extension_runtime --locked --offline -- --include-ignored",
+    "exit": 0,
+    "failed": 0,
+    "passed": 4,
+    "timing": "After lint normalization, before final discovery output schema correction."
+  },
+  "ordinary_build": {
+    "command": "cargo build -p workbench-cli --locked --offline",
+    "exit": 0
+  },
+  "peer_build": {
+    "command": "cargo build -p capacity-projector --all-features --locked --offline",
+    "exit": 0
+  },
+  "resolved_test_and_lint_issues": [
+    "Discovery no-child assertion wrongly expected not_attempted rather than not_applicable; denial checks remain strict.",
+    "Use checked_div for zero-growth branch and collapse equivalent supervisor-result conditional."
+  ],
+  "review": {
+    "execution": "Coordinator executed checks; reviewer performed static analysis only.",
+    "host_unresolved_material_findings": 0,
+    "independent_p0_p1": 0,
+    "parent_integration_issue_closed": "Discovery advertised peer payload schema instead of canonical result; actual receipt now validates against advertised schema.",
+    "peer_issue_closed": "Derived structs accepted positional arrays; explicit object shape check preserves original-byte duplicate-key rejection.",
+    "peer_unresolved_material_findings": 0
+  },
+  "specification": {
+    "command": ".venv/bin/python -B docs/sre-workbench/verify_specs.py",
+    "exit": 0,
+    "negative": 35,
+    "positive": 46,
+    "schemas": 68
+  },
+  "workspace": {
+    "command": "cargo test --workspace --all-features --locked --offline",
+    "exit": 0,
+    "failed": 0,
+    "ignored": 25,
+    "passed": 419,
+    "timing": "Before two equivalent lint normalizations and final discovery metadata correction; focused checks and final installed mission cover those changes."
+  }
+}

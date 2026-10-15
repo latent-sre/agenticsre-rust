@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:extension-data:0.1",
+  "title": "extension-data",
+  "type": "object",
+  "properties": {
+    "packages": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "properties": {
+          "package_sha256": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+          },
+          "package_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12582912
+          },
+          "manifest": {
+            "$ref": "urn:sre-workbench:spec:extension-manifest:0.1"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "execution_available": {
+            "type": "boolean"
+          },
+          "provenance_verified": {
+            "const": false
+          }
+        },
+        "required": [
+          "package_sha256",
+          "package_bytes",
+          "manifest",
+          "enabled",
+          "execution_available",
+          "provenance_verified"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "installed_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 32
+    },
+    "total_packages": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 32
+    },
+    "omitted_packages": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 32
+    },
+    "action": {
+      "enum": [
+        "inspect",
+        "list",
+        "install",
+        "installed",
+        "already_installed"
+      ]
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "execution_available": {
+      "type": "boolean"
+    },
+    "provenance_verified": {
+      "const": false
+    },
+    "cancellation_signal": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 64
+    },
+    "scope": {
+      "enum": [
+        "package_inspection",
+        "installed_inventory"
+      ]
+    },
+    "policy_sha256": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "packages",
+    "installed_count",
+    "total_packages",
+    "omitted_packages",
+    "action",
+    "enabled",
+    "execution_available",
+    "provenance_verified",
+    "cancellation_signal",
+    "scope",
+    "policy_sha256"
+  ],
+  "additionalProperties": false
+}

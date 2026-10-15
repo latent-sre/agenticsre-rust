@@ -1,0 +1,76 @@
+{
+  "binary_sha256": "987d2417211167e05c16af6a4fe906306c7a4542874c0824b963f6596643db3f",
+  "commands": [
+    {
+      "case": "collect",
+      "credential_available": true,
+      "exit": 0
+    },
+    {
+      "case": "collect-redacted",
+      "credential_available": true,
+      "exit": 0
+    },
+    {
+      "case": "open",
+      "credential_available": false,
+      "exit": 0
+    },
+    {
+      "case": "replay",
+      "credential_available": false,
+      "exit": 0
+    },
+    {
+      "case": "repeat",
+      "credential_available": false,
+      "exit": 0
+    },
+    {
+      "case": "structured",
+      "credential_available": false,
+      "exit": 0
+    },
+    {
+      "case": "open-limited",
+      "credential_available": false,
+      "exit": 1
+    },
+    {
+      "case": "open-redacted",
+      "credential_available": false,
+      "exit": 1
+    },
+    {
+      "case": "replay-limited",
+      "credential_available": false,
+      "exit": 1
+    },
+    {
+      "case": "replay-redacted",
+      "credential_available": false,
+      "exit": 1
+    },
+    {
+      "case": "wrong-pin",
+      "credential_available": false,
+      "exit": 1
+    },
+    {
+      "case": "open-tampered",
+      "credential_available": false,
+      "exit": 1
+    },
+    {
+      "case": "replay-tampered",
+      "credential_available": false,
+      "exit": 1
+    }
+  ],
+  "fixture_requests": 12,
+  "fixture_shutdown_before_analysis": true,
+  "passed": true,
+  "source_files": 1038,
+  "source_manifest_sha256": "3654318c4245cb430a1557818db9023605fd3c6b93c1ab9216a7e119017d74af",
+  "store_unchanged": true
+}

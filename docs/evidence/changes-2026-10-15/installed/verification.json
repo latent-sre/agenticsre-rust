@@ -1,0 +1,442 @@
+{
+  "binary_sha256": "a90cc135646beeb38b8d7641d9a43e2e6577f002838013778876a1c3d2a6b98c",
+  "commands": [
+    {
+      "args": [
+        "--promtool",
+        "/tmp/installed-changes-975p7xe4/prefix/bin/promtool",
+        "config",
+        "check",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/check.json"
+      ],
+      "exit_code": 0,
+      "name": "pinned-validator"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "always",
+        "change",
+        "plan",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/concurrent-plan-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "concurrent-plan"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/approver-client.json",
+        "--record",
+        "always",
+        "change",
+        "approve",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/concurrent-approve-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "concurrent-approve"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "always",
+        "change",
+        "apply",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/concurrent-apply-0-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "concurrent-apply-0"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "always",
+        "change",
+        "apply",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/concurrent-apply-1-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 2,
+      "name": "concurrent-apply-1"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "always",
+        "change",
+        "apply",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/concurrent-replay-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "concurrent-replay"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "never",
+        "change",
+        "status",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/bounded-status-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1024"
+      ],
+      "exit_code": 1,
+      "name": "bounded-status"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "never",
+        "change",
+        "status",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/human-status-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "human-status",
+      "output_format": "text"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "always",
+        "change",
+        "plan",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/interrupted-plan-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "interrupted-plan"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/approver-client.json",
+        "--record",
+        "always",
+        "change",
+        "approve",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/interrupted-approve-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "interrupted-approve"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "always",
+        "change",
+        "apply",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/interrupted-apply-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "interrupted-apply"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "never",
+        "change",
+        "status",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/interrupted-status-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "interrupted-status"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "always",
+        "change",
+        "reconcile",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/interrupted-reconcile-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "interrupted-reconcile"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "always",
+        "change",
+        "apply",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/interrupted-repeated-delivery-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "interrupted-repeated-delivery"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "always",
+        "change",
+        "plan",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/enospc-plan-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "enospc-plan"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/approver-client.json",
+        "--record",
+        "always",
+        "change",
+        "approve",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/enospc-approve-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "enospc-approve"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "always",
+        "change",
+        "apply",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/enospc-apply-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "enospc-apply"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-changes-975p7xe4/requester-client.json",
+        "--record",
+        "never",
+        "change",
+        "status",
+        "--runner",
+        "changes.acceptance",
+        "--input",
+        "/tmp/installed-changes-975p7xe4/enospc-poisoned-status-input.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 2,
+      "name": "enospc-poisoned-status"
+    },
+    {
+      "args": [],
+      "exit_code": 2,
+      "name": "enospc-restart-refused"
+    }
+  ],
+  "lifecycles": [
+    {
+      "after": {
+        "ctime_ns": 1792042618259681878,
+        "dev": 63,
+        "gid": 1000,
+        "ino": 67,
+        "mode": 33152,
+        "mtime_ns": 1792042618259412738,
+        "nlink": 1,
+        "sha256": "13718542d394bcbdf5e6305f38e4e419ff789d58db9dc37ed6c3418f16cabd92",
+        "size": 354,
+        "uid": 1000
+      },
+      "before": {
+        "ctime_ns": 1792042611729525552,
+        "dev": 63,
+        "gid": 1000,
+        "ino": 31,
+        "mode": 33152,
+        "mtime_ns": 1792042611729525552,
+        "nlink": 1,
+        "sha256": "5606574c679d20bf218bdf08581ab84bfa9337e14a46f43a54b6e711e12c3ed0",
+        "size": 353,
+        "uid": 1000
+      },
+      "case": "concurrent-identical-apply",
+      "one_prepared_inode": true,
+      "repeated_delivery_preserves_attempt": true
+    },
+    {
+      "bounded_execution": "partial",
+      "case": "bounded-and-human-status",
+      "human_digest_and_state_visible": true,
+      "plan_omitted_with_digest_preserved": true
+    },
+    {
+      "before": {
+        "ctime_ns": 1792042618259681878,
+        "dev": 63,
+        "gid": 1000,
+        "ino": 67,
+        "mode": 33152,
+        "mtime_ns": 1792042618259412738,
+        "nlink": 1,
+        "sha256": "13718542d394bcbdf5e6305f38e4e419ff789d58db9dc37ed6c3418f16cabd92",
+        "size": 354,
+        "uid": 1000
+      },
+      "case": "real-sigkill-apply-restart",
+      "caught_state": "dispatching",
+      "caught_target": {
+        "ctime_ns": 1792042618259681878,
+        "dev": 63,
+        "gid": 1000,
+        "ino": 67,
+        "mode": 33152,
+        "mtime_ns": 1792042618259412738,
+        "nlink": 1,
+        "sha256": "13718542d394bcbdf5e6305f38e4e419ff789d58db9dc37ed6c3418f16cabd92",
+        "size": 354,
+        "uid": 1000
+      },
+      "client_execution": "unknown",
+      "reconciled_state": "not_applied",
+      "restart_and_reconcile_did_not_replace": true
+    },
+    {
+      "case": "private-64kib-enospc",
+      "observed_errno": 28,
+      "partial_artifacts_preserved": true,
+      "restart_refused": true,
+      "target_unchanged": true
+    }
+  ],
+  "passed": true,
+  "promtool_sha256": "c736d55d3ccd959fe48329965fb5cb671d45585a9483954766448035100ff75c",
+  "remaining_gaps": [],
+  "source_manifest_sha256": "a4fd2c478c0510709c6961b6e244b7c9523808e5f9e9b897f82263b75102227c"
+}

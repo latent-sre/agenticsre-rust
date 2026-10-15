@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:fleet-collect-input:0.1",
+  "title": "fleet-collect-input",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\\u0000]+$"
+    },
+    "targets": {
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+      }
+    },
+    "task": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "error-budget"
+        },
+        "version": {
+          "const": 1
+        },
+        "input": {
+          "$ref": "urn:sre-workbench:spec:error-budget-input:0.1"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "input"
+      ],
+      "additionalProperties": false
+    },
+    "concurrency": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4
+    },
+    "failure_threshold": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16
+    }
+  },
+  "required": [
+    "request_id",
+    "targets",
+    "task",
+    "concurrency",
+    "failure_threshold"
+  ],
+  "additionalProperties": false
+}

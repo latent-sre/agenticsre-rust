@@ -1,0 +1,27 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Finished `test` profile [unoptimized] target(s) in 4.57s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-80584c977bc04def)
+
+running 19 tests
+test runner::config::tests::root_path_and_cancelled_reads_refuse_without_panic ... ok
+test runner::config::tests::strict_server_rejects_array_principals_and_unknown_grants ... ok
+test runner::response::tests::embedded_contracts_match_published_schemas ... ok
+test runner::response::tests::unsupported_schema_constructs_and_external_refs_fail_closed ... ok
+test runner::server::tests::namespace_binding_detects_replacement_and_preserves_unknown_layout ... ok
+test runner::response::tests::canonical_receipt_fields_and_effect_consistency_are_checked ... ok
+test runner::server::tests::unconfirmed_submit_writes_keep_admission_unknown_without_a_job_handle ... ok
+test runner::tests::invalid_protocol_input_has_no_command_or_identity_authority ... ok
+test runner::tests::uncertain_writes_never_become_safe_retries ... ok
+test runner::transport::tests::already_cancelled_connect_has_no_application_delivery ... ok
+test runner::transport::tests::certificate_name_and_alpn_mismatch_refuse_before_rpc ... ok
+test runner::transport::tests::client_certificate_is_mandatory_before_server_exposes_channel ... ok
+test runner::server::tests::real_durable_response_rejects_mutated_nested_receipts_and_bindings ... ok
+test runner::transport::tests::framing_bounds_declared_sizes_and_truncated_payloads_before_allocation ... ok
+test runner::transport::tests::preflight_expiry_and_request_oversize_never_connect_or_claim_delivery ... ok
+test runner::transport::tests::controlled_wait_cancels_promptly_after_request_without_claiming_no_delivery ... ok
+test runner::transport::tests::tls_roundtrip_authenticates_both_leaf_identities_and_allows_one_exchange ... ok
+test runner::transport::tests::wrong_server_pin_sends_no_application_frame_after_valid_mtls ... ok
+test runner::transport::tests::slow_dribble_cannot_restart_absolute_frame_deadline ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.29s
+

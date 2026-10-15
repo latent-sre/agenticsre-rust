@@ -1,0 +1,6 @@
+{
+  "address": "127.0.0.1:42621",
+  "protocol": 1,
+  "runner_id": "fixture.runner",
+  "server_certificate_sha256": "sha256:ec8c73b3e1a968d92ff1b4ee9e9060af9dc58b0b00ab688df4afe0bb9962a8a1"
+}

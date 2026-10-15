@@ -1,0 +1,14 @@
+{
+  "command": "tools/test-sandbox.sh cargo test --manifest-path target/schedule/calendar-check/Cargo.toml --locked --offline",
+  "source_path": "crates/workbench-core/src/schedule/calendar.rs",
+  "source_sha256": "453aa4aa8c6a4a220196a926d41e7e92312c41c13bb795b572313aac07964931",
+  "exit_code": 0,
+  "passed": 9,
+  "failed": 0,
+  "scope": "Pure calendar module compiled directly by a disposable target-directory crate while scheduler integration was still in progress",
+  "independent_static_review": {
+    "p0_p1": 0,
+    "material_findings": 0
+  },
+  "integration_limit": "Skipped civil date and next midnight may share due_utc; ordinal and scheduled_utc=None distinguish nonexecuting calendar rows."
+}

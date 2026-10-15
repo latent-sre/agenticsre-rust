@@ -1,0 +1,1 @@
+PASS: all 14 exact receipts, all 54 OpenAPI components and the real session validate; retained store snapshots identical.

@@ -1,0 +1,12 @@
+{
+  "workflow": "dashboard-review",
+  "cohort": "candidate",
+  "task": {
+    "id": "error-budget",
+    "version": 1,
+    "input": {
+      "slo": 99.9,
+      "bad_minutes": 0
+    }
+  }
+}

@@ -1,0 +1,16 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Finished `test` profile [unoptimized] target(s) in 4.86s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-80584c977bc04def)
+
+running 8 tests
+test fleet::config::tests::pure_task_normalization_and_admission_refusals ... ok
+test fleet::controller::tests::cancellation_committed_before_intent_prevents_new_admission ... ok
+test fleet::controller::tests::owner_commit_merges_a_concurrent_durable_cancel_flag ... ok
+test fleet::store::tests::interrupted_publication_preserves_unknown_layout_and_effect_truth ... ok
+test fleet::store::tests::malformed_state_is_not_returned_as_successful_public_metadata ... ok
+test fleet::store::tests::persisted_phase_and_evidence_corruption_are_refused ... ok
+test fleet::store::tests::retained_receipt_mutation_with_original_digest_is_rejected_before_publication ... ok
+test fleet::controller::tests::resumed_controller_queries_original_intent_and_never_submits_queued_targets ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 186 filtered out; finished in 0.02s
+

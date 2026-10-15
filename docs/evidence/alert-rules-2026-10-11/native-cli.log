@@ -1,0 +1,16 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 3.82s
+     Running tests/prometheus_rules.rs (target/debug/deps/prometheus_rules-1af913c4cc4706ce)
+
+running 5 tests
+test missing_dependency_and_unpinned_binary_refuse_before_input_or_child ... ok
+test native_pins_and_output_bounds_preserve_honest_refusals ... ok
+test native_lint_empty_and_unchecked_second_document_never_become_clean_success ... ok
+test wire_input_cannot_select_executable_flags_or_bypass_kind_binding ... ok
+test native_rule_and_expression_validation_preserves_consumed_identity_and_original ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.56s
+

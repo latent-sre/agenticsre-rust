@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:change-apply-input:0.1",
+  "title": "change-apply-input",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$"
+    },
+    "plan_sha256": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+    },
+    "approval_id": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+    }
+  },
+  "required": [
+    "request_id",
+    "plan_sha256",
+    "approval_id"
+  ],
+  "additionalProperties": false
+}

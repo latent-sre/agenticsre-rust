@@ -1,0 +1,357 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:runner-wire-request:0.1",
+  "title": "runner-wire-request",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": 1
+        },
+        "method": {
+          "const": "handshake"
+        },
+        "inputs": {
+          "$ref": "urn:sre-workbench:spec:runner-handshake-input:0.1"
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "principal"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": 1
+        },
+        "method": {
+          "const": "submit"
+        },
+        "inputs": {
+          "$ref": "urn:sre-workbench:spec:runner-submit-input:0.1"
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "principal"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": 1
+        },
+        "method": {
+          "const": "status"
+        },
+        "inputs": {
+          "$ref": "urn:sre-workbench:spec:runner-status-input:0.1"
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "principal"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": 1
+        },
+        "method": {
+          "const": "watch"
+        },
+        "inputs": {
+          "$ref": "urn:sre-workbench:spec:runner-watch-input:0.1"
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "principal"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": 1
+        },
+        "method": {
+          "const": "cancel"
+        },
+        "inputs": {
+          "$ref": "urn:sre-workbench:spec:runner-cancel-input:0.1"
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "principal"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": 1
+        },
+        "method": {
+          "const": "change.plan"
+        },
+        "inputs": {
+          "$ref": "urn:sre-workbench:spec:change-plan-input:0.1"
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "principal"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": 1
+        },
+        "method": {
+          "const": "change.status"
+        },
+        "inputs": {
+          "$ref": "urn:sre-workbench:spec:change-status-input:0.1"
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "principal"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": 1
+        },
+        "method": {
+          "const": "change.reconcile"
+        },
+        "inputs": {
+          "$ref": "urn:sre-workbench:spec:change-reconcile-input:0.1"
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "principal"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": 1
+        },
+        "method": {
+          "const": "change.approve"
+        },
+        "inputs": {
+          "$ref": "urn:sre-workbench:spec:change-approve-input:0.1"
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "principal"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": 1
+        },
+        "method": {
+          "const": "change.apply"
+        },
+        "inputs": {
+          "$ref": "urn:sre-workbench:spec:change-apply-input:0.1"
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "principal"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "inputs"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

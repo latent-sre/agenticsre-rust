@@ -1,7 +1,19 @@
 //! Shared, bounded operation semantics for the experimental `save` CLI.
+mod change;
 mod context;
+mod investigation;
+pub use investigation::{
+    InvestigationGrant, execute_with_investigation_grant, investigation_grant,
+    normalize_investigation_input,
+};
 mod evidence;
+mod extensions;
+mod fleet;
+mod jobs;
+mod runner;
+mod schedule;
 pub use evidence::EvidenceStoreOptions;
+pub use runner::{RunnerError, serve_runner};
 mod diagnostics;
 pub use diagnostics::{
     DiagnosticsGrant, diagnostics_grant, diagnostics_pack_metadata, normalize_diagnostics_input,
@@ -22,6 +34,7 @@ pub use read_profile::{ReadPolicyDescription, ReadPolicyRoot, read_policy_descri
 pub mod request;
 pub mod result;
 pub mod tasks;
+mod toil;
 
 use request::{Problem, Request};
 use result::{OperationResult, Status};
@@ -36,6 +49,26 @@ use std::time::Instant;
 /// Explicit operator startup configuration, never a wire-request field or a grant.
 #[derive(Default)]
 pub struct OperatorContext {
+    /// Explicit owner-bound persistent observational schedule store.
+    pub schedule_state_dir: Option<std::path::PathBuf>,
+    /// Explicit frozen-inventory controller inputs; never a wire grant.
+    pub fleet_inventory_path: Option<std::path::PathBuf>,
+    /// Explicit private durable fleet parent store.
+    pub fleet_state_dir: Option<std::path::PathBuf>,
+    /// Explicit authenticated remote controller profile; never a wire grant.
+    pub runner_config_path: Option<std::path::PathBuf>,
+    /// Explicit private durable local-job store, never a wire field or hosted grant.
+    pub job_state_dir: Option<std::path::PathBuf>,
+    /// Startup-only local worker ceiling; at most one hour, independent of foreground limits.
+    pub job_max_runtime_ms: Option<u64>,
+    /// Independent startup-only exact extension execution grants under ordinary operator authority.
+    pub extension_policy_path: Option<std::path::PathBuf>,
+    /// Explicit private inert extension inventory; never a wire field or hosted grant.
+    pub extension_state_dir: Option<std::path::PathBuf>,
+    /// Explicit startup location for the exact reviewed promtool binary; never a wire grant.
+    pub promtool_path: Option<std::path::PathBuf>,
+    /// Explicit separate opt-in toil metadata store; never inherited by hosted callers.
+    pub toil_state_dir: Option<std::path::PathBuf>,
     /// Explicit private guided-runbook journal root, never a wire field or hosted grant.
     pub runbook_state_dir: Option<std::path::PathBuf>,
     /// Explicit local evidence storage policy; never supplied by wire input or a hosted grant.
@@ -153,6 +186,43 @@ fn execute_with_identities(
     let mut result = OperationResult::new(&request);
     if let Err(problem) = request.validate() {
         result.reject(problem);
+    } else if identities.required && request.operation.starts_with("change.") {
+        result.reject(Problem::unsupported("change_grants_unavailable", "Controlled changes require an authenticated operator profile and independently granted runner authority."));
+    } else if identities.required && request.operation.starts_with("schedule.") {
+        result.reject(Problem::unsupported(
+            "schedule_grants_unavailable",
+            "Persistent schedules require explicit local operator authority.",
+        ));
+    } else if identities.required && request.operation.starts_with("fleet.") {
+        result.reject(Problem::unsupported("fleet_grants_unavailable","Fleet inventory and persistence are explicit operator authority, unavailable to hosted callers."));
+    } else if identities.required && request.operation.starts_with("runner.") {
+        result.reject(Problem::unsupported(
+            "runner_grants_unavailable",
+            "Remote runner profiles are operator startup authority, unavailable to hosted callers.",
+        ));
+    } else if identities.required && request.operation.starts_with("job.") {
+        result.reject(Problem::unsupported(
+            "job_grants_unavailable",
+            "Durable jobs are available only through the explicit local operator store and worker.",
+        ));
+    } else if identities.required
+        && (request.operation.starts_with("extension.") || request.operation.starts_with("ext."))
+    {
+        result.reject(Problem::unsupported("extension_grants_unavailable", "Hosted extension grants are unavailable; use explicit operator-local package management."));
+    } else if identities.required && request.operation == "config.check" {
+        result.reject(Problem::unsupported("config_grants_unavailable", "Hosted configuration-check grants are unavailable; use the explicit operator-local installed validator."));
+    } else if identities.required && request.operation.starts_with("toil.") {
+        result.reject(Problem::unsupported(
+            "toil_grants_unavailable",
+            "Hosted toil grants are unavailable; use an explicit operator-local metadata store.",
+        ));
+    } else if identities.required && request.operation == "context.resolve" {
+        result.reject(Problem::unsupported(
+            "context_grants_unavailable",
+            "Hosted context resolution requires an explicit pinned investigation grant.",
+        ));
+    } else if identities.required && request.operation == "report.create" {
+        result.reject(Problem::unsupported("report_grants_unavailable", "Report grants are unavailable for hosted adapters; use explicit operator evidence-store bindings."));
     } else if identities.required && request.operation.starts_with("runbook.") {
         result.reject(Problem::unsupported(
             "runbook_grants_unavailable",
@@ -319,6 +389,34 @@ fn dispatch(
         "runbook.run" | "runbook.resume" | "runbook.status" => {
             runbooks::run(request, control, context, start, result)
         }
+        "toil.configure" | "toil.record" | "toil.capture" | "toil.annotate" | "toil.summary"
+        | "toil.prune" | "toil.delete" => toil::run(request, control, context, start, result),
+        operation if operation.starts_with("change.") => {
+            change::client::run(request, control, context, start, result)
+        }
+        operation if operation.starts_with("schedule.") => {
+            schedule::run(request, control, context, start, result, false)
+        }
+        operation if operation.starts_with("fleet.") => {
+            fleet::run(request, control, context, start, result)
+        }
+        operation if operation.starts_with("runner.") => {
+            runner::run(request, control, context, start, result)
+        }
+        operation if operation.starts_with("job.") => {
+            jobs::run(request, control, context, start, result)
+        }
+        operation if operation.starts_with("ext.") => {
+            extensions::execute(request, control, context, start, result)
+        }
+        "extension.inspect" | "extension.install" | "extension.list" => {
+            extensions::run(request, control, context, start, result)
+        }
+        "config.check" => tasks::config_check::run(request, control, context, start, result),
+        "report.create" => evidence::report::run(request, control, context, start, result),
+        "evidence.open" | "evidence.replay" => {
+            evidence::offline::run(request, control, context, start, result)
+        }
         "evidence.collect" => evidence::collect::run(request, control, context, start, result),
         "evidence.compare" => evidence::compare::run(request, control, context, start, result),
         "evidence.packs.describe" => evidence::pack::describe(&request.inputs, result),
@@ -396,6 +494,12 @@ fn dispatch(
                 } else {
                     discovery::list()
                 };
+                if request.operation == "capability.list"
+                    && !identities.required
+                    && context.extension_state_dir.is_some()
+                {
+                    extensions::discover(request, control, context, start, result);
+                }
             } else {
                 result.reject(Problem::invalid(
                     "invalid_input",
@@ -415,6 +519,12 @@ fn dispatch(
                         result.effect_outcome = "not_applicable".into();
                         result.data = json!({"capability":capability,"availability":discovery::availability(&input.operation)});
                     }
+                    None if input.operation.starts_with("ext.")
+                        && !identities.required
+                        && context.extension_state_dir.is_some() =>
+                    {
+                        extensions::discover(request, control, context, start, result)
+                    }
                     None => result.reject(Problem::unsupported(
                         "unknown_operation",
                         "No installed capability has the requested operation ID.",
@@ -431,4 +541,24 @@ fn dispatch(
             "No installed capability has the requested operation ID.",
         )),
     }
+}
+
+/// Explicit operator-local durable worker entry; generic/hosted dispatch cannot select it.
+/// The ordinary envelope deadline bounds admission. The immutable admitted job supplies
+/// a separate host-capped runtime, reported in the worker and child effective limits.
+pub fn work_job(
+    request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+) -> OperationResult {
+    jobs::work(request, control, context)
+}
+
+/// Explicit foreground scheduler pass. Generic and hosted requests cannot start it.
+pub fn work_schedule(
+    request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+) -> OperationResult {
+    schedule::work(request, control, context)
 }

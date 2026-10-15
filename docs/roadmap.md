@@ -1478,6 +1478,451 @@ Verification used an uncommitted working-tree snapshot; later acceptance documen
 Live home-lab compatibility and native Windows evidence remain separate requirements. The complete
 backlog is not finished by this guided-runbook increment.
 
+## WORKBENCH-016 — offline evidence inspection and replay
+
+**Status:** Complete for the Linux x86-64 core/CLI fixture scope. The
+[acceptance record](offline-evidence-verification.md) binds the
+[offline contract](offline-evidence.md) to exact source/binary identities and retained receipts.
+
+**Scope:** `evidence.open` verifies and inspects retained receipts; `evidence.replay` deterministically
+projects supported historical metrics/logs. Preserve source times and separate analysis time,
+limited inspection, explicit omissions and unchanged evidence. Enforce network/command refusal in
+a Linux x86-64 worker before store access. Hosted grants and other platform profiles remain open.
+
+**Evidence:** Initial full sandbox workspace/all-feature suite passed. Final affected checks passed
+six public workflows, 22 frame tests, four offline core tests and hosted/input refusals; strict lint,
+formatting, ordinary build and 45-schema verification passed. Installed execution passed 13 commands
+with canonical/schema-valid receipts after source fixture shutdown and credential/config removal.
+Actual worker kernel tests deny network/exec/process syscalls and preserve caller authority.
+Historical times, original receipts and store bytes remained unchanged; missing, failed, redacted,
+incompatible, interrupted, tampered and limited cases are explicit.
+
+**Review correction:** A P2 allowed complete open before frame compatibility was checked. Shared
+bounded frame inspection now preserves incompatibility/partial reasons and original receipts.
+Final independent static review reports no unresolved material findings. Product review/fix rounds: 1.
+Frozen manifest `3654318c4245cb430a1557818db9023605fd3c6b93c1ab9216a7e119017d74af`;
+ordinary binary `987d2417211167e05c16af6a4fe906306c7a4542874c0824b963f6596643db3f`.
+
+**Next increments:** WORKBENCH-017 reports and reviewable knowledge proposals; WORKBENCH-018 opt-in
+toil metadata and cost-aware summaries; WORKBENCH-019 declared configuration validation. Preserve
+the complete capability ledger below. Later extension/job/remote/fleet/scheduling/controlled-change
+work follows delivery dependencies, with live targets and native platforms accepted separately.
+
+The next implementation contract is `report.create`: choose verified bundle references, render
+Markdown/JSON from retained facts and analysis, include original times, evidence links, missing
+checks, redactions and next questions, and keep proposed knowledge edits explicitly pending human
+review. No external publication or automatic knowledge approval. AC-20 must cover contradictory
+evidence and unsupported claims. After that, AC-21 requires opt-in metadata, sample-size/units and
+build/maintenance/incident-cost arithmetic; AC-19 requires declared validator kinds/versions,
+input digests, unsupported-section refusal and unchanged input bytes.
+
+## WORKBENCH-017 — evidence reports and pending knowledge proposals
+
+**Status:** Complete for the Linux x86-64 core/CLI fixture scope. The
+[acceptance record](reports-verification.md) binds the [report contract](reports.md) to frozen
+source/binary identities and exact receipts for the existing service-query evidence bundles.
+
+**Scope:** One to four verified historical bundles, paired exact-window comparisons, Markdown/JSON
+handoffs, old observation times/provenance, missing/redacted/incompatible checks, typed disagreement
+findings, next questions and evidence-bound pending knowledge proposals. Frozen in-memory bundles
+are reused under the offline profile, avoiding an unpinned source lookup. No publishing or automatic
+approval, source-file changes, model interpretation or hosted grants.
+
+**Verification:** Full sandbox workspace passed 345 tests with 19 existing native tests ignored.
+Final focused six public workflows and six report core tests passed after the small output-metadata
+reserve adjustment. Strict lint, formatting, ordinary build, 47-schema/example/link checks and
+whitespace passed. Installed acceptance passed ten commands with exact schema-valid receipts,
+format/structured parity, explicit disagreements, redaction, pending proposals, output limits and
+tamper refusal after source shutdown/config removal. Store bytes were unchanged. The four-bundle
+public case exercises all six pair comparisons and failed receipts remaining missing.
+
+**Identity:** Frozen manifest `1a15e2b0a46435a82c8d693a111a863044a39f85d8b01d50bac3465a94461d2b`;
+ordinary binary `d00d0bdd44e16223bb54fd7080de03898dd2b0b5deab15faf87542ac01291196`.
+Final independent static review reports no unresolved material findings. Product review/fix rounds: 0;
+the metadata reserve was a bounded implementation check before final source freeze.
+
+**Next:** WORKBENCH-018 opt-in toil metadata and summaries, then WORKBENCH-019 configuration checks.
+The full capability ledger and separate live/platform requirements remain authoritative.
+
+WORKBENCH-018 must keep collection opt-in and exclude raw command/query content and employee
+ranking. Use explicit baseline/candidate workflow samples with duration, failures/retries/manual
+interventions and declared measurement provenance. Compare like units and disclose missing/biased
+or small samples. Subtract declared build, maintenance and incident costs before estimating savings
+or break-even; distinguish measured observations from projections. Retention/opt-out behavior and
+all arithmetic need AC-21 evidence. A summary alone cannot prove observed productivity benefit.
+
+## WORKBENCH-018 — opt-in toil metadata and cost-aware summaries
+
+**Status:** Complete for the Linux core/CLI fixture increment. [Contract](toil.md) and
+[acceptance record](toil-verification.md) bind explicit consent, private bounded metadata, actual
+task capture, human-effort annotations, cost-aware summaries and explicit retention/deletion.
+Runtime remains separate from labor; measurements, estimates, missing values and bias remain visible.
+
+**Verification:** Full workspace passed 361 tests (19 existing native tests ignored); final twelve
+core toil tests passed after strict task-object preflight and two additional failure regressions.
+Five public CLI tests passed. Installed ordinary-binary acceptance passed 23 commands with schema
+validation, real task capture, privacy canaries, hand-calculated savings, opt-out, retention and
+structured-request parity. Strict lint, formatting, build and specification checks passed.
+Independent static review's cancellation-data schema finding is fixed and confirmed closed;
+no material findings remain. Post-child recording failure retains the actual child result and
+preserves old store bytes. Arithmetic uses exact ratios for break-even.
+
+**Identity:** 1129-file source manifest
+`c743cfe3e39f26503b7323c5c2aa22c2efec9cac09868deb55c34dbbb5698635`;
+ordinary binary `b78b80ada15a01ed2553387e0a66609505e6deee1b86592f9f2fc81be18b78eb`.
+The evidence packet retains exact installed receipts and guards. No actual productivity benefit,
+live adoption, hosted grants or native Windows acceptance is inferred.
+
+**Next:** WORKBENCH-019 configuration checks, preserving every remaining capability below.
+
+## WORKBENCH-019 — declared offline configuration checks
+
+**Status:** Complete for the Linux core/CLI dashboard increment. CAP-13/AC-19.
+[Contract](config-check.md) and [acceptance record](config-check-verification.md).
+`config.check` requires explicit kind/validator/version and reports actual input identity, installed
+rule coverage, findings and unsupported scopes. Optional validator/input pins fail before dispatch
+or checking respectively; consumed bytes are read once and originals remain unchanged. Unknown or
+ambiguous envelope declarations, malformed input and zero checked panels cannot pass by omission.
+
+**Verification:** Final integrated sandbox workspace passed 376 tests with 19 existing native tests
+ignored, including six public configuration workflows and legacy task/toil regressions. Strict lint,
+formatting, build and specification checks passed. Twenty installed commands passed with exact
+schema-valid receipts, pin mismatches, unsupported models, findings exits, input preservation,
+output bounds and structured parity. Independent static review's path-control parity finding was
+fixed and confirmed closed. The initial output-limit fixture was too small; enlarging it exercised
+truncation without changing the product binary. Discovery's prior missing toil-prune schema reference
+was corrected and a reference-existence regression added.
+
+**Identity:** 1192-file source manifest
+`9ecf0472349fd296a6a09c5141b1e8b618cc17b7e43c91e8ad6fc3a7c2bcdf92`;
+ordinary binary `db87eebf88fa473d9ac7ea12c82efc3ef0b5d437a5a528bbcbe22c57e04822cf`.
+No full Grafana schema, plugin-specific, live-health or platform acceptance is inferred.
+
+**Next:** Select and implement the first supported alert/config validator adapter, retaining the
+same declared identity/digest, explicit rule coverage, unsupported-schema and immutable-input
+contract. CAP-13's broader validator requirement remains open. Then continue extensions/jobs in
+the delivery plan's dependency order; the full capability ledger remains authoritative.
+
+## WORKBENCH-020 — supported alert/config validator adapter
+
+**Status:** Complete for the Linux amd64 core/CLI fixture scope. The
+[acceptance record](alert-rules-verification.md) binds the [contract](alert-rules.md) to frozen
+source/binary identities and 61 hashed evidence artifacts. This backlog increment remains local;
+the earlier owner-requested PR fixes were already committed and pushed as `9016dcb`.
+
+**Delivered:** `config.check` for Prometheus alerting/recording rules, using the official 3.15.0
+Linux amd64 executable selected by trusted startup configuration and exact digest. Fixed arguments,
+private unlinked read-only executable snapshot, sealed model snapshot, consumed-input/binding pins,
+strict YAML/PromQL/template syntax checks and duplicate lint share the existing supervisor.
+Empty inputs, multi-document warnings, output loss and unknown protocol cannot yield a complete
+valid result. Originals remain unchanged; no package installation or live deployment occurs.
+
+**Verification:** 387 workspace tests passed with zero failures; 22 ignored cases include three
+new official-fixture tests, all exercised in a separate five-test native CLI pass. Strict lint,
+format, ordinary build and 60-schema/42-positive/28-negative specification checks passed.
+Final installed acceptance passed 21 commands from an unrelated directory, including failures,
+pins, bounds, deadline, FIFO, human text and structured-call parity. Independent static review
+reported no unresolved material findings. Final source manifest: 1258 files, SHA-256
+`cdfd0fca4635d87ee45d0176f7e8521a51f62598991804fd3fd3c1f5d2f753f2`.
+Binary SHA-256: `9adb672ef60d2e674897a37248650886d1137dad91c02a05841b90126f3d8885`.
+
+**Resolved issues:** AppArmor refused executable memory files; the reviewed binding now uses
+private unlinked ordinary files under the unchanged sandbox/profile. Two launcher tests needed
+GNU printf instead of this host's descriptor-rejecting uutils shim. The installed verifier's
+timeout expectation was corrected from 124 to the common CLI exit 1 without changing the binary.
+Initial failures and final proof are retained. Hosted/native-platform acceptance, live semantics
+and other validator formats remain open.
+
+**Next:** Reviewed external capability packages, then durable jobs, retaining the delivery plan's
+dependency order and complete capability ledger.
+
+## WORKBENCH-021 — reviewed external capability packages
+
+**Status:** Package management plus external execution and the fourth-capability experiment are
+accepted for their Linux core/CLI scopes. This establishes the recorded CAP-17/AC-26/AC-29 increment,
+not broader platform/distribution maturity. [Package contract](extensions.md),
+[package acceptance](extensions-verification.md), [runtime contract](extension-runtime.md) and
+[runtime acceptance](extension-runtime-verification.md).
+
+**Delivered:** `extension.inspect`, `extension.install` and `extension.list`; strict inert JSON
+packages with bounded schema/compatibility/provenance metadata and embedded executable digests;
+mandatory raw-package pin for installation; private content-addressed storage; idempotent same-byte
+installation; refusal of same-version replacement and unknown/interrupted store state. Package code
+never executes, metadata never grants access and installed capabilities remain disabled. Source
+and store link/refusal paths, finite quotas and requested output budgets are enforced.
+
+**Verification:** 402 workspace tests passed, zero failed and 22 existing native/fixture cases
+ignored. This includes five CLI, eight public core and two internal interruption tests for extensions.
+Strict lint, formatting, ordinary build and 65-schema/44-positive/33-negative specification checks
+passed. Installed acceptance passed 28 commands using a compiled adversarial executable whose
+marker remained absent. Real private 64 KiB tmpfs exhaustion preserved pending bytes and unknown
+effects, published no package, and caused subsequent inventory to refuse without cleanup.
+
+Independent review found and closed canonical effect-value and effective-output-limit defects;
+no material finding remains. The real 32-package regression exceeds 1 MiB of descriptions and
+proves omission under the reported limit. Seventy hashed evidence artifacts bind source manifest
+`ca3d0274e5afa62acdd08d31dad099d31cb4bf822270a4e8fcc8d937ea0dd389` (1342 files) and binary
+`5a8a0f9a45b96d79572072919526b4523049f153c04d09e7c7861cba69be28be`. Work remains local.
+
+**External execution delivered:** Private exact-package operator policy is separate from installation.
+The fixed JSON Lines exchange admits a correlated handshake before work, validates typed inputs and
+terminal outputs, checks sequences/EOF and bounds frames, diagnostics and retained detail. It uses
+the shared process supervisor's optional nonblocking dialogue interface and an unlinked read-only
+executable snapshot. Effects remain unclassified/unknown under ordinary operator authority; no
+untrusted-code sandbox or hosted grant is implied. Dynamic discovery reports effective availability.
+
+The fourth capability is a real independent `capacity-projector` executable with no core dependency.
+It projects supplied capacity/usage/growth, preserving integer units, zero-growth/exhaustion states
+and assumptions. A separate adversarial peer proves malformed messages, missing/duplicate/trailing
+terminals, invalid output, unsupported versions, stderr limits, timeouts and cancellation. A peer
+ignoring TERM is killed and reaped; result-consumer closure also terminates it. One authorized pin
+selects a package version; multiple authorized versions refuse ambiguity.
+
+**Runtime verification:** 419 workspace tests passed with zero failures and 25 ignored native/fixture
+cases. Six consumer tests, four explicit native CLI tests and a final discovery regression passed
+after their respective corrections. Strict lint, format, builds and 68-schema/46-positive/35-negative
+specification checks passed. Final installed acceptance passed 45 CLI commands, three direct peer
+compatibility checks and closed-consumer cleanup. The 128-artifact packet records final source
+manifest `6525fe4d821fa43966450d6b9e12d60487cb25e952eff532ede6822c3dc38f9e` (1435 files), CLI
+`59156778f2602f7c4c29b1f9a81d579b948cd1ca148693aa9562f1d41fc197af`, and both peer identities.
+
+Resolved peer array-shape admission, one test expectation, lint normalizations and the discovered
+output-schema mismatch. The latter has retained failing evidence and an actual-response validation
+against advertised discovery metadata. Independent review confirmed closure; no material finding
+remains. Existing Prometheus binding bytes were not refactored. Automated store repair, artifact
+exchange, broader schema/platform support and distribution trust remain separate requirements.
+
+## WORKBENCH-022 — durable local jobs
+
+**Status:** Accepted for the Linux x86-64 operator-local scope in the [jobs contract](jobs.md)
+and [retained verification](jobs-verification.md). CAP-18/AC-22 now have real durable admission,
+status, cursor-based events, cancellation and an explicitly started single-job worker. The broader
+platform/hosted/remote job requirements remain open; submission installs no service or grant.
+
+The private store retains immutable owner/request fingerprints, execution location, bounded events,
+attempt identity, cancellation intent and terminal receipts. Identical submissions return the same
+handle, including at the 64-job cap; conflicting requests are refused. A lost worker produces
+recovery-required state without replay or persisted-PID signaling. A verified published result can
+be adopted after interrupted terminal publication. Native processes, fixed tasks and exact-policy
+extensions execute through existing admission and supervision. Job runtime is separately bounded
+at one hour while foreground admission remains capped at 300 seconds.
+
+Fresh workspace checks passed 437 tests with zero failures and 26 explicit native-environment
+ignores; one native extension job test and three foreground extension regressions separately passed.
+Formatting, strict workspace clippy and the ordinary CLI build passed. The frozen installed mission
+passed 105 commands, including real child cancellation, worker SIGKILL, output loss, event gaps,
+full-store deduplication, exact extension policy checks and real private 64 KiB ENOSPC with unchanged
+partial files on refusal. A reconstructed finalizing crash snapshot from a real child proves that
+late cancellation preserves the already published outcome and does not rerun the operation.
+
+Independent review closed six P2s concerning persisted sequence/phase validation, receipt-summary
+agreement, cumulative write effects, queued-cancel crash reconciliation and failure-output bounds.
+No P0/P1 or unresolved material finding remained. The source manifest contains 1,589 files with
+SHA-256 `4494d3f091296633024dc323a01eadd4f624311ed2a472eb1bb66f015140e969`;
+the ordinary CLI SHA-256 is
+`f461f116855124ef9f12171d7b4560f153fea5ee15a26f9531357ac7206462c1`.
+The acceptance packet retains exact receipts, identities and check logs. Changes remain local.
+
+## WORKBENCH-023 — authenticated remote runner experiment
+
+**Status:** Accepted for the Linux x86-64 isolated-process experiment under the
+[runner contract](runner.md) and [transport decisions](runner-transport-notes.md).
+[Retained acceptance](runner-verification.md) covers real mTLS controller/runner exchanges,
+principal-owned durable admission, exact task/extension bindings, event reconnect, independent
+cancellation and recovery without replay. No host service, live target or integration was changed.
+
+The final workspace passed 464 tests, zero failures and 26 existing environment-specific ignores.
+The frozen installed mission passed 76 commands, including lost-acknowledgment lookup, two-principal
+isolation, grant-revoked historical reads, a 2,000 ms timeout after disconnect, stubborn-child
+cancellation, actual runner SIGKILL/restart and private 64 KiB ENOSPC. Restart preserved all 24
+interrupted-store files. Formatting, strict clippy, ordinary build and schemas passed.
+Independent review closed four P2 findings; no material finding remained.
+
+The source manifest covers 1,853 files with SHA-256
+`5342752de2cf2a321ac4bd11ac45e9ed97b86ab4fb178977a1eefdaf6f7804f1`;
+the ordinary CLI SHA-256 is
+`78f040b13a4998ac787e3876217437fab5165328cfe5c4e8a4e77b8ff4447c3a`.
+The packet preserves raw receipts, lifecycle observations and verification logs. Changes remain local.
+This does not close full CAP-19/AC-23: native Windows, live cross-host conformance, broader version
+compatibility/installed-capability inventory, credential lifecycle and target-native reconciliation
+remain open. Queue expiry does not grant takeover or establish terminated external effects.
+
+## WORKBENCH-024 — bounded multiple-target collection
+
+**Status:** Accepted for the Linux x86-64 isolated-process scope in the [fleet contract](fleet.md)
+and [retained acceptance](fleet-verification.md). CAP-20/AC-30 now have a real controller over two
+independent authenticated runners, using the fixed error-budget calculator on supplied measurements.
+This does not claim live collection or full platform/hosted capability completion.
+
+Explicit private inventory freezes selected targets, consumed credential-free profile identities,
+principals, bindings, policies, derived child request IDs, concurrency and original deadline before
+submission. A bounded private parent store retains immutable admission, durable child intent,
+verified observations and terminal evidence. Duplicate input returns the original parent; changed
+inventory cannot alter it. Threshold, cancellation and deadline stop new work; per-target outcomes
+and unknown effects remain visible. Admission rotates across repeated target sets. Resume only
+observes or cancels original identities and never replays submission.
+
+The installed mission passed 26 commands, including mixed success/timeout, unreachable selection,
+real controller SIGKILL, profile/principal remapping, same-identity recovery, cancellation, bounded
+output and private 64 KiB ENOSPC. Focused tests prove the no-submit protocol, cancellation-before-
+intent and durable receipt/evidence validation. Final workspace tests passed 484 cases with zero
+failures and 26 existing environment-specific ignores. Strict lint, formatting, build and schemas
+passed. Independent review closed the cancellation race, missing receipt hash comparison, dispatch
+preflight classification and authority-refusal polling defects; no material finding remains.
+
+The source manifest covers 2,072 files with SHA-256
+`59feef6e4b5b8d31cf5854e5deeafd48aa3536cdf8fa63adaf004d5994822903`;
+the ordinary CLI SHA-256 is
+`cebf539b6fe67492666afab255987d75db7f73be8e6f4c8d4b3c1d513f2c684e`.
+Acceptance documents and the retained packet were added afterward without changing product bytes.
+Changes remain local. Additional consumers, live inventory, platform/hosted grants and broader
+load/soak coverage retain separate acceptance requirements.
+
+## WORKBENCH-025 — persistent observational schedules
+
+**Status:** Accepted for the Linux x86-64 isolated-process scope in the [schedule contract](schedules.md)
+and [retained verification](schedules-verification.md). CAP-21/AC-31 now have owned persistent
+schedule generations, explicit bounded workers, manual-request deduplication and real fleet dispatch.
+The consumer remains the fixed calculator over supplied measurements; no service or live schedule
+was installed.
+
+The private ledger binds exact selection/profile/fleet-store identities, task inputs and bundled
+IANA 2025b rules. Interval anchors, local daily cadence, DST gaps/folds, overlap, misfires and clock
+jumps have deterministic behavior. Pause/update serialize with intent, old uncertain generations
+block overlap, and persisted work ordering prevents starvation. Recovery retains original fleet
+IDs without replay. A definite fresh no-admission refusal resolves failed; later restored authority
+can run a separately requested occurrence. Explicit cancel-active and worker shutdown have distinct
+behavior. Retention is a hard ledger cap, with no silent eviction or shared-fleet reclamation.
+
+The installed mission passed 76 commands against two disposable authenticated runners, including
+actual scheduler SIGKILL and SIGTERM, active cancellation, wrong-store refusal, profile/private-key
+drift, quota across generations, bounded/text output and private 64 KiB ENOSPC. All 508 workspace
+tests passed with zero failures and 26 existing environment-specific ignores; 24 scheduler tests
+cover calendar, ownership, corruption, fairness and near-capacity publication. Strict lint, format,
+ordinary build and schemas passed. Seven independent P2 findings are closed; no material scoped
+finding remains. An installed-verifier variable-shadowing error was corrected without Rust changes.
+
+The source manifest covers 2,220 files with SHA-256
+`586737a67829564953c9264226e20d2b8097b4efa551a847ef5ed63b05ea58d8`;
+the ordinary CLI SHA-256 is
+`e36a390bbd1d71fc2e093e6a68415de97f6ee5a0b85726a656ad66c46ec0b288`.
+Acceptance prose and evidence were added afterward without changing product bytes. Changes remain
+local. Automated retention/migration, timezone-rule upgrades, additional observational consumers,
+notifications, live deployment, hosted/native-platform support and longer operational trials remain
+separate increments.
+
+## WORKBENCH-026 — approved local configuration changes
+
+**Status:** Accepted for the Linux x86-64 disposable-file scope in the [change contract](changes.md)
+and [retained verification](changes-verification.md). The owner-selected first CAP-22 consumer
+replaces an explicitly granted private Prometheus-rule file using an exact approved plan and the
+existing pinned validator. No live target or service was changed.
+
+The five synchronous operations (`change.plan/status/approve/apply/reconcile`) use authenticated
+mTLS requester/approver identities and disjoint target grants. Plans freeze exact original/proposed
+bytes, file/parent identity, certificate/policy/ledger/implementation/validator bindings and expiry.
+Approval consumes once. Replacement bytes and inode are durable before consumed dispatch intent,
+then descriptor-relative rename and readback establish the effect. Reconciliation never repeats
+replacement; original content recovery requires another validated and approved plan. Restart and
+backward-clock handling fail closed for unconsumed write authority.
+
+The installed mission passed 19 commands with no remaining test gaps, including concurrent apply,
+actual SIGKILL between consumed intent and rename, restart/reconciliation/repeated delivery without
+replacement, bounded/text output and private 64 KiB ENOSPC with preserved partial ledger bytes.
+The workspace passed 538 tests with zero failures and 33 explicitly scoped ignores; relevant fixture
+runs passed 29 core and 7 CLI cases. Final schema-consumer checks passed 22 runner and 25 MCP cases.
+Formatting, strict lint, ordinary build and 108 schemas/135 fixtures passed. Independent review
+closed three P2 findings; no material scoped finding remains. Regression checks also corrected
+MCP/runner schema embedding, CLI limit flags and uncertain-result error reporting.
+
+The source manifest covers 2,449 files with SHA-256
+`a4fd2c478c0510709c6961b6e244b7c9523808e5f9e9b897f82263b75102227c`;
+the ordinary CLI SHA-256 is
+`a90cc135646beeb38b8d7641d9a43e2e6577f002838013778876a1c3d2a6b98c`.
+Acceptance prose and evidence were added afterward without changing product bytes. Changes remain
+local and uncommitted. Human approval custody, other change consumers, live deployment/reload,
+cross-host/native-platform acceptance and automatic retention remain separate work. The remaining
+queue below continues to track the broader product requirements.
+
+## WORKBENCH-027 — browser context and historical evidence investigations
+
+**Status:** Accepted for the local Linux scope in
+[browser investigation verification](investigation-ui-verification.md), under the
+[investigation contract](investigation-ui.md). Five independently granted operations now share the
+existing checks/results/history flow: service context, saved evidence, inspection, comparison and
+report previews with explicit downloads.
+
+**Authority:** Opaque core grants pin context identity/digest against the consumed bytes and verify
+store identity on the actual opened descriptor. Generic hosted context/evidence/report execution
+remains refused. Browser inputs cannot supply paths, credentials, selectors or recording authority;
+all operations preserve canonical core receipts, original provenance and retained store bytes.
+
+**Acceptance:** The final ordinary installed binary
+`008ca048619806fa4e3ba07bd1c84cf4272385c10d89541df0a86aa9b0f7f295` passed 15 real browser/API
+acceptance groups with 14 schema-valid receipts, exact Markdown/JSON/result downloads, history,
+keyboard flow, light/dark/mobile screenshots, stale/corrupt/missing/pinned/partial evidence and
+source/store replacement refusal. Source manifest
+`6544125fe54bc42f75cf0c524a8ca072813b305cc9c9be12458fc9683f6f1faf` covers 314 implementation,
+contract, schema, asset and harness files, stable throughout the installed mission.
+
+The workspace passed 550 tests with 33 existing skips. Frontend checks passed 71 tests, types,
+lint and build; formatting, strict workspace clippy, schema synchronization and specification gates
+passed. Independent review found and closed one P2 inherited-object-key rendering defect with two
+red/green regressions. The final label-only backend alignment passed ten UI unit tests; the rebuilt
+assets and final browser mission cover the final changes after the workspace run. Details and
+qualification are retained in the verification record.
+
+**Boundary:** Work remains local and uncommitted. No live service, connector, report publication,
+commit or deployment was authorized. Native Windows, other browsers, MCP investigation grants,
+live data and remote/team surfaces retain their own prerequisites. The remaining queue below
+preserves the broader product scope.
+
+## WORKBENCH-028 — MCP context and historical evidence investigations
+
+**Status:** Accepted for the local Linux stdio scope in
+[MCP investigation verification](investigation-mcp-verification.md), under the
+[investigation contract](investigation-mcp.md). Five explicit offline grants now expose context,
+evidence list/open, comparison and report creation through the existing bounded adapter.
+
+**Authority:** The adapter reuses WORKBENCH-027's opaque core grant and canonical results. Startup
+pairs context source/age and existing private store options with exact operation grants; generic
+command/Grafana authority remains separate. Direct wire fields cannot replace paths, grants,
+recording or limits. Neither a core executor nor a protocol/dependency version changed.
+
+**Acceptance:** Ordinary binary
+`0141935ea3105c2dd5591af968dfec283fb5852e45a49184edf642b5e2765c80` passed 11 installed raw-client
+groups, producing 19 schema-valid MCP results and ten CLI parity receipts. Both accepted protocol
+revisions exercise all five tools. Independent/empty/mixed grants, schema/runtime agreement,
+malformed/null/hidden inputs, partial/corrupt/missing/pinned evidence, source/store replacement,
+unchanged retained bytes and cancellation passed. Source manifest
+`aaf970270c0f2a3017b5c6e105e140d47cc05d2a68a11f9b975796207a22692a` covers 289 scoped files,
+unchanged during acceptance.
+
+Thirty adapter unit tests and 23 CLI tests passed, with one existing native test skipped. Strict CLI
+all-target/all-feature clippy, formatting, ordinary build and schema/specification checks passed.
+Independent static review found no actionable issue against the recorded final hashes. Two
+acceptance-helper corrections are disclosed in the verification record. The preceding milestone's
+manifest confirmed 265 accepted core/UI/frontend/schema files unchanged, so those passed checks
+were reused.
+
+**Boundary and next work:** Changes remain local and uncommitted. No agent-host registration, live
+source, report publication, commit or deployment was performed. MCP diagnostics and saved-query
+catalog grants remain separate increments; actual host compatibility, additional browser workflows,
+native platforms, connectors and the rest of the product queue remain open.
+
+## Owner-authorized publication checkpoint — 2026-10-15
+
+The owner requested committing and pushing the accumulated accepted implementation through
+WORKBENCH-028 on `codex/offline-evidence`. Earlier milestone statements that changes were local
+and uncommitted describe their acceptance-time state; this checkpoint publishes that work and
+its retained evidence together.
+
+Fresh checks on the complete candidate passed 560 workspace Rust tests with 33 existing ignored
+cases, 71 frontend tests, strict workspace all-target/all-feature clippy, formatting, specification
+validation and `git diff --check`. The [publication packet](evidence/publication-2026-10-15/summary.json)
+retains these fresh logs. Installed/browser missions retain their original milestone identities;
+no product source changed for publication. The remaining product queue below remains open.
+
 ## Remaining product queue
 
 The following ledger preserves the complete requested scope. Accepted slices are evidence for
@@ -1492,24 +1937,24 @@ and [verification](sre-workbench/verification.md).
 | CAP-03 Grafana observations | [Dashboard/PromQL/LogQL controlled fixtures](grafana-verification.md) | Selected live compatibility; search/history/alerts/inventory increments |
 | CAP-04 named tasks | [Dashboard hygiene](dashboard-verification.md) and [error budget](error-budget-verification.md) | Additional reviewed task/runtime/platform bindings and compatibility |
 | CAP-05 CLI/discovery | Accepted public CLI, help, JSON, availability and refusal paths in the linked slice records | Discovery/help for each future capability and native host usability |
-| CAP-06 MCP | [Bounded stdio tasks, restricted commands and Grafana](mcp-verification.md) | Actual selected agent-host registration; context/diagnostic and future operation grants |
-| CAP-07 context | [Offline core/CLI source resolver](context-verification.md) | Approved real team source, hosted context grants and live target selection |
+| CAP-06 MCP | [Bounded stdio tasks, restricted commands and Grafana](mcp-verification.md), plus [offline investigations](investigation-mcp-verification.md) | Actual selected agent-host registration; diagnostic, saved-query and future operation grants |
+| CAP-07 context | [Offline core/CLI source resolver](context-verification.md), [pinned browser context](investigation-ui-verification.md) and [MCP context](investigation-mcp-verification.md) | Approved real team source and live target selection |
 | CAP-08 diagnostics | WORKBENCH-010 core/CLI and [WORKBENCH-011 browser](diagnostics-ui-verification.md) qualified native acceptance with frozen correctness/security reviews | Positive system-resolver fixture gap and later live/platform bindings |
-| CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery | Other operation recording policies, hosted views/grants and live/platform acceptance |
-| CAP-10 comparison | [Typed Linux fixture comparison](evidence-comparison-verification.md), compatibility, normalization and explicit missing/partial outcomes | Live datasource/plugin compatibility, other supported evidence kinds, hosted/platform acceptance |
+| CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery | Other operation recording policies, collection/MCP grants and live/platform acceptance |
+| CAP-10 comparison | [Typed Linux fixture comparison](evidence-comparison-verification.md), [browser](investigation-ui-verification.md) and [MCP](investigation-mcp-verification.md), compatibility, normalization and explicit missing/partial outcomes | Live datasource/plugin compatibility, other supported evidence kinds and native-platform acceptance |
 | CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted | Dependent browser/MCP grants and live/platform acceptance |
 | CAP-12 runbooks | [Installed evidence-review workflow](runbooks-verification.md), typed checkpoints, durable revision-bound resume and fresh attempts | Additional reviewed runbooks, hosted/platform acceptance; live observation workflows remain separate |
-| CAP-13 configuration checks | Dashboard task implements a supported offline validator slice | `config.check` contract, declared kind/version/digest and other supported validators |
-| CAP-14 offline investigation | No product evidence replay is accepted | Bundle validation and deterministic no-network analysis with original observation times |
-| CAP-15 reports/handoff | No product report generation is accepted | Evidence-backed Markdown/JSON, missing checks/redaction and reviewable knowledge proposals |
-| CAP-16 toil | No product toil aggregation is accepted | Opt-in metadata, baseline/candidate samples, retention and cost-aware arithmetic |
-| CAP-17 extensions | Compiled built-ins exist | Reviewed external package protocol/inspection/install, independent grants and fourth-capability experiment |
-| CAP-18 jobs | Foreground cancellation and session invocation handles exist | Durable jobs/events, reconnect, duplicate admission and restart reconciliation |
-| CAP-19 remote execution | Cally is a development verification boundary | Product runner identity/protocol, target-side policy and partition/cancellation conformance |
-| CAP-20 multiple targets | No product fleet collection is accepted | Frozen bounded target sets, per-target outcomes and fair deadline/failure control |
-| CAP-21 scheduling | No product scheduling is accepted | Owned persistent read schedules, timezone/overlap/misfire/restart rules |
-| CAP-22 controlled changes | No live write or change grant exists | Named legitimate consumer, accepted executor, exact-plan approval, readback/reconciliation/recovery |
-| CAP-23 browser UI | [Local browser commands/task/results/history](ui-verification.md) and [diagnostics](diagnostics-ui-verification.md) | Context and evidence/compare/report views, then permitted remote/team surfaces |
+| CAP-13 configuration checks | [Dashboard acceptance](config-check-verification.md) and [Prometheus rules](alert-rules-verification.md), kind/validator/digest pins, supported rules, refusals and unchanged originals | Hosted/platform acceptance, live semantics and broader validator coverage |
+| CAP-14 offline investigation | [Offline inspection/replay acceptance](offline-evidence-verification.md), [browser](investigation-ui-verification.md) and [MCP inspection](investigation-mcp-verification.md), integrity, immutable history and no-network/no-command profile | Additional bundle kinds, hosted replay and native-platform profiles |
+| CAP-15 reports/handoff | [Historical report acceptance](reports-verification.md), [browser previews/downloads](investigation-ui-verification.md) and [MCP reports](investigation-mcp-verification.md), format parity, partial data and pending source-bound proposals | Additional report evidence kinds, native-platform support and separately authorized publishing |
+| CAP-16 toil | [Opt-in Linux metadata and summaries](toil-verification.md), capture, effort provenance, costs, retention and missing-data behavior | Representative human/agent benefit measurements; additional task/hosted/platform support |
+| CAP-17 extensions | [Inert package management](extensions-verification.md) and [policy-pinned external protocol/capacity experiment](extension-runtime-verification.md) | Hosted/platform support, artifact exchange, automated recovery, wider schemas and distribution/signing/revocation policy |
+| CAP-18 jobs | [Durable Linux local jobs](jobs-verification.md), real worker/crash/cancel/reconnect, bounded store and immutable results | Additional consumers, hosted/native-platform support, target-specific reconciliation and automated retention/migration |
+| CAP-19 remote execution | [Authenticated Linux runner experiment](runner-verification.md), principal-owned jobs, reconnect/cancel/partition/crash and partial-write fixtures | Native/live cross-host conformance, installed-capability/version compatibility, credential lifecycle and target-specific reconciliation |
+| CAP-20 multiple targets | [Bounded Linux fleet controller](fleet-verification.md), immutable selection, per-target outcomes, fair admission and crash/identity recovery | Additional observational consumers, live inventory, hosted/native-platform support and broader load/soak coverage |
+| CAP-21 scheduling | [Owned Linux observational schedules](schedules-verification.md), pinned timezone rules, explicit workers, overlap/misfire/restart, cancellation and quota evidence | Automated retention/migration, timezone-rule upgrades, additional consumers/notifications, live/hosted/native-platform support and longer operational trials |
+| CAP-22 controlled changes | [Approved private rule-file replacement](changes-verification.md), exact plans, distinct mTLS principals, durable intent, inode readback and separately approved recovery | Human approval custody, additional consumers, live deployment/reload, cross-host/native-platform acceptance and automatic retention |
+| CAP-23 browser UI | [Local browser commands/task/results/history](ui-verification.md), [diagnostics](diagnostics-ui-verification.md) and [context/evidence/compare/report views](investigation-ui-verification.md) | Additional permitted workflow/catalog surfaces and remote/team surfaces |
 | CAP-24 integrations/visual evidence | Diagnostic network/process and Grafana API fixture slices exist | Every planned connector family retains its separate API/identity/limit/acceptance increment; requested operational visual capture remains separate |
 | CAP-25 installation/diagnostics | [Linux development archives, doctor and private install/rollback](packaging-verification.md) | Release/dependency clearance, platform artifacts, online doctor, store migration/uninstall and human/agent pilot |
 
@@ -1521,14 +1966,23 @@ runbooks are now accepted for their recorded Linux fixture scopes.
 
 Installed saved queries and evidence collection supply versioned, verified receipts with explicit
 provenance and partial outcomes. Typed comparison and resumable guided runbooks now use those
-bundles. Next implement offline evidence open/replay, followed by reports and toil metadata. Complete the configuration-check operation alongside these investigation features.
-Extensions/jobs, remote/fleet/scheduling and a named controlled change retain the delivery plan's
-dependency order. Connector work and native/live acceptance keep their own prerequisites; an
-unavailable live source does not block authorized offline implementation.
+bundles. Offline inspection/replay is accepted for the Linux x86-64 fixture scope. Opt-in toil
+metadata and summaries are accepted for their recorded Linux scope. Declared dashboard and pinned
+Prometheus rule checks are also accepted. Extension package management and the policy-pinned external
+protocol/capacity-projection experiment, durable local jobs, authenticated remote runner and bounded
+multiple-target collection and persistent observational schedules are accepted for their recorded
+Linux scopes. The named local configuration-change consumer under WORKBENCH-026 is also accepted,
+including exact-plan approval, target preconditions, readback and reconciliation without replay.
+The local context and evidence/compare/report browser increment under CAP-23 and corresponding
+MCP investigation grants are also accepted. Remaining browser/catalog and diagnostic/query MCP
+grants, additional controlled-change consumers and connector
+families retain their own scopes. Continue in the delivery plan's dependency order. Connector work
+and native/live acceptance keep their own prerequisites; an unavailable live source does not block
+authorized offline implementation.
 
 The remaining product queue includes native Windows and
 restricted-profile namespace-refusal evidence; release/dependency clearance and the AC-36 human/
 agent pilot; actual team source selection (DEC-09); and the remaining investigation features
 and live diagnostic/query acceptance. The context-containing Linux artifact now has its own source/build
 identity and installed mission evidence. Keep the earlier accepted archives and frontend/runtime
-proofs as baselines. Source-aware UI/MCP context grants and live integrations remain separate work.
+proofs as baselines. Real team-source selection and live integrations remain separate work.

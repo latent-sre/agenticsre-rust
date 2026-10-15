@@ -1,0 +1,43 @@
+{
+  "review": "Independent static review; final cancellation-signal schema correction confirmed; no unresolved material findings.",
+  "resolved": [
+    "Task positional-array preflight rejected before store or child",
+    "Populated interrupted toil-data permits bounded cancellation_signal"
+  ],
+  "checks": [
+    {
+      "command": "tools/test-sandbox.sh cargo test --workspace --all-features --locked --offline",
+      "passed": 361,
+      "failed": 0,
+      "ignored": 19,
+      "scope": "Before final task-object guard and two regression tests; exact full output retained in workspace.log"
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo test -p workbench-core toil:: --locked --offline",
+      "passed": 12,
+      "failed": 0,
+      "scope": "Final core source including task-object guard and post-child recording failure/cancellation tests"
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo test -p workbench-cli --test toil --locked --offline",
+      "passed": 5,
+      "failed": 0
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+      "exit": 0
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo build -p workbench-cli --locked --offline",
+      "exit": 0
+    },
+    {
+      "command": ".venv/bin/python -B docs/sre-workbench/verify_specs.py",
+      "exit": 0,
+      "schemas": 56,
+      "positive": 40,
+      "negative": 24
+    }
+  ],
+  "scope": "Linux local synthetic inputs; source and binary identities in verification.json. No productivity, live or native Windows claim."
+}

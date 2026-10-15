@@ -15,7 +15,7 @@ use std::{
 };
 use time::{OffsetDateTime, format_description::well_known::Rfc3339};
 
-fn active(control: &RunControl, deadline: Instant) -> Result<(), &'static str> {
+pub(super) fn active(control: &RunControl, deadline: Instant) -> Result<(), &'static str> {
     if control.signal.load(Ordering::Relaxed) != 0 {
         return Err("cancelled");
     }
@@ -75,7 +75,7 @@ fn hidden(value: &Value) -> bool {
         _ => false,
     }
 }
-fn window(payload: &Value) -> Result<Window, &'static str> {
+pub(super) fn window(payload: &Value) -> Result<Window, &'static str> {
     let parse = |key: &str| {
         OffsetDateTime::parse(
             payload["window"][key].as_str().ok_or("invalid_window")?,
@@ -91,6 +91,10 @@ fn window(payload: &Value) -> Result<Window, &'static str> {
     }
     Ok(Window { from_ns, to_ns })
 }
+pub(crate) fn validate_input(value: &Value) -> Result<(), Problem> {
+    input(value).map(|_| ())
+}
+
 fn input(value: &Value) -> Result<Normalization, Problem> {
     let bad = || {
         Problem::invalid(
@@ -118,7 +122,7 @@ fn source(bundle: &VerifiedBundle) -> Value {
     let p = &bundle.manifest.payload;
     json!({"bundle":bundle.reference,"window":p["window"],"capture":p["capture"],"manifest_state":bundle.manifest.state,"started_at":p["started_at"],"finalized_at":p["finalized_at"]})
 }
-fn identities(before: &Value, after: &Value) -> Vec<&'static str> {
+pub(super) fn identities(before: &Value, after: &Value) -> Vec<&'static str> {
     let mut reasons = Vec::new();
     for p in [before, after] {
         if p["producer"]["id"] != "save" || p["producer"]["spec_version"] != "0.1" {
@@ -159,12 +163,16 @@ fn revisions(before: &Value, after: &Value) -> Vec<&'static str> {
     .filter(|path| before.pointer(path) != after.pointer(path))
     .collect()
 }
-struct Observation {
-    data: Value,
-    partial: bool,
-    interval: u64,
+pub(super) struct Observation {
+    pub data: Value,
+    pub partial: bool,
+    pub interval: u64,
 }
-fn observation(bundle: &VerifiedBundle, id: &str, kind: &str) -> Result<Observation, &'static str> {
+pub(super) fn observation(
+    bundle: &VerifiedBundle,
+    id: &str,
+    kind: &str,
+) -> Result<Observation, &'static str> {
     let p = &bundle.manifest.payload;
     let step = p["steps"]
         .as_array()
@@ -307,7 +315,7 @@ pub(crate) fn run(
         return;
     }
     let deadline = start + Duration::from_millis(request.limits.timeout_ms);
-    let mut check = || active(control, deadline);
+    let check = || active(control, deadline);
     if let Err(code) = check() {
         stop(result, code, control);
         return;
@@ -346,8 +354,27 @@ pub(crate) fn run(
         }
         bundles.push(bundle);
     }
-    let before = &bundles[0];
-    let after = &bundles[1];
+    analyze_bundles(
+        request,
+        control,
+        deadline,
+        result,
+        &bundles[0],
+        &bundles[1],
+        normalization,
+    );
+}
+
+pub(super) fn analyze_bundles(
+    request: &Request,
+    control: &RunControl,
+    deadline: Instant,
+    result: &mut OperationResult,
+    before: &VerifiedBundle,
+    after: &VerifiedBundle,
+    normalization: Normalization,
+) {
+    let mut check = || active(control, deadline);
     let bp = &before.manifest.payload;
     let ap = &after.manifest.payload;
     result.sources = [before, after].into_iter().map(|bundle| {

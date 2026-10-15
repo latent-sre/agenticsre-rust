@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:job-status-input:0.1",
+  "title": "job-status-input",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "pattern": "^job-[0-9]+-[0-9a-f]+-[0-9a-f]+$",
+      "maxLength": 96
+    }
+  },
+  "required": [
+    "job_id"
+  ],
+  "additionalProperties": false
+}

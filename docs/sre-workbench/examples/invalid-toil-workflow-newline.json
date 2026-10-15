@@ -1,0 +1,11 @@
+{
+  "workflow": "dashboard-review\n",
+  "from": "2026-10-01T00:00:00Z",
+  "to": "2026-10-11T00:00:00Z",
+  "costs": {
+    "build_ms": 0,
+    "maintenance_ms": 0,
+    "incident_ms": 0,
+    "measurement": "measured"
+  }
+}

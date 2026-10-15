@@ -46,6 +46,9 @@ mod tests {
                 read_policy: None,
                 diagnostics_config: Some(path.clone()),
                 targets: vec!["fixture-web".into(), "fixture-other".into()],
+                context_source: None,
+                context_max_age_days: None,
+                evidence_store: None,
             })
             .unwrap_or_else(|error| panic!("grant: {error}"));
             Self { path, grants }
@@ -232,6 +235,8 @@ struct Limits {
     max_output_bytes: usize,
     #[serde(default)]
     concurrency: Option<u64>,
+    #[serde(default)]
+    max_items: Option<u64>,
 }
 
 #[derive(Deserialize)]
@@ -278,6 +283,13 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
     }
     let had_root = value.get("root_id").is_some();
     let had_target = value.get("target_id").is_some();
+    let had_max_items = value["limits"].get("max_items").is_some();
+    if value["limits"].get("max_items") == Some(&Value::Null) {
+        return Err(ApiError::invalid(
+            "limits.max_items",
+            "max_items must be omitted or an integer from 1 to 1000.",
+        ));
+    }
     let had_concurrency = value["limits"].get("concurrency").is_some();
     if value["limits"].get("concurrency") == Some(&Value::Null) {
         return Err(ApiError::invalid(
@@ -313,10 +325,49 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
     if !diagnostic && (had_target || had_concurrency) {
         return Err(ApiError::invalid(
             "request",
-            "Commands and numerical tasks do not accept target_id or diagnostic concurrency controls.",
+            "Only diagnostics accept target_id or concurrency controls.",
         ));
     }
-    let (inputs, label) = if diagnostic {
+    let investigation = grants
+        .investigation_grant
+        .as_ref()
+        .is_some_and(|grant| grant.allows(&input.operation));
+    if had_max_items
+        && !matches!(
+            input.operation.as_str(),
+            "evidence.open" | "evidence.compare"
+        )
+    {
+        return Err(ApiError::invalid(
+            "limits.max_items",
+            "Only evidence.open and evidence.compare accept max_items.",
+        ));
+    }
+    let (inputs, label) = if investigation {
+        if had_root || had_target || had_concurrency {
+            return Err(ApiError::invalid(
+                "request",
+                "Offline investigations do not accept root_id, target_id or concurrency, including null.",
+            ));
+        }
+        let normalized =
+            workbench_core::normalize_investigation_input(&input.operation, &input.inputs)
+                .map_err(|_| {
+                    ApiError::invalid(
+                        "inputs",
+                        "Input does not satisfy the selected offline investigation schema.",
+                    )
+                })?;
+        let label = match input.operation.as_str() {
+            "context.resolve" => "Service context",
+            "evidence.list" => "Saved evidence",
+            "evidence.open" => "Inspect evidence",
+            "evidence.compare" => "Compare evidence",
+            "report.create" => "Evidence report",
+            _ => unreachable!("core investigation grant operation"),
+        };
+        (normalized, label)
+    } else if diagnostic {
         if had_root {
             return Err(ApiError::invalid(
                 "root_id",
@@ -430,6 +481,14 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
     request.operation_version = input.operation_version;
     request.limits.timeout_ms = input.limits.timeout_ms;
     request.limits.max_output_bytes = input.limits.max_output_bytes;
+    request.limits.max_items = if matches!(
+        input.operation.as_str(),
+        "evidence.open" | "evidence.compare"
+    ) {
+        Some(input.limits.max_items.unwrap_or(100))
+    } else {
+        None
+    };
     if diagnostic {
         request.target.kind = "connection".into();
         request.target.id = input.target_id.clone().expect("admitted diagnostic target");
@@ -438,7 +497,7 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
     request.validate().map_err(|_| {
         ApiError::invalid(
             "limits",
-            "Timeout must be 1–300000ms and output 1024–2097152 bytes.",
+            "Timeout must be 1–300000ms, output 1024–2097152 bytes and max_items 1–1000 when supported.",
         )
     })?;
     if diagnostic {

@@ -67,3 +67,14 @@ compatibility, omissions and source limitations; it does not establish full tele
 
 The `runbook-*` schemas describe installed guided review inputs and bounded checkpoint summaries.
 Recording and revision/source identity admission remain runtime checks.
+
+The `change-{plan,status,approve,apply,reconcile}-input` schemas describe the named
+Prometheus-rule file replacement consumer over the existing authenticated runner transport.
+[Canonical plans](change-plan.schema.json) retain file and directory identities, exact original
+and proposed bytes, validator receipts, expiry, executor identity and readback criteria.
+[Change data](change-data.schema.json) reports the original attempt and verified or uncertain
+effects. [Runner startup configuration](runner-server-config.schema.json) supplies private ledger,
+target paths, validator binding and distinct requester/approver grants. Input selectors never
+grant authority. Planning, approving, applying and reconciling require `record=always`;
+status supports `record=never`. Digest equality, canonical base64 pad bits, decoded byte limits,
+authorization, expiry and inode readback require runtime validation.

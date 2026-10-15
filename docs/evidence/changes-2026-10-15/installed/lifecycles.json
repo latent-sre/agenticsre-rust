@@ -1,0 +1,75 @@
+[
+  {
+    "after": {
+      "ctime_ns": 1792042618259681878,
+      "dev": 63,
+      "gid": 1000,
+      "ino": 67,
+      "mode": 33152,
+      "mtime_ns": 1792042618259412738,
+      "nlink": 1,
+      "sha256": "13718542d394bcbdf5e6305f38e4e419ff789d58db9dc37ed6c3418f16cabd92",
+      "size": 354,
+      "uid": 1000
+    },
+    "before": {
+      "ctime_ns": 1792042611729525552,
+      "dev": 63,
+      "gid": 1000,
+      "ino": 31,
+      "mode": 33152,
+      "mtime_ns": 1792042611729525552,
+      "nlink": 1,
+      "sha256": "5606574c679d20bf218bdf08581ab84bfa9337e14a46f43a54b6e711e12c3ed0",
+      "size": 353,
+      "uid": 1000
+    },
+    "case": "concurrent-identical-apply",
+    "one_prepared_inode": true,
+    "repeated_delivery_preserves_attempt": true
+  },
+  {
+    "bounded_execution": "partial",
+    "case": "bounded-and-human-status",
+    "human_digest_and_state_visible": true,
+    "plan_omitted_with_digest_preserved": true
+  },
+  {
+    "before": {
+      "ctime_ns": 1792042618259681878,
+      "dev": 63,
+      "gid": 1000,
+      "ino": 67,
+      "mode": 33152,
+      "mtime_ns": 1792042618259412738,
+      "nlink": 1,
+      "sha256": "13718542d394bcbdf5e6305f38e4e419ff789d58db9dc37ed6c3418f16cabd92",
+      "size": 354,
+      "uid": 1000
+    },
+    "case": "real-sigkill-apply-restart",
+    "caught_state": "dispatching",
+    "caught_target": {
+      "ctime_ns": 1792042618259681878,
+      "dev": 63,
+      "gid": 1000,
+      "ino": 67,
+      "mode": 33152,
+      "mtime_ns": 1792042618259412738,
+      "nlink": 1,
+      "sha256": "13718542d394bcbdf5e6305f38e4e419ff789d58db9dc37ed6c3418f16cabd92",
+      "size": 354,
+      "uid": 1000
+    },
+    "client_execution": "unknown",
+    "reconciled_state": "not_applied",
+    "restart_and_reconcile_did_not_replace": true
+  },
+  {
+    "case": "private-64kib-enospc",
+    "observed_errno": 28,
+    "partial_artifacts_preserved": true,
+    "restart_refused": true,
+    "target_unchanged": true
+  }
+]

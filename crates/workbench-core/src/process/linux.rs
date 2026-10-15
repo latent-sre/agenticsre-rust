@@ -1,8 +1,8 @@
-use super::{CHILD_ENV, PreparedProcess};
+use super::{CHILD_ENV, Dialogue, PreparedProcess};
 use crate::RunControl;
 use crate::result::{OperationResult, Status, timestamp};
 use serde_json::json;
-use std::io::{self, Read};
+use std::io::{self, Read, Write};
 use std::os::fd::{AsRawFd, RawFd};
 use std::os::unix::process::{CommandExt, ExitStatusExt};
 use std::process::{Command, ExitStatus, Stdio};
@@ -39,7 +39,7 @@ impl<R: Read + AsRawFd> Capture<R> {
         self.pipe.as_ref().map_or(-1, AsRawFd::as_raw_fd)
     }
 
-    fn drain(&mut self) {
+    fn drain(&mut self, mut observe: impl FnMut(&[u8])) {
         let Some(pipe) = self.pipe.as_mut() else {
             return;
         };
@@ -52,6 +52,7 @@ impl<R: Read + AsRawFd> Capture<R> {
                     break;
                 }
                 Ok(count) => {
+                    observe(&buffer[..count]);
                     self.observed = self.observed.saturating_add(count as u64);
                     let keep = count.min(self.limit.saturating_sub(self.bytes.len()));
                     self.bytes.extend_from_slice(&buffer[..keep]);
@@ -123,8 +124,13 @@ fn consumer_closed(fd: Option<RawFd>) -> bool {
     }
 }
 
-fn wait_for_pipes(stdout: RawFd, stderr: RawFd) {
+fn wait_for_pipes(stdout: RawFd, stderr: RawFd, stdin: RawFd) {
     let mut polls = [
+        libc::pollfd {
+            fd: stdin,
+            events: libc::POLLOUT,
+            revents: 0,
+        },
         libc::pollfd {
             fd: stdout,
             events: libc::POLLIN,
@@ -136,7 +142,7 @@ fn wait_for_pipes(stdout: RawFd, stderr: RawFd) {
             revents: 0,
         },
     ];
-    // SAFETY: polls contains exactly two initialized elements; negative fds are ignored.
+    // SAFETY: polls contains initialized elements; negative fds are ignored.
     unsafe {
         libc::poll(polls.as_mut_ptr(), polls.len() as libc::nfds_t, POLL_MS);
     }
@@ -163,6 +169,7 @@ enum Stop {
     ConsumerClosed,
     Descendants,
     Io,
+    Protocol,
 }
 
 impl Stop {
@@ -173,11 +180,28 @@ impl Stop {
             Self::ConsumerClosed => "result_consumer_closed",
             Self::Descendants => "descendants_after_leader_exit",
             Self::Io => "supervisor_io_error",
+            Self::Protocol => "extension_protocol_error",
         }
     }
 }
 
 pub(crate) fn run(prepared: PreparedProcess, result: &mut OperationResult, control: &RunControl) {
+    run_inner(prepared, result, control, None);
+}
+pub(crate) fn run_dialogue(
+    prepared: PreparedProcess,
+    result: &mut OperationResult,
+    control: &RunControl,
+    dialogue: &mut dyn Dialogue,
+) {
+    run_inner(prepared, result, control, Some(dialogue));
+}
+fn run_inner(
+    prepared: PreparedProcess,
+    result: &mut OperationResult,
+    control: &RunControl,
+    mut dialogue: Option<&mut dyn Dialogue>,
+) {
     let begun = Instant::now();
     let deadline = begun + Duration::from_millis(result.effective_limits.timeout_ms);
     let mut command = Command::new(&prepared.executable);
@@ -186,7 +210,11 @@ pub(crate) fn run(prepared: PreparedProcess, result: &mut OperationResult, contr
         .current_dir(&prepared.cwd)
         .env_clear()
         .envs(CHILD_ENV)
-        .stdin(Stdio::null())
+        .stdin(if dialogue.is_some() {
+            Stdio::piped()
+        } else {
+            Stdio::null()
+        })
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .process_group(0);
@@ -220,11 +248,28 @@ pub(crate) fn run(prepared: PreparedProcess, result: &mut OperationResult, contr
     result.coverage.limitations.push("Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check.".into());
     let group = child.id() as i32;
     let limit = result.effective_limits.max_output_bytes;
-    let stdout = Capture::new(child.stdout.take().expect("piped stdout"), limit);
-    let stderr = Capture::new(child.stderr.take().expect("piped stderr"), limit);
+    let stdout = Capture::new(
+        child.stdout.take().expect("piped stdout"),
+        if dialogue.is_some() {
+            256 * 1024
+        } else {
+            limit
+        },
+    );
+    let stderr = Capture::new(
+        child.stderr.take().expect("piped stderr"),
+        if dialogue.is_some() { 64 * 1024 } else { limit },
+    );
+    let mut stdin = child.stdin.take();
+    let stdin_setup_failed = stdin
+        .as_ref()
+        .is_some_and(|pipe| nonblocking(pipe.as_raw_fd()).is_err());
+    if stdin_setup_failed {
+        stdin = None;
+    }
     // If either fcntl fails, we still own the child and must terminate it without doing a
     // potentially blocking read. The common loop below handles this failure as a stop.
-    let setup_failed = stdout.is_err() || stderr.is_err();
+    let setup_failed = stdout.is_err() || stderr.is_err() || stdin_setup_failed;
     let mut stdout = stdout.ok();
     let mut stderr = stderr.ok();
     let mut status: Option<ExitStatus> = None;
@@ -237,12 +282,45 @@ pub(crate) fn run(prepared: PreparedProcess, result: &mut OperationResult, contr
     let mut wait_failed = false;
     let mut absent = false;
     let mut cancellation_signal = 0;
+    let mut stdin_failed = false;
+    let mut stdout_eof_notified = false;
     loop {
+        if reason.is_none()
+            && let (Some(pipe), Some(dialogue)) = (stdin.as_mut(), dialogue.as_deref_mut())
+        {
+            let pending = dialogue.pending_write();
+            if !pending.is_empty() && dialogue.error().is_none() {
+                match pipe.write(&pending[..pending.len().min(8192)]) {
+                    Ok(0) => dialogue.input_closed(),
+                    Ok(count) => dialogue.written(count),
+                    Err(e)
+                        if matches!(
+                            e.kind(),
+                            io::ErrorKind::WouldBlock | io::ErrorKind::Interrupted
+                        ) => {}
+                    Err(e) if e.kind() == io::ErrorKind::BrokenPipe => dialogue.input_closed(),
+                    Err(_) => stdin_failed = true,
+                }
+            }
+            if dialogue.input_finished() {
+                stdin = None;
+            }
+        }
         if let Some(stdout) = &mut stdout {
-            stdout.drain();
+            stdout.drain(|bytes| {
+                if let Some(dialogue) = dialogue.as_deref_mut() {
+                    dialogue.receive(bytes);
+                }
+            });
+            if stdout.pipe.is_none() && !stdout_eof_notified {
+                if let Some(dialogue) = dialogue.as_deref_mut() {
+                    dialogue.stdout_closed();
+                }
+                stdout_eof_notified = true;
+            }
         }
         if let Some(stderr) = &mut stderr {
-            stderr.drain();
+            stderr.drain(|_| {});
         }
         if status.is_none() {
             match child.try_wait() {
@@ -256,6 +334,7 @@ pub(crate) fn run(prepared: PreparedProcess, result: &mut OperationResult, contr
         let pipes_closed = stdout.as_ref().is_none_or(|p| p.pipe.is_none())
             && stderr.as_ref().is_none_or(|p| p.pipe.is_none());
         let io_failed = setup_failed
+            || stdin_failed
             || wait_failed
             || stdout.as_ref().is_some_and(|p| p.failed)
             || stderr.as_ref().is_some_and(|p| p.failed);
@@ -275,6 +354,11 @@ pub(crate) fn run(prepared: PreparedProcess, result: &mut OperationResult, contr
                 Some(Stop::Io)
             } else if now >= deadline {
                 Some(Stop::Timeout)
+            } else if dialogue
+                .as_deref()
+                .is_some_and(|dialogue| dialogue.error().is_some())
+            {
+                Some(Stop::Protocol)
             } else if status.is_some() && absent && pipes_closed {
                 break;
             } else if status.is_some() && !absent {
@@ -283,6 +367,7 @@ pub(crate) fn run(prepared: PreparedProcess, result: &mut OperationResult, contr
                 None
             };
             if reason.is_some() {
+                stdin = None;
                 if !absent {
                     term_sent = true;
                     signal_failed |= signal_group(group, libc::SIGTERM).is_err();
@@ -308,6 +393,14 @@ pub(crate) fn run(prepared: PreparedProcess, result: &mut OperationResult, contr
         wait_for_pipes(
             stdout.as_ref().map_or(-1, Capture::fd),
             stderr.as_ref().map_or(-1, Capture::fd),
+            if dialogue
+                .as_deref()
+                .is_some_and(|dialogue| !dialogue.pending_write().is_empty())
+            {
+                stdin.as_ref().map_or(-1, AsRawFd::as_raw_fd)
+            } else {
+                -1
+            },
         );
     }
     // Only nonblocking final observations: escaped inherited pipes and an uninterruptible
@@ -359,6 +452,10 @@ pub(crate) fn run(prepared: PreparedProcess, result: &mut OperationResult, contr
                 "Process supervision or output capture failed.",
             );
             Status::Unknown
+        }
+        Some(Stop::Protocol) => {
+            result.error("extension_protocol_error", "The peer violated the bounded extension protocol; owned process-group cleanup was attempted.");
+            Status::Failed
         }
         _ if result.execution.child_exit_code != Some(0) => {
             result.error(

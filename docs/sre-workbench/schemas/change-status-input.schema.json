@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:change-status-input:0.1",
+  "title": "change-status-input",
+  "type": "object",
+  "properties": {
+    "requester": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$"
+    }
+  },
+  "required": [
+    "requester",
+    "request_id"
+  ],
+  "additionalProperties": false
+}

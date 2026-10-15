@@ -1,0 +1,61 @@
+[
+  {
+    "case": "lost-ack",
+    "job_id": "job-24-18ddad2655a7a2b9-3e",
+    "status_only_reconciliation": true
+  },
+  {
+    "case": "server-stopped",
+    "elapsed_ms": 21,
+    "exit_code": 143,
+    "generation": 1
+  },
+  {
+    "case": "server-stopped",
+    "elapsed_ms": 13,
+    "exit_code": 143,
+    "generation": 2
+  },
+  {
+    "case": "server-stopped",
+    "elapsed_ms": 6,
+    "exit_code": 143,
+    "generation": 3
+  },
+  {
+    "case": "remote-cancellation",
+    "child_pid": 104,
+    "intent_separate_from_terminal": true
+  },
+  {
+    "case": "disconnected-finite-runtime",
+    "cleanup_confirmed": true,
+    "principal": "principal.b",
+    "runtime_ms": 2000,
+    "terminal": "timed_out"
+  },
+  {
+    "case": "server-killed",
+    "elapsed_ms": 1,
+    "exit_code": -9,
+    "generation": 4
+  },
+  {
+    "case": "server-sigkill-restart",
+    "no_automatic_replay": true,
+    "original_fixture_left_alive": true,
+    "state": "recovery_required"
+  },
+  {
+    "case": "server-stopped",
+    "elapsed_ms": 8,
+    "exit_code": 143,
+    "generation": 5
+  },
+  {
+    "case": "remote-private-64kib-enospc",
+    "files": 24,
+    "partial_store_preserved": true,
+    "uncertainty_disclosed": true
+  }
+]

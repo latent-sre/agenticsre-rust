@@ -402,6 +402,7 @@ mod linux {
                 executable: PathBuf::from(&policy.executables.bwrap.path),
                 cwd: PathBuf::from("/"),
                 descriptor_launch: Some(DescriptorLaunch {
+                    argv0: "bwrap",
                     executable: wrapper.file,
                     inherited: files,
                 }),

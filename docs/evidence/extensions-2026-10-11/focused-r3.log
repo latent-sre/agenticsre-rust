@@ -1,0 +1,43 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 3.98s
+     Running tests/extensions.rs (target/debug/deps/extensions-a5836bc630691f38)
+
+running 5 tests
+test installation_refuses_replacement_and_staging_without_destroying_data ... ok
+test inspection_is_inert_and_installation_never_enables_capability ... ok
+test linked_packages_and_payload_mismatch_are_refused ... ok
+test output_omission_and_structured_call_are_explicit ... ok
+test package_pin_and_unknown_metadata_refuse_before_store_creation ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/extensions.rs (target/debug/deps/extensions-5f6be0a0b96b37e9)
+
+running 8 tests
+test duplicate_json_keys_and_noncanonical_base64_are_rejected ... ok
+test inspect_install_and_list_remain_inert_digest_bound_and_private ... ok
+test conflict_corruption_staging_unknown_files_and_partial_layout_never_get_repaired ... ok
+test omitted_descriptions_preserve_installation_and_inventory_receipts ... ok
+test malicious_manifest_fields_schema_extensions_and_executable_mismatch_are_rejected ... ok
+test pins_inputs_hosted_and_cancelled_requests_refuse_before_store_creation ... FAILED
+test source_links_directories_fifo_and_oversize_files_are_refused ... ok
+test package_count_quota_and_effective_output_budget_preserve_inventory ... ok
+
+failures:
+
+---- pins_inputs_hosted_and_cancelled_requests_refuse_before_store_creation stdout ----
+
+thread 'pins_inputs_hosted_and_cancelled_requests_refuse_before_store_creation' (164) panicked at crates/workbench-core/tests/extensions.rs:169:9:
+assertion failed: has(&result, "invalid_extension_input")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    pins_inputs_hosted_and_cancelled_requests_refuse_before_store_creation
+
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.88s
+
+error: test failed, to rerun pass `-p workbench-core --test extensions`

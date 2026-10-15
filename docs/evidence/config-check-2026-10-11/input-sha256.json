@@ -1,0 +1,18 @@
+{
+  "capture-limited": "7bb71e476b0e3036ac873be2cc74dfaaf8a6fa37f8e0134947c7b9ecf605305e",
+  "clean": "7fbb0c0430df5d8b99daec5b20e0ee518ea117bc6d5e1f2e0fded75eea8b2419",
+  "duplicate-key": "1189ab64f2d460c8f117db84a2b44c4cbe5465fc9ac59920ae1e087a5b46c498",
+  "empty": "100d7579ca83e45b53d1b04f0a291f5d64978df280d6d7f0d2a43d2c4fd9097b",
+  "findings": "814da34f020caba5c186b11ac5d97a6a583644e7c5e82670e6acff984d9395ae",
+  "findings-exit": "814da34f020caba5c186b11ac5d97a6a583644e7c5e82670e6acff984d9395ae",
+  "input-pin-mismatch": "814da34f020caba5c186b11ac5d97a6a583644e7c5e82670e6acff984d9395ae",
+  "invalid-json": "1faaf4d6892e2c5fce7078889bdc6389fc0d707e3ea159f8f4ffc62500b714f0",
+  "invalid-utf8": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89",
+  "oversized": "e7d99e4db1392275f200e288c860f9780a935c945e2d55f98c1b68a1f9f3fb5c",
+  "partial-fields": "99c9809283a8cd01fae935c405fe7a5ed1cf5a491cf3a6a6171aa8dc157315df",
+  "pinned": "7fbb0c0430df5d8b99daec5b20e0ee518ea117bc6d5e1f2e0fded75eea8b2419",
+  "supported-envelope": "d6be56f42cbf30616b39a2d6d95f015eed4d0a6fd3f89806ba49569bbcc31020",
+  "unsupported-schema": "6707aeb492b6e42d0c231513f0e5cdbe45a0f7bfd499f605b391dcf360f6d518",
+  "unsupported-v2": "7407e55822513758269f3bd11ad5c6d888a56208356676d77750c3ae232b8696",
+  "validator-pin-mismatch": "7fbb0c0430df5d8b99daec5b20e0ee518ea117bc6d5e1f2e0fded75eea8b2419"
+}

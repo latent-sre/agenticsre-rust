@@ -1,0 +1,13 @@
+{
+  "protocol": 1,
+  "method": "change.approve",
+  "inputs": {
+    "requester": "requester.fixture",
+    "request_id": "request.fixture",
+    "plan_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "expected": {
+    "principal": "approver.fixture",
+    "policy_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

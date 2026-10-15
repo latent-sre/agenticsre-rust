@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:config-check-input:0.1",
+  "title": "config-check-input",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "enum": [
+        "grafana-dashboard",
+        "prometheus-rules"
+      ]
+    },
+    "validator": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "enum": [
+            "dashboard-hygiene",
+            "promtool"
+          ]
+        },
+        "version": {
+          "const": 1
+        },
+        "expected_binding_sha256": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        }
+      },
+      "required": [
+        "id",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "file": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^/",
+      "not": {
+        "pattern": "[\\u0000-\\u001f\\u007f]"
+      }
+    },
+    "expected_input_sha256": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+    }
+  },
+  "required": [
+    "kind",
+    "validator",
+    "file"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "grafana-dashboard"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "validator": {
+            "properties": {
+              "id": {
+                "const": "dashboard-hygiene"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "validator": {
+            "properties": {
+              "id": {
+                "const": "promtool"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:change-data:0.1",
+  "title": "change-data",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "action": {
+      "enum": [
+        "plan",
+        "status",
+        "reconcile",
+        "approve",
+        "apply"
+      ]
+    },
+    "runner": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "server_certificate_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            },
+            "policy_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "id",
+            "server_certificate_sha256",
+            "policy_sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "principal": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "client_certificate_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "id",
+            "client_certificate_sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "requester": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_id": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "target": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "plan": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:change-plan:0.1"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "plan_sha256": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "approval_id": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "state": {
+      "enum": [
+        "not_found",
+        "planned",
+        "approved",
+        "dispatching",
+        "verified",
+        "not_applied",
+        "unknown",
+        "expired"
+      ]
+    },
+    "effect_outcome": {
+      "enum": [
+        "not_attempted",
+        "verified",
+        "unknown"
+      ]
+    },
+    "remote_error": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "format_version",
+    "action",
+    "runner",
+    "principal",
+    "requester",
+    "request_id",
+    "target",
+    "plan",
+    "plan_sha256",
+    "approval_id",
+    "state",
+    "effect_outcome",
+    "remote_error"
+  ],
+  "additionalProperties": false
+}

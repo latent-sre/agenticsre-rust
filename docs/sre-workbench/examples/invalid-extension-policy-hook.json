@@ -1,0 +1,6 @@
+{
+  "policy_version": 1,
+  "execution_profile": "operator-reviewed-v1",
+  "packages": [],
+  "command": "/bin/sh"
+}

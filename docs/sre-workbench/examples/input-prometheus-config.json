@@ -1,0 +1,8 @@
+{
+  "kind": "prometheus-rules",
+  "validator": {
+    "id": "promtool",
+    "version": 1
+  },
+  "file": "/absolute/rules.yml"
+}

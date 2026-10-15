@@ -5,6 +5,11 @@ records acceptance; current execution status belongs in [the roadmap](roadmap.md
 covers local fixture work, not an installed host
 integration or a grant to access production systems.
 
+The [offline investigation extension](investigation-mcp.md) adds five independent grants for
+context resolution, evidence listing/inspection/comparison and report creation. It reuses the
+same bounded transport and the core's pinned offline authority. The initial five tools below
+remain unchanged; no tools are enabled by default.
+
 ## Mission
 
 A controlled MCP client discovers only its launcher-granted operations, runs a permitted command,
@@ -97,6 +102,12 @@ selected configuration target IDs. The five wire tools are:
 | `workbench_task_run` | `id=error-budget`, `version=1`, numerical `input`, optional `limits` |
 | `workbench_grafana_dashboard_get` | `target_id`, `uid`, optional `limits` |
 | `workbench_grafana_query` | `target_id`, `datasource`, `kind`, `from`, `to`, `expr`, optional `limits` |
+
+The additional tools are `workbench_context_resolve`, `workbench_evidence_list`,
+`workbench_evidence_open`, `workbench_compare` and `workbench_report_create`. Their direct core
+arguments, startup pairing and narrower offline limits are specified in the
+[investigation contract](investigation-mcp.md#tool-contracts). Context requires an explicit source
+and max-age policy; the four evidence/report operations require an existing private store.
 
 Tool objects reject unknown fields. Limits use existing core names, defaults and operation-specific
 ceilings; normalized requests must still fit 64 KiB/depth 16. Schemas embed the authoritative core

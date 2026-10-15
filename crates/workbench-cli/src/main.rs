@@ -9,6 +9,7 @@ use workbench_core::{
     EvidenceStoreOptions, OperatorContext, RunControl, execute_with_context,
     request::{Problem, Request, parse_json, parse_request},
     result::OperationResult,
+    serve_runner, work_job, work_schedule,
 };
 
 #[derive(Parser)]
@@ -24,6 +25,57 @@ struct Cli {
         long,
         global = true,
         value_name = "DIRECTORY",
+        help = "Explicit private schedule definitions and occurrence ledger"
+    )]
+    schedule_state_dir: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "FILE",
+        help = "Explicit private finite fleet inventory and runner profile references"
+    )]
+    fleet_inventory: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "DIRECTORY",
+        help = "Explicit private fleet admission and reconciliation store"
+    )]
+    fleet_state_dir: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "FILE",
+        help = "Explicit private remote-runner controller profile and certificate references"
+    )]
+    runner_config: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "DIRECTORY",
+        help = "Explicit private durable-job store; submission never starts a worker"
+    )]
+    job_state_dir: Option<PathBuf>,
+    #[arg(long, global = true, requires = "job_state_dir", value_parser = clap::value_parser!(u64).range(1..=3_600_000), help = "Operator startup ceiling for job runtime in milliseconds; at most one hour")]
+    job_max_runtime_ms: Option<u64>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "DIRECTORY",
+        help = "Explicit private extension package store; installing a package never enables execution"
+    )]
+    extension_state_dir: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "FILE",
+        help = "Explicit private operator-reviewed extension policy; grants exact installed package hashes and capabilities"
+    )]
+    extension_policy: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "DIRECTORY",
         help = "Explicit absolute private evidence store; no default or wire-selected path"
     )]
     state_dir: Option<PathBuf>,
@@ -34,6 +86,13 @@ struct Cli {
         help = "Explicit private guided-runbook journal, separate from the evidence store"
     )]
     runbook_state_dir: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "DIRECTORY",
+        help = "Explicit private opt-in toil metadata store; separate from evidence and runbook journals"
+    )]
+    toil_state_dir: Option<PathBuf>,
     #[arg(long, global = true, requires = "state_dir", value_parser = clap::value_parser!(u64).range(1..=1_073_741_824), help = "Evidence store byte cap, at most 1GiB; defaults to 1GiB")]
     store_max_bytes: Option<u64>,
     #[arg(long, global = true, requires = "state_dir", value_parser = clap::value_parser!(u16).range(1..=3650), help = "Unprotected sealed evidence retention in days, 1..3650; defaults to 7")]
@@ -72,6 +131,13 @@ struct Cli {
     #[arg(
         long,
         global = true,
+        value_name = "PATH",
+        help = "Explicit official promtool 3.15.0 Linux amd64 executable for prometheus-rules checks; bytes are pinned before dispatch"
+    )]
+    promtool: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
         help = "Emit exactly one bounded terminal JSON result"
     )]
     json: bool,
@@ -79,7 +145,7 @@ struct Cli {
         long,
         global = true,
         default_value = "never",
-        help = "Evidence collection and runbook execution require auto or always; read operations accept never"
+        help = "Evidence collection, runbook execution, toil, job, fleet and schedule writes require auto or always; read operations accept never"
     )]
     record: String,
     #[command(subcommand)]
@@ -88,6 +154,51 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
+    /// Plan, approve, apply and reconcile an explicitly granted rule-file replacement
+    Change {
+        #[command(subcommand)]
+        command: ChangeCommands,
+    },
+    /// Manage persistent observational schedules and explicitly process due work
+    Schedule {
+        #[command(subcommand)]
+        command: ScheduleCommands,
+    },
+    /// Collect bounded observations across a frozen target set and reconcile original admissions
+    Fleet {
+        #[command(subcommand)]
+        command: FleetCommands,
+    },
+    /// Connect to an authenticated remote runner or explicitly serve configured local grants
+    Runner {
+        #[command(subcommand)]
+        command: RunnerCommands,
+    },
+    /// Submit durable local work, inspect events, request cancellation or run an explicit worker
+    Job {
+        #[command(subcommand)]
+        command: JobCommands,
+    },
+    /// Inspect or install inert extension packages without executing or enabling them
+    Extension {
+        #[command(subcommand)]
+        command: ExtensionCommands,
+    },
+    /// Check declared configuration bytes with an installed offline validator
+    Config {
+        #[command(subcommand)]
+        command: ConfigCommands,
+    },
+    /// Record opted-in workflow metadata and summarize effort, latency and automation costs
+    Toil {
+        #[command(subcommand)]
+        command: ToilCommands,
+    },
+    /// Render a handoff from verified historical evidence and pending knowledge proposals
+    Report {
+        #[command(subcommand)]
+        command: ReportCommands,
+    },
     /// Run reviewed observations with typed branches and durable human checkpoints
     Runbook {
         #[command(subcommand)]
@@ -241,6 +352,534 @@ enum RunbookCommands {
 }
 
 #[derive(Subcommand)]
+enum ConfigCommands {
+    /// Check a declared kind and validator; never establishes live deployment correctness
+    Check {
+        #[arg(
+            long,
+            value_name = "FILE",
+            help = "Strict JSON with kind, validator identity and absolute input file path"
+        )]
+        input: PathBuf,
+        #[arg(long, default_value_t = 30_000)]
+        timeout_ms: u64,
+        #[arg(long, default_value_t = 1_048_576)]
+        max_output_bytes: usize,
+        #[arg(
+            long,
+            help = "Return exit 1 for a complete check with findings; preserve execution status"
+        )]
+        fail_on_findings: bool,
+    },
+}
+
+#[derive(Subcommand)]
+enum ToilCommands {
+    /// Explicitly enable or disable collection and set retention for this private store
+    Configure {
+        #[arg(long, action = clap::ArgAction::Set, required = true)]
+        enabled: bool,
+        #[arg(long, default_value_t = 30, value_parser = clap::value_parser!(u16).range(1..=3650))]
+        keep_days: u16,
+    },
+    /// Record bounded operator-reported metadata; no raw command, query or person fields
+    Record(ToilInput),
+    /// Run one installed task and retain only measured runtime metadata
+    Capture(ToilInput),
+    /// Attach operator-reported effort to an existing sample without duplicating it
+    Annotate(ToilInput),
+    /// Compare explicitly selected baseline/candidate samples and declared costs
+    Summary(ToilInput),
+    /// Delete one generated sample ID
+    Delete { id: String },
+    /// Remove expired metadata according to the configured retention policy
+    Prune,
+}
+
+#[derive(Args)]
+struct FleetLimits {
+    #[arg(long, default_value_t = 30_000, value_parser = clap::value_parser!(u64).range(1..=300_000))]
+    timeout_ms: u64,
+    #[arg(long, default_value_t = 1_048_576)]
+    max_output_bytes: usize,
+}
+
+#[derive(Args)]
+struct ScheduleRevision {
+    id: String,
+    #[arg(long)]
+    expected_revision: u64,
+    #[command(flatten)]
+    limits: FleetLimits,
+}
+
+#[derive(Subcommand)]
+enum ScheduleCommands {
+    /// Persist an owned definition and freeze its target/profile identities
+    Create {
+        #[arg(long, value_name = "FILE")]
+        input: PathBuf,
+        #[command(flatten)]
+        limits: FleetLimits,
+    },
+    /// Replace an exact revision, increment generation and preserve unresolved work
+    Update {
+        #[arg(long, value_name = "FILE")]
+        input: PathBuf,
+        #[command(flatten)]
+        limits: FleetLimits,
+    },
+    /// Stop future cadence admissions without cancelling active occurrences
+    Pause(ScheduleRevision),
+    /// Queue a deduplicated manual occurrence; explicit work performs dispatch
+    RunNow {
+        #[command(flatten)]
+        revision: ScheduleRevision,
+        #[arg(long)]
+        request_id: String,
+    },
+    /// Explicitly request cancellation of already admitted work
+    CancelActive(ScheduleRevision),
+    /// Read one definition and its retained occurrence outcomes
+    Status {
+        id: String,
+        #[command(flatten)]
+        limits: FleetLimits,
+    },
+    /// List owned definitions and their current schedule state
+    List {
+        #[command(flatten)]
+        limits: FleetLimits,
+    },
+    /// Preview due instants in local time and UTC under the pinned timezone rules
+    Preview {
+        id: String,
+        #[arg(long, default_value_t = 8, value_parser = clap::value_parser!(u64).range(1..=32))]
+        count: u64,
+        #[command(flatten)]
+        limits: FleetLimits,
+    },
+    /// Make one bounded admission/reconciliation pass; starts no background service
+    Work {
+        #[arg(long, default_value_t = 1, value_parser = clap::value_parser!(u64).range(1..=16))]
+        max_occurrences: u64,
+        #[command(flatten)]
+        limits: FleetLimits,
+    },
+}
+
+fn schedule_request(command: ScheduleCommands) -> Result<Request, Problem> {
+    let (operation, inputs, limits) = match command {
+        ScheduleCommands::Create { input, limits } => {
+            ("schedule.create", parse_json(input_file(input)?)?, limits)
+        }
+        ScheduleCommands::Update { input, limits } => {
+            ("schedule.update", parse_json(input_file(input)?)?, limits)
+        }
+        ScheduleCommands::Pause(args) => (
+            "schedule.pause",
+            json!({"id":args.id,"expected_revision":args.expected_revision}),
+            args.limits,
+        ),
+        ScheduleCommands::RunNow {
+            revision,
+            request_id,
+        } => (
+            "schedule.run-now",
+            json!({"id":revision.id,"expected_revision":revision.expected_revision,"request_id":request_id}),
+            revision.limits,
+        ),
+        ScheduleCommands::CancelActive(args) => (
+            "schedule.cancel-active",
+            json!({"id":args.id,"expected_revision":args.expected_revision}),
+            args.limits,
+        ),
+        ScheduleCommands::Status { id, limits } => ("schedule.status", json!({"id":id}), limits),
+        ScheduleCommands::List { limits } => ("schedule.list", json!({}), limits),
+        ScheduleCommands::Preview { id, count, limits } => {
+            ("schedule.preview", json!({"id":id,"count":count}), limits)
+        }
+        ScheduleCommands::Work {
+            max_occurrences,
+            limits,
+        } => (
+            "schedule.work",
+            json!({"max_occurrences":max_occurrences}),
+            limits,
+        ),
+    };
+    let mut request = Request::new(operation, inputs);
+    request.limits.timeout_ms = limits.timeout_ms;
+    request.limits.max_output_bytes = limits.max_output_bytes;
+    Ok(request)
+}
+
+#[derive(Args)]
+struct FleetLookup {
+    request_id: String,
+    #[command(flatten)]
+    limits: FleetLimits,
+}
+
+#[derive(Subcommand)]
+enum FleetCommands {
+    /// Freeze selected targets and collect one explicitly identified observation request
+    Collect {
+        #[arg(long, value_name = "FILE")]
+        input: PathBuf,
+        #[command(flatten)]
+        limits: FleetLimits,
+    },
+    /// Read the retained parent and every selected target's outcome
+    Status(FleetLookup),
+    /// Reconcile original remote request IDs without submitting again
+    Resume(FleetLookup),
+    /// Stop new admissions and request cancellation of original remote work
+    Cancel(FleetLookup),
+}
+
+fn fleet_request(command: FleetCommands) -> Result<Request, Problem> {
+    let (operation, inputs, limits) = match command {
+        FleetCommands::Collect { input, limits } => {
+            ("fleet.collect", parse_json(input_file(input)?)?, limits)
+        }
+        FleetCommands::Status(args) => (
+            "fleet.status",
+            json!({"request_id":args.request_id}),
+            args.limits,
+        ),
+        FleetCommands::Resume(args) => (
+            "fleet.resume",
+            json!({"request_id":args.request_id}),
+            args.limits,
+        ),
+        FleetCommands::Cancel(args) => (
+            "fleet.cancel",
+            json!({"request_id":args.request_id}),
+            args.limits,
+        ),
+    };
+    let mut request = Request::new(operation, inputs);
+    request.limits.timeout_ms = limits.timeout_ms;
+    request.limits.max_output_bytes = limits.max_output_bytes;
+    Ok(request)
+}
+
+#[derive(Args)]
+struct ChangeArgs {
+    #[arg(long, value_name = "ID")]
+    runner: String,
+    #[arg(long, value_name = "FILE")]
+    input: PathBuf,
+    #[command(flatten)]
+    limits: FleetLimits,
+}
+
+#[derive(Subcommand)]
+enum ChangeCommands {
+    /// Validate and retain an immutable plan without replacing the target
+    Plan(ChangeArgs),
+    /// Read the retained plan and original attempt without dispatching a change
+    Status(ChangeArgs),
+    /// Approve an exact plan digest using a distinct configured principal
+    Approve(ChangeArgs),
+    /// Consume the retained approval once and verify the replacement by readback
+    Apply(ChangeArgs),
+    /// Observe the original attempt without repeating replacement
+    Reconcile(ChangeArgs),
+}
+
+fn change_request(command: ChangeCommands) -> Result<Request, Problem> {
+    let (operation, args) = match command {
+        ChangeCommands::Plan(args) => ("change.plan", args),
+        ChangeCommands::Status(args) => ("change.status", args),
+        ChangeCommands::Approve(args) => ("change.approve", args),
+        ChangeCommands::Apply(args) => ("change.apply", args),
+        ChangeCommands::Reconcile(args) => ("change.reconcile", args),
+    };
+    let mut request = Request::new(operation, parse_json(input_file(args.input)?)?);
+    request.target.kind = "runner".into();
+    request.target.id = args.runner;
+    request.limits.timeout_ms = args.limits.timeout_ms;
+    request.limits.max_output_bytes = args.limits.max_output_bytes;
+    Ok(request)
+}
+
+#[derive(Subcommand)]
+enum RunnerCommands {
+    /// Read the authenticated runner's protocol, grants and effective limits
+    Handshake { runner_id: String },
+    /// Submit a typed request with an explicit stable request ID; never retry implicitly
+    Submit {
+        runner_id: String,
+        #[arg(long, value_name = "FILE")]
+        input: PathBuf,
+    },
+    /// Query the authenticated caller's original request ID, including after a lost reply
+    Status {
+        runner_id: String,
+        request_id: String,
+    },
+    /// Reconnect to events for the authenticated caller's request
+    Watch {
+        runner_id: String,
+        request_id: String,
+        #[arg(long, default_value_t = 0)]
+        after_sequence: u64,
+    },
+    /// Request target-side cancellation; acknowledgment does not prove termination
+    Cancel {
+        runner_id: String,
+        request_id: String,
+    },
+    /// Start the explicit TLS runner using only its configured identities and target grants
+    Serve {
+        #[arg(long, value_name = "FILE")]
+        server_config: PathBuf,
+    },
+}
+
+fn runner_request(command: RunnerCommands) -> Result<Request, Problem> {
+    let (operation, runner_id, inputs) = match command {
+        RunnerCommands::Handshake { runner_id } => ("runner.handshake", runner_id, json!({})),
+        RunnerCommands::Submit { runner_id, input } => {
+            ("runner.submit", runner_id, parse_json(input_file(input)?)?)
+        }
+        RunnerCommands::Status {
+            runner_id,
+            request_id,
+        } => ("runner.status", runner_id, json!({"request_id":request_id})),
+        RunnerCommands::Watch {
+            runner_id,
+            request_id,
+            after_sequence,
+        } => (
+            "runner.watch",
+            runner_id,
+            json!({"request_id":request_id,"after_sequence":after_sequence}),
+        ),
+        RunnerCommands::Cancel {
+            runner_id,
+            request_id,
+        } => ("runner.cancel", runner_id, json!({"request_id":request_id})),
+        RunnerCommands::Serve { .. } => unreachable!("runner server handled before normalization"),
+    };
+    let mut request = Request::new(operation, inputs);
+    request.target.kind = "runner".into();
+    request.target.id = runner_id;
+    Ok(request)
+}
+
+fn runner_server_conflicts(cli: &Cli) -> bool {
+    !matches!(cli.record.as_str(), "auto" | "always")
+        || cli.fleet_inventory.is_some()
+        || cli.fleet_state_dir.is_some()
+        || cli.schedule_state_dir.is_some()
+        || cli.runner_config.is_some()
+        || cli.job_state_dir.is_some()
+        || cli.job_max_runtime_ms.is_some()
+        || cli.extension_state_dir.is_some()
+        || cli.extension_policy.is_some()
+        || cli.state_dir.is_some()
+        || cli.runbook_state_dir.is_some()
+        || cli.toil_state_dir.is_some()
+        || cli.store_max_bytes.is_some()
+        || cli.retention_days.is_some()
+        || cli.diagnostics_config.is_some()
+        || cli.context_source.is_some()
+        || cli.context_max_age_days.is_some()
+        || cli.read_policy.is_some()
+        || cli.config.is_some()
+        || cli.promtool.is_some()
+}
+
+#[derive(Subcommand)]
+enum JobCommands {
+    /// Persist one operation request; reuse its request ID to deduplicate admission
+    Submit {
+        #[arg(long, value_name = "FILE")]
+        request: PathBuf,
+        #[arg(long, default_value_t = 30_000, value_parser = clap::value_parser!(u64).range(1..=3_600_000))]
+        max_runtime_ms: u64,
+        #[arg(long, default_value_t = 32, value_parser = clap::value_parser!(u16).range(1..=256))]
+        retain_events: u16,
+    },
+    /// Read the durable state and any committed terminal result
+    Status { job_id: String },
+    /// Read retained events strictly after the supplied sequence; repeat to reconnect
+    Watch {
+        job_id: String,
+        #[arg(long, default_value_t = 0)]
+        after_sequence: u64,
+    },
+    /// Persist cancellation intent; completion requires observed termination
+    Cancel { job_id: String },
+    /// Explicitly run one queued job; interrupted dispatch is never replayed
+    Work { job_id: String },
+}
+
+fn job_request(command: JobCommands) -> Result<Request, Problem> {
+    let (operation, inputs) = match command {
+        JobCommands::Submit {
+            request,
+            max_runtime_ms,
+            retain_events,
+        } => (
+            "job.submit",
+            json!({
+                "request": parse_request(input_file(request)?)?,
+                "max_runtime_ms": max_runtime_ms,
+                "retain_events": retain_events,
+            }),
+        ),
+        JobCommands::Status { job_id } => ("job.status", json!({"job_id": job_id})),
+        JobCommands::Watch {
+            job_id,
+            after_sequence,
+        } => (
+            "job.watch",
+            json!({"job_id": job_id, "after_sequence": after_sequence}),
+        ),
+        JobCommands::Cancel { job_id } => ("job.cancel", json!({"job_id": job_id})),
+        JobCommands::Work { job_id } => ("job.work", json!({"job_id": job_id})),
+    };
+    Ok(Request::new(operation, inputs))
+}
+
+#[derive(Subcommand)]
+enum ExtensionCommands {
+    /// Invoke a separately authorized installed external capability
+    Run {
+        operation: String,
+        #[arg(long, value_name = "FILE")]
+        input: PathBuf,
+        #[arg(long, default_value_t = 1)]
+        operation_version: u64,
+        #[command(flatten)]
+        limits: ExtensionLimits,
+    },
+    /// Verify and describe a local package without creating a store
+    Inspect {
+        package: PathBuf,
+        #[arg(long)]
+        expected_package_sha256: Option<String>,
+        #[command(flatten)]
+        limits: ExtensionLimits,
+    },
+    /// Install exactly the selected package bytes; execution remains disabled
+    Install {
+        package: PathBuf,
+        #[arg(long)]
+        expected_package_sha256: String,
+        #[command(flatten)]
+        limits: ExtensionLimits,
+    },
+    /// Verify and list installed packages without running them
+    List {
+        #[command(flatten)]
+        limits: ExtensionLimits,
+    },
+}
+
+#[derive(Args)]
+struct ExtensionLimits {
+    #[arg(long, default_value_t = 30_000)]
+    timeout_ms: u64,
+    #[arg(long, default_value_t = 1_048_576)]
+    max_output_bytes: usize,
+}
+
+fn extension_request(command: ExtensionCommands) -> Result<Request, Problem> {
+    let (operation, inputs, limits) = match command {
+        ExtensionCommands::Run {
+            operation,
+            input,
+            operation_version,
+            limits,
+        } => {
+            if !operation.starts_with("ext.") {
+                return Err(Problem::invalid(
+                    "invalid_extension_operation",
+                    "Extension run requires a namespaced ext.* capability.",
+                ));
+            }
+            let mut request = Request::new(&operation, parse_json(input_file(input)?)?);
+            request.operation_version = operation_version;
+            request.limits.timeout_ms = limits.timeout_ms;
+            request.limits.max_output_bytes = limits.max_output_bytes;
+            return Ok(request);
+        }
+        ExtensionCommands::Inspect {
+            package,
+            expected_package_sha256,
+            limits,
+        } => {
+            let mut input = json!({"package":package});
+            if let Some(pin) = expected_package_sha256 {
+                input["expected_package_sha256"] = json!(pin);
+            }
+            ("extension.inspect", input, limits)
+        }
+        ExtensionCommands::Install {
+            package,
+            expected_package_sha256,
+            limits,
+        } => (
+            "extension.install",
+            json!({"package":package,"expected_package_sha256":expected_package_sha256}),
+            limits,
+        ),
+        ExtensionCommands::List { limits } => ("extension.list", json!({}), limits),
+    };
+    let mut request = Request::new(operation, inputs);
+    request.limits.timeout_ms = limits.timeout_ms;
+    request.limits.max_output_bytes = limits.max_output_bytes;
+    Ok(request)
+}
+
+#[derive(Args)]
+struct ToilInput {
+    #[arg(
+        long,
+        value_name = "FILE",
+        help = "Strict typed metadata, capture or summary selection JSON"
+    )]
+    input: PathBuf,
+    #[arg(long, default_value_t = 30_000)]
+    timeout_ms: u64,
+    #[arg(long, default_value_t = 1_048_576)]
+    max_output_bytes: usize,
+}
+
+fn toil_request(operation: &str, options: ToilInput) -> Result<Request, Problem> {
+    let mut request = Request::new(operation, parse_json(input_file(options.input)?)?);
+    request.limits.timeout_ms = options.timeout_ms;
+    request.limits.max_output_bytes = options.max_output_bytes;
+    Ok(request)
+}
+
+#[derive(Subcommand)]
+enum ReportCommands {
+    /// Create Markdown or JSON from explicit bundle references without live access
+    Create {
+        #[arg(
+            long,
+            value_name = "FILE",
+            help = "Strict JSON selection: bundles, format, optional title and pending proposals"
+        )]
+        input: PathBuf,
+        #[arg(long, default_value_t = 30_000)]
+        timeout_ms: u64,
+        #[arg(
+            long,
+            default_value_t = 1_048_576,
+            help = "Rendered document byte budget, at most 1MiB effective"
+        )]
+        max_output_bytes: usize,
+    },
+}
+
+#[derive(Subcommand)]
 enum EvidenceCommands {
     /// Inspect installed packs without accessing a store, credential or network
     Packs {
@@ -282,6 +921,10 @@ enum EvidenceCommands {
         timeout_ms: u64,
     },
     List,
+    /// Inspect verified historical receipts with network and command execution disabled
+    Open(EvidenceOffline),
+    /// Analyze retained observations without contacting their original sources
+    Replay(EvidenceOffline),
     Show(EvidenceReference),
     Protect(EvidenceReference),
     Unprotect(EvidenceReference),
@@ -314,6 +957,30 @@ struct EvidenceReference {
     expected_manifest_sha256: Option<String>,
 }
 
+#[derive(Args)]
+struct EvidenceOffline {
+    #[command(flatten)]
+    reference: EvidenceReference,
+    #[arg(long, default_value_t = 100, value_parser = clap::value_parser!(u64).range(1..=1000))]
+    max_items: u64,
+    #[arg(
+        long,
+        default_value_t = 1_048_576,
+        help = "Encoded retained-detail budget; at most 1MiB is effective"
+    )]
+    max_output_bytes: usize,
+    #[arg(long, default_value_t = 30_000)]
+    timeout_ms: u64,
+}
+
+fn evidence_offline(operation: &str, options: EvidenceOffline) -> Request {
+    let mut request = evidence_reference(operation, options.reference);
+    request.limits.max_items = Some(options.max_items);
+    request.limits.max_output_bytes = options.max_output_bytes;
+    request.limits.timeout_ms = options.timeout_ms;
+    request
+}
+
 fn evidence_reference(operation: &str, reference: EvidenceReference) -> Request {
     let mut inputs = json!({"id":reference.id});
     if let Some(digest) = reference.expected_manifest_sha256 {
@@ -331,7 +998,7 @@ enum McpCommands {
         #[arg(
             long,
             value_name = "OPERATION",
-            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get or grafana.query; empty grants expose no tools"
+            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get, grafana.query, context.resolve, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no tools"
         )]
         allow: Vec<String>,
         #[arg(
@@ -561,6 +1228,50 @@ fn parse_duration(value: &str) -> Result<u64, &'static str> {
 fn normalize(cli: Cli) -> Result<Request, Problem> {
     let restricted = cli.read_policy.is_some();
     let mut request = match cli.command {
+        Commands::Change { command } => change_request(command)?,
+        Commands::Fleet { command } => fleet_request(command)?,
+        Commands::Schedule { command } => schedule_request(command)?,
+        Commands::Runner { command } => runner_request(command)?,
+        Commands::Job { command } => job_request(command)?,
+        Commands::Extension { command } => extension_request(command)?,
+        Commands::Config {
+            command:
+                ConfigCommands::Check {
+                    input,
+                    timeout_ms,
+                    max_output_bytes,
+                    ..
+                },
+        } => {
+            let mut request = Request::new("config.check", parse_json(input_file(input)?)?);
+            request.limits.timeout_ms = timeout_ms;
+            request.limits.max_output_bytes = max_output_bytes;
+            request
+        }
+        Commands::Toil { command } => match command {
+            ToilCommands::Configure { enabled, keep_days } => Request::new(
+                "toil.configure",
+                json!({"enabled":enabled,"retention_days":keep_days}),
+            ),
+            ToilCommands::Record(options) => toil_request("toil.record", options)?,
+            ToilCommands::Capture(options) => toil_request("toil.capture", options)?,
+            ToilCommands::Annotate(options) => toil_request("toil.annotate", options)?,
+            ToilCommands::Summary(options) => toil_request("toil.summary", options)?,
+            ToilCommands::Delete { id } => Request::new("toil.delete", json!({"id":id})),
+            ToilCommands::Prune => Request::new("toil.prune", json!({})),
+        },
+        Commands::Report { command } => match command {
+            ReportCommands::Create {
+                input,
+                timeout_ms,
+                max_output_bytes,
+            } => {
+                let mut request = Request::new("report.create", parse_json(input_file(input)?)?);
+                request.limits.timeout_ms = timeout_ms;
+                request.limits.max_output_bytes = max_output_bytes;
+                request
+            }
+        },
         Commands::Runbook { command } => match command {
             RunbookCommands::List => Request::new("runbook.list", json!({})),
             RunbookCommands::Show { id, version } => {
@@ -647,6 +1358,8 @@ fn normalize(cli: Cli) -> Result<Request, Problem> {
                 request
             }
             EvidenceCommands::List => Request::new("evidence.list", json!({})),
+            EvidenceCommands::Open(options) => evidence_offline("evidence.open", options),
+            EvidenceCommands::Replay(options) => evidence_offline("evidence.replay", options),
             EvidenceCommands::Show(reference) => evidence_reference("evidence.show", reference),
             EvidenceCommands::Protect(reference) => {
                 evidence_reference("evidence.protect", reference)
@@ -940,13 +1653,28 @@ fn run() -> u8 {
     {
         if cli.json
             || cli.record != "never"
-            || cli.state_dir.is_some()
             || cli.runbook_state_dir.is_some()
+            || cli.toil_state_dir.is_some()
+            || cli.extension_state_dir.is_some()
+            || cli.extension_policy.is_some()
+            || cli.job_state_dir.is_some()
+            || cli.runner_config.is_some()
+            || cli.fleet_inventory.is_some()
+            || cli.fleet_state_dir.is_some()
+            || cli.schedule_state_dir.is_some()
             || cli.store_max_bytes.is_some()
             || cli.retention_days.is_some()
-            || cli.context_source.is_some()
-            || cli.context_max_age_days.is_some()
+            || ((cli.context_source.is_some() || cli.context_max_age_days.is_some())
+                && !allow.iter().any(|operation| operation == "context.resolve"))
+            || (cli.state_dir.is_some()
+                && !allow.iter().any(|operation| {
+                    matches!(
+                        operation.as_str(),
+                        "evidence.list" | "evidence.open" | "evidence.compare" | "report.create"
+                    )
+                }))
             || cli.diagnostics_config.is_some()
+            || cli.promtool.is_some()
         {
             workbench_mcp::invalid_startup();
             return 2;
@@ -957,6 +1685,9 @@ fn run() -> u8 {
             targets: target.clone(),
             read_policy: cli.read_policy.clone(),
             config: cli.config.clone(),
+            context_source: cli.context_source.clone(),
+            context_max_age_days: cli.context_max_age_days,
+            evidence_store: cli.state_dir.clone().map(EvidenceStoreOptions::new),
         });
     }
     if let Commands::Ui {
@@ -971,18 +1702,33 @@ fn run() -> u8 {
     {
         if cli.json
             || cli.record != "never"
-            || cli.state_dir.is_some()
             || cli.runbook_state_dir.is_some()
+            || cli.toil_state_dir.is_some()
+            || cli.extension_state_dir.is_some()
+            || cli.extension_policy.is_some()
+            || cli.job_state_dir.is_some()
+            || cli.runner_config.is_some()
+            || cli.fleet_inventory.is_some()
+            || cli.fleet_state_dir.is_some()
+            || cli.schedule_state_dir.is_some()
             || cli.store_max_bytes.is_some()
             || cli.retention_days.is_some()
             || cli.config.is_some()
-            || cli.context_source.is_some()
-            || cli.context_max_age_days.is_some()
+            || cli.promtool.is_some()
+            || ((cli.context_source.is_some() || cli.context_max_age_days.is_some())
+                && !allow.iter().any(|operation| operation == "context.resolve"))
+            || (cli.state_dir.is_some()
+                && !allow.iter().any(|operation| {
+                    matches!(
+                        operation.as_str(),
+                        "evidence.list" | "evidence.open" | "evidence.compare" | "report.create"
+                    )
+                }))
             || (cli.diagnostics_config.is_some()
                 && !allow.iter().any(|operation| operation == "diagnostics.run"))
         {
             eprintln!(
-                "ui serve does not accept --json, --config, context source, evidence store or runbook journal options, ungranted diagnostic configuration or recording modes other than never"
+                "ui serve does not accept --json, --config, --promtool, runbook/toil/extension store options, extension policy, ungranted source/store/diagnostic configuration or recording modes other than never"
             );
             return 2;
         }
@@ -993,6 +1739,9 @@ fn run() -> u8 {
             read_policy: cli.read_policy.clone(),
             diagnostics_config: cli.diagnostics_config.clone(),
             targets: target.clone(),
+            context_source: cli.context_source.clone(),
+            context_max_age_days: cli.context_max_age_days,
+            evidence_store: cli.state_dir.clone().map(EvidenceStoreOptions::new),
         }) {
             Ok(code) => code,
             Err(message) => {
@@ -1003,6 +1752,15 @@ fn run() -> u8 {
     }
     let json = cli.json;
     let context = OperatorContext {
+        fleet_inventory_path: cli.fleet_inventory.clone(),
+        fleet_state_dir: cli.fleet_state_dir.clone(),
+        schedule_state_dir: cli.schedule_state_dir.clone(),
+        runner_config_path: cli.runner_config.clone(),
+        job_state_dir: cli.job_state_dir.clone(),
+        job_max_runtime_ms: cli.job_max_runtime_ms,
+        extension_state_dir: cli.extension_state_dir.clone(),
+        extension_policy_path: cli.extension_policy.clone(),
+        toil_state_dir: cli.toil_state_dir.clone(),
         runbook_state_dir: cli.runbook_state_dir.clone(),
         evidence_store: cli.state_dir.clone().map(|directory| {
             let mut options = EvidenceStoreOptions::new(directory);
@@ -1018,6 +1776,7 @@ fn run() -> u8 {
         context_source_path: cli.context_source.clone(),
         context_max_age_days: cli.context_max_age_days,
         config_path: cli.config.clone(),
+        promtool_path: cli.promtool.clone(),
         read_policy_path: cli.read_policy.clone(),
         read_profile_launcher: cli
             .read_policy
@@ -1028,6 +1787,11 @@ fn run() -> u8 {
         &cli.command,
         Commands::Task {
             command: TaskCommands::Run {
+                fail_on_findings: true,
+                ..
+            }
+        } | Commands::Config {
+            command: ConfigCommands::Check {
                 fail_on_findings: true,
                 ..
             }
@@ -1063,7 +1827,80 @@ fn run() -> u8 {
             }
         }
     }
+    if let Commands::Runner {
+        command: RunnerCommands::Serve { server_config },
+    } = &cli.command
+    {
+        if runner_server_conflicts(&cli) {
+            return deliver(
+                OperationResult::rejection(
+                    &Request::new("runner.serve", json!({})),
+                    Problem::invalid(
+                        "invalid_runner_startup",
+                        "Runner serving requires recording consent and its server configuration only; other operator startup overrides are not inherited.",
+                    ),
+                ),
+                json,
+                &control,
+            );
+        }
+        let served = serve_runner(server_config, &control, |ready| {
+            let bytes = if json {
+                let mut bytes = serde_json::to_vec(&ready).expect("runner readiness");
+                bytes.push(b'\n');
+                bytes
+            } else {
+                format!(
+                    "Runner {} listening at {}\n",
+                    ready["runner_id"].as_str().unwrap_or("unknown"),
+                    ready["address"].as_str().unwrap_or("unknown")
+                )
+                .into_bytes()
+            };
+            output::write(&bytes, &control.signal).map_err(|_| ())
+        });
+        return match served {
+            Ok(()) => match control.signal.load(Ordering::Relaxed) {
+                2 => 130,
+                15 => 143,
+                _ => 0,
+            },
+            Err(error) => {
+                let mut result = OperationResult::rejection(
+                    &Request::new("runner.serve", json!({})),
+                    Problem::invalid(
+                        error.code,
+                        "The configured runner could not start or continue; inspect its explicit configuration and retained job state.",
+                    ),
+                );
+                result.record_mode = if cli.record == "always" {
+                    "always"
+                } else {
+                    "auto"
+                };
+                if error.effects {
+                    result.execution.status = workbench_core::result::Status::Unknown;
+                    result.effect_outcome = "unknown".into();
+                }
+                deliver(result, json, &control)
+            }
+        };
+    }
+    let explicit_job_worker = matches!(
+        &cli.command,
+        Commands::Job {
+            command: JobCommands::Work { .. }
+        }
+    );
+    let explicit_schedule_worker = matches!(
+        &cli.command,
+        Commands::Schedule {
+            command: ScheduleCommands::Work { .. }
+        }
+    );
     let result = match normalize(cli) {
+        Ok(request) if explicit_job_worker => work_job(request, &control, &context),
+        Ok(request) if explicit_schedule_worker => work_schedule(request, &control, &context),
         Ok(request) => execute_with_context(request, &control, &context),
         Err(problem) => {
             OperationResult::rejection(&Request::new("request.invalid", json!({})), problem)

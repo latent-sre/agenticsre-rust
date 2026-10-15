@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:schedule-status-input:0.1",
+  "title": "schedule.status input",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation",
+      "maxLength": 64
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "additionalProperties": false
+}

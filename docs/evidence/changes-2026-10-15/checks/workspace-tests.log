@@ -1,0 +1,264 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 13.52s
+     Running unittests src/lib.rs (target/debug/deps/capacity_projector-dc972ad71f2e97f8)
+
+running 7 tests
+test tests::durable_job_runtime_accepts_one_hour_and_rejects_out_of_range_limits ... ok
+test tests::frames_require_utf8_and_lf_and_have_a_byte_bound ... ok
+test tests::positional_arrays_cannot_substitute_for_protocol_objects ... ok
+test tests::missing_unknown_duplicate_and_noninteger_fields_are_rejected ... ok
+test tests::projection_uses_integer_floor_and_discloses_nonfinite_and_exhausted_cases ... ok
+test tests::transcript_calculates_and_correlates_exactly_one_terminal ... ok
+test tests::unsupported_versions_and_inconsistent_controls_cannot_succeed ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/capacity_projector-a734a9587ed3081a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/extension-peer-fixture.rs (target/debug/deps/extension_peer_fixture-7a885030262d9af7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests tests/support/profile_fixture.rs (target/debug/deps/profile_fixture-37506a15060d202c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests tests/support/runner_fixture.rs (target/debug/deps/runner_fixture-a8f29482bd4d07c8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/save-5eb2bd2a09d64d41)
+
+running 1 test
+test delivery_tests::a_late_delivery_signal_preserves_the_sealed_collection_payload ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/changes.rs (target/debug/deps/changes-9727b081c621ac5f)
+
+running 6 tests
+test every_change_operation_is_discoverable_offline ... ok
+test mtls_changed_original_refuses_approved_dispatch ... ignored, Requires the SHA-256-verified official promtool fixture via WORKBENCH_TEST_PROMTOOL
+test mtls_exact_approval_replacement_readback_and_replay_preserve_original_attempt ... ignored, Requires the SHA-256-verified official promtool fixture via WORKBENCH_TEST_PROMTOOL
+test change_writes_require_explicit_durable_recording ... ok
+test public_change_commands_require_explicit_runner_authority ... ok
+test wire_authority_labels_and_noncanonical_proposals_are_refused ... ok
+
+test result: ok. 4 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/comparison.rs (target/debug/deps/comparison-e13af53160857d11)
+
+running 9 tests
+test byte_budget_preserves_one_global_detail_prefix_and_counts_empty_arrays ... ok
+test datasource_and_service_identity_changes_are_explicitly_incompatible ... ok
+test malformed_references_and_policy_are_denied_before_store_access ... ok
+test item_and_byte_limits_disclose_omissions_and_manifest_pins_are_checked ... ok
+test offset_policy_aligns_equal_duration_windows_and_preserves_original_times ... ok
+test parameter_identity_changes_refuse_observation_diff ... ok
+test partial_collection_keeps_missing_check_visible ... ok
+test public_comparison_counts_changes_and_preserves_store_without_external_access ... ok
+test typed_frame_failures_and_nulls_never_become_complete_comparisons ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+
+     Running tests/config_check.rs (target/debug/deps/config_check-9dff0f9615a70123)
+
+running 6 tests
+test findings_change_optional_cli_exit_without_health_or_execution_claims ... ok
+test declared_check_binds_exact_bytes_validator_rules_and_unsupported_scope ... ok
+test malformed_contract_and_partial_findings_cannot_pass_by_omission ... ok
+test mismatched_pins_are_explicit_and_validator_pin_precedes_file_access ... ok
+test invalid_and_unsupported_models_retain_actual_input_identity_without_clean_result ... ok
+test only_declared_supported_envelopes_can_reach_complete_validation ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running tests/context.rs (target/debug/deps/context-e6ef61b2435ed3e5)
+
+running 10 tests
+test absent_optional_fields_differ_from_declared_empty_and_text_is_only_data ... ok
+test malformed_unknown_null_and_environment_mismatch_are_refused ... ok
+test review_r1_positional_source_objects_are_refused ... ok
+test review_r1_unsupported_timestamp_lexical_forms_are_refused ... ok
+test selectors_refuse_ambiguity_and_missing_without_first_match ... ok
+test review_r1_valid_utc_lexical_forms_preserve_original_review_text ... ok
+test source_descriptor_refuses_fifo_and_every_symlink_component ... ok
+test stale_retired_future_and_required_omissions_never_become_usable ... ok
+test startup_pairing_and_adapter_refusal_precede_any_listener_or_server ... ok
+test unique_cli_and_call_preserve_source_and_dependency_directions ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/diagnostics.rs (target/debug/deps/diagnostics-3f9ae272471612da)
+
+running 7 tests
+test configuration_and_ca_symlinks_are_refused_at_every_component ... ok
+test configuration_and_ca_bounds_refuse_nonregular_and_oversized_sources ... ok
+test declaration_cardinality_and_ca_syntax_are_admitted_before_network_work ... ok
+test configuration_objects_nulls_duplicates_and_hostile_destinations_cannot_dispatch ... ok
+test discovery_does_not_open_the_configured_fifo_or_probe_a_process ... ok
+test missing_alias_and_hosted_startup_grants_do_not_fall_back ... ok
+test wire_bindings_and_positional_pack_objects_are_refused_before_configuration_io ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/error_budget.rs (target/debug/deps/error_budget-a680db06543ae11d)
+
+running 8 tests
+test array_encodings_cannot_replace_object_inputs_or_envelopes ... ok
+test high_precision_finite_inputs_survive_the_real_child_protocol ... ok
+test nonfinite_or_duplicate_json_and_derived_range_errors_never_become_calculations ... ok
+test pure_python_regressions_run_in_the_isolated_supported_runtime ... ok
+test small_complete_reply_fits_the_minimum_capture_limit_but_deadline_still_applies ... ok
+test text_call_and_cli_calculations_share_units_threshold_and_normalized_input ... ok
+test independent_numerical_goldens_match_without_turning_verdicts_into_process_failure ... ok
+test typed_domain_and_exit_policy_failures_are_denied_before_dispatch ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+     Running tests/evidence.rs (target/debug/deps/evidence-d7997fd6524735dc)
+
+running 21 tests
+test accepted_response_depth_survives_receipt_envelope_redaction_and_restart ... ok
+test changed_stored_receipt_bytes_are_detected_without_replaying_queries ... ok
+test bulk_management_refuses_unknown_payloads_and_inconsistent_receipt_summaries ... ok
+test collection_requires_durable_recording_before_any_effect ... ok
+test closed_result_consumer_stops_active_query_and_later_dispatch ... ok
+test collection_runs_both_installed_queries_and_seals_exact_finalized_receipts ... ok
+test concurrent_collection_cannot_bypass_the_store_lock_or_dispatch_queries ... ok
+test context_selection_and_every_binding_are_required_before_store_or_http ... ok
+test installed_pack_discovery_requires_no_configuration_store_or_credentials ... ok
+test continue_and_stop_keep_failed_receipts_and_make_later_omissions_explicit ... ok
+test interrupted_delete_retry_preserves_and_checks_the_original_manifest_digest ... ok
+test interrupted_process_is_recovered_without_replaying_or_claiming_complete_capture ... ok
+test malformed_or_unpinned_inputs_are_rejected_before_http_or_store_creation ... ok
+test newer_store_format_is_preserved_by_read_collection_and_management ... ok
+test private_credential_canaries_do_not_reappear_in_projection_or_persisted_files ... ok
+test read_after_restart_and_protection_work_without_provider_or_network ... ok
+test relative_window_is_resolved_once_from_the_collection_parent ... ok
+test signals_cancel_active_queries_and_seal_only_already_observed_receipts ... ok
+test structured_collection_dispatches_the_same_pack_and_retains_the_same_observations ... ok
+test unsafe_or_underfunded_stores_refuse_collection_before_http ... ok
+test parent_deadline_limits_the_second_query_and_retains_both_real_outcomes ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.60s
+
+     Running tests/extension_runtime.rs (target/debug/deps/extension_runtime-bb0b6692843e4322)
+
+running 4 tests
+test native_admission_refuses_missing_grants_bad_pins_inputs_versions_and_policy_permissions ... ignored, Requires WORKBENCH_TEST_CAPACITY_PEER naming the explicitly built native executable
+test native_bad_peers_cannot_turn_protocol_or_process_failure_into_success ... ignored, Requires WORKBENCH_TEST_EXTENSION_ADVERSARY naming the explicitly built test-fixtures executable
+test native_capacity_calculations_and_discovery_require_exact_package_grants ... ignored, Requires WORKBENCH_TEST_CAPACITY_PEER naming the explicitly built native executable
+test direct_external_request_requires_independent_policy_before_store_or_child ... ok
+
+test result: ok. 1 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/extensions.rs (target/debug/deps/extensions-621f64b660e0c36e)
+
+running 5 tests
+test installation_refuses_replacement_and_staging_without_destroying_data ... ok
+test inspection_is_inert_and_installation_never_enables_capability ... ok
+test linked_packages_and_payload_mismatch_are_refused ... ok
+test output_omission_and_structured_call_are_explicit ... ok
+test package_pin_and_unknown_metadata_refuse_before_store_creation ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/fleet.rs (target/debug/deps/fleet-28c79b75ab33f8ab)
+
+running 8 tests
+test empty_duplicate_and_unknown_target_selections_are_refused ... ok
+test active_cancellation_keeps_all_selected_targets_visible ... ok
+test frozen_selection_deduplicates_and_survives_current_inventory_changes ... ok
+test failure_threshold_stops_future_admission_and_persisted_rotation_changes_first_target ... ok
+test interrupted_controller_preserves_ids_and_profile_drift_cannot_authorize_resubmission ... ok
+test one_controller_deadline_keeps_the_complete_selected_set_visible ... ok
+test unreachable_selected_runner_remains_visible_and_does_not_hide_success ... ok
+test remote_job_timeout_is_a_visible_failure_alongside_success ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.65s
+
+     Running tests/grafana.rs (target/debug/deps/grafana-c7a7f2190c359c0f)
+
+running 17 tests
+test basic_authentication_is_exact_and_its_numeric_and_encoded_echoes_are_masked ... ok
+test cancellation_closes_native_requests_with_signal_exit_and_no_later_dispatch ... ok
+test bounded_response_parsing_rejects_duplicate_nonfinite_deep_and_excess_bytes ... ok
+test cli_call_and_human_output_share_one_observation ... ok
+test invalid_admission_and_remote_looking_local_operations_never_make_http_or_child_effects ... ok
+test private_data_is_masked_without_corrupting_public_identity_or_control_types ... ok
+test real_https_dashboard_and_both_query_dialects_use_verified_scoped_exchanges ... ok
+test redaction_expansion_and_envelope_overhead_cannot_escape_the_encoded_result_cap ... ok
+test review_r1_canonical_origin_length_is_checked_before_http ... ok
+test review_r1_finalized_receipt_includes_late_source_and_timing_overhead ... ok
+test review_r1_fractional_time_precision_is_admitted_before_lossy_parser_conversion ... ok
+test review_r2_invalid_timestamp_separators_cannot_bypass_exact_precision_admission ... ok
+test secret_collisions_with_public_identifiers_preserve_correlated_typed_wrappers ... ok
+test tls_proxy_redirect_retry_and_ambient_trust_boundaries_are_real ... ok
+test whole_operation_deadline_includes_sequential_requests_and_body_consumption ... ok
+test wrong_org_datasource_and_http200_semantic_errors_stop_the_sequence ... ok
+test individual_request_deadline_is_twenty_seconds_within_the_sixty_second_operation ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.21s
+
+     Running tests/jobs.rs (target/debug/deps/jobs-b3b403c757b9acc8)
+
+running 8 tests
+test duplicate_admission_and_terminal_delivery_never_dispatch_twice_and_watch_discloses_gaps ... ok
+test explicit_job_runtime_ceiling_does_not_widen_foreground_request_admission ... ok
+test concurrent_worker_refuses_without_redispatch_or_blocking_status_and_cancellation ... ok
+test native_extension_jobs_bind_exact_authority_and_accept_one_hour_runtime_metadata ... ignored, Requires WORKBENCH_TEST_CAPACITY_PEER naming the explicitly built native extension
+test noisy_child_results_remain_bounded_truthful_and_identical_after_lookup ... ok
+test queued_and_active_cancellation_require_observed_terminal_outcomes ... ok
+test worker_stdout_disconnect_keeps_execution_and_committed_result_available ... ok
+test killed_worker_requires_reconciliation_even_after_child_finishes_without_replay ... ok
+
+test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 5.07s
+
+     Running tests/mcp.rs (target/debug/deps/mcp-11963f8c10886b02)
+
+running 9 tests
+test empty_grants_and_malformed_routing_never_execute ... FAILED
+test invalid_ids_and_array_parameters_are_protocol_errors ... ok
+test live_id_collision_closes_stream_but_numeric_and_string_ids_are_distinct ... ok
+test native_restricted_commands_preserve_receipts_and_pinned_policy ... ignored, requires the native Cally trusted-runtime and namespace lane
+test modern_and_legacy_numerical_receipts_use_real_core ... FAILED
+test queued_cancellation_has_no_reply_and_initialization_cannot_be_cancelled ... ok
+test signals_have_declared_exit_status_and_stdout_closure_stops_server ... ok
+test stdio_requires_pipes_and_invalid_startup_never_writes_protocol_noise ... ok
+test oversized_stream_closes_without_work_and_no_lifetime_request_ceiling ... ok
+
+failures:
+
+---- empty_grants_and_malformed_routing_never_execute stdout ----
+
+thread 'empty_grants_and_malformed_routing_never_execute' (2048) panicked at crates/workbench-cli/tests/mcp.rs:54:9:
+MCP closed unexpectedly
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- modern_and_legacy_numerical_receipts_use_real_core stdout ----
+
+thread 'modern_and_legacy_numerical_receipts_use_real_core' (2054) panicked at crates/workbench-cli/tests/mcp.rs:54:9:
+MCP closed unexpectedly
+
+
+failures:
+    empty_grants_and_malformed_routing_never_execute
+    modern_and_legacy_numerical_receipts_use_real_core
+
+test result: FAILED. 6 passed; 2 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+error: test failed, to rerun pass `-p workbench-cli --test mcp`

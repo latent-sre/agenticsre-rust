@@ -1,0 +1,2 @@
+{"protocol":1,"request_id":"compatibility","run_id":"run-compatibility","sequence":0,"kind":"hello"}
+{"protocol":1,"request_id":"compatibility","run_id":"run-compatibility","sequence":1,"kind":"request","operation":"ext.example.capacity.project","operation_version":2,"inputs":{"capacity_bytes":1500,"used_bytes":1000,"growth_bytes_per_day":100},"limits":{"timeout_ms":30000,"max_output_bytes":1048576}}

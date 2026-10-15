@@ -1,0 +1,63 @@
+{
+  "jsonrpc": "2.0",
+  "id": "bad-manifest-pin",
+  "result": {
+    "resultType": "complete",
+    "content": [
+      {
+        "text": "Workbench execution failed; assessment not_assessed. Inspect structuredContent for the complete receipt.",
+        "type": "text"
+      }
+    ],
+    "structuredContent": {
+      "spec_version": "0.1",
+      "request_id": "request-3-18de9fe2e90527ba-26",
+      "run_id": "run-3-18de9fe2e907b7a9-27",
+      "operation": "evidence.open",
+      "operation_version": 1,
+      "target": {
+        "kind": "local",
+        "id": "workstation"
+      },
+      "resolved_target": {},
+      "started_at": "2026-10-15T06:24:58.661044837Z",
+      "finished_at": "2026-10-15T06:24:58.666717325Z",
+      "duration_ms": 5,
+      "execution": {
+        "status": "failed",
+        "child_exit_code": null,
+        "signal": null
+      },
+      "effect_outcome": "not_attempted",
+      "assessment": "not_assessed",
+      "coverage": {
+        "state": "not_applicable",
+        "scope": "This local operation only; no service health assessment",
+        "limitations": []
+      },
+      "output": {
+        "stdout": "",
+        "stderr": "",
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "encoding": "utf-8"
+      },
+      "data": {},
+      "errors": [
+        {
+          "code": "manifest_digest_mismatch",
+          "message": "The evidence store operation could not be completed; no successful write is implied.",
+          "retryable": false
+        }
+      ],
+      "sources": [],
+      "artifacts": [],
+      "effective_limits": {
+        "timeout_ms": 30000,
+        "max_output_bytes": 1048576
+      },
+      "record_mode": "never"
+    },
+    "isError": true
+  }
+}

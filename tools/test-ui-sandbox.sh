@@ -11,6 +11,8 @@ if [[ ! -d "$node_modules_dir" || "$(basename -- "$node_modules_dir")" != node_m
     printf '%s\n' 'WORKBENCH_UI_NODE_MODULES must select the existing cached node_modules directory.' >&2
     exit 2
 fi
+# Writable cache mounts need mountpoint directories in the cached provider view.
+mkdir -p -- "$node_modules_dir/.cache" "$node_modules_dir/.vite" "$node_modules_dir/.vite-temp"
 "$node_binary" --input-type=module - "$repo_dir/web/package.json" "$node_modules_dir" <<'JS'
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -26,9 +28,11 @@ JS
 compiler_path=$(rustup which rustc)
 toolchain_dir=$(dirname -- "$(dirname -- "$compiler_path")")
 cargo_registry=${CARGO_HOME:-${HOME}/.cargo}/registry
-browser_venv=/tmp/dualla-dashboard-preview-venv
-browser_dir=/tmp/dualla-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64
-browser_libraries=/tmp/dualla-browser-libs/root
+browser_python=${WORKBENCH_BROWSER_PYTHON:-/tmp/dualla-dashboard-preview-venv/bin/python}
+browser_binary=${WORKBENCH_BROWSER_EXECUTABLE:-/tmp/dualla-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell}
+browser_dir=$(dirname -- "$browser_binary")
+browser_libraries=${WORKBENCH_BROWSER_LIBRARIES:-/tmp/dualla-browser-libs/root}
+browser_node_modules=${WORKBENCH_BROWSER_NODE_MODULES:-}
 scratch_dir=$(mktemp -d /tmp/agenticsre-ui-sandbox.XXXXXXXX)
 cleanup() {
     local run_status=$?
@@ -79,14 +83,22 @@ python_mount() {
 }
 if [[ -x "$repo_dir/.venv/bin/python" ]]; then python_mount "$repo_dir/.venv/bin/python"; fi
 browser_env=()
-if [[ -x "$browser_venv/bin/python" && -x "$browser_dir/chrome-headless-shell" && -d "$browser_libraries" ]]; then
-    mounts+=(--ro-bind "$browser_venv" "$browser_venv" --ro-bind "$browser_dir" /browser
-        --ro-bind "$browser_libraries" /browser-libs)
-    python_mount "$browser_venv/bin/python"
-    browser_env+=(--setenv WORKBENCH_BROWSER_PYTHON "$browser_venv/bin/python"
-        --setenv WORKBENCH_BROWSER_EXECUTABLE /browser/chrome-headless-shell
+if [[ -x "$browser_binary" && -d "$browser_libraries" ]]; then
+    mounts+=(--ro-bind "$browser_dir" /browser --ro-bind "$browser_libraries" /browser-libs)
+    browser_env+=(--setenv WORKBENCH_BROWSER_EXECUTABLE "/browser/$(basename -- "$browser_binary")"
         --setenv LD_LIBRARY_PATH /browser-libs/usr/lib/x86_64-linux-gnu)
+    if [[ -x "$browser_python" ]]; then
+        browser_environment=$(dirname -- "$(dirname -- "$browser_python")")
+        mounts+=(--ro-bind "$browser_environment" "$browser_environment")
+        python_mount "$browser_python"
+        browser_env+=(--setenv WORKBENCH_BROWSER_PYTHON "$browser_python")
+    fi
+    if [[ -n "$browser_node_modules" && -d "$browser_node_modules" ]]; then
+        mounts+=(--ro-bind "$browser_node_modules" /browser-driver/node_modules)
+        browser_env+=(--setenv WORKBENCH_BROWSER_NODE_MODULES /browser-driver/node_modules)
+    fi
 fi
+
 bwrap --unshare-user --unshare-net --unshare-pid --unshare-ipc --unshare-uts \
     --die-with-parent --new-session --cap-drop ALL --clearenv "${mounts[@]}" \
     --chdir "$repo_dir" --setenv PATH /node/bin:/toolchain/bin:/usr/bin:/bin \

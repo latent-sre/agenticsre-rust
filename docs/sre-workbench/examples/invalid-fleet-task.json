@@ -1,0 +1,17 @@
+{
+  "request_id": "review-budget-001",
+  "targets": [
+    "east",
+    "west"
+  ],
+  "task": {
+    "id": "dashboard-hygiene",
+    "version": 1,
+    "input": {
+      "slo": 99.9,
+      "bad_minutes": 1
+    }
+  },
+  "concurrency": 2,
+  "failure_threshold": 2
+}

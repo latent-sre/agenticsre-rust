@@ -1,0 +1,9 @@
+{
+  "kind": "grafana-dashboard",
+  "validator": {
+    "id": "dashboard-hygiene",
+    "version": 1,
+    "command": "custom-validator"
+  },
+  "file": "/absolute/fixtures/dashboard.json"
+}

@@ -135,10 +135,15 @@ async fn run(
     let worker = std::thread::Builder::new()
         .name("workbench-ui-core".into())
         .spawn(move || {
-            run_worker(
-                receiver,
-                worker_state,
-                |request, control| match &worker_grants.diagnostic_grant {
+            run_worker(receiver, worker_state, |request, control| {
+                if let Some(grant) = &worker_grants.investigation_grant
+                    && grant.allows(&request.operation)
+                {
+                    return workbench_core::execute_with_investigation_grant(
+                        request, control, grant,
+                    );
+                }
+                match &worker_grants.diagnostic_grant {
                     Some(grant) => workbench_core::execute_with_diagnostic_grant(
                         request,
                         control,
@@ -153,8 +158,8 @@ async fn run(
                         worker_grants.policy_digest.as_deref(),
                         None,
                     ),
-                },
-            );
+                }
+            });
         })
         .map_err(|_| "the owned execution worker could not be started")?;
     let app = Arc::new(App {

@@ -1,0 +1,40 @@
+{
+  "adapter": {
+    "passed": 30,
+    "failed": 0,
+    "log": "investigation-mcp-unit-tests.log"
+  },
+  "cli": {
+    "command": "tools/test-sandbox.sh cargo test -p workbench-cli --test mcp --test context --test investigation_mcp --locked --offline",
+    "passed": 23,
+    "failed": 0,
+    "ignored": 1,
+    "reported_by": "mcp_investigation_cli worker; exact output in tool transcript, not persisted as a log"
+  },
+  "clippy": {
+    "command": "tools/test-sandbox.sh cargo clippy -p workbench-cli --all-targets --all-features --locked --offline -- -D warnings",
+    "status": "passed",
+    "reported_by": "mcp_investigation_cli worker"
+  },
+  "format": {
+    "command": "cargo fmt --all -- --check",
+    "status": "passed"
+  },
+  "installed": {
+    "groups": 11,
+    "mcp_receipts": 19,
+    "cli_parity_receipts": 10,
+    "log": "investigation-mcp-installed-r3.log",
+    "status": "passed"
+  },
+  "retained_baseline": {
+    "unchanged_files": 265,
+    "scope": "Accepted core, Rust UI, frontend and canonical schemas",
+    "record": "investigation-mcp-reused-baseline.json"
+  },
+  "attempts": {
+    "r1": "Acceptance helper lacked support for JSON Pointer array indexes in the existing recursive schema closure; fixed helper. Root schema references are also now supported.",
+    "r2": "Verifier omitted the legacy flag on a successful discovery assertion; fixed verifier. Modern five-tool CLI parity already passed.",
+    "r3": "Final installed run passed; no product fixes were needed for the checker failures."
+  }
+}

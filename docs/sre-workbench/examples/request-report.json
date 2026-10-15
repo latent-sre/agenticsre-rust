@@ -1,0 +1,34 @@
+{
+  "spec_version": "0.1",
+  "request_id": "report-example",
+  "operation": "report.create",
+  "operation_version": 1,
+  "target": {
+    "kind": "local",
+    "id": "workstation"
+  },
+  "inputs": {
+    "bundles": [
+      {
+        "id": "run-1-ab-1"
+      }
+    ],
+    "format": "markdown",
+    "title": "Historical evidence handoff",
+    "proposals": [
+      {
+        "kind": "service_card",
+        "title": "Review observation coverage",
+        "content": "Consider documenting the gaps shown by this selected evidence.",
+        "evidence": [
+          "run-1-ab-1"
+        ]
+      }
+    ]
+  },
+  "limits": {
+    "timeout_ms": 30000,
+    "max_output_bytes": 1048576
+  },
+  "record": "never"
+}

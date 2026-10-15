@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Field, Icon } from './components';
-import { availableChecks, checkNames, commandInput, diagnosticPack, initialValues, isCheck, makeSubmission, plainText, validateForm } from './model';
+import { availableChecks, checkNames, commandInput, diagnosticPack, initialValues, investigationOperations, isInvestigation, isCheck, makeSubmission, plainText, validateForm } from './model';
 import type { Check, FieldErrors, FormValues, Problem, Session, Submission } from './model';
 
 type Props = {
@@ -20,6 +20,7 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
   const form = useRef<HTMLFormElement>(null);
   const values: FormValues = { ...draft, check: selectedCheck, root: selectedRoot, target: selectedTarget };
   const diagnostics = selectedCheck === 'diagnostics';
+  const investigation = isInvestigation(selectedCheck);
   const hasExec = session.operations.some(operation => operation.id === 'process.exec');
   const hasInspect = session.operations.some(operation => operation.id === 'command.inspect');
   const canSubmit = options.length > 0 && !busy && !submitting;
@@ -28,7 +29,7 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
     if (errors[key]) setErrors(current => ({ ...current, [key]: undefined }));
   };
   const fieldError = (key: keyof FormValues) => {
-    const wire: Partial<Record<keyof FormValues, string>> = { slo: 'inputs.input.slo', days: 'inputs.input.window_days', minutes: 'inputs.input.bad_minutes', root: 'root_id', target: 'target_id', timeout: 'limits.timeout_ms', outputLimit: 'limits.max_output_bytes', captureBody: 'inputs.input.capture_body', onFailure: 'inputs.input.on_failure', concurrency: 'limits.concurrency', path: 'inputs.args', pattern: 'inputs.args' };
+    const wire: Partial<Record<keyof FormValues, string>> = { slo: 'inputs.input.slo', days: 'inputs.input.window_days', minutes: 'inputs.input.bad_minutes', root: 'root_id', target: 'target_id', timeout: 'limits.timeout_ms', outputLimit: 'limits.max_output_bytes', captureBody: 'inputs.input.capture_body', onFailure: 'inputs.input.on_failure', concurrency: 'limits.concurrency', path: 'inputs.args', pattern: 'inputs.args', service: 'inputs.service', environment: 'inputs.environment', team: 'inputs.team', deployment: 'inputs.deployment', bundleId: 'inputs.id', bundlePin: 'inputs.expected_manifest_sha256', beforeId: 'inputs.before.id', beforePin: 'inputs.before.expected_manifest_sha256', afterId: 'inputs.after.id', afterPin: 'inputs.after.expected_manifest_sha256', maxItems: 'limits.max_items', reportTitle: 'inputs.title' };
     return errors[key] ?? problem?.errors?.find(item => item.field === wire[key])?.detail;
   };
   const inputProps = (key: keyof FormValues) => ({
@@ -41,13 +42,13 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
     const nextErrors = validateForm(values);
     setErrors(nextErrors);
     const first = Object.keys(nextErrors)[0];
-    if (first) { form.current?.querySelector<HTMLElement>(`#${first}`)?.focus(); return; }
+    if (first) { const field = form.current?.querySelector<HTMLElement>(`#${first}`); const details = field?.closest('details'); if (details) details.open = true; field?.focus(); return; }
     const submitter = (event.nativeEvent as SubmitEvent).submitter;
-    const operation = diagnostics ? 'diagnostics.run' : values.check === 'budget' ? 'task.run'
+    const operation = isInvestigation(values.check) ? investigationOperations[values.check] : diagnostics ? 'diagnostics.run' : values.check === 'budget' ? 'task.run'
       : submitter instanceof HTMLButtonElement && submitter.value === 'inspect' || !hasExec ? 'command.inspect' : 'process.exec';
     onSubmit(makeSubmission(values, operation, crypto.randomUUID()));
   };
-  const preview = diagnostics ? `connectivity v1 · ${selectedTarget} · body capture ${values.captureBody ? 'on' : 'off'}` : values.check === 'budget'
+  const preview = investigation ? `${checkNames[selectedCheck]} · offline · historical sources` : diagnostics ? `connectivity v1 · ${selectedTarget} · body capture ${values.captureBody ? 'on' : 'off'}` : values.check === 'budget'
     ? `${values.slo || '—'}% SLO · ${values.days || '—'} days · ${values.minutes || '—'} bad minutes`
     : (() => { const command = commandInput(values); return `${command.program} ${command.args.map(arg => /^[A-Za-z0-9_./=-]+$/u.test(arg) ? arg : JSON.stringify(arg)).join(' ')}`; })();
   return <form className="card check-form" ref={form} onSubmit={submit} noValidate aria-label="Run a check">
@@ -63,14 +64,40 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
           <select {...inputProps('target')} value={selectedTarget} onChange={event => onSelection(selectedCheck, selectedRoot, event.target.value)}>
             {session.targets.map(item => <option key={item.id} value={item.id}>{plainText(item.label)}</option>)}
           </select>
-        </Field> : selectedCheck !== 'budget' && <Field id="root" label="Workspace" error={fieldError('root')}>
+        </Field> : selectedCheck !== 'budget' && !investigation && <Field id="root" label="Workspace" error={fieldError('root')}>
           <select {...inputProps('root')} value={selectedRoot} onChange={event => onSelection(selectedCheck, event.target.value, selectedTarget)}>
             {session.roots.map(item => <option key={item.id} value={item.id}>{plainText(item.label)}</option>)}
           </select>
         </Field>}
       </div>
       {!options.includes('diagnostics') && <p className="field-hint">Diagnostics require a new session with explicitly granted targets.</p>}
-      {diagnostics ? <>
+      {investigation ? <>
+        <p className="form-description">Resolve offline context or inspect historical, untrusted evidence. These operations make no live service health assessment.</p>
+        {selectedCheck === 'context' && <div className="form-grid">{(['service', 'environment', 'team', 'deployment'] as const).map(key => <Field key={key} id={key} label={`${key.slice(0, 1).toUpperCase()}${key.slice(1)}${key === 'team' || key === 'deployment' ? ' (optional)' : ''}`} error={fieldError(key)} hint="Exact context selector; no automatic lookup or substitution.">
+          <input {...inputProps(key)} value={values[key]} onChange={event => setValue(key, event.target.value)} autoComplete="off" />
+        </Field>)}</div>}
+        {selectedCheck === 'evidence-list' && <p className="field-hint">List saved evidence from the launcher-granted store. Copy an evidence ID into Inspect evidence, Compare evidence or Evidence report.</p>}
+        {(selectedCheck === 'evidence-open' || selectedCheck === 'evidence-compare') && <div className="form-grid">{(selectedCheck === 'evidence-open' ? [{ id: 'bundleId', pin: 'bundlePin', label: 'Evidence' }] as const : [{ id: 'beforeId', pin: 'beforePin', label: 'Baseline evidence' }, { id: 'afterId', pin: 'afterPin', label: 'Comparison evidence' }] as const).map(reference => <div key={reference.id}>
+          <Field id={reference.id} label={`${reference.label} ID`} error={fieldError(reference.id)} hint="Copy the exact saved evidence ID, such as run-1-ab-c.">
+            <input {...inputProps(reference.id)} value={values[reference.id]} onChange={event => setValue(reference.id, event.target.value)} autoComplete="off" spellCheck={false} />
+          </Field>
+          <Field id={reference.pin} label={`${reference.label} SHA-256 (optional)`} error={fieldError(reference.pin)} hint="Exact manifest digest pin; leave blank to verify the stored manifest without a supplied pin.">
+            <input {...inputProps(reference.pin)} value={values[reference.pin]} onChange={event => setValue(reference.pin, event.target.value)} autoComplete="off" spellCheck={false} />
+          </Field>
+        </div>)}</div>}
+        {selectedCheck === 'evidence-compare' && <Field id="normalization" label="Comparison normalization" hint="Exact window requires identical observation windows. Window offset compares positions within each original window.">
+          <select id="normalization" value={values.normalization} onChange={event => { if (event.target.value === 'exact-window-v1' || event.target.value === 'window-offset-v1') setValue('normalization', event.target.value); }}><option value="exact-window-v1">Exact window</option><option value="window-offset-v1">Window offset</option></select>
+        </Field>}
+        {selectedCheck === 'evidence-report' && <>
+          <div className="form-grid">{([1, 2, 3, 4] as const).map(index => { const id = `reportId${index}` as const; const pin = `reportPin${index}` as const; return <div key={id}>
+            <Field id={id} label={`Report evidence ${index} ID${index === 1 ? '' : ' (optional)'}`} error={fieldError(id)} hint="One to four distinct saved evidence IDs."><input {...inputProps(id)} value={values[id]} onChange={event => setValue(id, event.target.value)} autoComplete="off" spellCheck={false} /></Field>
+            <Field id={pin} label={`Report evidence ${index} SHA-256 (optional)`} error={fieldError(pin)}><input {...inputProps(pin)} value={values[pin]} onChange={event => setValue(pin, event.target.value)} autoComplete="off" spellCheck={false} /></Field>
+          </div>; })}</div>
+          <div className="form-grid"><Field id="reportFormat" label="Report format"><select id="reportFormat" value={values.reportFormat} onChange={event => { if (event.target.value === 'markdown' || event.target.value === 'json') setValue('reportFormat', event.target.value); }}><option value="markdown">Markdown</option><option value="json">JSON</option></select></Field>
+            <Field id="reportTitle" label="Report title (optional)" error={fieldError('reportTitle')}><input {...inputProps('reportTitle')} value={values.reportTitle} onChange={event => setValue('reportTitle', event.target.value)} /></Field></div>
+          <p className="field-hint">Reports are historical handoff documents. Any knowledge proposals remain pending and unapproved.</p>
+        </>}
+      </> : diagnostics ? <>
         <div className="diagnostic-pack"><h3>Connectivity · version {pack?.definition.version}</h3>
           <p>DNS → TCP → TLS → HTTP, plus an independent local process observation.</p>
           <p>Checks observe the configured target from the server’s vantage. They do not assess service health. Results appear together when the run finishes.</p>
@@ -129,18 +156,19 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
         </div>
       </>}
       <details className="advanced"><summary>Run limits</summary><div className="advanced-fields">
-        <Field id="timeout" label="Timeout (seconds)" error={fieldError('timeout')} hint={diagnostics ? 'Up to 60 seconds for the whole pack; each check is bounded to 10 seconds.' : 'Up to 300 seconds. Captured output is limited to 1 MiB.'}>
+        <Field id="timeout" label="Timeout (seconds)" error={fieldError('timeout')} hint={diagnostics ? 'Up to 60 seconds for the whole pack; each check is bounded to 10 seconds.' : investigation ? 'Up to 300 seconds for the offline operation. Set its output allowance below.' : 'Up to 300 seconds. Captured output is limited to 1 MiB.'}>
           <input {...inputProps('timeout')} inputMode="decimal" value={values.timeout} onChange={event => setValue('timeout', event.target.value)} />
         </Field>
-        {diagnostics && <Field id="outputLimit" label="Output allowance (bytes)" error={fieldError('outputLimit')} hint="1,024–16,384 bytes. Body capture uses this allowance and the 16 KiB diagnostic ceiling.">
+        {(diagnostics || investigation) && <Field id="outputLimit" label="Output allowance (bytes)" error={fieldError('outputLimit')} hint={diagnostics ? "1,024–16,384 bytes. Body capture uses this allowance and the 16 KiB diagnostic ceiling." : "1,024–1,048,576 bytes. Large results may be partial; canonical receipt retains the disclosed bounds."}>
           <input {...inputProps('outputLimit')} inputMode="numeric" value={values.outputLimit} onChange={event => setValue('outputLimit', event.target.value)} />
         </Field>}
+      {(selectedCheck === 'evidence-open' || selectedCheck === 'evidence-compare') && <Field id="maxItems" label="Maximum detail items" error={fieldError('maxItems')} hint="1–1,000. Omitted details are disclosed in the result."><input {...inputProps('maxItems')} inputMode="numeric" value={values.maxItems} onChange={event => setValue('maxItems', event.target.value)} /></Field>}
       </div></details>
     </div>
     <div className="form-footer"><code className="command-preview" aria-label="Check preview">{plainText(preview)}</code><div className="actions">
-      {selectedCheck !== 'budget' && !diagnostics && hasExec && hasInspect && <button className="button secondary" type="submit" value="inspect" disabled={!canSubmit}>Inspect</button>}
+      {selectedCheck !== 'budget' && !diagnostics && !investigation && hasExec && hasInspect && <button className="button secondary" type="submit" value="inspect" disabled={!canSubmit}>Inspect</button>}
       <button className="button primary" type="submit" disabled={!canSubmit}>
-        {submitting ? 'Starting…' : diagnostics ? 'Run diagnostics' : selectedCheck === 'budget' ? 'Calculate budget' : !hasExec ? 'Inspect check' : 'Run check'}<Icon name="arrow" size={16} />
+        {submitting ? 'Starting…' : diagnostics ? 'Run diagnostics' : selectedCheck === 'budget' ? 'Calculate budget' : investigation ? 'Run check' : !hasExec ? 'Inspect check' : 'Run check'}<Icon name="arrow" size={16} />
       </button>
     </div></div>
   </form>;

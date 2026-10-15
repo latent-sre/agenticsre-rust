@@ -1,0 +1,14 @@
+groups:
+  - name: service.rules
+    interval: 30s
+    unexpected_field: true
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: 'Instance {{ $labels.instance }} is down'
+      - record: job:http_requests:rate5m
+        expr: sum by (job) (rate(http_requests_total[5m]))

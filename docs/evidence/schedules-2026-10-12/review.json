@@ -1,0 +1,29 @@
+{
+  "scope": "WORKBENCH-025 calendar, persistent schedule/occurrence authority, fleet expectations and recovery",
+  "mode": "independent read-only static review; parent executed all runtime checks",
+  "verdict": "seven reported P2 findings closed in reviewed source; no remaining material scoped finding",
+  "p0_p1": 0,
+  "closed_p2": [
+    "automatic queued occurrence lateness rechecked at locked admission",
+    "paused automatic row cannot block an eligible manual row",
+    "definitive fresh no-admission refusal resolves failed while uncertain recovery stays unknown",
+    "terminal summary and retained receipt/minimal observation are correlated and digest-checked",
+    "automatic occurrence IDs include persistent schedule instance identity across stores",
+    "failed/unknown worker receipts retain a canonical outer error",
+    "capacity reservation includes receipt plus complete metadata growth"
+  ],
+  "additional_corrections": [
+    "persisted fair worker ordering across invocations",
+    "durable cancellation arriving between schedule intent and fleet admission is forwarded only to original fleet identity",
+    "worker shutdown does not implicitly cancel remote work",
+    "canonical human-output header/errors and preview UTC/local/rule identity retained"
+  ],
+  "reviewed_source_sha256": {
+    "crates/workbench-core/src/schedule.rs": "d201ec5e88f49e8b565754c6a9ac2605b875cda9f5f9aa2198be41dbd634cc07",
+    "crates/workbench-core/src/schedule/controller.rs": "2ca9eced7fd9d09536b1b26c10f711db7bebb724528f09880caa8bddb9bb28d4",
+    "crates/workbench-core/src/schedule/model.rs": "57b503def172939a52c10d7a5770b82e5a9212f2f5a3da333c95e3dbb537d905",
+    "crates/workbench-core/src/schedule/store.rs": "797e5c225c7ece00f75879f2e1fb0dcf12930fbfc1d79335128d8ad6e2f1405a",
+    "crates/workbench-core/src/schedule/calendar.rs": "453aa4aa8c6a4a220196a926d41e7e92312c41c13bb795b572313aac07964931"
+  },
+  "post_review_changes": "Equivalent lint normalization in controller/fleet/discovery and corrected text renderer preceded final installed acceptance. Final manifest records those bytes. Verifier-only variable shadow correction changed no Rust bytes."
+}

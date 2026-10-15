@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:toil-configure-input:0.1",
+  "title": "toil configure input",
+  "type": "object",
+  "properties": {
+    "enabled": {
+      "type": "boolean"
+    },
+    "retention_days": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3650
+    }
+  },
+  "required": [
+    "enabled",
+    "retention_days"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:report-data:0.1",
+  "title": "Evidence-backed historical report",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "format": {
+      "enum": [
+        "markdown",
+        "json"
+      ]
+    },
+    "report": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 64
+        },
+        "tool": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "save"
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          },
+          "required": [
+            "id",
+            "version"
+          ],
+          "additionalProperties": false
+        },
+        "state": {
+          "enum": [
+            "complete",
+            "partial"
+          ]
+        },
+        "scope": {
+          "const": "historical_evidence"
+        },
+        "profile": {
+          "const": "linux-offline-v1"
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "properties": {
+              "bundle": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/bundle"
+              },
+              "reference": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "observed_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "evidence_state": {
+                "const": "sourced"
+              },
+              "untrusted": {
+                "const": true
+              }
+            },
+            "required": [
+              "bundle",
+              "reference",
+              "observed_at",
+              "evidence_state",
+              "untrusted"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "observations": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "properties": {
+              "started_at": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/observation/properties/started_at"
+              },
+              "finalized_at": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/observation/properties/finalized_at"
+              },
+              "window": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/observation/properties/window"
+              },
+              "selection": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/observation/properties/selection"
+              },
+              "manifest_state": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/observation/properties/manifest_state"
+              },
+              "capture": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/observation/properties/capture"
+              },
+              "bundle": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/bundle"
+              },
+              "provenance": {
+                "$ref": "urn:sre-workbench:spec:evidence-collection-payload:0.1#/properties/provenance"
+              },
+              "redaction": {
+                "$ref": "urn:sre-workbench:spec:evidence-collection-payload:0.1#/properties/redaction"
+              },
+              "state": {
+                "enum": [
+                  "complete",
+                  "partial"
+                ]
+              },
+              "source_limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "maxItems": 100
+              },
+              "checks": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/checks"
+              }
+            },
+            "required": [
+              "started_at",
+              "finalized_at",
+              "window",
+              "selection",
+              "manifest_state",
+              "capture",
+              "bundle",
+              "provenance",
+              "redaction",
+              "state",
+              "source_limitations",
+              "checks"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "comparisons": {
+          "type": "array",
+          "maxItems": 6,
+          "items": {
+            "type": "object",
+            "properties": {
+              "before": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/bundle"
+              },
+              "after": {
+                "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/bundle"
+              },
+              "state": {
+                "enum": [
+                  "complete",
+                  "partial",
+                  "incompatible"
+                ]
+              },
+              "finding": {
+                "enum": [
+                  "disagreement",
+                  "agreement",
+                  "incomparable",
+                  "insufficient_evidence"
+                ]
+              },
+              "compatibility": {
+                "$ref": "urn:sre-workbench:spec:evidence-comparison-data:0.1#/properties/compatibility"
+              },
+              "provenance_changes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "maxItems": 100
+              },
+              "source_limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "maxItems": 100
+              },
+              "checks": {
+                "$ref": "urn:sre-workbench:spec:evidence-comparison-data:0.1#/properties/checks"
+              }
+            },
+            "required": [
+              "before",
+              "after",
+              "state",
+              "finding",
+              "compatibility",
+              "provenance_changes",
+              "source_limitations",
+              "checks"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 100
+        },
+        "next_questions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 100
+        },
+        "knowledge_proposals": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "service_card",
+                  "alert_card",
+                  "runbook"
+                ]
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "content": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "evidence": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 4,
+                "items": {
+                  "$ref": "urn:sre-workbench:spec:evidence-offline-data:0.1#/properties/bundle"
+                }
+              },
+              "provenance": {
+                "const": "operator_proposed"
+              },
+              "review_status": {
+                "const": "pending"
+              }
+            },
+            "required": [
+              "kind",
+              "title",
+              "content",
+              "evidence",
+              "provenance",
+              "review_status"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "title",
+        "generated_at",
+        "tool",
+        "state",
+        "scope",
+        "profile",
+        "sources",
+        "observations",
+        "comparisons",
+        "limitations",
+        "next_questions",
+        "knowledge_proposals"
+      ],
+      "additionalProperties": false
+    },
+    "rendering": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "enum": [
+            "complete",
+            "omitted"
+          ]
+        },
+        "media_type": {
+          "enum": [
+            "text/markdown",
+            "application/json"
+          ]
+        },
+        "content": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1048576
+        },
+        "bytes_required": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "state",
+        "media_type",
+        "content",
+        "bytes_required"
+      ],
+      "additionalProperties": false
+    },
+    "cancellation_signal": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 64
+    }
+  },
+  "required": [
+    "format_version",
+    "format",
+    "report",
+    "rendering"
+  ],
+  "additionalProperties": false
+}

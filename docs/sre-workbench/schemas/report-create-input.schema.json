@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:report-create-input:0.1",
+  "title": "Evidence report selection and pending proposals",
+  "type": "object",
+  "properties": {
+    "bundles": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:sre-workbench:spec:evidence-reference-input:0.1"
+      }
+    },
+    "format": {
+      "enum": [
+        "markdown",
+        "json"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "service_card",
+              "alert_card",
+              "runbook"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:sre-workbench:spec:evidence-reference-input:0.1#/properties/id"
+            },
+            "minItems": 1,
+            "maxItems": 4,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "kind",
+          "title",
+          "content",
+          "evidence"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 8
+    }
+  },
+  "required": [
+    "bundles",
+    "format"
+  ],
+  "additionalProperties": false
+}

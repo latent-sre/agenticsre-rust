@@ -1,0 +1,439 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:schedule-data:0.1",
+  "title": "Owned schedules, exact occurrence identities and bounded retained observations",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "action": {
+      "enum": [
+        "created",
+        "updated",
+        "paused",
+        "queued",
+        "existing",
+        "cancel_requested",
+        "status",
+        "list",
+        "preview",
+        "worked"
+      ]
+    },
+    "schedules": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation",
+            "maxLength": 64
+          },
+          "owner_uid": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "generation": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "definition": {
+            "$ref": "urn:sre-workbench:spec:schedule-definition:0.1"
+          },
+          "tzdb_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "binding_sha256": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+          },
+          "cursor": {
+            "type": "integer",
+            "minimum": -2,
+            "maximum": 9007199254740991
+          },
+          "active_occurrences": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 128
+          },
+          "total_occurrences": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 128
+          },
+          "last_skip": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "from_ordinal": {
+                    "type": "integer",
+                    "minimum": -2,
+                    "maximum": 9007199254740991
+                  },
+                  "to_ordinal": {
+                    "type": "integer",
+                    "minimum": -2,
+                    "maximum": 9007199254740991
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "reason": {
+                    "const": "misfire"
+                  },
+                  "at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "generation": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "from_ordinal",
+                  "to_ordinal",
+                  "count",
+                  "reason",
+                  "at",
+                  "generation"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "owner_uid",
+          "revision",
+          "generation",
+          "enabled",
+          "created_at",
+          "updated_at",
+          "definition",
+          "tzdb_version",
+          "binding_sha256",
+          "cursor",
+          "active_occurrences",
+          "total_occurrences",
+          "last_skip"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "occurrences": {
+      "type": "array",
+      "maxItems": 2048,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "schedule_id": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation",
+            "maxLength": 64
+          },
+          "generation": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "trigger": {
+            "enum": [
+              "due",
+              "manual"
+            ]
+          },
+          "manual_request_id": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            ]
+          },
+          "ordinal": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "integer",
+                "minimum": -2,
+                "maximum": 9007199254740991
+              }
+            ]
+          },
+          "due_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "local": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            ]
+          },
+          "state": {
+            "enum": [
+              "queued",
+              "intent",
+              "terminal",
+              "skipped",
+              "unknown",
+              "failed"
+            ]
+          },
+          "reason": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            ]
+          },
+          "fleet_request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "effective_timeout_ms": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 300000
+              }
+            ]
+          },
+          "fleet_run_id": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            ]
+          },
+          "fleet_aggregate": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "enum": [
+                  "succeeded",
+                  "partial",
+                  "failed",
+                  "unknown"
+                ]
+              }
+            ]
+          },
+          "fleet_effect_outcome": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "enum": [
+                  "not_attempted",
+                  "not_applicable",
+                  "succeeded",
+                  "failed",
+                  "unknown"
+                ]
+              }
+            ]
+          },
+          "receipt_sha256": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+              }
+            ]
+          },
+          "receipt": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:sre-workbench:spec:result:0.1"
+              }
+            ]
+          },
+          "receipt_omitted": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "cancel_requested": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "schedule_id",
+          "generation",
+          "trigger",
+          "manual_request_id",
+          "ordinal",
+          "due_at",
+          "local",
+          "state",
+          "reason",
+          "fleet_request_id",
+          "effective_timeout_ms",
+          "fleet_run_id",
+          "fleet_aggregate",
+          "fleet_effect_outcome",
+          "receipt_sha256",
+          "receipt",
+          "receipt_omitted",
+          "created_at",
+          "updated_at",
+          "cancel_requested"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "preview": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "properties": {
+          "ordinal": {
+            "type": "integer",
+            "minimum": -2,
+            "maximum": 9007199254740991
+          },
+          "due_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "scheduled_utc": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ]
+          },
+          "local": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "state": {
+            "enum": [
+              "due",
+              "nonexistent"
+            ]
+          }
+        },
+        "required": [
+          "ordinal",
+          "due_utc",
+          "scheduled_utc",
+          "local",
+          "state"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "omitted_occurrences": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2048
+    },
+    "cancellation_signal": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255
+        }
+      ]
+    }
+  },
+  "required": [
+    "format_version",
+    "action",
+    "schedules",
+    "occurrences",
+    "preview",
+    "omitted_occurrences",
+    "cancellation_signal"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,30 @@
+{
+  "initial_public_test": {
+    "passed": 1,
+    "failed": 4,
+    "failure": "spawn_failed after executable and input identities were verified; no child reported"
+  },
+  "kernel_probe": {
+    "profile": "bwrap//&unpriv_bwrap (enforce)",
+    "memfd_noexec": 0,
+    "sealed_exec_memfd_mode": "100777",
+    "sealed_exec_memfd_errno": 13,
+    "read_only_memfd_errno": 13,
+    "errno_name": "EACCES",
+    "unchanged_profile_unlinked_readonly_file_exec_exit": 0
+  },
+  "fixture_correction": "Use canonical /usr/bin/gnutrue for the wrong-binary test; /usr/bin/true is a symlink and final symlinks are deliberately refused.",
+  "design_correction": "Private unlinked readonly executable snapshot with no writable handles at launch; model remains sealed memfd. No profile changes or execution outside the test sandbox.",
+  "initial_workspace_failure": {
+    "tests": [
+      "process::descriptor::tests::pinned_descriptor_executes_when_the_command_path_does_not_exist",
+      "tasks::prometheus_rules::native::tests::unlinked_executable_snapshot_runs_through_supervisor_without_source_path"
+    ],
+    "cause": "The host uutils printf shim intentionally rejects descriptor-based execution with its executable-name check; GNU printf supports it.",
+    "probe": {
+      "uutils_printf_exit": 1,
+      "gnuprintf_exit": 0
+    },
+    "correction": "Choose GNU printf fixture where available; product launch unchanged."
+  }
+}

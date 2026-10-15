@@ -4,7 +4,8 @@ use std::{
     path::PathBuf,
 };
 use workbench_core::{
-    DiagnosticsGrant, OperatorContext, RunControl, request::Request, result::Status,
+    DiagnosticsGrant, EvidenceStoreOptions, InvestigationGrant, OperatorContext, RunControl,
+    request::Request, result::Status,
 };
 
 pub struct Options {
@@ -14,6 +15,9 @@ pub struct Options {
     pub read_policy: Option<PathBuf>,
     pub diagnostics_config: Option<PathBuf>,
     pub targets: Vec<String>,
+    pub context_source: Option<PathBuf>,
+    pub context_max_age_days: Option<u16>,
+    pub evidence_store: Option<EvidenceStoreOptions>,
 }
 
 pub(crate) struct Root {
@@ -27,6 +31,7 @@ pub(crate) struct Grants {
     pub context: OperatorContext,
     pub policy_digest: Option<String>,
     pub diagnostic_grant: Option<DiagnosticsGrant>,
+    pub investigation_grant: Option<InvestigationGrant>,
 }
 
 impl Grants {
@@ -35,11 +40,19 @@ impl Grants {
         for operation in &options.allow {
             if !matches!(
                 operation.as_str(),
-                "process.exec" | "command.inspect" | "task.run" | "diagnostics.run"
+                "process.exec"
+                    | "command.inspect"
+                    | "task.run"
+                    | "diagnostics.run"
+                    | "context.resolve"
+                    | "evidence.list"
+                    | "evidence.open"
+                    | "evidence.compare"
+                    | "report.create"
             ) || !operations.insert(operation.clone())
             {
                 return Err(
-                    "--allow requires unique process.exec, command.inspect, task.run or diagnostics.run IDs",
+                    "--allow requires unique supported command, task, diagnostic or offline investigation operation IDs",
                 );
             }
         }
@@ -63,7 +76,60 @@ impl Grants {
         if !diagnostics && (options.diagnostics_config.is_some() || !options.targets.is_empty()) {
             return Err("--diagnostics-config and --target require a diagnostics.run grant");
         }
-        let mut context = OperatorContext::default();
+        let context_resolution = operations.contains("context.resolve");
+        if context_resolution
+            && (options.context_source.is_none() || options.context_max_age_days.is_none())
+        {
+            return Err("context.resolve requires --context-source and --context-max-age-days");
+        }
+        if !context_resolution
+            && (options.context_source.is_some() || options.context_max_age_days.is_some())
+        {
+            return Err(
+                "--context-source and --context-max-age-days require a context.resolve grant",
+            );
+        }
+        let evidence = operations.iter().any(|op| {
+            matches!(
+                op.as_str(),
+                "evidence.list" | "evidence.open" | "evidence.compare" | "report.create"
+            )
+        });
+        if evidence && options.evidence_store.is_none() {
+            return Err("evidence and report grants require an existing explicit --state-dir");
+        }
+        if !evidence && options.evidence_store.is_some() {
+            return Err(
+                "--state-dir requires an evidence.list, evidence.open, evidence.compare or report.create grant",
+            );
+        }
+        let mut context = OperatorContext {
+            context_source_path: options.context_source.clone(),
+            context_max_age_days: options.context_max_age_days,
+            evidence_store: options.evidence_store.clone(),
+            ..OperatorContext::default()
+        };
+        let investigation_operations = options
+            .allow
+            .iter()
+            .filter(|op| {
+                matches!(
+                    op.as_str(),
+                    "context.resolve"
+                        | "evidence.list"
+                        | "evidence.open"
+                        | "evidence.compare"
+                        | "report.create"
+                )
+            })
+            .cloned()
+            .collect::<Vec<_>>();
+        let investigation_grant = if context_resolution || evidence {
+            Some(workbench_core::investigation_grant(&context, &investigation_operations)
+                .map_err(|_| "the explicit context source or evidence store could not be admitted; use existing valid files and start a new session")?)
+        } else {
+            None
+        };
         let mut roots = BTreeMap::new();
         let mut policy_digest = None;
         let diagnostic_grant = if let Some(path) = &options.diagnostics_config {
@@ -143,6 +209,7 @@ impl Grants {
             context,
             policy_digest,
             diagnostic_grant,
+            investigation_grant,
         })
     }
 
@@ -154,6 +221,10 @@ impl Grants {
                 json!({"id":operation,"version":1,"tasks":["error-budget"]})
             } else if operation == "diagnostics.run" {
                 json!({"id":operation,"version":1,"packs":[workbench_core::diagnostics_pack_metadata()]})
+            } else if operation == "context.resolve" {
+                json!({"id":operation,"version":1,"profile":"offline-context-v1"})
+            } else if self.investigation_grant.as_ref().is_some_and(|grant| grant.allows(operation)) {
+                json!({"id":operation,"version":1,"profile":"verified-evidence-v1"})
             } else { json!({"id":operation,"version":1,"profile":"linux-read-v1"}) }).collect::<Vec<_>>(),
             "limits":{"active_runs":1,"history_entries":50,"history_bytes":16777216,"max_request_bytes":65536,"max_submissions":1024}})
     }

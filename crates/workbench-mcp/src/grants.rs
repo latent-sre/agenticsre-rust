@@ -2,7 +2,17 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     path::PathBuf,
 };
-use workbench_core::{GrafanaConfigIdentity, OperatorContext};
+use workbench_core::{
+    EvidenceStoreOptions, GrafanaConfigIdentity, InvestigationGrant, OperatorContext,
+};
+
+pub(crate) const INVESTIGATION_OPERATIONS: [&str; 5] = [
+    "context.resolve",
+    "evidence.list",
+    "evidence.open",
+    "evidence.compare",
+    "report.create",
+];
 
 #[derive(Default)]
 pub struct Options {
@@ -11,6 +21,9 @@ pub struct Options {
     pub targets: Vec<String>,
     pub read_policy: Option<PathBuf>,
     pub config: Option<PathBuf>,
+    pub context_source: Option<PathBuf>,
+    pub context_max_age_days: Option<u16>,
+    pub evidence_store: Option<EvidenceStoreOptions>,
 }
 
 pub(crate) struct Grants {
@@ -20,6 +33,7 @@ pub(crate) struct Grants {
     pub context: OperatorContext,
     pub policy_digest: Option<String>,
     pub grafana_identity: Option<GrafanaConfigIdentity>,
+    pub investigation_grant: Option<InvestigationGrant>,
 }
 
 impl Grants {
@@ -33,7 +47,8 @@ impl Grants {
                     | "task.run"
                     | "grafana.dashboard.get"
                     | "grafana.query"
-            ) || !operations.insert(operation.clone())
+            ) && !INVESTIGATION_OPERATIONS.contains(&operation.as_str())
+                || !operations.insert(operation.clone())
             {
                 return Err("--allow requires unique supported operation IDs");
             }
@@ -56,11 +71,63 @@ impl Grants {
         if !grafana && (options.config.is_some() || !options.targets.is_empty()) {
             return Err("--config and --target require a Grafana grant");
         }
+        let context_resolution = operations.contains("context.resolve");
+        if context_resolution
+            && (options.context_source.is_none() || options.context_max_age_days.is_none())
+        {
+            return Err("context.resolve requires --context-source and --context-max-age-days");
+        }
+        if !context_resolution
+            && (options.context_source.is_some() || options.context_max_age_days.is_some())
+        {
+            return Err(
+                "--context-source and --context-max-age-days require a context.resolve grant",
+            );
+        }
+        let evidence = operations
+            .iter()
+            .any(|operation| INVESTIGATION_OPERATIONS[1..].contains(&operation.as_str()));
+        if evidence && options.evidence_store.is_none() {
+            return Err("evidence and report grants require an existing explicit --state-dir");
+        }
+        if !evidence && options.evidence_store.is_some() {
+            return Err("--state-dir requires an offline evidence or report grant");
+        }
+        if let Some(store) = &options.evidence_store {
+            let defaults = EvidenceStoreOptions::new(store.directory.clone());
+            if store.max_bytes != defaults.max_bytes
+                || store.retention_days != defaults.retention_days
+            {
+                return Err("offline investigation grants do not accept store policy overrides");
+            }
+        }
         let root_ids: BTreeSet<_> = options.roots.iter().collect();
         let targets: BTreeSet<_> = options.targets.iter().cloned().collect();
         if root_ids.len() != options.roots.len() || targets.len() != options.targets.len() {
             return Err("--root and --target IDs must be unique");
         }
+        let investigation_grant = if context_resolution || evidence {
+            // Only the opaque grant retains offline paths. The generic hosted context below
+            // remains separate from this sanitized and identity-pinned authority.
+            let offline_context = OperatorContext {
+                context_source_path: options.context_source.clone(),
+                context_max_age_days: options.context_max_age_days,
+                evidence_store: options.evidence_store.clone(),
+                ..OperatorContext::default()
+            };
+            let selected = operations
+                .iter()
+                .filter(|operation| INVESTIGATION_OPERATIONS.contains(&operation.as_str()))
+                .cloned()
+                .collect::<Vec<_>>();
+            Some(
+                workbench_core::investigation_grant(&offline_context, &selected).map_err(
+                    |_| "the explicit context source or evidence store could not be admitted",
+                )?,
+            )
+        } else {
+            None
+        };
         let mut context = OperatorContext::default();
         let mut roots = BTreeMap::new();
         let mut policy_digest = None;
@@ -112,6 +179,7 @@ impl Grants {
             context,
             policy_digest,
             grafana_identity,
+            investigation_grant,
         })
     }
 }
@@ -203,5 +271,119 @@ mod tests {
                 Some("--root and --target IDs must be unique")
             );
         }
+    }
+
+    #[test]
+    fn investigation_grants_require_exact_paired_startup_bindings() {
+        for options in [
+            Options {
+                allow: vec!["context.resolve".into()],
+                ..Default::default()
+            },
+            Options {
+                allow: vec!["context.resolve".into()],
+                context_source: Some("/missing".into()),
+                ..Default::default()
+            },
+            Options {
+                context_source: Some("/missing".into()),
+                context_max_age_days: Some(30),
+                ..Default::default()
+            },
+            Options {
+                allow: vec!["evidence.list".into()],
+                ..Default::default()
+            },
+            Options {
+                evidence_store: Some(EvidenceStoreOptions::new("/missing".into())),
+                ..Default::default()
+            },
+            Options {
+                allow: vec!["evidence.list".into()],
+                context_source: Some("/missing".into()),
+                context_max_age_days: Some(30),
+                evidence_store: Some(EvidenceStoreOptions::new("/missing".into())),
+                ..Default::default()
+            },
+            Options {
+                allow: vec!["context.resolve".into(), "context.resolve".into()],
+                context_source: Some("/missing".into()),
+                context_max_age_days: Some(30),
+                ..Default::default()
+            },
+        ] {
+            assert!(Grants::new(&options).is_err());
+        }
+        for policy in ["max_bytes", "retention_days"] {
+            let mut options = EvidenceStoreOptions::new("/missing".into());
+            if policy == "max_bytes" {
+                options.max_bytes = 10;
+            } else {
+                options.retention_days = 1;
+            }
+            assert_eq!(
+                Grants::new(&Options {
+                    allow: vec!["evidence.list".into()],
+                    evidence_store: Some(options),
+                    ..Default::default()
+                })
+                .err(),
+                Some("offline investigation grants do not accept store policy overrides")
+            );
+        }
+    }
+
+    #[cfg(target_os = "linux")]
+    #[test]
+    fn admitted_context_authority_stays_inside_the_exact_opaque_grant() {
+        use std::fs;
+        let directory = std::env::temp_dir().join(workbench_core::result::new_id("mcp-grant"));
+        fs::create_dir(&directory).unwrap();
+        let path = directory.join("source.json");
+        fs::write(
+            &path,
+            include_bytes!("../../../tests/fixtures/context/unique.json"),
+        )
+        .unwrap();
+        let options = Options {
+            allow: vec!["context.resolve".into()],
+            context_source: Some(path.clone()),
+            context_max_age_days: Some(30),
+            ..Default::default()
+        };
+        let grants = Grants::new(&options).unwrap();
+        assert!(
+            grants
+                .investigation_grant
+                .as_ref()
+                .unwrap()
+                .allows("context.resolve")
+        );
+        for operation in [
+            "evidence.list",
+            "evidence.open",
+            "evidence.compare",
+            "report.create",
+            "task.run",
+        ] {
+            assert!(
+                !grants
+                    .investigation_grant
+                    .as_ref()
+                    .unwrap()
+                    .allows(operation)
+            );
+        }
+        assert!(grants.context.context_source_path.is_none());
+        assert!(grants.context.context_max_age_days.is_none());
+        assert!(grants.context.evidence_store.is_none());
+        assert!(
+            Grants::new(&Options {
+                context_max_age_days: Some(0),
+                ..options
+            })
+            .is_err()
+        );
+        fs::remove_dir_all(directory).unwrap();
     }
 }

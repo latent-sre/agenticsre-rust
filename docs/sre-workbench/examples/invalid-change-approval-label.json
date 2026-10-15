@@ -1,0 +1,6 @@
+{
+  "requester": "requester.fixture",
+  "request_id": "request.fixture",
+  "plan_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "approved": true
+}

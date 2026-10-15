@@ -1,0 +1,14 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+error: literal out of range for `i32`
+  --> crates/workbench-core/tests/extensions.rs:39:189
+   |
+39 | ...rties":{"count":{"type":"integer","minimum":0,"maximum":9007199254740991}},"required":["count"]});
+   |                                                            ^^^^^^^^^^^^^^^^
+   |
+   = note: the literal `9007199254740991` does not fit into the type `i32` whose range is `-2147483648..=2147483647`
+   = help: consider using the type `i64` instead
+   = note: `#[deny(overflowing_literals)]` on by default
+
+error: could not compile `workbench-core` (test "extensions") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

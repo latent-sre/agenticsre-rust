@@ -1,0 +1,11 @@
+extension.list: succeeded
+Run: run-9-18dda6f2d140770c-1
+Assessment: not_assessed
+Effects: not_applicable
+Record: never
+Package action: list
+Installed: 1; descriptions: 1; omitted: 0
+Disabled; execution unavailable; provenance unverified.
+Package fixture.capacity version 1 — sha256:8cb5456ad8b5bd7cf7472ae94faee4b72f2b94f1831834d6c57904a12c1bddf2 (468487 bytes)
+Manifest (untrusted declarations): {"capabilities":[{"effects":"observe","input_schema":{"$schema":"https://json-schema.org/draft/2020-12/schema","additionalProperties":false,"properties":{"capacity_bytes":{"maximum":9007199254740991,"minimum":0,"type":"integer"},"growth_bytes_per_day":{"maximum":9007199254740991,"minimum":0,"type":"integer"},"used_bytes":{"maximum":9007199254740991,"minimum":0,"type":"integer"}},"required":["capacity_bytes","used_bytes","growth_bytes_per_day"],"type":"object"},"operation":"ext.fixture.capacity.project","output_schema":{"$schema":"https://json-schema.org/draft/2020-12/schema","additionalProperties":false,"properties":{"days_remaining":{"maximum":9007199254740991,"minimum":0,"type":"integer"},"exhausted":{"type":"boolean"}},"required":["days_remaining","exhausted"],"type":"object"},"requested_access":[],"version":1}],"compatibility":{"max_spec":"0.1","min_spec":"0.1"},"executable":{"bytes":350400,"format":"elf","platform":"linux-x86_64","sha256":"sha256:3b6d6da9a87cddd5e2eb8200623804a55ac6f73a42e18eb9129392a4c0d37ce1"},"id":"fixture.capacity","protocol":{"name":"save-extension","version":1},"provenance":{"license":"MIT","revision":"fixture-v1","source":"local:tests/fixtures/extensions/no-execution.rs"},"version":1}
+Limit: Packages remain disabled. Capability effects and provenance are unverified declarations; no extension execution is available.
