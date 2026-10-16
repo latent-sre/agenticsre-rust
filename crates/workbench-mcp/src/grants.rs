@@ -47,6 +47,9 @@ impl Grants {
                     | "task.run"
                     | "grafana.dashboard.get"
                     | "grafana.query"
+                    | "queries.list"
+                    | "queries.describe"
+                    | "query.run"
             ) && !INVESTIGATION_OPERATIONS.contains(&operation.as_str())
                 || !operations.insert(operation.clone())
             {
@@ -55,8 +58,9 @@ impl Grants {
         }
         let commands =
             operations.contains("process.exec") || operations.contains("command.inspect");
-        let grafana =
-            operations.contains("grafana.dashboard.get") || operations.contains("grafana.query");
+        let grafana = operations.contains("grafana.dashboard.get")
+            || operations.contains("grafana.query")
+            || operations.contains("query.run");
         if commands && (options.read_policy.is_none() || options.roots.is_empty()) {
             return Err(
                 "command grants require an explicit --read-policy and at least one --root ID",
@@ -218,7 +222,7 @@ mod tests {
                 Some("command grants require an explicit --read-policy and at least one --root ID")
             );
         }
-        for operation in ["grafana.dashboard.get", "grafana.query"] {
+        for operation in ["grafana.dashboard.get", "grafana.query", "query.run"] {
             assert_eq!(
                 Grants::new(&Options {
                     allow: vec![operation.into()],
@@ -228,6 +232,29 @@ mod tests {
                 Some("Grafana grants require an explicit --config and at least one --target ID")
             );
         }
+    }
+
+    #[test]
+    fn saved_query_catalog_grants_are_offline_and_query_execution_needs_a_target() {
+        let catalog = Grants::new(&Options {
+            allow: vec!["queries.list".into(), "queries.describe".into()],
+            ..Options::default()
+        })
+        .unwrap();
+        assert!(catalog.targets.is_empty());
+        assert!(catalog.grafana_identity.is_none());
+        assert_eq!(catalog.operations.len(), 2);
+
+        let denied = Grants::new(&Options {
+            allow: vec!["queries.list".into()],
+            config: Some("/missing".into()),
+            targets: vec!["fixture".into()],
+            ..Options::default()
+        });
+        assert_eq!(
+            denied.err(),
+            Some("--config and --target require a Grafana grant")
+        );
     }
 
     #[test]

@@ -9,7 +9,8 @@ use sha2::{Digest, Sha256};
 use std::{fs, path::PathBuf, process::Command};
 use workbench_core::{
     OperatorContext, RunControl, execute, execute_with_authority_identities, execute_with_context,
-    execute_with_policy_identity, grafana_config_description, request::Request, result::Status,
+    execute_with_policy_identity, execute_with_saved_query_grant, grafana_config_description,
+    request::Request, result::Status,
 };
 
 // The separate test process supplies synthetic provider variables without unsafely mutating the
@@ -137,6 +138,32 @@ fn denied(receipt: &Value, code: &str) {
         assert_eq!(transport["stage"], "admission");
     }
     assert!(receipt["sources"].as_array().unwrap().is_empty());
+}
+
+#[test]
+fn saved_query_grant_cannot_dispatch_a_general_grafana_query() {
+    let fixture = Fixture::new(vec![]);
+    let (_, identity) = grafana_config_description(&fixture.config).unwrap();
+    let context = OperatorContext {
+        config_path: Some(fixture.config.clone()),
+        ..Default::default()
+    };
+    let mut request = Request::new(
+        "grafana.query",
+        json!({
+            "datasource":"metrics-1","kind":"prometheus",
+            "from":"2026-10-02T00:00:00Z","to":"2026-10-02T00:01:00Z","expr":"up"
+        }),
+    );
+    request.target.kind = "connection".into();
+    request.target.id = "fixture".into();
+    let receipt =
+        execute_with_saved_query_grant(request, &RunControl::default(), &context, &identity);
+    denied(
+        &serde_json::to_value(receipt).unwrap(),
+        "saved_query_grant_scope",
+    );
+    assert!(fixture.requests().is_empty());
 }
 
 #[test]

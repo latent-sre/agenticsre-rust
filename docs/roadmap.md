@@ -1923,6 +1923,24 @@ validation and `git diff --check`. The [publication packet](evidence/publication
 retains these fresh logs. Installed/browser missions retain their original milestone identities;
 no product source changed for publication. The remaining product queue below remains open.
 
+## WORKBENCH-029 — installed saved queries through MCP
+
+**Status:** Implemented and locally verified for the Linux stdio fixture scope in the
+[saved-query MCP record](query-mcp-verification.md). Independent `queries.list`,
+`queries.describe` and `query.run` grants expose only the installed definitions. Catalog calls
+need no connection or credential. Execution requires a launch-configured Grafana target and
+uses the installed expression, exact definition digest and pinned configuration/CA/credential
+path. Generic hosted saved-query execution remains refused.
+
+The real-pipe installed-copy fixture exercised both supported protocol revisions, both query
+dialects and zero-effect refusal for ungranted tools/targets, null or mismatched pins and changed
+configuration. A direct-core regression confirms the saved-query grant cannot run an arbitrary
+Grafana expression. The complete workspace Rust suite, strict Clippy, formatting and specification
+checks passed before the final scoped error-status and test-harness adjustments; the affected MCP
+suites passed on those final product bytes. Read-only review found no validated P0/P1/P2 issue in
+the current working-tree diff. This increment is uncommitted; an immutable-revision verdict,
+agent-host registration, live compatibility and native-platform support remain open.
+
 ## Remaining product queue
 
 The following ledger preserves the complete requested scope. Accepted slices are evidence for
@@ -1937,12 +1955,12 @@ and [verification](sre-workbench/verification.md).
 | CAP-03 Grafana observations | [Dashboard/PromQL/LogQL controlled fixtures](grafana-verification.md) | Selected live compatibility; search/history/alerts/inventory increments |
 | CAP-04 named tasks | [Dashboard hygiene](dashboard-verification.md) and [error budget](error-budget-verification.md) | Additional reviewed task/runtime/platform bindings and compatibility |
 | CAP-05 CLI/discovery | Accepted public CLI, help, JSON, availability and refusal paths in the linked slice records | Discovery/help for each future capability and native host usability |
-| CAP-06 MCP | [Bounded stdio tasks, restricted commands and Grafana](mcp-verification.md), plus [offline investigations](investigation-mcp-verification.md) | Actual selected agent-host registration; diagnostic, saved-query and future operation grants |
+| CAP-06 MCP | [Bounded stdio tasks, restricted commands and Grafana](mcp-verification.md), plus [offline investigations](investigation-mcp-verification.md) and [local saved-query grants](query-mcp-verification.md) | Actual selected agent-host registration; diagnostic and future operation grants |
 | CAP-07 context | [Offline core/CLI source resolver](context-verification.md), [pinned browser context](investigation-ui-verification.md) and [MCP context](investigation-mcp-verification.md) | Approved real team source and live target selection |
 | CAP-08 diagnostics | WORKBENCH-010 core/CLI and [WORKBENCH-011 browser](diagnostics-ui-verification.md) qualified native acceptance with frozen correctness/security reviews | Positive system-resolver fixture gap and later live/platform bindings |
 | CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery | Other operation recording policies, collection/MCP grants and live/platform acceptance |
 | CAP-10 comparison | [Typed Linux fixture comparison](evidence-comparison-verification.md), [browser](investigation-ui-verification.md) and [MCP](investigation-mcp-verification.md), compatibility, normalization and explicit missing/partial outcomes | Live datasource/plugin compatibility, other supported evidence kinds and native-platform acceptance |
-| CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted | Dependent browser/MCP grants and live/platform acceptance |
+| CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted; [local MCP grants](query-mcp-verification.md) | Dependent browser grants and live/platform acceptance |
 | CAP-12 runbooks | [Installed evidence-review workflow](runbooks-verification.md), typed checkpoints, durable revision-bound resume and fresh attempts | Additional reviewed runbooks, hosted/platform acceptance; live observation workflows remain separate |
 | CAP-13 configuration checks | [Dashboard acceptance](config-check-verification.md) and [Prometheus rules](alert-rules-verification.md), kind/validator/digest pins, supported rules, refusals and unchanged originals | Hosted/platform acceptance, live semantics and broader validator coverage |
 | CAP-14 offline investigation | [Offline inspection/replay acceptance](offline-evidence-verification.md), [browser](investigation-ui-verification.md) and [MCP inspection](investigation-mcp-verification.md), integrity, immutable history and no-network/no-command profile | Additional bundle kinds, hosted replay and native-platform profiles |
@@ -1974,8 +1992,8 @@ multiple-target collection and persistent observational schedules are accepted f
 Linux scopes. The named local configuration-change consumer under WORKBENCH-026 is also accepted,
 including exact-plan approval, target preconditions, readback and reconciliation without replay.
 The local context and evidence/compare/report browser increment under CAP-23 and corresponding
-MCP investigation grants are also accepted. Remaining browser/catalog and diagnostic/query MCP
-grants, additional controlled-change consumers and connector
+MCP investigation grants are also accepted. Local saved-query MCP grants have fixture evidence.
+Remaining browser/catalog surfaces and diagnostic MCP grants, additional controlled-change consumers and connector
 families retain their own scopes. Continue in the delivery plan's dependency order. Connector work
 and native/live acceptance keep their own prerequisites; an unavailable live source does not block
 authorized offline implementation.

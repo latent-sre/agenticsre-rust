@@ -513,7 +513,14 @@ impl Server {
                     .name("workbench-mcp-core".into())
                     .spawn(move || {
                         std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                            let result = if let Some(grant) = grants
+                            let result = if request.operation == "query.run" {
+                                workbench_core::execute_with_saved_query_grant(
+                                    request,
+                                    &worker_control,
+                                    &grants.context,
+                                    grants.grafana_identity.as_ref().ok_or(())?,
+                                )
+                            } else if let Some(grant) = grants
                                 .investigation_grant
                                 .as_ref()
                                 .filter(|grant| grant.allows(&request.operation))

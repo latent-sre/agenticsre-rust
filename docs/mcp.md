@@ -10,6 +10,13 @@ context resolution, evidence listing/inspection/comparison and report creation. 
 same bounded transport and the core's pinned offline authority. The initial five tools below
 remain unchanged; no tools are enabled by default.
 
+Installed saved queries add three independent grants: `queries.list`, `queries.describe` and
+`query.run`. The catalog grants need no configuration or credential and do no network work.
+`query.run` requires the launcher's `--config` and at least one `--target` ID. It uses the
+installed definition and the same pinned configuration, CA and credential checks as the existing
+Grafana observation; the wire cannot supply an expression or an ungranted target. Generic hosted
+saved-query requests remain refused. See [the saved-query contract](saved-queries.md).
+
 ## Mission
 
 A controlled MCP client discovers only its launcher-granted operations, runs a permitted command,
@@ -108,6 +115,12 @@ The additional tools are `workbench_context_resolve`, `workbench_evidence_list`,
 arguments, startup pairing and narrower offline limits are specified in the
 [investigation contract](investigation-mcp.md#tool-contracts). Context requires an explicit source
 and max-age policy; the four evidence/report operations require an existing private store.
+
+The saved-query tools are `workbench_queries_list` (empty inputs),
+`workbench_queries_describe` (installed `id` and `version`) and `workbench_query_run`
+(`target_id` plus the [query-run input](sre-workbench/schemas/query-run-input.schema.json)).
+The optional expected definition digest pins catalog discovery to execution. The first two tools
+are offline; the third inherits the 60-second Grafana deadline and 2 MiB receipt ceiling.
 
 Tool objects reject unknown fields. Limits use existing core names, defaults and operation-specific
 ceilings; normalized requests must still fit 64 KiB/depth 16. Schemas embed the authoritative core

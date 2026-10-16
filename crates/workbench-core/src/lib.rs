@@ -146,6 +146,27 @@ pub fn execute_with_authority_identities(
     )
 }
 
+/// Execute one installed saved query under an explicit launcher-pinned Grafana identity.
+/// The caller selects the granted target; this entrypoint never grants other operations.
+pub fn execute_with_saved_query_grant(
+    request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    expected_grafana_identity: &GrafanaConfigIdentity,
+) -> OperationResult {
+    execute_with_identities(
+        request,
+        control,
+        context,
+        Identities {
+            grafana: Some(expected_grafana_identity),
+            saved_query: true,
+            required: true,
+            ..Identities::default()
+        },
+    )
+}
+
 /// Explicit hosted diagnostic grant path. The caller admits the selected aliases with
 /// `diagnostics_grant`; generic hosted execution continues to refuse diagnostics.
 pub fn execute_with_diagnostic_grant(
@@ -173,6 +194,7 @@ struct Identities<'a> {
     policy: Option<&'a str>,
     grafana: Option<&'a GrafanaConfigIdentity>,
     diagnostics: Option<&'a DiagnosticsGrant>,
+    saved_query: bool,
     required: bool,
 }
 
@@ -233,7 +255,7 @@ fn execute_with_identities(
             "evidence_grants_unavailable",
             "Evidence store and collection grants are not implemented for hosted adapters; use the explicit operator CLI binding.",
         ));
-    } else if identities.required && request.operation == "query.run" {
+    } else if identities.required && request.operation == "query.run" && !identities.saved_query {
         result.reject(Problem::unsupported(
             "query_grants_unavailable",
             "Saved query grants are not implemented for hosted adapters; use the explicit operator CLI binding.",
@@ -243,6 +265,11 @@ fn execute_with_identities(
         && request.operation == "diagnostics.run"
     {
         result.reject(Problem::unsupported("diagnostics_grants_unavailable", "Diagnostics grants are not implemented for hosted adapters; use the explicit operator CLI binding."));
+    } else if identities.saved_query && request.operation != "query.run" {
+        result.reject(Problem::invalid(
+            "saved_query_grant_scope",
+            "This grant permits only an installed saved-query execution.",
+        ));
     } else if identities.required
         && identities.policy.is_none()
         && matches!(

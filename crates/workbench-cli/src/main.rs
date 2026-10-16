@@ -998,7 +998,7 @@ enum McpCommands {
         #[arg(
             long,
             value_name = "OPERATION",
-            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get, grafana.query, context.resolve, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no tools"
+            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get, grafana.query, queries.list, queries.describe, query.run, context.resolve, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no tools"
         )]
         allow: Vec<String>,
         #[arg(

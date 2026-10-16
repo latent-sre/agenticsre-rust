@@ -444,8 +444,20 @@ from discovery to pin the inspected definition. The existing credential provider
 The equivalent structured operation is `query.run`; see the
 [request example](sre-workbench/examples/request-saved-query.json). Direct and structured calls
 use the same core, receipt, transport deadline and cancellation behavior. Parameters are literal
-label values, and relative windows resolve once from the parent receipt's start time. Browser and
-MCP saved-query grants are not yet available. See [the query contract](saved-queries.md) for limits.
+label values, and relative windows resolve once from the parent receipt's start time. Browser
+saved-query grants are not yet available. For MCP catalog discovery, grant only the offline
+operations. Add an explicit configured target
+when granting query execution:
+
+```bash
+target/debug/save mcp serve --allow queries.list --allow queries.describe
+target/debug/save --config /absolute/path/operator.json mcp serve \
+  --allow queries.list --allow queries.describe --allow query.run --target fixture
+```
+
+The `workbench_query_run` tool accepts the installed definition ID/version, datasource, literal
+parameters, time window, optional expected definition digest and the granted `target_id`. Its
+expression comes only from the installed catalog. See [the MCP contract](mcp.md) for wire bounds.
 
 The retained context development archive below predates saved queries. Build current source for
 the new commands; its acceptance does not change the identity or contents of that archive.
