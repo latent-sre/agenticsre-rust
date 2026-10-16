@@ -513,7 +513,15 @@ impl Server {
                     .name("workbench-mcp-core".into())
                     .spawn(move || {
                         std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                            let result = if request.operation == "query.run" {
+                            let result = if request.operation == "diagnostics.run" {
+                                workbench_core::execute_with_diagnostic_grant(
+                                    request,
+                                    &worker_control,
+                                    &grants.context,
+                                    grants.policy_digest.as_deref(),
+                                    grants.diagnostic_grant.as_ref().ok_or(())?,
+                                )
+                            } else if request.operation == "query.run" {
                                 workbench_core::execute_with_saved_query_grant(
                                     request,
                                     &worker_control,

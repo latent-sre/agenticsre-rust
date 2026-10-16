@@ -998,7 +998,7 @@ enum McpCommands {
         #[arg(
             long,
             value_name = "OPERATION",
-            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get, grafana.query, queries.list, queries.describe, query.run, context.resolve, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no tools"
+            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get, grafana.query, queries.list, queries.describe, query.run, diagnostics.list, diagnostics.describe, diagnostics.run, context.resolve, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no tools"
         )]
         allow: Vec<String>,
         #[arg(
@@ -1013,6 +1013,12 @@ enum McpCommands {
             help = "Repeat trusted --config target IDs for Grafana grants"
         )]
         target: Vec<String>,
+        #[arg(
+            long,
+            value_name = "TARGET_ID",
+            help = "Repeat trusted --diagnostics-config target IDs for diagnostics.run"
+        )]
+        diagnostic_target: Vec<String>,
     },
 }
 
@@ -1647,6 +1653,7 @@ fn run() -> u8 {
                 allow,
                 root,
                 target,
+                diagnostic_target,
                 ..
             },
     } = &cli.command
@@ -1673,7 +1680,8 @@ fn run() -> u8 {
                         "evidence.list" | "evidence.open" | "evidence.compare" | "report.create"
                     )
                 }))
-            || cli.diagnostics_config.is_some()
+            || (cli.diagnostics_config.is_some()
+                && !allow.iter().any(|operation| operation == "diagnostics.run"))
             || cli.promtool.is_some()
         {
             workbench_mcp::invalid_startup();
@@ -1683,8 +1691,10 @@ fn run() -> u8 {
             allow: allow.clone(),
             roots: root.clone(),
             targets: target.clone(),
+            diagnostic_targets: diagnostic_target.clone(),
             read_policy: cli.read_policy.clone(),
             config: cli.config.clone(),
+            diagnostics_config: cli.diagnostics_config.clone(),
             context_source: cli.context_source.clone(),
             context_max_age_days: cli.context_max_age_days,
             evidence_store: cli.state_dir.clone().map(EvidenceStoreOptions::new),

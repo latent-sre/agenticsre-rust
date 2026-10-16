@@ -1938,8 +1938,27 @@ configuration. A direct-core regression confirms the saved-query grant cannot ru
 Grafana expression. The complete workspace Rust suite, strict Clippy, formatting and specification
 checks passed before the final scoped error-status and test-harness adjustments; the affected MCP
 suites passed on those final product bytes. Read-only review found no validated P0/P1/P2 issue in
-the current working-tree diff. This increment is uncommitted; an immutable-revision verdict,
-agent-host registration, live compatibility and native-platform support remain open.
+the pre-commit working-tree diff. This increment was committed locally as `c0e10b0`; it has not
+been pushed. Agent-host registration, live compatibility and native-platform support remain open.
+
+## WORKBENCH-030 — configured diagnostics through MCP
+
+**Status:** Implemented and locally exercised for the Linux stdio fixture scope in the
+[diagnostic MCP record](diagnostics-mcp-verification.md). Three independent grants expose fixed
+pack listing, description and execution. The first two need no target configuration. Execution
+requires an explicit diagnostic configuration and selected `--diagnostic-target` IDs, separate
+from Grafana's `--target` IDs. The existing core diagnostic grant checks exact configuration and
+CA bytes at every invocation; wire inputs cannot provide endpoints, process selectors or trust
+overrides.
+
+The installed-copy mission produced schema-valid five-check receipts under both supported MCP
+protocol revisions and direct CLI parity. It exercised zero-effect wire/startup refusals and
+changed-configuration refusal before repeat network work. MCP unit tests and affected existing
+MCP suites passed; ordinary build, strict affected-package Clippy, formatting and specification
+checks passed. Independent read-only source review found no validated P0/P1/P2 issue in the
+pre-commit diff; it did not rerun tests. Work is committed locally and has not been pushed. Actual agent-host
+registration, live compatibility, native Windows and the positive system-resolver fixture gap
+remain open.
 
 ## Remaining product queue
 
@@ -1955,9 +1974,9 @@ and [verification](sre-workbench/verification.md).
 | CAP-03 Grafana observations | [Dashboard/PromQL/LogQL controlled fixtures](grafana-verification.md) | Selected live compatibility; search/history/alerts/inventory increments |
 | CAP-04 named tasks | [Dashboard hygiene](dashboard-verification.md) and [error budget](error-budget-verification.md) | Additional reviewed task/runtime/platform bindings and compatibility |
 | CAP-05 CLI/discovery | Accepted public CLI, help, JSON, availability and refusal paths in the linked slice records | Discovery/help for each future capability and native host usability |
-| CAP-06 MCP | [Bounded stdio tasks, restricted commands and Grafana](mcp-verification.md), plus [offline investigations](investigation-mcp-verification.md) and [local saved-query grants](query-mcp-verification.md) | Actual selected agent-host registration; diagnostic and future operation grants |
+| CAP-06 MCP | [Bounded stdio tasks, restricted commands and Grafana](mcp-verification.md), plus [offline investigations](investigation-mcp-verification.md), [saved-query grants](query-mcp-verification.md) and [local diagnostic grants](diagnostics-mcp-verification.md) | Actual selected agent-host registration and future operation grants |
 | CAP-07 context | [Offline core/CLI source resolver](context-verification.md), [pinned browser context](investigation-ui-verification.md) and [MCP context](investigation-mcp-verification.md) | Approved real team source and live target selection |
-| CAP-08 diagnostics | WORKBENCH-010 core/CLI and [WORKBENCH-011 browser](diagnostics-ui-verification.md) qualified native acceptance with frozen correctness/security reviews | Positive system-resolver fixture gap and later live/platform bindings |
+| CAP-08 diagnostics | WORKBENCH-010 core/CLI and [WORKBENCH-011 browser](diagnostics-ui-verification.md) qualified native acceptance with frozen correctness/security reviews; [local MCP grants](diagnostics-mcp-verification.md) | Positive system-resolver fixture gap and later live/platform bindings |
 | CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery | Other operation recording policies, collection/MCP grants and live/platform acceptance |
 | CAP-10 comparison | [Typed Linux fixture comparison](evidence-comparison-verification.md), [browser](investigation-ui-verification.md) and [MCP](investigation-mcp-verification.md), compatibility, normalization and explicit missing/partial outcomes | Live datasource/plugin compatibility, other supported evidence kinds and native-platform acceptance |
 | CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted; [local MCP grants](query-mcp-verification.md) | Dependent browser grants and live/platform acceptance |
@@ -1992,8 +2011,8 @@ multiple-target collection and persistent observational schedules are accepted f
 Linux scopes. The named local configuration-change consumer under WORKBENCH-026 is also accepted,
 including exact-plan approval, target preconditions, readback and reconciliation without replay.
 The local context and evidence/compare/report browser increment under CAP-23 and corresponding
-MCP investigation grants are also accepted. Local saved-query MCP grants have fixture evidence.
-Remaining browser/catalog surfaces and diagnostic MCP grants, additional controlled-change consumers and connector
+MCP investigation grants are also accepted. Local saved-query and diagnostic MCP grants have
+fixture evidence. Remaining browser/catalog surfaces, additional controlled-change consumers and connector
 families retain their own scopes. Continue in the delivery plan's dependency order. Connector work
 and native/live acceptance keep their own prerequisites; an unavailable live source does not block
 authorized offline implementation.

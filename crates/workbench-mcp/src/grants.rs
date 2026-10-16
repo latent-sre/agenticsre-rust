@@ -3,7 +3,8 @@ use std::{
     path::PathBuf,
 };
 use workbench_core::{
-    EvidenceStoreOptions, GrafanaConfigIdentity, InvestigationGrant, OperatorContext,
+    DiagnosticsGrant, EvidenceStoreOptions, GrafanaConfigIdentity, InvestigationGrant,
+    OperatorContext,
 };
 
 pub(crate) const INVESTIGATION_OPERATIONS: [&str; 5] = [
@@ -19,8 +20,10 @@ pub struct Options {
     pub allow: Vec<String>,
     pub roots: Vec<String>,
     pub targets: Vec<String>,
+    pub diagnostic_targets: Vec<String>,
     pub read_policy: Option<PathBuf>,
     pub config: Option<PathBuf>,
+    pub diagnostics_config: Option<PathBuf>,
     pub context_source: Option<PathBuf>,
     pub context_max_age_days: Option<u16>,
     pub evidence_store: Option<EvidenceStoreOptions>,
@@ -33,6 +36,7 @@ pub(crate) struct Grants {
     pub context: OperatorContext,
     pub policy_digest: Option<String>,
     pub grafana_identity: Option<GrafanaConfigIdentity>,
+    pub diagnostic_grant: Option<DiagnosticsGrant>,
     pub investigation_grant: Option<InvestigationGrant>,
 }
 
@@ -50,6 +54,9 @@ impl Grants {
                     | "queries.list"
                     | "queries.describe"
                     | "query.run"
+                    | "diagnostics.list"
+                    | "diagnostics.describe"
+                    | "diagnostics.run"
             ) && !INVESTIGATION_OPERATIONS.contains(&operation.as_str())
                 || !operations.insert(operation.clone())
             {
@@ -74,6 +81,21 @@ impl Grants {
         }
         if !grafana && (options.config.is_some() || !options.targets.is_empty()) {
             return Err("--config and --target require a Grafana grant");
+        }
+        let diagnostics = operations.contains("diagnostics.run");
+        if diagnostics
+            && (options.diagnostics_config.is_none() || options.diagnostic_targets.is_empty())
+        {
+            return Err(
+                "diagnostics.run requires --diagnostics-config and at least one --diagnostic-target ID",
+            );
+        }
+        if !diagnostics
+            && (options.diagnostics_config.is_some() || !options.diagnostic_targets.is_empty())
+        {
+            return Err(
+                "--diagnostics-config and --diagnostic-target require a diagnostics.run grant",
+            );
         }
         let context_resolution = operations.contains("context.resolve");
         if context_resolution
@@ -107,8 +129,12 @@ impl Grants {
         }
         let root_ids: BTreeSet<_> = options.roots.iter().collect();
         let targets: BTreeSet<_> = options.targets.iter().cloned().collect();
+        let diagnostic_targets: BTreeSet<_> = options.diagnostic_targets.iter().cloned().collect();
         if root_ids.len() != options.roots.len() || targets.len() != options.targets.len() {
             return Err("--root and --target IDs must be unique");
+        }
+        if diagnostic_targets.len() != options.diagnostic_targets.len() {
+            return Err("--diagnostic-target IDs must be unique");
         }
         let investigation_grant = if context_resolution || evidence {
             // Only the opaque grant retains offline paths. The generic hosted context below
@@ -133,6 +159,14 @@ impl Grants {
             None
         };
         let mut context = OperatorContext::default();
+        let diagnostic_grant = if let Some(path) = &options.diagnostics_config {
+            let grant = workbench_core::diagnostics_grant(path, &options.diagnostic_targets)
+                .map_err(|_| "the diagnostic configuration, selected targets or CA could not be admitted")?;
+            context.diagnostics_config_path = Some(path.clone());
+            Some(grant)
+        } else {
+            None
+        };
         let mut roots = BTreeMap::new();
         let mut policy_digest = None;
         if let Some(path) = &options.read_policy {
@@ -183,6 +217,7 @@ impl Grants {
             context,
             policy_digest,
             grafana_identity,
+            diagnostic_grant,
             investigation_grant,
         })
     }
@@ -254,6 +289,29 @@ mod tests {
         assert_eq!(
             denied.err(),
             Some("--config and --target require a Grafana grant")
+        );
+    }
+
+    #[test]
+    fn diagnostic_catalog_is_offline_and_execution_requires_its_own_authority() {
+        let catalog = Grants::new(&Options {
+            allow: vec!["diagnostics.list".into(), "diagnostics.describe".into()],
+            ..Options::default()
+        })
+        .unwrap();
+        assert_eq!(catalog.operations.len(), 2);
+        assert!(catalog.targets.is_empty());
+        assert!(catalog.grafana_identity.is_none());
+
+        assert_eq!(
+            Grants::new(&Options {
+                allow: vec!["diagnostics.run".into()],
+                ..Options::default()
+            })
+            .err(),
+            Some(
+                "diagnostics.run requires --diagnostics-config and at least one --diagnostic-target ID"
+            )
         );
     }
 

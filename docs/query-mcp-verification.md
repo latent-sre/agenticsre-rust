@@ -1,8 +1,8 @@
 # Saved-query MCP local verification
 
 WORKBENCH-029 extends the bounded Linux stdio adapter with three independent installed-query
-grants. This record describes the current uncommitted `codex/offline-evidence` working tree based
-on `4644ab3`; no published revision or live agent-host registration is claimed.
+grants. The verified work was committed as `c0e10b0` on `codex/offline-evidence`, based on
+`4644ab3`; no push or live agent-host registration is claimed.
 
 The real-pipe fixture copies the ordinary executable to a private location outside the checkout.
 It discovers the two installed definitions without a connection or credential, then executes
@@ -17,8 +17,8 @@ implementation and first installed-copy tests. Formatting, strict all-target/all
 `git diff --check` and specification verification also passed. The final direct-core error-status
 test and unique staged executable copy were added afterward; the two affected MCP integration
 suites passed on those final product bytes. A read-only review found no validated P0/P1/P2 issue
-in the working-tree diff; it reserved an immutable-revision verdict because this work is not yet
-committed.
+in the pre-commit working-tree diff. The commit contains the same reviewed product bytes; no new
+runtime or static review is claimed solely from recording that revision.
 
 ```bash
 tools/test-sandbox.sh cargo test --workspace --all-features --locked --offline

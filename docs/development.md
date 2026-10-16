@@ -255,6 +255,20 @@ optional limits, never filesystem paths. Reports return content to the caller. T
 The launcher refuses unused source/store flags and does not create a missing store. These
 instructions do not register an integration with an agent host.
 
+For configured connectivity diagnostics, grant the fixed pack and choose diagnostic target IDs
+from its separate trusted configuration:
+
+```bash
+target/debug/save mcp serve --allow diagnostics.list --allow diagnostics.describe
+target/debug/save --diagnostics-config /absolute/path/targets.json mcp serve \
+  --allow diagnostics.list --allow diagnostics.describe --allow diagnostics.run \
+  --diagnostic-target fixture-web
+```
+
+The catalog grants need no target or configuration. `workbench_diagnostics_run` accepts only a
+granted `target_id`, `id=connectivity`, `version=1`, typed pack input and bounded limits. Grafana
+targets continue to use `--target`. See [the MCP contract](mcp.md) for wire behavior.
+
 ## Local verification
 
 The fixed dashboard task uses system Python 3.11+ and the embedded checker. From the repository

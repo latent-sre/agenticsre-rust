@@ -17,6 +17,13 @@ installed definition and the same pinned configuration, CA and credential checks
 Grafana observation; the wire cannot supply an expression or an ungranted target. Generic hosted
 saved-query requests remain refused. See [the saved-query contract](saved-queries.md).
 
+Configured diagnostics add `diagnostics.list`, `diagnostics.describe` and `diagnostics.run` as
+independent grants. The catalog tools are offline. Execution requires the launcher's
+`--diagnostics-config` and at least one `--diagnostic-target` ID; these IDs are separate from
+Grafana's `--target` IDs. The adapter reuses the core's opaque diagnostic grant, including the
+configuration and CA byte checks at each run. Wire arguments cannot choose endpoints, process
+identities, resolvers, trust files or another target. See [the diagnostic contract](diagnostics.md).
+
 ## Mission
 
 A controlled MCP client discovers only its launcher-granted operations, runs a permitted command,
@@ -121,6 +128,14 @@ The saved-query tools are `workbench_queries_list` (empty inputs),
 (`target_id` plus the [query-run input](sre-workbench/schemas/query-run-input.schema.json)).
 The optional expected definition digest pins catalog discovery to execution. The first two tools
 are offline; the third inherits the 60-second Grafana deadline and 2 MiB receipt ceiling.
+
+The diagnostic tools are `workbench_diagnostics_list` (empty inputs),
+`workbench_diagnostics_describe` (`id=connectivity`) and `workbench_diagnostics_run`
+(`target_id` plus the [fixed pack input](sre-workbench/schemas/diagnostics-run-input.schema.json)).
+The run tool normalizes the same defaults as the core: body capture off, continue after failure,
+30-second deadline, 16 KiB data allowance and concurrency two. Callers may lower those limits;
+the maximum deadline is 60 seconds and concurrency never exceeds two. Receipts remain the unchanged
+core results, including partial, blocked, cancelled and timed-out observations.
 
 Tool objects reject unknown fields. Limits use existing core names, defaults and operation-specific
 ceilings; normalized requests must still fit 64 KiB/depth 16. Schemas embed the authoritative core
