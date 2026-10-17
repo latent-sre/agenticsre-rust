@@ -51,7 +51,7 @@ impl EvidenceStoreOptions {
     }
 
     pub(crate) fn validate(&self) -> Result<(), StoreError> {
-        if self.directory.as_os_str().is_empty()
+        if !self.directory.is_absolute()
             || !(1..=MAX_STORE_BYTES).contains(&self.max_bytes)
             || !(1..=3650).contains(&self.retention_days)
         {

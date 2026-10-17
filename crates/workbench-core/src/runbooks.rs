@@ -185,6 +185,39 @@ fn pin(
 fn valid_timestamp(s: &str) -> bool {
     time::OffsetDateTime::parse(s, &time::format_description::well_known::Rfc3339).is_ok()
 }
+fn receipt_binding_matches(data: &Value, index: usize, pinned: &Input, usable: bool) -> bool {
+    let matches = |bundle: &Value, reference: &Reference| {
+        bundle["id"] == reference.id
+            && bundle["digest"].as_str() == reference.expected_manifest_sha256.as_deref()
+    };
+    if index < 2 {
+        let reference = if index == 0 {
+            &pinned.before
+        } else {
+            &pinned.after
+        };
+        if (usable || data.get("bundle").is_some()) && !matches(&data["bundle"], reference) {
+            return false;
+        }
+        if let Some(manifest) = data.get("manifest") {
+            return matches(&data["bundle"], reference)
+                && manifest["id"] == reference.id
+                && manifest["payload"]["run_id"] == reference.id;
+        }
+        true
+    } else {
+        // Failures before source loading can have no comparison data. Once any
+        // source identity is present, including on interrupted comparisons, all
+        // of its bindings must agree with the run's immutable input pins.
+        !(usable
+            || ["before", "after", "normalization"]
+                .iter()
+                .any(|key| data.get(key).is_some()))
+            || (matches(&data["before"]["bundle"], &pinned.before)
+                && matches(&data["after"]["bundle"], &pinned.after)
+                && data["normalization"] == pinned.normalization)
+    }
+}
 fn validate(s: &State) -> Result<(), &'static str> {
     let bad = || "runbook_corrupt_state";
     if s.definition != identity() {
@@ -335,7 +368,9 @@ fn validate(s: &State) -> Result<(), &'static str> {
                 } else {
                     status == "succeeded"
                 };
-                if (step.state == "completed") != usable {
+                if (step.state == "completed") != usable
+                    || !receipt_binding_matches(&r["data"], idx, &s.pinned, usable)
+                {
                     return Err(bad());
                 }
             }
@@ -358,6 +393,16 @@ fn validate(s: &State) -> Result<(), &'static str> {
             return Err(bad());
         }
         if idx > s.next && step.state != "pending" {
+            return Err(bad());
+        }
+        if idx == s.next
+            && step.state
+                != if s.state == "waiting" {
+                    "waiting"
+                } else {
+                    "pending"
+                }
+        {
             return Err(bad());
         }
     }
@@ -603,12 +648,8 @@ fn execute(
             "auto"
         };
     }
-    let mut store = store::Store::open(
-        directory,
-        is_new && fresh.is_none(),
-        invocation_deadline + Duration::from_millis(2500),
-    )
-    .map_err(|e| {
+    let mut store = store::Store::open(directory, is_new && fresh.is_none(), invocation_deadline)
+        .map_err(|e| {
         if e.effects {
             result.effect_outcome = "unknown".into();
         }
@@ -663,6 +704,7 @@ fn execute(
                 .as_millis() as u64,
             fresh_from: fresh,
         };
+        active(control, invocation_deadline)?;
         let digest = store
             .create(&id, &serde_json::to_value(&s).unwrap())
             .map_err(|e| {
@@ -689,6 +731,7 @@ fn execute(
     };
     render(&state, &revision_digest, result);
     if is_status {
+        active(control, invocation_deadline)?;
         render(&state, &revision_digest, result);
         result.effect_outcome = "not_applicable".into();
         result.execution.status = Status::Succeeded;
@@ -701,6 +744,7 @@ fn execute(
     };
     let deadline =
         invocation_deadline.min(start + Duration::from_millis(state.remaining_timeout_ms));
+    store.set_deadline(deadline);
     if !is_new {
         if request.inputs["expected_revision"].as_u64() != Some(state.revision) {
             return Err("runbook_revision_mismatch");
@@ -734,7 +778,7 @@ fn execute(
     }
     while state.next < 6 {
         if let Err(code) = active(control, deadline) {
-            store.set_deadline(Instant::now() + Duration::from_millis(2500));
+            store.allow_finalization(Instant::now() + Duration::from_millis(2500));
             state.state = "interrupted".into();
             revision_digest = persist(&mut store, &mut state, deadline, result)?;
             render(&state, &revision_digest, result);
@@ -779,7 +823,7 @@ fn execute(
         persist(&mut store, &mut state, deadline, result)?;
         // Durable intent precedes dispatch. A crash here is deliberately uncertain.
         if let Err(code) = active(control, deadline) {
-            store.set_deadline(Instant::now() + Duration::from_millis(2500));
+            store.allow_finalization(Instant::now() + Duration::from_millis(2500));
             state.in_flight = None;
             state.state = "interrupted".into();
             persist(&mut store, &mut state, deadline, result)?;
@@ -806,9 +850,6 @@ fn execute(
         child.limits.max_items = if n == 2 { Some(100) } else { None };
         child.record = "never".into();
         let receipt = crate::execute_runbook_child(child, control, context, deadline);
-        if active(control, deadline).is_err() {
-            store.set_deadline(Instant::now() + Duration::from_millis(2500));
-        }
         let usable = if n == 2 {
             matches!(
                 receipt.execution.status,
@@ -834,7 +875,16 @@ fn execute(
         if halt {
             fail_remaining(&mut state);
         }
+        // Only publication of the observation already returned by the child may
+        // use cleanup time. Restore the work deadline before admitting any step.
+        let finalization_deadline = if active(control, deadline).is_err() {
+            Instant::now() + Duration::from_millis(2500)
+        } else {
+            deadline + Duration::from_millis(2500)
+        };
+        store.allow_finalization(finalization_deadline);
         revision_digest = persist(&mut store, &mut state, deadline, result)?;
+        store.set_deadline(deadline);
         result.effect_outcome = "succeeded".into();
         if state.state == "failed" {
             active(control, deadline)?;
@@ -895,13 +945,12 @@ mod tests {
         x["before"]["expected_manifest_sha256"] = Value::Null;
         assert!(input(&x).is_err());
     }
-    #[test]
-    fn state_rejects_wrong_identity_branch_and_budget() {
+    fn initial_state() -> State {
         let input=input(&json!({"before":{"id":"run-1-ab-0"},"after":{"id":"run-1-ac-0"},"normalization":"exact-window-v1","on_failure":"stop"})).unwrap();
         let mut pinned = input.clone();
         pinned.before.expected_manifest_sha256 = Some(format!("sha256:{}", "0".repeat(64)));
         pinned.after.expected_manifest_sha256 = pinned.before.expected_manifest_sha256.clone();
-        let state = State {
+        State {
             format_version: 1,
             run_id: "run-1-ad-0".into(),
             revision: 1,
@@ -929,7 +978,37 @@ mod tests {
                 .collect(),
             remaining_timeout_ms: 30_000,
             fresh_from: None,
-        };
+        }
+    }
+    fn observed_state() -> State {
+        let mut state = initial_state();
+        for n in 0..3 {
+            let mut receipt = OperationResult::new(&Request::new(
+                if n == 2 {
+                    "evidence.compare"
+                } else {
+                    "evidence.show"
+                },
+                json!({}),
+            ));
+            receipt.execution.status = Status::Succeeded;
+            let bundle = |r: &Reference| json!({"id":r.id,"digest":r.expected_manifest_sha256});
+            receipt.data = if n == 2 {
+                json!({"state":"complete","before":{"bundle":bundle(&state.pinned.before)},
+                    "after":{"bundle":bundle(&state.pinned.after)},"normalization":state.pinned.normalization})
+            } else {
+                json!({"bundle":bundle(if n == 0 { &state.pinned.before } else { &state.pinned.after })})
+            };
+            state.steps[n].state = "completed".into();
+            state.steps[n].receipt = Some(serde_json::to_value(receipt).unwrap());
+        }
+        state.state = "running".into();
+        state.next = 3;
+        state
+    }
+    #[test]
+    fn state_rejects_wrong_identity_branch_and_budget() {
+        let state = initial_state();
         assert!(validate(&state).is_ok());
         let original = serde_json::to_value(state).unwrap();
         for (key, value) in [
@@ -963,6 +1042,150 @@ mod tests {
         let mut v = original;
         v["steps"][3]["condition"] = json!(true);
         assert!(validate(&serde_json::from_value(v).unwrap()).is_err());
+    }
+    #[test]
+    fn current_step_must_be_pending_unless_waiting_or_terminal() {
+        let observed = observed_state();
+        assert!(validate(&observed).is_ok());
+        for n in 0..3 {
+            let mut state = observed_state();
+            state.next = n;
+            for step in &mut state.steps[n + 1..] {
+                step.state = "pending".into();
+                step.receipt = None;
+            }
+            assert_eq!(validate(&state), Err("runbook_corrupt_state"), "step {n}");
+            state.steps[n].state = "failed".into();
+            state.steps[n].receipt.as_mut().unwrap()["execution"]["status"] = json!("failed");
+            assert_eq!(
+                validate(&state),
+                Err("runbook_corrupt_state"),
+                "failed step {n}"
+            );
+        }
+        let mut state = observed_state();
+        state.next = 2;
+        state.steps[2].state = "skipped".into();
+        state.steps[2].receipt = None;
+        assert_eq!(validate(&state), Err("runbook_corrupt_state"));
+        let mut state = observed_state();
+        state.steps[3].state = "acknowledged".into();
+        state.steps[3].condition = Some(true);
+        state.steps[3].acknowledged_at = Some(timestamp());
+        assert_eq!(validate(&state), Err("runbook_corrupt_state"));
+        state.next = 4;
+        state.steps[4].state = "skipped".into();
+        state.steps[4].condition = Some(false);
+        assert_eq!(validate(&state), Err("runbook_corrupt_state"));
+    }
+    #[test]
+    fn retained_observations_are_bound_to_pinned_sources_and_normalization() {
+        for (n, pointer, replacement) in [
+            (0, "/bundle/id", json!("run-1-ff-0")),
+            (
+                1,
+                "/bundle/digest",
+                json!(format!("sha256:{}", "f".repeat(64))),
+            ),
+            (2, "/before/bundle/id", json!("run-1-ff-0")),
+            (
+                2,
+                "/after/bundle/digest",
+                json!(format!("sha256:{}", "f".repeat(64))),
+            ),
+            (2, "/normalization", json!("window-offset-v1")),
+        ] {
+            let mut state = observed_state();
+            *state.steps[n].receipt.as_mut().unwrap()["data"]
+                .pointer_mut(pointer)
+                .unwrap() = replacement;
+            assert_eq!(
+                validate(&state),
+                Err("runbook_corrupt_state"),
+                "{n} {pointer}"
+            );
+        }
+        let mut missing = observed_state();
+        missing.steps[2].receipt.as_mut().unwrap()["data"]
+            .as_object_mut()
+            .unwrap()
+            .remove("before");
+        assert_eq!(validate(&missing), Err("runbook_corrupt_state"));
+    }
+    #[test]
+    fn failed_receipts_can_omit_sources_but_cannot_substitute_them() {
+        for data in [
+            Value::Null,
+            json!({"completed":[]}),
+            json!({"cancellation_signal":15}),
+        ] {
+            let mut state = observed_state();
+            state.steps[2].state = "failed".into();
+            let receipt = state.steps[2].receipt.as_mut().unwrap();
+            receipt["execution"]["status"] = json!("timed_out");
+            receipt["data"] = data;
+            fail_remaining(&mut state);
+            assert!(validate(&state).is_ok());
+        }
+        let mut state = observed_state();
+        state.steps[2].state = "failed".into();
+        let receipt = state.steps[2].receipt.as_mut().unwrap();
+        receipt["execution"]["status"] = json!("timed_out");
+        receipt["data"]["state"] = json!("partial");
+        fail_remaining(&mut state);
+        assert!(validate(&state).is_ok());
+        state.steps[2].receipt.as_mut().unwrap()["data"]["before"]["bundle"]["id"] =
+            json!("run-1-ff-0");
+        assert_eq!(validate(&state), Err("runbook_corrupt_state"));
+    }
+    #[cfg(target_os = "linux")]
+    #[test]
+    fn status_scan_uses_work_deadline_without_cleanup_allowance() {
+        use std::{fs, os::unix::fs::PermissionsExt};
+        let directory = std::env::temp_dir().join(crate::result::new_id("runbook-budget"));
+        let state = initial_state();
+        {
+            let mut store =
+                store::Store::open(&directory, true, Instant::now() + Duration::from_secs(10))
+                    .unwrap();
+            store
+                .create(&state.run_id, &serde_json::to_value(&state).unwrap())
+                .unwrap();
+        }
+        // A bounded scan of valid, sizable journals consumes the one-millisecond
+        // work budget without sleeping or relying on blocked filesystem calls.
+        for n in 0..8 {
+            let id = format!("run-1-ff-{n}");
+            let path = directory.join(format!("{id}.json"));
+            fs::write(
+                &path,
+                serde_json::to_vec(&json!({
+                    "format_version":1,"run_id":id,"revision":1,"padding":"x".repeat(128 * 1024)
+                }))
+                .unwrap(),
+            )
+            .unwrap();
+            fs::set_permissions(path, fs::Permissions::from_mode(0o600)).unwrap();
+        }
+        let path = directory.join(format!("{}.json", state.run_id));
+        let before = fs::read(&path).unwrap();
+        let mut request = Request::new("runbook.status", json!({"run_id":state.run_id}));
+        request.limits.timeout_ms = 1;
+        let result = crate::execute_with_context(
+            request,
+            &RunControl::default(),
+            &OperatorContext {
+                runbook_state_dir: Some(directory.clone()),
+                ..Default::default()
+            },
+        );
+        assert_eq!(result.execution.status, Status::TimedOut, "{result:?}");
+        assert!(result.errors.iter().any(|e| matches!(
+            e.code.as_str(),
+            "deadline_exceeded" | "store_deadline_exceeded"
+        )));
+        assert_eq!(fs::read(path).unwrap(), before);
+        fs::remove_dir_all(directory).unwrap();
     }
     #[test]
     fn failure_policy_stops_denial_and_never_bypasses_prerequisites() {

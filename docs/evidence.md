@@ -67,6 +67,8 @@ during output delivery, that exit code may be the only delivery notice available
 The first consumer settles DEC-08 on a local, versioned file store. Explicit startup
 `--state-dir`, `--store-max-bytes` and `--retention-days` options select the trusted policy;
 wire requests cannot select filesystem paths or change quotas. Defaults are one GiB and seven days.
+The store directory must be absolute; relative paths are refused before filesystem effects so
+restarting from a different working directory cannot silently select another store.
 The initial maximum is one GiB, 1,024 runs and eight MiB reserved per collection. A bounded derived
 reservation honors tighter response limits. Scans count metadata, artifacts and staging bytes.
 No younger run is silently evicted to admit another collection.
@@ -99,6 +101,17 @@ quota and synchronization failures cannot yield complete capture or a successful
 Explicit recovery reconciles abandoned intents/checkpoints into interrupted partial records;
 it never repeats HTTP work. Readers distinguish sealed, interrupted and corrupt records. A
 read-after-restart must revalidate object type, size, digest and supported receipt/manifest shape.
+
+Failure before the initial intent is published can leave a generated run directory with no
+committed observations. Explicit `evidence recover` recognizes only bounded initial-construction
+layouts and removes those abandoned directories, reporting their IDs under `deleted`; it never
+fabricates an interrupted bundle. Unknown formats, unsafe entries and noninitial layouts remain
+untouched. Completed cleanup is also reported if a later recovery action is cancelled or fails.
+
+A sealed bundle containing a non-temporary artifact absent from its manifest fails integrity
+validation. Reading, comparison and bulk retention cannot treat it as valid. Explicit deletion
+can reclaim such a run only after validating the original manifest, every extra receipt and its
+content-derived filename, any supplied manifest pin, and the existing protection rules.
 
 Cancellation finalization may use at most a declared 2.5-second cleanup allowance for already
 observed bytes and incomplete metadata; it cannot dispatch another observation. No detached writer

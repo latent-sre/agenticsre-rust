@@ -32,6 +32,7 @@ mod platform {
         root: Directory,
         _lock: File,
         deadline: Instant,
+        finalization_ceiling: Instant,
         effects: bool,
     }
 
@@ -112,6 +113,11 @@ mod platform {
                 if value != serde_json::json!({"format_version":1,"kind":"guided-runbooks"}) {
                     return Err(StoreError::new("store_unsupported_format", false));
                 }
+            } else if let Some(id) = run_name(&name) {
+                let bytes = fs::read(root, &name, MAX_STATE)?;
+                check(deadline)?;
+                state(&bytes, id)?;
+                check(deadline)?;
             }
             if layout.runs > MAX_RUNS || layout.staging > MAX_STAGING {
                 return Err(StoreError::new("store_layout_limit", false));
@@ -161,6 +167,7 @@ mod platform {
                     root,
                     _lock: lock,
                     deadline,
+                    finalization_ceiling: deadline + std::time::Duration::from_millis(2500),
                     effects: created || lock_created,
                 };
                 let initialized = (|| {
@@ -182,9 +189,19 @@ mod platform {
             result.map_err(|e| if created { e.after_effects() } else { e })
         }
 
-        /// Runtime may shorten its reserved cleanup budget; this cannot extend any deadline.
+        /// Narrow active work and its associated finalization ceiling together.
         pub(in crate::runbooks) fn set_deadline(&mut self, deadline: Instant) {
             self.deadline = self.deadline.min(deadline);
+            self.finalization_ceiling = self
+                .finalization_ceiling
+                .min(deadline + std::time::Duration::from_millis(2500));
+        }
+
+        /// Only persist already-observed work under the original bounded cleanup allowance.
+        /// The caller must restore the active deadline before admitting more work.
+        pub(in crate::runbooks) fn allow_finalization(&mut self, deadline: Instant) {
+            self.finalization_ceiling = self.finalization_ceiling.min(deadline);
+            self.deadline = self.finalization_ceiling;
         }
 
         pub(in crate::runbooks) fn load(&self, id: &str) -> Result<(Value, String), StoreError> {
@@ -480,6 +497,18 @@ mod platform {
                 StoreError::new("store_deadline_exceeded", false)
             );
             assert_eq!(root.names(), vec!["format.json", "lock"]);
+            store.allow_finalization(earlier + Duration::from_secs(30));
+            assert_eq!(store.deadline, earlier + Duration::from_millis(2500));
+            let cancelled_ceiling = earlier + Duration::from_millis(50);
+            store.allow_finalization(cancelled_ceiling);
+            store.allow_finalization(earlier + Duration::from_secs(30));
+            assert_eq!(store.deadline, cancelled_ceiling);
+            store.set_deadline(earlier);
+            assert_eq!(
+                store.create(ID, &value(1)).unwrap_err(),
+                StoreError::new("store_deadline_exceeded", false)
+            );
+            assert_eq!(root.names(), vec!["format.json", "lock"]);
         }
 
         #[test]
@@ -516,7 +545,10 @@ mod platform {
             );
             drop(store);
             for n in 0..MAX_RUNS {
-                root.put(&format!("run-1-a-{n:x}.json"), b"{}");
+                let id = format!("run-1-a-{n:x}");
+                let mut state = value(1);
+                state["run_id"] = serde_json::json!(id);
+                root.put(&format!("{id}.json"), &serde_json::to_vec(&state).unwrap());
             }
             let mut store = root.open(false).unwrap();
             assert_eq!(
@@ -524,20 +556,22 @@ mod platform {
                 StoreError::new("store_layout_limit", false)
             );
             drop(store);
-            root.put("run-2-a-b.json", b"{}");
+            let mut state = value(1);
+            state["run_id"] = serde_json::json!("run-2-a-b");
+            root.put("run-2-a-b.json", &serde_json::to_vec(&state).unwrap());
             assert_eq!(root.open(false).unwrap_err().code, "store_layout_limit");
 
             let root = Root::new();
             drop(root.open(true).unwrap());
-            // Sparse regular private files establish a real metadata quota without filling disk.
+            // Retained journals must remain valid when exercising the real storage quota.
             for n in 0..31 {
-                root.put(&format!("run-1-a-{n:x}.json"), b"");
-                fs::OpenOptions::new()
-                    .write(true)
-                    .open(root.0.join(format!("run-1-a-{n:x}.json")))
-                    .unwrap()
-                    .set_len(MAX_STATE as u64)
-                    .unwrap();
+                let id = format!("run-1-a-{n:x}");
+                let mut state = value(1);
+                state["run_id"] = serde_json::json!(id);
+                state["padding"] = Value::String(String::new());
+                let overhead = serde_json::to_vec(&state).unwrap().len();
+                state["padding"] = Value::String("x".repeat(MAX_STATE - overhead));
+                root.put(&format!("{id}.json"), &serde_json::to_vec(&state).unwrap());
             }
             let mut store = root.open(false).unwrap();
             let mut near_limit = value(1);
@@ -580,6 +614,53 @@ mod platform {
                 serde_json::json!(u64::MAX)
             );
         }
+
+        #[test]
+        fn foreign_unknown_format_blocks_open_create_and_replace_without_effects() {
+            for operation in ["open", "create", "replace"] {
+                let root = Root::new();
+                let mut initial = root.open(true).unwrap();
+                initial.create(ID, &value(1)).unwrap();
+                drop(initial);
+                let mut store = root.open(false).unwrap();
+                let foreign_id = "run-2-ab-cd";
+                let foreign = serde_json::json!({
+                    "format_version":2,"run_id":foreign_id,"revision":1,"future_state":true
+                });
+                let foreign_bytes = serde_json::to_vec(&foreign).unwrap();
+                root.put(&format!("{foreign_id}.json"), &foreign_bytes);
+                let names_before = root.names();
+                let original = fs::read(root.0.join(format!("{ID}.json"))).unwrap();
+                let error = match operation {
+                    "open" => {
+                        drop(store);
+                        root.open(false).unwrap_err()
+                    }
+                    "create" => {
+                        let new_id = "run-3-ab-cd";
+                        let mut next = value(1);
+                        next["run_id"] = serde_json::json!(new_id);
+                        store.create(new_id, &next).unwrap_err()
+                    }
+                    "replace" => store.replace(ID, 1, &value(2)).unwrap_err(),
+                    _ => unreachable!(),
+                };
+                assert_eq!(
+                    error,
+                    StoreError::new("store_unsupported_format", false),
+                    "{operation}"
+                );
+                assert_eq!(root.names(), names_before, "{operation}");
+                assert_eq!(
+                    fs::read(root.0.join(format!("{ID}.json"))).unwrap(),
+                    original
+                );
+                assert_eq!(
+                    fs::read(root.0.join(format!("{foreign_id}.json"))).unwrap(),
+                    foreign_bytes
+                );
+            }
+        }
     }
 }
 
@@ -594,6 +675,7 @@ impl Store {
         Err(StoreError::new("store_platform_unavailable", false))
     }
     pub(super) fn set_deadline(&mut self, _: Instant) {}
+    pub(super) fn allow_finalization(&mut self, _: Instant) {}
     pub(super) fn load(&self, _: &str) -> Result<(Value, String), StoreError> {
         Err(StoreError::new("store_platform_unavailable", false))
     }
