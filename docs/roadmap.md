@@ -17,6 +17,10 @@ deletion. A separate test-only staged-executable fix resolves an observed MCP fi
 on the newer branch. No live store, service, credential or deployment was changed. Prior milestone
 evidence below retains its original source identity and does not supersede this correction record.
 
+PR #4's previously failing whitespace job also identified final blank lines in two retained report
+artifacts. Exact-path Git attributes exempt only that end-of-file rule for those two artifacts;
+their bytes and recorded hashes remain unchanged. The full PR whitespace check then passed locally.
+
 **Status:** Live product work queue, established 2026-10-02. The owner selected
 latent-sre/agenticsre-rust as the working repository. Scope and dependencies live in the
 [planning package](sre-workbench/README.md); this file owns current execution status.
