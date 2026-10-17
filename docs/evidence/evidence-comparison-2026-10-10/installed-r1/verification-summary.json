@@ -1,0 +1,9 @@
+{
+  "binary_sha256": "7778e2dd132b9ac67115305041abea5bc54bcab3bc7e47d8b773bcfa6e2d176a",
+  "commands": 4,
+  "fixture_threads_joined": true,
+  "http_requests": 18,
+  "offline_comparison": "fixture closed, workers joined, configuration/context removed, provider absent",
+  "passed": false,
+  "source_manifest_sha256": "6978e1bf76c0989fd1d3f8ed078e174f7560419aa5b0f115bdd5fdd6ecb544f9"
+}

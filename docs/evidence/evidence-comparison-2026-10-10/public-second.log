@@ -1,0 +1,39 @@
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 0.37s
+     Running tests/comparison.rs (target/debug/deps/comparison-7f9213595f1b621b)
+
+running 8 tests
+test item_and_byte_limits_disclose_omissions_and_manifest_pins_are_checked ... FAILED
+test malformed_references_and_policy_are_denied_before_store_access ... ok
+test datasource_and_service_identity_changes_are_explicitly_incompatible ... ok
+test offset_policy_aligns_equal_duration_windows_and_preserves_original_times ... ok
+test parameter_identity_changes_refuse_observation_diff ... ok
+test partial_collection_keeps_missing_check_visible ... ok
+test public_comparison_counts_changes_and_preserves_store_without_external_access ... FAILED
+test typed_frame_failures_and_nulls_never_become_complete_comparisons ... ok
+
+failures:
+
+---- item_and_byte_limits_disclose_omissions_and_manifest_pins_are_checked stdout ----
+
+thread 'item_and_byte_limits_disclose_omissions_and_manifest_pins_are_checked' (32) panicked at crates/workbench-cli/tests/comparison.rs:123:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"This local operation only; no service health assessment","state":"not_applicable"},"data":{},"duration_ms":0,"effect_outcome":"not_attempted","effective_limits":{"max_output_bytes":1024,"timeout_ms":30000},"errors":[{"code":"invalid_request","message":"Request fields do not satisfy the version 0.1 contract.","retryable":false}],"execution":{"child_exit_code":null,"signal":null,"status":"denied"},"finished_at":"2026-10-11T04:48:06.610791763Z","operation":"evidence.compare","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-42-18dd60476a9a2860-0","resolved_target":{},"run_id":"run-42-18dd60476a9a9e7e-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T04:48:06.610769351Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(2)
+ right: Some(1)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- public_comparison_counts_changes_and_preserves_store_without_external_access stdout ----
+
+thread 'public_comparison_counts_changes_and_preserves_store_without_external_access' (62) panicked at crates/workbench-cli/tests/comparison.rs:123:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"This local operation only; no service health assessment","state":"not_applicable"},"data":{},"duration_ms":0,"effect_outcome":"not_attempted","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"invalid_request","message":"The request, target, limits and inputs must be JSON objects.","retryable":false}],"execution":{"child_exit_code":null,"signal":null,"status":"denied"},"finished_at":"2026-10-11T04:48:06.88520256Z","operation":"request.invalid","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-72-18dd60477af5c5cb-0","resolved_target":{},"run_id":"run-72-18dd60477af60a8f-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T04:48:06.88520256Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(2)
+ right: Some(0)
+
+
+failures:
+    item_and_byte_limits_disclose_omissions_and_manifest_pins_are_checked
+    public_comparison_counts_changes_and_preserves_store_without_external_access
+
+test result: FAILED. 6 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+
+error: test failed, to rerun pass `-p workbench-cli --test comparison`

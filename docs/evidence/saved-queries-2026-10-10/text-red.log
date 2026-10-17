@@ -1,0 +1,22 @@
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 0.39s
+     Running tests/queries.rs (target/debug/deps/queries-d701cd4ebbe3569d)
+
+running 1 test
+test human_query_receipt_escapes_remote_controls_and_shows_identity_and_coverage ... FAILED
+
+failures:
+
+---- human_query_receipt_escapes_remote_controls_and_shows_identity_and_coverage stdout ----
+
+thread 'human_query_receipt_escapes_remote_controls_and_shows_identity_and_coverage' (34) panicked at crates/workbench-cli/tests/queries.rs:279:5:
+unescaped C1 control in text receipt
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    human_query_receipt_escapes_remote_controls_and_shows_identity_and_coverage
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.05s
+
+error: test failed, to rerun pass `-p workbench-cli --test queries`

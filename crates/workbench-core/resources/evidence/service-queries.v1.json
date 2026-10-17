@@ -1,0 +1,39 @@
+{
+  "id": "service-queries",
+  "version": 1,
+  "purpose": "Retain bounded metrics and log observations for one explicitly bound service and common time window.",
+  "steps": [
+    {
+      "id": "metrics",
+      "operation": "query.run",
+      "operation_version": 1,
+      "query": {
+        "id": "prometheus.up-by-job",
+        "version": 1,
+        "dialect": "promql",
+        "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f"
+      }
+    },
+    {
+      "id": "logs",
+      "operation": "query.run",
+      "operation_version": 1,
+      "query": {
+        "id": "loki.logs-by-job",
+        "version": 1,
+        "dialect": "logql",
+        "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019"
+      }
+    }
+  ],
+  "input_schema": {"$ref": "urn:sre-workbench:spec:evidence-collect-input:0.1"},
+  "output_schema": {"$ref": "urn:sre-workbench:spec:evidence-collection-data:0.1"},
+  "limits": {"max_timeout_ms": 60000, "max_concurrency": 1, "finalization_allowance_ms": 2500},
+  "classification": "restricted",
+  "limitations": [
+    "The source context is an offline declaration and grants no execution or credential authority.",
+    "Complete receipt retention does not establish source-data coverage, service health or causation.",
+    "Known credentials are redacted; arbitrary sensitive telemetry is not automatically detected.",
+    "This pack has fixture evidence only; no live Grafana version or hosted grant is established."
+  ]
+}

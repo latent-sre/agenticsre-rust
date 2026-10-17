@@ -1,0 +1,78 @@
+{
+  "source_manifest_sha256": "f8dd2c1b1283395f5041e2f21e8709af5026e80d38c5810bff3fa515dde373b8",
+  "source_files": 898,
+  "source_guard_before": true,
+  "source_guard_after": true,
+  "binary_sha256": "334c4bc1a876ee8873fb094b2ad15727b3bf7b2e47b95ecb15e2499d15664fad",
+  "binary_bytes": 42400672,
+  "checks": [
+    {
+      "label": "fmt-final",
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.381
+    },
+    {
+      "label": "clippy-final",
+      "argv": [
+        "tools/test-sandbox.sh",
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "seconds": 1.053
+    },
+    {
+      "label": "workspace-final",
+      "argv": [
+        "tools/test-sandbox.sh",
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "seconds": 45.116
+    },
+    {
+      "label": "specs-final",
+      "argv": [
+        ".venv/bin/python",
+        "-B",
+        "docs/sre-workbench/verify_specs.py"
+      ],
+      "exit": 0,
+      "seconds": 0.374
+    },
+    {
+      "label": "build-final",
+      "argv": [
+        "tools/test-sandbox.sh",
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "-p",
+        "workbench-cli"
+      ],
+      "exit": 0,
+      "seconds": 0.634
+    }
+  ]
+}

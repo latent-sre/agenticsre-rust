@@ -1,0 +1,18 @@
+{
+  "verdict": "inconclusive_product_acceptance",
+  "execution_exit_status": 1,
+  "failure_classification": "test_fixture_defect",
+  "failure": "verify-evidence.py:467 compares immutable payload to terminal data while excluding bundle only; delivery_cancellation_signal is terminal-only per the revised contract.",
+  "confirmed_difference": {
+    "delivery_cancellation_signal": null
+  },
+  "corrected_projection_equals_stored_payload": true,
+  "source_manifest_sha256": "f88e334bafbea920fd6f693bf6e87f146365e1eb3ed8f9af3058c3885568d173",
+  "source_files": 423,
+  "binary_sha256": "c450790c52de7a7d84b200de2bf76f7953f78f417320969248b126eb7503eba2",
+  "post_failure_source_and_binary_guards": true,
+  "commands_retained": 5,
+  "http_events_retained": 6,
+  "source_edited": false,
+  "log_sha256": "7883e3760210e48d1e84ea8e659df29d2e50d51cf40fce14626caa785b357daa"
+}

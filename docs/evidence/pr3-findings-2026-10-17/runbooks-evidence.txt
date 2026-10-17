@@ -1,0 +1,47 @@
+Runbook PR3 regression evidence, 2026-10-17
+
+These are excerpts transcribed from this agent's tool-call outputs, not complete
+shell-captured logs. No baseline rerun or inferred result is represented here.
+
+1. Cursor and retained-receipt regressions, before runtime validator fixes
+Command: cargo test --locked -p workbench-core --lib runbooks::tests
+Tool session: 66011
+Exit: 101
+Result: FAILED. 5 passed; 3 failed; 0 ignored; 0 measured; 248 filtered out.
+Failures:
+- current_step_must_be_pending_unless_waiting_or_terminal: step 0
+  left: Ok(())
+  right: Err("runbook_corrupt_state")
+- retained_observations_are_bound_to_pinned_sources_and_normalization: 0 /bundle/id
+  left: Ok(())
+  right: Err("runbook_corrupt_state")
+- failed_receipts_can_omit_sources_but_cannot_substitute_them
+  left: Ok(())
+  right: Err("runbook_corrupt_state")
+
+2. Deadline regression, after store scan validation fix but before runtime deadline fix
+Command: cargo test --locked -p workbench-core --lib runbooks::tests::status_scan_uses_work_deadline_without_cleanup_allowance
+Tool session: 14157
+Exit: 101
+Result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 260 filtered out.
+Observed OperationResult fields from assertion:
+  operation: "runbook.status"
+  started_at: "2026-10-17T19:17:42.367940344Z"
+  finished_at: "2026-10-17T19:17:42.388601796Z"
+  duration_ms: 20
+  execution.status: Succeeded
+  effective_limits.timeout_ms: 1
+  errors: []
+Assertion: left Succeeded, right TimedOut.
+
+3. Integrated runbook unit suite after fixes
+Command: cargo test --locked -p workbench-core --lib runbooks::
+Tool session: 19528
+Exit: 0
+Result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 245 filtered out; finished in 4.26s.
+Includes all four regressions above, journal storage tests, existing runtime tests,
+and installed definition test.
+
+Additional CLI regressions added, execution delegated to root coordinator:
+- rewound_cursor_cannot_replay_a_completed_observation
+- foreign_valid_receipts_cannot_drive_checkpoint_resume

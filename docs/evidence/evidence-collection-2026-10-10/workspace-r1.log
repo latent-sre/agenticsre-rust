@@ -1,0 +1,430 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 6.38s
+     Running unittests tests/support/profile_fixture.rs (target/debug/deps/profile_fixture-312118eb7805bdb4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests tests/support/runner_fixture.rs (target/debug/deps/runner_fixture-3b1dcc75c05f4b9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/save-d16ea909f57de400)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/context.rs (target/debug/deps/context-9247d93f9b72bc8f)
+
+running 10 tests
+test absent_optional_fields_differ_from_declared_empty_and_text_is_only_data ... ok
+test malformed_unknown_null_and_environment_mismatch_are_refused ... ok
+test review_r1_positional_source_objects_are_refused ... ok
+test review_r1_unsupported_timestamp_lexical_forms_are_refused ... ok
+test selectors_refuse_ambiguity_and_missing_without_first_match ... ok
+test review_r1_valid_utc_lexical_forms_preserve_original_review_text ... ok
+test source_descriptor_refuses_fifo_and_every_symlink_component ... ok
+test startup_pairing_and_adapter_refusal_precede_any_listener_or_server ... ok
+test stale_retired_future_and_required_omissions_never_become_usable ... ok
+test unique_cli_and_call_preserve_source_and_dependency_directions ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/diagnostics.rs (target/debug/deps/diagnostics-6cc0d08b1378cbd7)
+
+running 7 tests
+test configuration_and_ca_symlinks_are_refused_at_every_component ... ok
+test configuration_and_ca_bounds_refuse_nonregular_and_oversized_sources ... ok
+test declaration_cardinality_and_ca_syntax_are_admitted_before_network_work ... ok
+test configuration_objects_nulls_duplicates_and_hostile_destinations_cannot_dispatch ... ok
+test discovery_does_not_open_the_configured_fifo_or_probe_a_process ... ok
+test missing_alias_and_hosted_startup_grants_do_not_fall_back ... ok
+test wire_bindings_and_positional_pack_objects_are_refused_before_configuration_io ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/error_budget.rs (target/debug/deps/error_budget-b482d5972876d48d)
+
+running 8 tests
+test array_encodings_cannot_replace_object_inputs_or_envelopes ... ok
+test high_precision_finite_inputs_survive_the_real_child_protocol ... ok
+test nonfinite_or_duplicate_json_and_derived_range_errors_never_become_calculations ... ok
+test pure_python_regressions_run_in_the_isolated_supported_runtime ... ok
+test small_complete_reply_fits_the_minimum_capture_limit_but_deadline_still_applies ... ok
+test text_call_and_cli_calculations_share_units_threshold_and_normalized_input ... ok
+test typed_domain_and_exit_policy_failures_are_denied_before_dispatch ... ok
+test independent_numerical_goldens_match_without_turning_verdicts_into_process_failure ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests/evidence.rs (target/debug/deps/evidence-c49a14f415b27521)
+
+running 19 tests
+test changed_stored_receipt_bytes_are_detected_without_replaying_queries ... ok
+test collection_requires_durable_recording_before_any_effect ... ok
+test closed_result_consumer_stops_active_query_and_later_dispatch ... ok
+test collection_runs_both_installed_queries_and_seals_exact_finalized_receipts ... ok
+test concurrent_collection_cannot_bypass_the_store_lock_or_dispatch_queries ... ok
+test context_selection_and_every_binding_are_required_before_store_or_http ... ok
+test installed_pack_discovery_requires_no_configuration_store_or_credentials ... ok
+test continue_and_stop_keep_failed_receipts_and_make_later_omissions_explicit ... ok
+test interrupted_delete_retry_preserves_and_checks_the_original_manifest_digest ... ok
+test interrupted_process_is_recovered_without_replaying_or_claiming_complete_capture ... ok
+test malformed_or_unpinned_inputs_are_rejected_before_http_or_store_creation ... ok
+test newer_store_format_is_preserved_by_read_collection_and_management ... ok
+test private_credential_canaries_do_not_reappear_in_projection_or_persisted_files ... ok
+test read_after_restart_and_protection_work_without_provider_or_network ... ok
+test relative_window_is_resolved_once_from_the_collection_parent ... ok
+test signals_cancel_active_queries_and_seal_only_already_observed_receipts ... ok
+test structured_collection_dispatches_the_same_pack_and_retains_the_same_observations ... ok
+test unsafe_or_underfunded_stores_refuse_collection_before_http ... ok
+test parent_deadline_limits_the_second_query_and_retains_both_real_outcomes ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.31s
+
+     Running tests/grafana.rs (target/debug/deps/grafana-d24c77826439f7d6)
+
+running 17 tests
+test basic_authentication_is_exact_and_its_numeric_and_encoded_echoes_are_masked ... ok
+test cancellation_closes_native_requests_with_signal_exit_and_no_later_dispatch ... ok
+test bounded_response_parsing_rejects_duplicate_nonfinite_deep_and_excess_bytes ... ok
+test cli_call_and_human_output_share_one_observation ... ok
+test invalid_admission_and_remote_looking_local_operations_never_make_http_or_child_effects ... ok
+test private_data_is_masked_without_corrupting_public_identity_or_control_types ... ok
+test real_https_dashboard_and_both_query_dialects_use_verified_scoped_exchanges ... ok
+test redaction_expansion_and_envelope_overhead_cannot_escape_the_encoded_result_cap ... ok
+test review_r1_canonical_origin_length_is_checked_before_http ... ok
+test review_r1_finalized_receipt_includes_late_source_and_timing_overhead ... ok
+test review_r1_fractional_time_precision_is_admitted_before_lossy_parser_conversion ... ok
+test review_r2_invalid_timestamp_separators_cannot_bypass_exact_precision_admission ... ok
+test secret_collisions_with_public_identifiers_preserve_correlated_typed_wrappers ... ok
+test tls_proxy_redirect_retry_and_ambient_trust_boundaries_are_real ... ok
+test whole_operation_deadline_includes_sequential_requests_and_body_consumption ... ok
+test wrong_org_datasource_and_http200_semantic_errors_stop_the_sequence ... ok
+test individual_request_deadline_is_twenty_seconds_within_the_sixty_second_operation ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.21s
+
+     Running tests/mcp.rs (target/debug/deps/mcp-382f8631d24c2bc8)
+
+running 9 tests
+test invalid_ids_and_array_parameters_are_protocol_errors ... ok
+test empty_grants_and_malformed_routing_never_execute ... ok
+test live_id_collision_closes_stream_but_numeric_and_string_ids_are_distinct ... ok
+test native_restricted_commands_preserve_receipts_and_pinned_policy ... ignored, requires the native Cally trusted-runtime and namespace lane
+test modern_and_legacy_numerical_receipts_use_real_core ... ok
+test queued_cancellation_has_no_reply_and_initialization_cannot_be_cancelled ... ok
+test signals_have_declared_exit_status_and_stdout_closure_stops_server ... ok
+test stdio_requires_pipes_and_invalid_startup_never_writes_protocol_noise ... ok
+test oversized_stream_closes_without_work_and_no_lifetime_request_ceiling ... ok
+
+test result: ok. 8 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/mcp_authority.rs (target/debug/deps/mcp_authority-f855e3fcb0410fd1)
+
+running 10 tests
+test authority_child ... ok
+test description_is_credential_free_and_exposes_only_ids_profile_support_and_raw_digest ... ok
+test description_reuses_bounded_strict_config_and_ca_admission ... ok
+test commands_require_identity_but_numerical_tasks_and_legacy_wrappers_do_not ... ok
+test missing_context_and_removed_authority_files_refuse_without_effects ... ok
+test pinned_authority_preserves_provider_scope_and_target_checks ... ok
+test raw_config_replacement_precedes_json_parsing_and_credential_lookup ... ok
+test replaced_config_is_denied_even_when_an_independent_provider_would_allow_new_target ... ok
+test selected_ca_bytes_are_checked_before_credentials_and_http ... ok
+test pinned_observations_match_unchanged_operator_and_policy_wrappers ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/queries.rs (target/debug/deps/queries-d701cd4ebbe3569d)
+
+running 14 tests
+test active_sigint_and_sigterm_preserve_signal_and_stop_all_later_requests ... ok
+test binding_tls_and_http200_query_failures_retain_identity_and_stop_dispatch ... ok
+test direct_and_structured_saved_queries_preserve_the_same_complete_receipt ... ok
+test discovery_is_installed_local_metadata_without_configuration_or_credentials ... ok
+test empty_and_backend_partial_observations_preserve_payload_without_claiming_coverage ... ok
+test human_query_receipt_escapes_remote_controls_and_shows_identity_and_coverage ... ok
+test installed_queries_use_exact_scoped_promql_and_logql_exchanges ... ok
+test query_run_reuses_only_the_existing_grafana_read_permission ... ok
+test bounded_response_and_final_saved_query_receipt_keep_definition_when_omitted ... ok
+test saved_query_credentials_cover_private_inputs_compiled_metadata_and_responses ... ok
+test relative_window_uses_parent_start_once_despite_slow_binding_checks ... ok
+test strict_saved_query_admission_rejects_invalid_inputs_before_http ... ok
+test utf8_parameter_and_time_window_boundaries_are_actual_supported_requests ... ok
+test saved_query_deadline_is_shared_across_binding_and_body_consumption ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.09s
+
+     Running tests/read_profile.rs (target/debug/deps/read_profile-6b292c6461bc9473)
+
+running 19 tests
+test inspection_admits_bound_forms_without_claiming_execution_or_availability ... ignored, requires root-owned runtime identity visible in the native Cally lane
+test internal_launcher_cannot_be_selected_through_public_arguments ... ok
+test malformed_policy_bindings_paths_and_wire_authority_are_denied ... ok
+test native_alternative_syscall_abis_are_refused ... ignored, requires the explicit native Cally containment lane
+test native_detached_descendant_dies_with_namespace_parent ... ignored, requires the explicit native Cally containment lane
+test native_failed_exec_does_not_claim_tool_execution ... ignored, requires the explicit native Cally containment lane
+test native_git_rg_and_structured_call_preserve_real_outcomes ... ignored, requires the explicit native Cally containment lane
+test native_hostile_git_and_rg_controls_cannot_execute_helpers ... ignored, requires the explicit native Cally containment lane
+test native_maximum_escaped_cli_arguments_survive_private_metadata ... ignored, requires the explicit native Cally containment lane
+test native_missing_fixed_runtime_library_refuses_before_wrapper_execution ... ignored, requires the explicit native Cally read-only runtime fixture
+test native_output_deadline_and_cancellation_keep_bounds ... ignored, requires the explicit native Cally containment lane
+test native_read_only_fifo_wait_is_bounded_by_the_operation_deadline ... ignored, requires the explicit native Cally containment lane
+test native_rg_metadata_is_omitted_while_ordinary_paths_work ... ignored, requires the explicit native Cally containment lane
+test native_socket_fifo_fd_and_filesystem_channels_are_closed ... ignored, requires the explicit native Cally containment lane
+test native_unexpected_launcher_death_cannot_confirm_tool_outcome ... ignored, requires the explicit native Cally containment lane
+test rg_metadata_paths_are_denied_by_cli_and_call_before_dispatch ... ok
+test unavailable_local_runtime_identity_or_nested_isolation_never_falls_back ... ok
+test unsupported_repository_layout_and_implicit_cwd_fail_before_wrapper ... ok
+test named_unsupported_git_layouts_are_refused_before_execution ... ok
+
+test result: ok. 6 passed; 0 failed; 13 ignored; 0 measured; 0 filtered out; finished in 1.63s
+
+     Running tests/runner.rs (target/debug/deps/runner-19e2bfaa56e3f6ad)
+
+running 14 tests
+test both_streams_drain_after_capture_and_encoded_limits_and_disclose_loss ... ok
+test environment_is_fixed_stdin_closed_and_path_not_inherited ... ok
+test inspect_canonicalizes_without_running_and_discovery_is_offline ... ok
+test invalid_utf8_and_raw_cut_codepoint_are_disclosed ... ok
+test closed_or_stalled_result_consumers_exit_without_panicking_or_hanging ... ok
+test late_signal_interrupts_stalled_result_delivery_with_signal_exit ... ok
+test literal_arguments_unicode_and_metacharacters_never_get_shell_evaluation ... ok
+test malformed_version_record_grant_and_path_requests_never_create_markers ... ok
+test nonzero_primary_exit_is_preserved_separately_from_cli_status ... ok
+test primary_exit_before_descendant_pipe_eof_is_not_false_completion ... ok
+test sigint_and_sigterm_cancel_owned_children_with_normalized_exit ... ok
+test text_and_json_report_the_same_execution_and_literal_stdout ... ok
+test timeout_and_forced_termination_have_bounded_cleanup ... ok
+test late_signal_during_timeout_cleanup_preserves_timeout_and_signal_exit ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.57s
+
+     Running tests/tasks.rs (target/debug/deps/tasks-2c57a458d92c4cc8)
+
+running 13 tests
+test clean_check_is_completed_observation_with_source_and_input_identity ... ok
+test dialect_overrides_quoted_literals_and_selected_range_totals_are_preserved ... ok
+test embedded_binding_works_away_from_checkout_and_ignores_hostile_modules ... ok
+test each_upstream_rule_discriminates_its_single_field_mutation ... ok
+test findings_fields_and_capture_loss_cannot_be_claimed_complete ... ok
+test human_task_output_renders_findings_and_coverage_from_the_shared_receipt ... ok
+test model_byte_depth_panel_and_query_limits_fail_explicitly ... ok
+test nonregular_inputs_are_refused_without_blocking ... ok
+test task_contract_rejects_override_unknown_id_version_and_relative_structured_path ... ok
+test task_timeout_and_cancellation_preserve_supervisor_outcomes ... ok
+test unknown_plugins_receive_common_findings_with_explicit_coverage_limits ... ok
+test malformed_empty_v2_and_wrongly_typed_models_fail_without_input_echo ... ok
+test wrappers_nested_rows_and_nonquerying_panels_keep_upstream_semantics ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+
+     Running tests/ui.rs (target/debug/deps/ui-b3bd7481642bceec)
+
+running 7 tests
+test empty_grants_expose_no_checks ... ok
+test bounded_json_typed_inputs_and_hidden_grants_fail_before_admission ... ok
+test native_command_receipts_match_cli_and_policy_replacement_cannot_change_grants ... ignored, requires the native Cally trusted-runtime and namespace lane
+test http_boundary_refuses_foreign_authority_credentials_and_mutation_origins ... ok
+test real_http_task_receipt_history_replay_and_clear ... ok
+test server_signals_preserve_cli_exit_status_contract ... ok
+test transport_deadlines_and_connection_overload_are_bounded ... ok
+
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.14s
+
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-fcb85c31019c28f4)
+
+running 68 tests
+test diagnostics::dns::tests::alias_without_terminal_answer_requires_query_not_synthesis ... ok
+test diagnostics::dns::tests::eight_hops_allowed_ninth_refused ... ok
+test diagnostics::dns::tests::follows_only_established_cname_chain_in_any_record_order ... ok
+test diagnostics::dns::tests::ignores_unrelated_owners_and_other_classes ... ok
+test diagnostics::dns::tests::mismatched_service_address_type_refused ... ok
+test diagnostics::dns::tests::rejects_cname_cycles_conflicts_and_unsupported_aliases ... ok
+test diagnostics::dns::tests::seventeen_service_addresses_refused ... ok
+test diagnostics::dns::tests::validates_response_role_question_opcode_rcode_and_truncation ... ok
+test diagnostics::http::tests::bounded_http_profile_refuses_ambiguous_or_unsupported_framing ... ok
+test diagnostics::http::tests::aggregate_head_and_all_chunk_crlfs_obey_exact_ceiling ... ok
+test evidence::collect::tests::collection_compiles_every_parameter_before_any_binding ... ok
+test evidence::collect::tests::collection_rejects_null_unknown_steps_and_digest_without_source_reads ... ok
+test evidence::pack::tests::reviewed_pack_pins_exact_installed_query_definitions ... ok
+test evidence::collect::tests::receipt_summary_must_keep_the_original_finalized_observation ... ok
+test evidence::store::linux::tests::a_refused_receipt_reservation_can_still_seal_an_honest_partial_bundle ... ok
+test evidence::store::linux::tests::altered_receipt_bytes_and_cross_run_paths_are_detected_on_restart ... ok
+test evidence::store::linux::tests::artifact_symlink_hardlink_fifo_and_unsafe_mode_are_refused ... ok
+test evidence::store::linux::tests::deadline_refusal_is_effect_free_and_finalization_allowance_is_explicit ... ok
+test evidence::store::linux::tests::checkpoint_failure_exposes_the_confirmed_object_and_recovery_preserves_it ... ok
+test evidence::store::linux::tests::generated_ids_and_bound_policies_are_checked_before_writes ... ok
+test evidence::store::linux::tests::duplicate_bytes_are_independent_across_runs_and_count_toward_quota ... ok
+test evidence::store::linux::tests::locking_is_nonblocking_and_reads_never_initialize_a_store ... ok
+test evidence::store::linux::tests::malformed_canonical_orphan_receipt_is_preserved_and_refused_by_recovery ... ok
+test evidence::store::linux::tests::injected_write_sync_and_publish_failures_preserve_staging_and_withhold_references ... ok
+test evidence::store::linux::tests::partial_deletion_retries_use_the_original_manifest_digest ... ok
+test evidence::store::linux::tests::malformed_duplicate_and_oversized_metadata_are_refused ... ok
+test evidence::store::linux::tests::receipt_nested_shapes_and_bounds_are_checked_before_publication ... ok
+test evidence::store::linux::tests::protection_is_mutable_without_changing_manifest_identity_and_blocks_removal ... ok
+test evidence::store::linux::tests::recovery_marks_interrupted_without_replaying_or_claiming_checkpoint_completion ... ok
+test evidence::store::linux::tests::root_deletion_journal_preserves_digest_before_and_after_run_directory_removal ... ok
+test evidence::store::linux::tests::retention_only_removes_old_unprotected_resolved_sealed_runs ... ok
+test evidence::store::linux::tests::seal_failure_never_returns_a_bundle_reference ... ok
+test evidence::store::linux::tests::store_and_ancestor_symlinks_and_unsafe_modes_are_refused ... ok
+test evidence::store::linux::tests::unknown_format_with_no_lock_is_untouched_and_initialized_locks_are_not_recreated ... ok
+test evidence::store::linux::tests::sealed_receipts_survive_restart_with_private_run_relative_references ... ok
+test evidence::tests::references_refuse_paths_unknown_fields_null_and_unbounded_digests ... ok
+test grafana::config::tests::provider_scope_and_auth_shapes_cannot_be_replaced ... ok
+test grafana::config::tests::url_validation_precedes_normalization_and_preserves_prefix ... ok
+test evidence::store::linux::tests::unsupported_formats_are_never_rewritten_or_removed ... ok
+test grafana::tests::closed_result_consumer_cancels_network_admission ... ok
+test grafana::tests::collection_keeps_the_absolute_parent_deadline_before_admission ... ok
+test grafana::redact::tests::private_primitives_encodings_and_key_collisions_are_explicit ... ok
+test grafana::tests::review_r2_timestamp_grammar_and_fraction_precision_are_independent ... ok
+test grafana::tests::saved_admission_and_config_failures_do_not_echo_private_inputs ... ok
+test grafana::tests::saved_query_admission_keeps_legacy_macro_and_datasource_guards ... ok
+test grafana::tests::saved_query_uses_the_existing_parent_deadline_and_signal ... ok
+test grafana::tests::timestamps_and_expressions_preserve_the_public_time_contract ... ok
+test queries::tests::catalog_digests_pin_exact_installed_bytes_and_identity ... ok
+test grafana::tests::saved_escaped_credential_source_masks_the_compiled_literal ... ok
+test queries::tests::compiled_labels_are_single_go_compatible_unicode_literals ... ok
+test queries::tests::one_relative_anchor_and_exact_absolute_normalization ... ok
+test queries::tests::strict_inputs_reject_null_unknown_types_and_bad_windows ... ok
+test read_profile::grammar::tests::dangerous_or_ambiguous_forms_are_denied ... ok
+test read_profile::grammar::tests::exact_forms_preserve_literal_paths_and_patterns ... ok
+test read_profile::grammar::tests::rg_metadata_operands_are_refused_without_rejecting_ordinary_names ... ok
+test read_profile::linux::tests::launcher_protocol_requires_setup_start_and_exit_in_order ... ok
+test read_profile::linux::tests::native_explicit_path_raced_to_outside_symlink_cannot_read_outside ... ignored, requires native Cally filesystem containment
+test read_profile::linux::tests::native_landlock_setup_failure_never_executes_tool ... ignored, requires native Cally Landlock admission
+test read_profile::linux::tests::native_oversized_launcher_image_is_explicitly_unsupported ... ignored, requires native Cally trusted runtime identity
+test read_profile::linux::tests::native_replaced_root_and_executable_names_do_not_replace_pinned_bindings ... ignored, requires native Cally descriptor-pinned execution
+test read_profile::linux::tests::trusted_status_records_are_bounded_ordered_and_typed ... ok
+test read_profile::seccomp::tests::filter_distinguishes_read_flags_and_rejects_alternative_abis ... ok
+test tasks::error_budget::tests::finite_numeric_input_survives_json_roundtrip_without_changing_bits ... ok
+test tasks::error_budget::tests::malformed_calculator_replies_and_unrequested_modes_are_rejected ... ok
+test tasks::error_budget::tests::original_reference_and_adapted_binding_have_separate_identity ... ok
+test tasks::tests::embedded_checker_matches_pinned_upstream_bytes ... ok
+test tasks::tests::malformed_or_mismatched_child_protocol_cannot_be_accepted ... ok
+test read_launcher::linux::tests::maximum_admitted_escaped_arguments_fit_private_metadata ... ok
+
+test result: ok. 64 passed; 0 failed; 4 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/contracts.rs (target/debug/deps/contracts-e658ea018f55e5d2)
+
+running 6 tests
+test host_capture_limit_only_tightens_requested_limits ... ok
+test schema_object_boundaries_reject_serde_sequence_encodings ... ok
+test request_byte_depth_and_json_boundaries_are_enforced ... ok
+test strict_controls_reject_unknown_duplicate_null_and_wrong_types ... ok
+test versions_targets_recording_and_invalid_limits_fail_before_dispatch ... ok
+test unicode_and_escaping_cannot_exceed_the_final_encoded_receipt_cap ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/diagnostic_grants.rs (target/debug/deps/diagnostic_grants-80a7b958c661832e)
+
+running 4 tests
+test diagnostic_grant_requires_unique_known_explicit_aliases_and_admitted_files ... ok
+test generic_hosted_context_never_infers_diagnostic_grants_from_operator_configuration ... ok
+test invalid_regular_file_replacement_refuses_instead_of_using_cached_config_bytes ... ok
+test changed_configuration_bytes_refuse_before_observation_but_identical_replacement_preserves_grant ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/evidence.rs (target/debug/deps/evidence-1d784ad1a4eb72cc)
+
+running 3 tests
+test collection_does_not_silently_record_under_never ... ok
+test hosted_evidence_cannot_inherit_operator_store_authority ... ok
+test offline_discovery_and_malformed_references_never_initialize_store ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/queries.rs (target/debug/deps/queries-54ede08d4f048281)
+
+running 2 tests
+test hosted_saved_queries_cannot_inherit_an_existing_grafana_grant ... ok
+test finalized_query_receipt_omits_oversized_response_and_preserves_definition ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/ui_seams.rs (target/debug/deps/ui_seams-a22996453dcdd56b)
+
+running 4 tests
+test browser_json_depth_and_duplicates_are_checked_before_typed_inputs ... ok
+test numerical_schema_normalizes_defaults_and_refuses_file_input ... ok
+test pinned_policy_requires_restricted_context_and_never_falls_back ... ok
+test replaced_policy_is_refused_at_actual_core_load_before_bindings ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/workbench_mcp-ea76047976d3e7de)
+
+running 25 tests
+test grants::tests::empty_authority_is_empty_and_unknown_or_duplicate_operations_fail ... ok
+test grants::tests::privileged_operations_require_explicit_scope_and_configuration ... ok
+test grants::tests::unused_or_duplicate_selectors_fail_before_reading_configuration ... ok
+test mapping::tests::expanded_request_must_fit_the_core_byte_bound ... ok
+test mapping::tests::malformed_shapes_and_authority_overrides_never_normalize ... ok
+test mapping::tests::requests_use_launcher_bindings_and_operation_defaults ... ok
+test mapping::tests::discovery_filters_grants_and_embeds_resolvable_authoritative_result_schema ... ok
+test protocol::tests::tool_errors_derive_from_execution_and_capture_not_budget_findings ... ok
+test server::tests::cancellation_keeps_worker_busy_until_owned_cleanup_and_suppresses_result ... ok
+test server::tests::core_cleanup_uncertainty_closes_admission_after_normal_completion ... ok
+test server::tests::core_cleanup_uncertainty_survives_cancelled_result_suppression ... ok
+test server::tests::eof_cleanup_does_not_equate_worker_join_with_core_cleanup ... ok
+test server::tests::malformed_notification_metadata_cannot_cancel_or_initialize ... ok
+test server::tests::nested_supervisor_uncertainty_is_not_hidden_by_missing_top_level_error ... ok
+test server::tests::normal_and_cancelled_uncertain_results_end_real_loop_unsuccessfully ... ok
+test server::tests::partial_frame_cancellation_closes_transport_and_worker_failure_has_no_receipt ... ok
+test server::tests::serialized_capacity_and_request_slots_are_live_not_lifetime_bounded ... ok
+test protocol::tests::output_limit_includes_json_escaping_and_delimiter ... ok
+test server::tests::terminal_drain_ignores_invalid_envelopes ... ok
+test server::tests::terminal_drain_ignores_invalid_ids ... ok
+test server::tests::terminal_drain_ignores_malformed_json ... ok
+test server::tests::terminal_drain_ignores_non_object_json ... ok
+test server::tests::terminal_drain_ignores_work_and_preserves_only_valid_matching_cancellation ... ok
+test server::tests::terminal_drain_deadline_is_absolute_under_paced_malformed_input ... ok
+test server::tests::terminal_drain_paced_malformed_input_cannot_append_to_real_pipe_output ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running unittests src/lib.rs (target/debug/deps/workbench_ui-4898d2e8b2da6a6e)
+
+running 10 tests
+test input::tests::command_and_task_refuse_diagnostic_selector_and_control_presence_including_null ... ok
+test input::tests::diagnostic_alias_concurrency_and_each_effective_limit_change_retry_identity ... ok
+test input::tests::diagnostic_shapes_and_controls_are_strict_before_admission ... ok
+test state::tests::admission_has_no_queue_and_replays_original_even_after_clear ... ok
+test state::tests::cancellation_waits_for_real_worker_result_and_clear_preserves_active ... ok
+test input::tests::diagnostic_defaults_and_effective_bounds_share_one_retry_identity ... ok
+test state::tests::unconfirmed_cleanup_closes_admission ... ok
+test tests::diagnostics_preserve_redirected_log_and_stderr_flags ... ok
+test tests::worker_panic_never_manufactures_a_receipt_and_shutdown_signals_owned_control ... ok
+test state::tests::history_count_bytes_and_submission_tombstones_are_bounded ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+   Doc-tests workbench_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests workbench_mcp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests workbench_ui
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

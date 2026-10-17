@@ -1,0 +1,19 @@
+{
+  "id": "evidence-review",
+  "version": 1,
+  "input": {
+    "before": {
+      "id": "run-1-ab-1"
+    },
+    "after": {
+      "id": "run-1-ab-2"
+    },
+    "normalization": "exact-window-v1",
+    "on_failure": "stop"
+  },
+  "steps": [
+    {
+      "operation": "process.exec"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "binary_sha256": "334c4bc1a876ee8873fb094b2ad15727b3bf7b2e47b95ecb15e2499d15664fad",
+    "source_files": 898,
+    "source_manifest_sha256": "f8dd2c1b1283395f5041e2f21e8709af5026e80d38c5810bff3fa515dde373b8",
+    "stage": "before"
+  },
+  {
+    "binary_sha256": "334c4bc1a876ee8873fb094b2ad15727b3bf7b2e47b95ecb15e2499d15664fad",
+    "source_files": 898,
+    "source_manifest_sha256": "f8dd2c1b1283395f5041e2f21e8709af5026e80d38c5810bff3fa515dde373b8",
+    "stage": "after"
+  }
+]

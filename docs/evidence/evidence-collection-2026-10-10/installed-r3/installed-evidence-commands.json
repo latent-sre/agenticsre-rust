@@ -1,0 +1,112 @@
+[
+  {
+    "case": "packs-list",
+    "argv": [
+      "/tmp/workbench-installed-evidence-jpc71r6d/prefix/bin/save",
+      "--json",
+      "--config",
+      "/tmp/workbench-installed-evidence-jpc71r6d/absent.json",
+      "evidence",
+      "packs",
+      "list"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-jpc71r6d/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 2,
+    "stdout_sha256": "a05dd5f17b3b804c64d957d80ed813a7784f33295e15cb759c08ed2ac992007f",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "packs-describe",
+    "argv": [
+      "/tmp/workbench-installed-evidence-jpc71r6d/prefix/bin/save",
+      "--json",
+      "evidence",
+      "packs",
+      "describe",
+      "service-queries",
+      "--version",
+      "1"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-jpc71r6d/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 2,
+    "stdout_sha256": "6b1897d3c62f4918329efc583313ad2acb6db8031ac4152beb577806888679ba",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "wrong-pack-pin",
+    "argv": [
+      "/tmp/workbench-installed-evidence-jpc71r6d/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-jpc71r6d/complete/store",
+      "--config",
+      "/tmp/workbench-installed-evidence-jpc71r6d/complete/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-jpc71r6d/complete/context.json",
+      "--context-max-age-days",
+      "30",
+      "--record",
+      "always",
+      "evidence",
+      "collect",
+      "--target",
+      "fixture",
+      "--input",
+      "/tmp/workbench-installed-evidence-jpc71r6d/complete/input.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-jpc71r6d/unrelated-working-directory",
+    "exit_status": 2,
+    "duration_ms": 2,
+    "stdout_sha256": "77c78c38ffeb51a3f5937a948b0c7b9c5e51c2f84f719af194a227e9b4f7d4a9",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "complete-collect",
+    "argv": [
+      "/tmp/workbench-installed-evidence-jpc71r6d/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-jpc71r6d/complete/store",
+      "--config",
+      "/tmp/workbench-installed-evidence-jpc71r6d/complete/operator.json",
+      "--context-source",
+      "/tmp/workbench-installed-evidence-jpc71r6d/complete/context.json",
+      "--context-max-age-days",
+      "30",
+      "--record",
+      "always",
+      "evidence",
+      "collect",
+      "--target",
+      "fixture",
+      "--input",
+      "/tmp/workbench-installed-evidence-jpc71r6d/complete/input.json"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-jpc71r6d/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 43,
+    "stdout_sha256": "666863d75c1855db46ec232ad39c8639d22dcf0b63a8276a341ae7dc965fbca5",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "show-after-restart",
+    "argv": [
+      "/tmp/workbench-installed-evidence-jpc71r6d/prefix/bin/save",
+      "--json",
+      "--state-dir",
+      "/tmp/workbench-installed-evidence-jpc71r6d/complete/store",
+      "evidence",
+      "show",
+      "run-12-18dd5d813764f7b6-1",
+      "--expected-manifest-sha256",
+      "sha256:9aa850c511173532e8e152969f74a791f691857e7155ec18d26bd298a2ee97f8"
+    ],
+    "cwd": "/tmp/workbench-installed-evidence-jpc71r6d/unrelated-working-directory",
+    "exit_status": 0,
+    "duration_ms": 6,
+    "stdout_sha256": "10812f766e67d4a01f38d981ca7f99d8cd09569bc5e6794d563b999db63d76ed",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

@@ -1,0 +1,95 @@
+{
+  "verdict": "pass",
+  "execution_exit_status": 0,
+  "argv": [
+    "tools/test-sandbox.sh",
+    ".venv/bin/python",
+    "-B",
+    "target/evidence-comparison/review-r2/tools/verify-comparison.py",
+    "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/evidence-comparison/save-r2.data",
+    "--expected-binary-sha256",
+    "319eabdd1a0f85d1c480362848d900c7b06abebfefaafbd4722b4c7ea8a14e70",
+    "--source-root",
+    "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/evidence-comparison/review-r2",
+    "--source-manifest",
+    "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/evidence-comparison/source-manifest-r2.json",
+    "--expected-source-manifest-sha256",
+    "e80369b5af3eb33c479c37b7270f020693f88bbe081964f6c6c595c0e85295f7",
+    "--evidence-dir",
+    "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/evidence-comparison/installed-r2"
+  ],
+  "stdout_stderr_log": "target/evidence-comparison/installed-r2.log",
+  "source_manifest_sha256": "e80369b5af3eb33c479c37b7270f020693f88bbe081964f6c6c595c0e85295f7",
+  "source_files": 765,
+  "binary_sha256": "319eabdd1a0f85d1c480362848d900c7b06abebfefaafbd4722b4c7ea8a14e70",
+  "binary_bytes": 41712592,
+  "before_after_source_binary_guards_passed": true,
+  "commands_completed": 10,
+  "terminal_receipts": 10,
+  "collection_receipts": 3,
+  "retained_query_receipts": 6,
+  "comparison_receipts": 7,
+  "http_requests": 18,
+  "fixture_threads_joined": true,
+  "temporary_install_and_store_cleaned": true,
+  "offline_comparison": "Fixture closed and joined; configuration and context files removed; provider absent from comparison environment.",
+  "store_files_unchanged": 17,
+  "retained_store_hashes_independently_checked": true,
+  "cases": [
+    {
+      "case": "collect-0",
+      "exit_status": 0
+    },
+    {
+      "case": "collect-1",
+      "exit_status": 0
+    },
+    {
+      "case": "collect-2",
+      "exit_status": 0
+    },
+    {
+      "case": "changed",
+      "exit_status": 0
+    },
+    {
+      "case": "self-equal",
+      "exit_status": 0
+    },
+    {
+      "case": "exact-shifted",
+      "exit_status": 1
+    },
+    {
+      "case": "offset-shifted",
+      "exit_status": 0
+    },
+    {
+      "case": "max-items",
+      "exit_status": 1
+    },
+    {
+      "case": "wrong-pin",
+      "exit_status": 1
+    },
+    {
+      "case": "path-reference",
+      "exit_status": 2
+    }
+  ],
+  "acceptance": [
+    "All terminal, child query, collection manifest/payload, and comparison data receipts validated against frozen schemas.",
+    "Hand-calculated metric added/removed/changed/unchanged counts passed.",
+    "Loki duplicate multiplicity and nanosecond timestamps passed.",
+    "Self comparison had no changes.",
+    "Exact-window rejection and window-offset comparison preserved original windows.",
+    "Detail truncation returned partial with exact emitted limit and nonzero omitted count.",
+    "Incorrect manifest pin and path reference rejected.",
+    "Stored bytes remained identical before/after comparison."
+  ],
+  "limitations": [
+    "Synthetic loopback Grafana fixtures; no live homelab pilot or native Windows execution.",
+    "Focused installed mission supplements existing guarded Cargo evidence; no rebuild or source modifications."
+  ],
+  "artifacts": "target/evidence-comparison/installed-r2"
+}

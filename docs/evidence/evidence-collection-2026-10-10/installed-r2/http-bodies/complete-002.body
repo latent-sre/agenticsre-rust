@@ -1,0 +1,1 @@
+{"from":"1791689434664","queries":[{"datasource":{"type":"prometheus","uid":"metrics-1"},"expr":"up{job=\"fixture\"}","format":"time_series","instant":false,"intervalMs":1000,"maxDataPoints":1000,"range":true,"refId":"A"}],"to":"1791689734664"}

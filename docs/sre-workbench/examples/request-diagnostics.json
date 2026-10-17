@@ -1,0 +1,24 @@
+{
+  "spec_version": "0.1",
+  "request_id": "example-diagnostics",
+  "operation": "diagnostics.run",
+  "operation_version": 1,
+  "target": {
+    "kind": "connection",
+    "id": "fixture-web"
+  },
+  "inputs": {
+    "id": "connectivity",
+    "version": 1,
+    "input": {
+      "capture_body": false,
+      "on_failure": "continue"
+    }
+  },
+  "limits": {
+    "timeout_ms": 60000,
+    "max_output_bytes": 16384,
+    "concurrency": 2
+  },
+  "record": "never"
+}

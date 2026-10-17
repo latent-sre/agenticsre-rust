@@ -1,0 +1,233 @@
+[
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/org"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/datasources/uid/metrics-1?ds_type=prometheus"
+  },
+  {
+    "auth_matches": true,
+    "body": {
+      "from": "1790899200000",
+      "queries": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "metrics-1"
+          },
+          "expr": "up{job=\"fixture\"}",
+          "format": "time_series",
+          "instant": false,
+          "intervalMs": 1000,
+          "maxDataPoints": 1000,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "to": "1790899500000"
+    },
+    "method": "POST",
+    "organization_matches": true,
+    "path": "/grafana/api/ds/query"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/org"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/datasources/uid/logs-1?ds_type=loki"
+  },
+  {
+    "auth_matches": true,
+    "body": {
+      "from": "1790899200000",
+      "queries": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "logs-1"
+          },
+          "expr": "{job=\"fixture\"}",
+          "intervalMs": 1000,
+          "maxDataPoints": 1000,
+          "maxLines": 500,
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "to": "1790899500000"
+    },
+    "method": "POST",
+    "organization_matches": true,
+    "path": "/grafana/api/ds/query"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/org"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/datasources/uid/metrics-1?ds_type=prometheus"
+  },
+  {
+    "auth_matches": true,
+    "body": {
+      "from": "1790899200000",
+      "queries": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "metrics-1"
+          },
+          "expr": "up{job=\"fixture\"}",
+          "format": "time_series",
+          "instant": false,
+          "intervalMs": 1000,
+          "maxDataPoints": 1000,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "to": "1790899500000"
+    },
+    "method": "POST",
+    "organization_matches": true,
+    "path": "/grafana/api/ds/query"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/org"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/datasources/uid/logs-1?ds_type=loki"
+  },
+  {
+    "auth_matches": true,
+    "body": {
+      "from": "1790899200000",
+      "queries": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "logs-1"
+          },
+          "expr": "{job=\"fixture\"}",
+          "intervalMs": 1000,
+          "maxDataPoints": 1000,
+          "maxLines": 500,
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "to": "1790899500000"
+    },
+    "method": "POST",
+    "organization_matches": true,
+    "path": "/grafana/api/ds/query"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/org"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/datasources/uid/metrics-1?ds_type=prometheus"
+  },
+  {
+    "auth_matches": true,
+    "body": {
+      "from": "1790899500000",
+      "queries": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "metrics-1"
+          },
+          "expr": "up{job=\"fixture\"}",
+          "format": "time_series",
+          "instant": false,
+          "intervalMs": 1000,
+          "maxDataPoints": 1000,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "to": "1790899800000"
+    },
+    "method": "POST",
+    "organization_matches": true,
+    "path": "/grafana/api/ds/query"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/org"
+  },
+  {
+    "auth_matches": true,
+    "body": null,
+    "method": "GET",
+    "organization_matches": true,
+    "path": "/grafana/api/datasources/uid/logs-1?ds_type=loki"
+  },
+  {
+    "auth_matches": true,
+    "body": {
+      "from": "1790899500000",
+      "queries": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "logs-1"
+          },
+          "expr": "{job=\"fixture\"}",
+          "intervalMs": 1000,
+          "maxDataPoints": 1000,
+          "maxLines": 500,
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "to": "1790899800000"
+    },
+    "method": "POST",
+    "organization_matches": true,
+    "path": "/grafana/api/ds/query"
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "spec_version": "0.1",
+  "request_id": "saved-query-example",
+  "operation": "query.run",
+  "operation_version": 1,
+  "target": {
+    "kind": "connection",
+    "id": "fixture"
+  },
+  "inputs": {
+    "id": "prometheus.up-by-job",
+    "version": 1,
+    "datasource": "metrics-1",
+    "parameters": {
+      "job": "fixture"
+    },
+    "window": {
+      "kind": "relative",
+      "lookback_seconds": 300
+    }
+  },
+  "limits": {
+    "timeout_ms": 60000,
+    "max_output_bytes": 2097152
+  },
+  "record": "never"
+}

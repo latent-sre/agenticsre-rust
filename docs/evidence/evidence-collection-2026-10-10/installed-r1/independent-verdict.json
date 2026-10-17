@@ -1,0 +1,16 @@
+{
+  "verdict": "inconclusive_product_acceptance",
+  "execution_exit_status": 1,
+  "failure_classification": "test_fixture_defect",
+  "failure": "Provider name SAVE_EVIDENCE_FIXTURE does not satisfy the established SAVE_GRAFANA_ prefix contract; the positive collection case is denied before HTTP or store effects.",
+  "source_manifest_sha256": "9bd24c38c33d59805955ee722758c32fc6e6bf5d3dfd692137c1f9c86fb279f0",
+  "source_files": 423,
+  "binary_sha256": "2b37378fbcc2b933405e44bf72cc9c52d4b694c81efaed3bf92bf9ca0ddbf179",
+  "binary_bytes": 40578208,
+  "post_failure_source_and_binary_guards": true,
+  "commands_retained": 4,
+  "http_events_retained": 0,
+  "checker_edited": false,
+  "source_edited": false,
+  "log_sha256": "f17ca91aedb6cdd42a21349c4dd1269c89f4d77347b79a284e73d9d4aa6fe745"
+}

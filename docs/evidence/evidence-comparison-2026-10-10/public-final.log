@@ -1,0 +1,20 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 3.36s
+     Running tests/comparison.rs (target/debug/deps/comparison-7f9213595f1b621b)
+
+running 9 tests
+test byte_budget_preserves_one_global_detail_prefix_and_counts_empty_arrays ... ok
+test datasource_and_service_identity_changes_are_explicitly_incompatible ... ok
+test malformed_references_and_policy_are_denied_before_store_access ... ok
+test item_and_byte_limits_disclose_omissions_and_manifest_pins_are_checked ... ok
+test offset_policy_aligns_equal_duration_windows_and_preserves_original_times ... ok
+test parameter_identity_changes_refuse_observation_diff ... ok
+test partial_collection_keeps_missing_check_visible ... ok
+test public_comparison_counts_changes_and_preserves_store_without_external_access ... ok
+test typed_frame_failures_and_nulls_never_become_complete_comparisons ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+

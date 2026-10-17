@@ -1,0 +1,23 @@
+{
+  "kind": "independent static review recorded by coordinator",
+  "reviewer": "/root/evidence_review",
+  "initial_snapshot": "7babfde6d9334c5cf258cfaf9230be3913586ee10265d48a8de9ef015ab46d48",
+  "corrected_product_snapshot": "f88e334bafbea920fd6f693bf6e87f146365e1eb3ed8f9af3058c3885568d173",
+  "correction_diff_sha256": "45ef11c5667bb69a5f914d1faf308c1c3c71b8c9aec61cd42485d5cae0b114b6",
+  "independent_p0_p1": 0,
+  "resolved_product_p2": [
+    "receipt depth limit",
+    "bulk domain validation",
+    "management cancellation and progress",
+    "late signal mutating sealed payload"
+  ],
+  "additional_deadline_fix": "Reproduced millisecond-rounded handoff failure; once-only cleanup phase verified by deterministic unit tests and 21 post-fix focused passes.",
+  "final_static_result": "Four product findings resolved; no further concrete product defect in correction delta. One second verifier projection needed the same terminal-field exclusion.",
+  "verifier_correction": {
+    "snapshot": "df9ad3800f2d25eaa679d6ba30c39153b47543f6265df7b035b70156eb5a7be1",
+    "only_changed_path": "tools/verify-evidence.py",
+    "change": "Exclude delivery_cancellation_signal and bundle from the second stored-payload comparison.",
+    "verified_by": "/root/evidence_frozen_execute; successful installed-r4 execution and before/after source/binary guards"
+  },
+  "commit_or_publication": false
+}

@@ -1,0 +1,173 @@
+{
+  "work_item": "WORKBENCH-012",
+  "result": "passed_for_linux_core_cli_fixture_scope",
+  "source": {
+    "snapshot": "target/saved-queries/review-r2",
+    "files": 378,
+    "manifest_sha256": "aea5c74c7d92a2890c0ba249589f7aa71070c9b28470c3acdcf19117e48910e8",
+    "base_head": "2c4e4220654d85d5be22ac42a034beb51fcc5624",
+    "worktree": "codex/service-diagnostics"
+  },
+  "binary": {
+    "sha256": "fa1cc9eff529f6f867bd3ff8a15f4056ff7c590ef96c6bff1ed41e574fb1e104",
+    "bytes": 39346720,
+    "path": "target/debug/save",
+    "retained_readonly_data": "target/saved-queries/save.data"
+  },
+  "checks": [
+    {
+      "command": "tools/test-sandbox.sh cargo test --workspace --all-features --locked --offline",
+      "exit": 0,
+      "passed": 199,
+      "failed": 0,
+      "ignored": 19,
+      "log": "workspace-final.log"
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+      "exit": 0,
+      "log": "clippy-final.log"
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo fmt --all -- --check",
+      "exit": 0,
+      "log": "fmt-accepted.log"
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo build --locked --offline -p workbench-cli",
+      "exit": 0,
+      "log": "ordinary-build-accepted.log"
+    },
+    {
+      "command": "tools/test-sandbox.sh .venv/bin/python -B target/saved-queries/review-r2/tools/verify-queries.py target/saved-queries/save.data --evidence-dir target/saved-queries/installed",
+      "exit": 0,
+      "canonical_receipts": 24,
+      "query_data_receipts": 21,
+      "index": "installed-verification-index.json"
+    },
+    {
+      "command": ".venv/bin/python -B docs/sre-workbench/verify_specs.py",
+      "exit": 0,
+      "schemas": 31,
+      "positive_examples": 28,
+      "negative_examples": 14,
+      "repository_documents": 32,
+      "package_documents": 15,
+      "log": "specifications-final.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "review": {
+    "method": "independent static correctness and security review",
+    "reviewed_manifest_sha256": "aea5c74c7d92a2890c0ba249589f7aa71070c9b28470c3acdcf19117e48910e8",
+    "remaining_findings": 0,
+    "resolved_findings": [
+      {
+        "severity": "P2",
+        "finding": "Default query text bypassed safe terminal rendering and coverage disclosure.",
+        "regression": "human_query_receipt_escapes_remote_controls_and_shows_identity_and_coverage",
+        "red_log": "text-red.log",
+        "green_log": "text-green.log"
+      }
+    ]
+  },
+  "earlier_failures": [
+    "Baseline binary queries list returned denied/invalid_usage, confirming absent feature. The first private prose-error assertion was corrected to read its static JSON error.",
+    "Initial workspace failed at new hosted-grant test setup because its synthetic environment reference lacked required SAVE_GRAFANA_ prefix. Test fixture corrected; final full workspace passed.",
+    "Initial schema used end-anchor semantics that admitted a trailing newline. Negative control predicates and exact digest lengths now reject it; added permanent negative fixture.",
+    "Independent installed preflight initially omitted existing resume-changes.json metadata from its extra-file allowlist; inspected identity resolved this before successful runtime mission."
+  ],
+  "limits": [
+    "Controlled HTTPS fixtures only; no live Grafana-version compatibility claim.",
+    "No saved-query browser or MCP grant; hosted calls remain refused.",
+    "No native Windows or other non-Linux execution acceptance.",
+    "Nineteen existing native-containment tests remain explicitly ignored in local lane.",
+    "Retained packaged development archives predate this binary; no release, publication or host installation."
+  ],
+  "execution_boundary": "Existing Bubblewrap private user/network/PID namespaces, readonly source/toolchain, private temporary storage, no host credentials; synthetic HTTPS provider; installed copy outside checkout; fixture threads joined.",
+  "artifacts": {
+    "baseline-red.json": {
+      "bytes": 1205,
+      "sha256": "214eaebd28f534abd95d711a858e6de94092590ad2f8b2944ec561197a960e77"
+    },
+    "clippy-final.log": {
+      "bytes": 484,
+      "sha256": "954ec584cf8d85d74fe96b648bfee8e16bccdfa4975de9112a8414491716b8d1"
+    },
+    "final-identity.json": {
+      "bytes": 412,
+      "sha256": "1d08ce00016ea5c405d4f2294ac956f18e47d584833828cb915c689be57c2a4f"
+    },
+    "fmt-accepted.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "installed/installed-query-ledgers.json": {
+      "bytes": 5791,
+      "sha256": "dbc9d9d69b9c1f22b22df24b4256b8802378dd8c580f874e2fd2e9da0e01e77b"
+    },
+    "installed/installed-query-receipts.jsonl": {
+      "bytes": 67288,
+      "sha256": "c5866694caf8e0b13758f43591a629e206f3acb97abd566d80ed17c752b2dce9"
+    },
+    "installed/installed-query-summary.json": {
+      "bytes": 396,
+      "sha256": "b785f7ae41c3e0ecda06327d688d7c13d5569dba8ad2f1cebdf2834b9747a8f0"
+    },
+    "installed-identity-after.json": {
+      "bytes": 675,
+      "sha256": "83e73a79e8d9560f26a0208a1d61118b62ae711c0be554e7518fbee68f35f58e"
+    },
+    "installed-identity-before.json": {
+      "bytes": 615,
+      "sha256": "c296b10528f1d0e33f5142cef48b7595e9657d848cfe245330ceb2233bb36db7"
+    },
+    "installed-verification-index.json": {
+      "bytes": 1487,
+      "sha256": "31fa564fb03e29b39f332e704b4943611d61cf46486fd24ca8e9ad880f9b9095"
+    },
+    "installed-verification.exit": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "installed-verification.log": {
+      "bytes": 362,
+      "sha256": "16ecf772404a6d7ebc2ae1cd8ff94165d8058433258d94a4b5cfc6e79b029143"
+    },
+    "ordinary-build-accepted.log": {
+      "bytes": 60,
+      "sha256": "63bd8a3ac13f8b1c160887cdaf9b30715b07e638d60df463cb8815f661518191"
+    },
+    "ordinary-build-final.log": {
+      "bytes": 166,
+      "sha256": "3fd48b8085ddb1b2edb6e696480f7837b70530176b2d3a12c29472527ffba2d9"
+    },
+    "source-manifest.json": {
+      "bytes": 43597,
+      "sha256": "aea5c74c7d92a2890c0ba249589f7aa71070c9b28470c3acdcf19117e48910e8"
+    },
+    "text-green.log": {
+      "bytes": 761,
+      "sha256": "b5aeb742303ef669baf6e0f757662c509ce7b047da8450eecbab0b3643dc3409"
+    },
+    "text-red.log": {
+      "bytes": 979,
+      "sha256": "a4d91e9bb8f675e43a056d03dfdde07a5671e8a8a92a8102712a259b658a52d6"
+    },
+    "workspace-final.log": {
+      "bytes": 23922,
+      "sha256": "729a6c68dbb71b126c8aa84bbe730614236c1a0ae3d2b834675cb880964859e9"
+    },
+    "workspace-tests.log": {
+      "bytes": 19827,
+      "sha256": "15d765dbfd1b7b8dc3d4cd3cfd60cc817af852021f43857ad66f3c2296bf0d1c"
+    },
+    "specifications-final.log": {
+      "bytes": 210,
+      "sha256": "1c41c72b3fef548a50ca95478eb2c267b53c9a629572d02f4f67fb9947778dc9"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:runbook-status-input:0.1",
+  "title": "Runbook status input",
+  "type": "object",
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+    }
+  },
+  "required": [
+    "run_id"
+  ],
+  "additionalProperties": false
+}

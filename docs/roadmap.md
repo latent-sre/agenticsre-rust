@@ -1,5 +1,22 @@
 # Product roadmap
 
+## PR #3 review corrections — 2026-10-17
+
+All seven reported P2 findings were reproduced and fixed on both affected branches. See the
+[finding-by-finding verification](pr3-findings-verification.md) and retained regression logs.
+The shared correction is `1fae8fd` on `codex/offline-evidence`; its backport is `f12e4c9` on
+`codex/service-diagnostics`. The newer branch passed 595 workspace tests with 33 existing scoped
+ignores; the older branch passed 335 with 19 existing scoped ignores. Both had zero failures and
+passed strict workspace lint, formatting, specification checks and ordinary builds.
+
+The fixes cover pre-intent evidence recovery, absolute store paths, unknown journal formats,
+runbook cursor and receipt bindings, bounded work/finalization deadlines, and unreferenced sealed
+artifacts. New regressions exercise public CLI refusal without replay or journal mutation,
+cancelled/restartable cleanup, protected/unknown-format preservation, and validated explicit
+deletion. A separate test-only staged-executable fix resolves an observed MCP fixture launch race
+on the newer branch. No live store, service, credential or deployment was changed. Prior milestone
+evidence below retains its original source identity and does not supersede this correction record.
+
 **Status:** Live product work queue, established 2026-10-02. The owner selected
 latent-sre/agenticsre-rust as the working repository. Scope and dependencies live in the
 [planning package](sre-workbench/README.md); this file owns current execution status.
@@ -31,6 +48,56 @@ earlier archives for upgrade/rollback. On 2026-10-03 the owner requested committ
 and opening a pull request. The review branch `codex/context-linux-bundles` targets `main` and
 includes the unpublished implementation checkpoint `837c217` plus the installed-bundle evidence.
 The actual archives remain local data artifacts; live installation and release remain separate.
+
+**Current continuation:** The owner reported merging PR
+[#2](https://github.com/latent-sre/agenticsre-rust/pull/2). GitHub readback confirms MERGED at
+2026-10-03 03:11:46 UTC, with current `main` at `9f77f8a9c24b0c83aa9a574e831751fa7e84a17f`.
+Its tree `416f88984e9ce24b6592de686a306b6c6cb4ab2a` exactly matches the reviewed `2c4e422`
+branch. The merge changes history without changing accepted file bytes; existing Rust/specification
+and installed-bundle evidence retains its original identity. Earlier open-PR entries are historical
+and the owner-review item is closed. The next publication checkpoint must include merged-main
+history; no extra product verification is required solely for this identical-tree merge.
+The Python/Go language discussions authorize no migration. Continue the Rust checkpoint and
+preserve its API/schema boundaries so a future language evaluation can reuse the same acceptance
+missions and browser assets. The active goal continues in the separate implementation worktree
+`/home/hawkfire/rusty/agenticsre-rust-diagnostics`, branch `codex/service-diagnostics`, based on
+`2c4e422`. This worktree's roadmap is the sole live record for the new increment. Local changes
+and isolated Cally checks remain authorized; no further commit/push/merge/live action is inferred
+from the completed PR request. The historical three-hour cutoffs do not apply to this continuation.
+
+**Owner pause checkpoint:** The owner requested a stop after the browser diagnostics milestone.
+WORKBENCH-010 core/CLI and WORKBENCH-011 browser diagnostics have qualified native acceptance;
+both affected browser reviews accepted R1, final API/Playwright execution and exact cleanup passed.
+All run-owned jobs/resources are stopped. Source and evidence are saved locally in the diagnostics
+worktree; no new commit or push was requested. WORKBENCH-012 has a prepared contract only and has
+not begun implementation. Resume with installed saved queries, preserving the named resolver,
+platform/live, release and broader product requirements below.
+Final pause checks passed: 29 schemas, 27 positive/12 negative fixtures, 15 package documents plus
+31 repository documents, all planning IDs and `git diff --check`. The diagnostics worktree remains
+on `codex/service-diagnostics`, HEAD `2c4e422`, with the completed implementation/evidence saved
+as local uncommitted changes. No builder or verifier task is running.
+
+**Owner-authorized local cleanup:** Unused caches from other projects were included. Native UV
+pruning removed 24 MiB of dangling entries; the separate Dualla cache had no unused entries.
+The expired Trivy database/scan cache and regenerable node-gyp, pip and Vitest caches were cleared.
+Two identical readonly binary/source-archive copies now share storage, preserving every logical
+path, byte, size and mode; inode/link-count/ctime/shared-timestamp changes are recorded explicitly.
+Measured free space rose from 8,929,361,920 to 10,504,310,784 bytes, a 1,574,948,864-byte gain.
+All 688 repository paths/refs/status, 1,374 shared browser-runtime files and 181 retained proof
+artifacts matched after cleanup. Rust/dependency caches, shared Python/browser environments,
+uncommitted work, screenshots and unique evidence remain. Record
+`/tmp/agenticsre-local-cleanup-gq_xicdc.json`, SHA-256
+`38a28c3a4bc096384ac2c0ed3fec4b47970f071ea9143457d904cfa23e29579b`.
+At that checkpoint this was the only subsequent intentional source-document change; product work stayed paused.
+The next Trivy scan requires refreshing its removed database.
+
+**2026-10-10 continuation:** The owner resumed Rust implementation and selected continuation in
+the existing roadmap order. WORKBENCH-012 is complete for its Linux core/CLI fixture scope in the
+existing diagnostics worktree. The accepted diagnostic/browser work was preserved. Evidence
+collection and comparison are next. Local source changes and disposable checks remain
+authorized; no new publication or live installation was requested. The local private-network
+sandbox is available for the ordinary HTTPS fixtures. A pre-edit capture of the 365 existing
+source/evidence files is retained under `target/saved-queries/baseline`.
 
 ## WORKBENCH-001 — bootstrap the product
 
@@ -633,11 +700,852 @@ The unchanged packet is copied into `docs/evidence`. The bundle refresh introduc
 change or live installation. The subsequent owner-requested review handoff commits its documentation
 and evidence on `codex/context-linux-bundles`, alongside the existing implementation checkpoint.
 
+## WORKBENCH-010 — configured service diagnostic pack
+
+**Status:** Qualified PASS for the required core/CLI diagnostic mission and affected Grafana
+regression in the tested private Linux boundary. Independent affected correctness/security reviews
+accept frozen R1, and native execution closes the required DNS/TCP/TLS/HTTP/process, body,
+deadline/cancellation, consumer-loss and regression criteria. Positive system-resolver first-server/
+no-fallback traffic remains INCONCLUSIVE because UID 1000 could not bind private port 53; this
+specific fixture gap is excluded from the pass. The [verification record](diagnostics-verification.md)
+retains exact source, original failed attempts, final accepted selection and cleanup. The active
+checkout now also contains the separate WORKBENCH-011 candidate; the core/CLI acceptance does not
+accept those later adapter/frontend edits.
+Configuration/receive semantics are in
+[the finished profile](diagnostics-config.md), with four strict machine schemas.
+Deliver the full first pack's DNS/TCP/TLS/HTTP and configured local-process observations through
+the core/CLI, then integrate its results into the browser in a dependent increment. The fixed pack
+has an explicit target/address policy, real TLS verification, bounded asynchronous DNS/network IO,
+one parent deadline, at most two concurrent checks and honest failure/blocked/partial results.
+**Mission:** A named installed pack runs from outside source against controlled private DNS/HTTPS
+fixtures and their actual kernel process identity. Its direct and structured calls agree and return
+schema-valid observations/provenance. Unauthorized addresses/redirects/proxies/substitution are
+refused; independent branches, cancellation and cleanup are verified.
+**Ownership:** Builder owns the new core diagnostic module, its immediate core/CLI seams, schemas,
+examples, Rust tests and public fixture checker. Coordinator owns this roadmap and the initial
+contract; builder proposes contract changes before incompatible behavior. Reviewer and independent
+verifier own read-only review and private acceptance/evidence, respectively. Existing process,
+read-profile, context, Grafana, UI/MCP implementations remain accepted baselines; modify them only
+when an evidenced required seam demands it. There is one Cargo builder and no local listener.
+**Boundary:** Existing read-only local test sandbox and COPY-only offline Cally lane, synthetic inputs,
+private PID/network, no host credentials/mounts or package/service changes; require 8 GiB free
+before staging and preserve prior artifacts/evidence. Reuse passed checks for unchanged paths.
+**Gates/cadence:** Independent correctness and affected network/security review, then independent
+executable acceptance on a frozen source capture. Product fix/review rounds: 1 resolved; incomplete builder
+returns: 0. No source commit/push until separately authorized. No new global time limit was requested.
+**Next boundary:** Correct the private capture assertion, finish the remaining native criteria
+using the same frozen R1 binary and retain every completed proof. UDP/TCP and bounded alias
+handling remain supported.
+Keep Linux/platform and live-scope
+gaps honest; do not replace required checks with fake success or claim overall product completion.
+**Walking skeleton before review:** Public CLI and structured calls both succeeded with complete coverage and
+actual DNS/TCP/TLS/HTTP/kernel-process observations. Their receipts passed the envelope and
+diagnostics schemas; fixture witnesses observed A/AAAA, separate TCP/TLS probes and one HTTP GET
+per run to the pinned peer. Source/CA/leaf identities matched. Log
+`/tmp/agenticsre-diagnostics-build.cqSqi8TS/walking-skeleton-r1.log`, SHA-256
+`198a02f86c233d7889f5c72c9ba1c029b06e4d2f5ab5c0e95db2fe70390fb8ee`.
+The initial mission failed safely on Hickory's special-use localhost synthesis before any service
+connection. The builder traced the upstream behavior, switched the real DNS fixture to a matching
+`diagnostics.workbench.test` certificate/name, and rejects synthesized reserved service names.
+That failed setup evidence is retained; it is not relabeled as a successful configured DNS query.
+That pre-review implementation added only two direct cached dependency edges, without version
+changes. Its verifier preparation confirmed cached archives/base identity and prepared a separate
+framing/signal/dispatch/process matrix. Review/fix rounds were 0 at that boundary; ordinary
+build/fixture corrections are retained in the builder evidence. The later R0 review and R1
+correction statuses below supersede this historical checkpoint. No Cally product job had started
+at that pre-review boundary.
+
+**Final local R0 implementation:** Builder packet
+`/tmp/agenticsre-diagnostics-build.cqSqi8TS/PACKET.md`, SHA-256
+`0c45d4ddad07d6b6bda7158ffe4df414e74f032447a48d4f2a3753a1b4931285`.
+All final own exits were 0: 158 Rust tests passed, 19 existing native proofs ignored; 63 exact
+public receipts passed both schemas from a byte-matched private copied installation; human output,
+canaries and joined fixture cleanup passed. Full Clippy/format/specification/diff checks passed
+(29 schemas, 27 positive/12 negative examples, 28 repository documents). The packet retains exact
+commands, source hashes, logs and failed attempts. The optional-process stop tripwire found and
+corrected a scheduler predicate before review; its red binary/log remain preserved.
+Root's focused final sandbox mission independently observed all four actual network checks in
+stop mode with the process honestly unconfigured, exact config/CA identities, three connections
+and one GET. Log `/tmp/agenticsre-diagnostics-root-optional-stop.log`, SHA-256
+`72bdc05cc1306e3dd1cf0033b6ae8f27fb12fe4e5423246647a4bef40212cf35`.
+The earlier root five-check spot predates that correction and is not relabeled as final-source proof.
+
+**Completed cache cleanup:** All builder sessions/processes ended. Root checked the 26 owned source
+hashes, preserved final/red ordinary binaries as mode-0444 DATA, and removed only this worktree's
+completed ignored `target/debug`. Free space rose from 7,880,065,024 to 8,782,110,720 bytes,
+passing the 8 GiB capture/staging floor. Three prior archives retain their exact accepted hashes,
+and source Git status is unchanged. Evidence `/tmp/agenticsre-diagnostics-cache-cleanup.json`.
+Final binary `target/diagnostics/save-candidate`: SHA-256
+`20308895711abe40d277d601be439f07a3bb3f85320e73d2a87599ce0c5eacfe`, 38,941,952 bytes.
+
+**R0 proof limits at local return:** Native independent acceptance and affected R1 reviews had not run.
+Controlled system-resolver file variants and unavailable/inaccessible proc views need their own
+supported native fixtures; local missing-resolver proof remains separately attributed. Synchronous
+pinned regular-file/proc reads cannot hard-preempt an uninterruptible kernel/filesystem stall.
+The prepared independent matrix includes actual expired-certificate and raw kernel witnesses,
+five public in-flight signal cases and consumer loss; it has executed no native product bytes.
+Those local results attest the R0 bytes and do not establish acceptance of R1 edits.
+No new commit, push or live change occurred.
+
+**Immutable R0 review target:** `/tmp/agenticsre-diagnostics-r0-snapshot-y9c8z6o5`, candidate
+`46bb04f5e07d411d23bd1138574d9454cedf3498`, tree
+`7eabfb31f74dacb2fec7537fbc2a86310300c8d4`, parent `2c4e422`.
+Manifest `/tmp/agenticsre-diagnostics-r0-snapshot.json`, SHA-256
+`b53c66ef641dc18ec62f3a9e7fc3b1a5b96cedd74494b34d7f88b2ed6e73900f`:
+338 regular files, 3,959,808 bytes; 334 Git mode 100644 and four mode 100755. The original is sealed
+read-only; source refs/status/bytes/modes stayed stable. Root matched all 338 hashes, including all
+26 builder-owned paths and its own contracts/roadmap. Execution must use a separate copy.
+
+**Independent R0 findings:** Correctness REQUEST CHANGES, independent P0/P1 count 1. One P1:
+Hickory synthesizes loopback reverse-zone/CNAME answers without the configured resolver while
+the receipt claims an actual lookup. Three P2: retry settings and underlying transport/reconnect
+logic contradict the single-attempt profile; unrelated answer owners/types can select the service
+peer; chunk trailing CRLF bytes escape the aggregate framing counter. These were independently
+traced through complete diagnostic/immediate-caller paths and locally cached locked libraries.
+The separate security auditor found no P0/P1 and confirmed the retry/profile discrepancy as a
+low-severity P3; it established no destination-policy bypass. That security verdict does not
+override the correctness gate or authorize acceptance of subsequently changed safety-sensitive code.
+
+**R1 correction scope:** The owning builder retained R0 source/binaries/logs, produced public
+red/green packet/association/synthesis/framing witnesses, preserved bounded CNAME behavior
+and both transports, and returned new source/binary identities with the affected required gates.
+Only necessary already locked cached dependency edges are permitted; no package/version download,
+source commit/ref move, host listener or live change. Re-enter both affected independent gates.
+Fix/review rounds: 1 open, maximum 2; incomplete builder returns: 0. Cally staging/runtime stays
+pending; the fresh 8 GiB floor applies before capture and staging.
+
+**Completed local R1 correction:** Packet `/tmp/agenticsre-diagnostics-r1-build.31pxy06M/PACKET.md`,
+SHA-256 `9465b11dc86387f2e062b7e8fda6911d1ae402a4ca6d112c8046bfad51791922`.
+All required own exits were 0: 167 Rust tests passed, 19 existing native tests ignored;
+63 public receipts and 38 focused DNS/HTTP/alias-deadline witnesses passed their schemas and
+fixture assertions. Clippy, format, specification and whitespace checks passed. The retained
+R0 binary reproduces all eight original red witnesses; its expected checker exit is 1.
+The corrected low-level DNS exchange retains its Tokio provider, uses one TCP connection and
+zero UDP retries, accepts only service-associated owners/types and follows at most eight CNAME
+hops. Attempted-question metadata describes transport requests, not proof of packets transmitted.
+Every header/chunk-framing byte now counts toward 8192 bytes: exact passes, crossing fails.
+No dependency package, version or feature changed during R1.
+
+Root matched both returned manifests (eight changed paths and 70 production/build/test paths),
+the machine packet and the ordinary candidate. A focused private copied-installation spot passed
+five actual observations with four distinct DNS questions on one TCP connection. A separate
+8193-byte framing witness failed with `http_headers_too_large`, as expected. Logs:
+`/tmp/agenticsre-diagnostics-root-r1-cname.log`, SHA-256
+`f194497bee3e4165cbe9d6559a318ab61bcb86181f58441ca3679a2e1b8ae795`, and
+`/tmp/agenticsre-diagnostics-root-r1-framing.log`, SHA-256
+`7a98e89f4f8ce1079110b25594060725a3c86ce74729018b0418c96a4106647d`.
+Candidate `target/diagnostics/save-r1-candidate`: SHA-256
+`fcb5a72bd48f3c7faa69cc0ab99b0b18cfb3463fac453c469b3d6401745d95d3`, 38,975,168 bytes.
+
+**Completed R1 cache cleanup:** No builder or fixture process remained. Root removed only the
+completed ignored `target/debug`, retained all three diagnostic binaries as mode-0444 DATA and
+verified all three earlier development archives unchanged. Source refs, status, bytes and modes
+for all 340 files remained unchanged. Free space rose from 7,595,450,368 to 8,697,610,240 bytes,
+passing the 8 GiB floor. Evidence `/tmp/agenticsre-diagnostics-r1-cache-cleanup.json`, SHA-256
+`b5eeb9166a34a69c6a2ab1bf3b609cc4e16a58133112e1f2a075afd37f349f56`.
+Local results alone do not accept WORKBENCH-010 or enable hosted diagnostic grants.
+
+**Immutable R1 review target:** `/tmp/agenticsre-diagnostics-r1-snapshot-oknmjwv0`, candidate
+`0e7ec5388bcc96def61571b500e8159deea00621`, tree
+`d9d64fc09a80f27a327718fa7892fba927c9d688`, parent `2c4e422`.
+Manifest `/tmp/agenticsre-diagnostics-r1-snapshot.json`, SHA-256
+`c2a4100c4f209575e7f47e58a45e5df551e3a03824fff4192a395df9fc9416ce`:
+340 regular files, 4,003,181 bytes; 336 Git mode 100644 and four mode 100755. Root and the
+independent verifier matched all captured bytes; source refs/status/bytes/modes and the R0 original
+stayed unchanged during capture. The R1 original is sealed read-only and clean. Ten paths differ
+from R0: eight builder correction paths and two coordinator-owned prose documents.
+Readback `/tmp/agenticsre-diagnostics-r1-verifier-prep-v5ub1bzt/capture-readback.json`, SHA-256
+`6b482a33ca89810c45fa15bd305c99bb105687b992f5e5a201108e5f97f19584`.
+Affected reviews use that exact original; native staging and runtime remain gated.
+This subsequent roadmap entry records the capture without changing
+frozen product bytes; no source commit, push, deployment or live integration occurred.
+
+**Independent R1 correctness:** ACCEPT/APPROVE, no reportable findings, independently found
+P0/P1 count 0. The reviewer traced the changed DNS/HTTP implementation and locked runtime/transport
+libraries, schema/provenance agreement, whole-address/selected-peer policy, deadline/cancellation,
+stop/concurrency/receipt handling and immediate CLI/hosted authority seams. No mid-edit file was
+skipped. This is static evidence on `0e7ec538`, not an execution PASS.
+
+**Independent R1 security:** ACCEPT, P0/P1 count 0, with no validated remaining findings across
+all severities and no unresolved P0/P1 candidate. The auditor matched all 340 frozen files and
+traced the complete changed DNS/HTTP paths plus immediate dispatch/lifetime/authority seams,
+reusing accepted coverage of unchanged input/configuration/process/TLS/hosted paths. DG-SEC-01
+and the reverse-zone conformance concern are resolved in source. This is a scoped static gate;
+actual packet counts, deadlines, signal/consumer cleanup and platform prerequisites still require
+independent execution. Fix/review round 1 is resolved; no second round is needed at this boundary.
+
+**Native release boundary:** Both independent affected reviews accept exact candidate `0e7ec538`.
+Root rechecked that sealed commit/tree/manifest and a fresh 8,686,460,928 free bytes at
+2026-10-03 06:15:59 UTC, passing the 8 GiB pre-staging floor. The independent verifier may now
+run one prepared COPY-only Cally lane using a separate execution copy and the existing bounds.
+Standard private resolver/proc fixture views may supplement the matrix without adding host
+mounts, capabilities, network or sysctl changes. An unsupported fixture prerequisite remains a
+named gap; it is never substituted for successful product execution. No native result was claimed
+at this release boundary.
+
+**Cally attempt 1:** The exact released controller (session 15536) is terminal exit 1, not a
+polling timeout. Evidence `/tmp/agenticsre-diagnostics-cally-rb6dntnd`, image
+`sha256:f127ed4bfe9dcfd5aabef2480ef20a70af2cbd2f3a089024bd677dcefc3d10d2`.
+Workspace/all-feature tests, the native MCP grant regression, ordinary build, exact literal mission
+and public five-check skeleton passed; preceding independent cases included actual IPv6.
+The independent matrix then stopped in fixture creation: Cally OpenSSL rejects `x509 -days -1`
+with `Error: end date before start date`. No expired-certificate product invocation occurred.
+This is a verifier fixture failure, not a source finding or accepted diagnostic result.
+The ordinary Cally binary is retained as mode-0444 DATA, SHA-256
+`b33d7f2dc713cfb4e2682d6db48d9a2c91a45771c0412c126ceda92480674eea`, 38,908,104 bytes.
+
+The final report also exposed two verifier lifecycle defects: Python PID 1 retained 19 adopted
+zombie-only test descendants; local deletion encountered readonly copied `.git` directories.
+The verifier removed only its exact terminal staging, confirmed sealed source bytes unchanged,
+and independently confirmed container/image absence and cached base unchanged. All namespace
+processes disappeared with container removal; the earlier internal residue check remains FAIL.
+Raw commands, failed receipt coverage and cleanup reconciliation remain preserved in that packet.
+Prepare ordered past validity dates, explicit adopted-child reaping and copied-directory cleanup,
+then resume the remaining matrix with the same verified Cally binary. Reuse passed cold build/tests;
+no product edit or second review/fix round is warranted by these fixture/lifecycle failures.
+No continuation job is released until the corrected private driver and partial packet return.
+
+**Sealed partial verdict:** `/tmp/agenticsre-diagnostics-cally-rb6dntnd/VERIFICATION.md`, SHA-256
+`6d4a91fdc9760bd7287cb06ccc5a33e4d76c12677c99019e9683a8aaeac9bda5`.
+Overall product acceptance is INCONCLUSIVE; verifier execution is FAIL. The completed cold lane
+passed 167 tests (19 existing ignored), one native MCP grant case and the installed missions.
+The independent portion produced 114 receipts, including all 33 R1 DNS/framing cases; with two
+builder receipts and the literal mission, all 117 exact canonical receipts and 51 diagnostic data
+objects passed their frozen schemas. Root matched the ordinary Cally binary and all 79 sealed
+evidence files (45,194,780 bytes), including those exact JSONL receipts. Artifact manifest SHA-256
+`ad3bbc93d5c22ec2aa9459e4f0a4e689e0f31280da70ef67eed953722f869a23`.
+Expired-leaf product refusal, the broader HTTP/body matrix, process-state negatives, public signal/
+consumer closure, supplemental resolver/proc views and public Grafana regression remain pending.
+The corrected private continuation is preparation only; passed native proof will not be rebuilt.
+
+**Repaired continuation release:** The private preparation passed 12 DATA-only checks and retained
+all sealed source/first-packet bytes. Root matched all 23 declared support identities and inspected
+the artifact/source/runtime guards, explicit ordered-date/chain/name/key witness, PID 1 adoption/
+Z-only reaping and owned-directory cleanup. Preparation
+`/tmp/agenticsre-diagnostics-cont-verifier-prep-o9re3q3s/repair-preparation.json`, SHA-256
+`6e7854ceade7f08f05fda024f341d1e15f8c487fc7d836d25a8c8da41c143c8b`;
+repair-data evidence `e30ecd863c6464988a076dbba540f31deb5ceeb21a227d5d748e84a0c8dd0d57`.
+Root released one artifact-only COPY lane after a fresh 8,638,484,480 free bytes passed the floor.
+It reuses exact source `0e7ec538` and ordinary Cally binary `b33d7f2d`, performs no Cargo/vendor
+build, and lowers the outer ceiling to 420 seconds (240-second matrix and 90-second Grafana).
+Actual certificate/reaping witnesses and remaining acceptance are still pending. A failure stops
+that lane without blind retry; completed first-attempt proof keeps its original attribution.
+
+**Artifact continuation attempt 2:** Handle 12923 reached terminal exit 1 in 1.35 seconds, before
+any new product invocation. The native ordered 2020–2021 leaf creation and same-key checks passed;
+OpenSSL 3.5.6 rejected its chain/name self-check with error 79 at CA depth 1 (`invalid CA certificate`).
+The fixture's unextended `req -x509` generator suppresses ambient configuration; actual failed
+CA/leaf PEM bytes were not exported before assertion, so their extension contents still need a
+native diagnostic witness. No product source or trust/expiry finding is established.
+The real PID 1 adoption → zombie → `waitpid` exit-23 proof passed, final residue was empty, and
+all owned staging/container/tag/image-ID cleanup passed with source and first-packet bytes intact.
+Sealed packet `/tmp/agenticsre-diagnostics-cont-cally-nirie7sk/VERIFICATION.md`, SHA-256
+`2474ea20d6178df52ffada5c20bf88b2e53159e0ab295a5b54d1ef44d6a3c8d6`;
+65-file manifest `242fc4820b3f0c5fb1afd4e2f32c2f37eb94d3a3c16470f02f67988a6814662d`.
+Root matched all 65 artifact hashes. Overall product acceptance remains INCONCLUSIVE; no new
+receipts were produced and the original 117/33-case proofs remain unchanged.
+
+**CA fixture diagnosis:** Root authorized one standard Python/OpenSSL fixture-only red/green
+checkpoint on the exact cached Cally runtime, with no product invocation or Cargo build and a
+120-second maximum. It must retain actual unextended-CA certificate bytes/extension facts and
+reproduce the error before proving explicit CA constraints/signing usage, normally valid CA/leaf
+chain/name/key and a time-only expired-leaf failure. No reference CA/name policy may be weakened.
+The full remaining product matrix stays unreleased until this diagnosis/proof returns; this is
+verification fixture work, not another product fix/review round. All original scope remains open.
+
+**Fixture-only instrumentation correction:** Handle 85339 stopped before any CA or product
+command because a global logging hook intercepted Python's internal `uname -p` platform query.
+The failure packet remains sealed at
+`/tmp/agenticsre-diagnostics-ca-proof-cally-bx2ijvi0/VERIFICATION.md`, SHA-256
+`48e70891aff5327cf2f60db6db8ccd0c127426fbc53962e18af3178e4b97ed2f`;
+root matched all 26 artifact files and exact owned cleanup passed. A module-local run logger and
+`os.uname()` provenance replace the global hook; approved CA helpers and 120-second driver are
+byte-identical. Root inspected preparation `636f65f9f76810f670c51f0d259d5935bef5bd2826b38e87756378318f621f3b`
+and released one corrected fixture proof after the fresh 8 GiB staging floor passed.
+
+**Native CA red/green proof:** Handle 79172, evidence
+`/tmp/agenticsre-diagnostics-ca-proof-cally-t_kyyd89`, returned own exit 0 after 44 actual OpenSSL
+commands and zero product invocations. The old V3 CA lacked Basic Constraints and Key Usage and
+failed chain validation with error 79 at depth 1. Explicit critical CA/signing extensions passed
+normal current CA self-signature and leaf chain/purpose/name verification; wrong name failed with
+error 62 at leaf depth 0. The same-CA/key expired leaf passed only time-disabled chain/name
+verification and normal verification failed solely with error 10 at leaf depth 0. Actual public
+PEM/DER/extension and command evidence is retained. Final independent readbacks confirmed exact
+container/tag/image-ID absence, cached base unchanged and empty owned residue. Root matched all
+42 artifact hashes and six public PEM/DER digests. Sealed packet SHA-256
+`163212bb918ac1b50aec8451b0f713ebf40be423eda268d4195ada15ee08e9fe`, manifest
+`80fc75dd6eb12e692afe8274b210ec43402c08dd8c664d4e1ff9842f9b499574`.
+The exact packet/native observations are copied into `docs/evidence` and linked in the verification
+record. Product source and fix/review counters remain unchanged.
+
+**Remaining product lane released:** Root inspected preparation
+`/tmp/agenticsre-diagnostics-cont-ca-fixed-prep-89dpw0fu/repair-preparation.json`, SHA-256
+`7d96c1dba6ff4222e0c2de8fc3344fd40557f9fb47c8f8b6fbb897932de018c5`, all 23 declared
+support identities, the CA-only diff and 12 DATA-only checks. The accepted private controller,
+lane and exporter are unchanged; only the two proven CA-generation extensions differ from
+attempt 2. Root released one same-binary artifact-only remaining matrix after fresh
+8,593,874,944 free bytes passed the pre-staging floor; the driver must check the floor again.
+The exact frozen source, b33d7f2d binary, cached runtime and 420/240/90-second ceilings are retained.
+No Cargo/vendor work or passed-prefix replay is required; current actual execution/terminal results
+must be reported before any acceptance claim.
+
+**Artifact continuation attempt 3:** Handle 69881 reached terminal exit 1 at a private verifier
+assertion, after actual expired-certificate refusal and 27 HTTP parsing negatives passed.
+Evidence `/tmp/agenticsre-diagnostics-cont-cally-byxkg61s`, image
+`sha256:f5dce2d72a89d7256c1449ad633de6b39bf507822cce19743aaffab372a18644`.
+The test explicitly requested body capture for a 301 response but incorrectly required null
+content. Its actual receipt reports opt-in, bounded base64 `b29wcw==` (four untrusted bytes),
+failed non-2xx observation, no redirect/proxy/retry and no denied-endpoint effects. The frozen
+configuration profile explicitly permits opt-in body bytes and independently marks non-2xx
+observations failed. This is a verifier expectation mismatch; no product source finding is
+established. All 29 new canonical/diagnostics values passed their frozen schemas; remaining body,
+process, signal/consumer, private-view and Grafana criteria are still open. Final residue was
+empty and driver cleanup passed; sealing and independent readback are pending integration.
+The verifier must retain the original red assertion, prove the narrow corrected expectation on
+the captured receipt as DATA, and check every remaining assertion against the binding contract
+before another native lane. Completed criteria are retained without replay.
+
+The third packet is now sealed: verification SHA-256
+`844a4d7007147ce9406093692692cf99fd0e70761ad1c68f0b03a30b6ca5cbb2`, 70-file manifest
+`34097e658c842ec29394b945a0059368e97bd7c9165c5acb2eb88e48dd05a73f`.
+Root matched all 70 hashes and the exact opt-in body/no-extra-effects witness. Independent cleanup
+confirmed exact container/tag/image-ID absence, cached base and all frozen sources/prior artifact
+bytes unchanged; final residue was empty. Its packet and 29 exact receipts are copied unchanged
+into `docs/evidence`. Combined schema-valid evidence is 146 canonical/80 diagnostic data records.
+The bounded comparison of all remaining private assertions found no further definite contract
+mismatch; refine signal timing to exclude subsequent fixture drainage and require actual headers
+sent plus HTTP deadline state before labeling a timeout as body-phase. The proposed remaining-only
+suffix retains all earlier passes and adds one missing capture-off non-2xx control.
+
+**Bounded evidence storage consolidation:** Repeated exports held three identical non-executable
+copies of ordinary binary b33d7f2d. Root atomically replaced only the second/third DATA paths with
+hard links to the first retained copy, preserving every regular-file path, 38,908,104-byte content,
+SHA-256 and mode 0444. No unique source, archive, receipt or failed evidence was removed. Inode,
+link-count, ctime and shared donor-mtime changes are explicitly recorded; parent permissions and
+timestamps were restored. All 79/65 first/second sealed artifact hashes and both manifest bytes
+remain unchanged; the third DATA file was matched before its seal. This released 77,824,000 bytes,
+raising free space from 8,543,043,584 to 8,620,867,584 bytes and restoring the next pre-staging
+floor. Record `/tmp/agenticsre-diagnostics-data-dedup-yvo3fhf4.json`, SHA-256
+`26b7ccc9a0c87858b58521cbf181d2da72a1abfe5a7eb086596dfe5c4aaac612`.
+
+**Audited remaining suffix released:** Root matched all 26 support hashes in preparation
+`/tmp/agenticsre-diagnostics-tail-verifier-prep-_optmcvm/repair-preparation.json`, SHA-256
+`34fe700ee24f7671ad86563d625d805483991e6cc0cf548ca222c7e365724d64`, read the complete
+remaining-assertion comparison and narrow checker changes, and accepted 21 DATA-only checks.
+The original 301 expectation is retained red, corrected semantics pass on the exact captured
+receipt and semantic mutations are rejected. Driver, exporter and CA helper remain unchanged.
+Root released one remaining-only lane after 8,618,942,464 free bytes passed the staging floor;
+the original 146 receipts/33 DNS-framing cases and passed expiry/parsing work are not replayed.
+
+**Remaining suffix / observer failure:** Handle 31890 reached terminal exit 1, but its main
+diagnostic suffix returned own exit 0: 28 public invocations, 27 receipts and the deliberately
+undeliverable closed-output case. Body bounds, actual process identities/stopped/zombie/gone,
+signals/deadlines, consumer closure and genuine inaccessible/non-proc metadata views passed.
+The valid system-resolver fixture hit a genuine prerequisite gap: UID 1000 cannot bind its
+private port 53 (EACCES 13). That specific positive/fallback traffic proof remains INCONCLUSIVE;
+the boundary is unchanged and no capability, UID or sysctl relaxation is authorized.
+
+The subsequent Grafana regression reached the private log observer's 128 KiB per-line bound
+on a large selected-data record. The 145,925-byte partial line remains retained and uncounted.
+The observer's first force-removal returned 125 and masked its primary exception; final driver
+cleanup reconciled exact container/image removal. The Grafana terminal status, post-identity
+checks and final DATA export were not reached at that attempt. The final continuation below
+retains every complete exact record, proves a bounded observer correction against the frozen
+Grafana limits as DATA and records primary/cleanup errors separately. Positive system-resolver
+traffic remains a named prerequisite gap.
+
+**Final qualified acceptance:** Handle 76710, final controller and both remaining native checkers
+returned own exit 0. The completed Grafana regression produced 96 schema-valid canonical receipts,
+56 dashboard-data and 33 query-data values. Malformed/empty system-resolver views passed without a
+port-53 listener, with unchanged private IPv4/IPv6 UDP-send counters and no DNS/service effects.
+Final source/binary postguards, empty native process inventory, fixed DATA export and independent
+exact container/tag/image-ID/staging cleanup passed. No product source or ordinary binary changed
+during the continuations; passed 167-test/33-DNS-framing/expiry/suffix evidence was reused.
+
+The final packet `/tmp/agenticsre-diagnostics-cont-cally-i5soqfo6/VERIFICATION.md`, SHA-256
+`685da9ea4aa1b038b01966b90052cf666b484162ac9a61e3f46d02920379884b`, is copied unchanged into
+`docs/evidence`. Root matched all 70 final artifact hashes; manifest SHA-256
+`59d99a3d33ede3f771eab03aae449ddad13b11924e04fb1e9101fafeec5a309b`.
+The copied accepted index, SHA-256
+`cdd2813a9da2dde9c52dd77001ca64efe5f37154d31699d0a55911d72102edd6`, selects 271 canonical
+receipts (175 baseline/diagnostic/resolver plus 96 full Grafana), 109 diagnostic-data and 89 full
+Grafana-data values. Earlier interrupted Grafana observations and its partial line stay preserved
+separately. Exact suffix/final resolver receipts are also copied into `docs/evidence`.
+
+The private observer's repaired line limit is 6,295,552 bytes, derived from the frozen 2 MiB UTF-8
+envelope and JSON ASCII-escape expansion; the total log cap remains 16 MiB. Nine observer DATA,
+21 other DATA and 19 fixed export-parser checks passed before the native green. The full final
+8,724,397-byte raw log validated against frozen schemas, record SHA-256
+`d54b434c5ca22c5fc881b63014b6cdf60c74f86a242ebf0e9a282b99e6eead1f`.
+Final independent cleanup readback is
+`9f282a80253916b8ea894c887780935a47188e3e75a3714129e5f4e0876edc18`.
+
+Two further root-owned readonly DATA consolidations preserved every logical path, size, byte hash
+and mode, with inode/link-count/ctime/shared timestamp changes explicitly recorded. Identical
+archive copies released 80,736,256 bytes, record
+`/tmp/agenticsre-diagnostics-archive-dedup-g06ybszw.json`, SHA-256
+`180f6acb38f18646674cafa8ccd5a13abfd317abab77ba4c0242f40dc4bf7b18`.
+The final ordinary b33d7f2d export was hard-linked to its first identical DATA copy, releasing
+38,912,000 bytes, record `/tmp/agenticsre-diagnostics-final-data-dedup-g1_lhktg.json`, SHA-256
+`7db102eb3e3e27396fef894d15e20847d3ba6987ee9eb729afcb0af9947ea506`.
+All protected archives and sealed manifests still match; future changes must replace these
+shared readonly inodes rather than overwrite them. These historical floor recoveries do not
+establish free space for a later staging operation.
+
+## WORKBENCH-011 — browser diagnostics
+
+**Status:** Local backend/frontend checks passed and the R0 candidate was frozen. Independent
+security ACCEPT found no validated or unresolved findings. Independent correctness requested a
+scoped failure-caption correction (one P2, P0/P1 count 0); fix/review round 1 is resolved.
+R0 native execution was never released. Corrected R1 passes both affected static gates and now has
+qualified native API/browser PASS. Earlier private staging/assertion failures remain recorded below;
+the same-binary suffix finished all remaining criteria with exact guards and independent cleanup.
+The owner paused at this completed milestone. See [browser acceptance](diagnostics-ui-verification.md).
+**Mission:** An explicitly granted alias runs the real connectivity pack through browser → HTTP →
+core, renders all five outcomes, preserves the exact receipt in session history/download and
+cancels witnessed in-flight network work. The existing light/dark/mobile/keyboard design is the
+accepted visual baseline; this adds controls/results within it.
+**Contract/owners:** [Browser diagnostic contract](diagnostics-ui.md) specifies trusted identity,
+submission and result behavior. Backend builder owns the finished OpenAPI artifact, UI server
+admission/state, minimal CLI/core identity seams and their tests/checker. Frontend builder owns
+generated TypeScript consumer, form/result/history components, styles and actual browser fixtures.
+Coordinator owns this roadmap/initial contract; there is one owner for each shared artifact.
+Backend finishes the concrete API example/normalization contract before frontend work consumes it.
+Then independent file ownership permits parallel implementation; Cargo still has one builder.
+Session configuration/CA identity means exact pinned bytes plus the accepted regular-file/path
+checks. Changed bytes or invalid replacement are refused; a valid byte-identical replacement
+does not expand authority and is not an inode-based identity change. This clarifies the future
+contract before implementation. WORKBENCH-010's sealed accepted bytes remain unchanged.
+
+**Development milestones:** OpenAPI artifact 0.1.2 retains wire `api_version` 0.1 and exposes
+explicit target grants, the installed fixed pack and separate target/root submission identities.
+Backend workspace checks passed 175 Rust tests with 19 existing native tests ignored. The local
+raw API proof passed real five-check execution, exact receipt history/download and CLI/structured
+parity, defaults/effective-limit deduplication, conflicting aliases/limits, configuration/CA
+mutation refusals, byte-identical replacement, partial/stop/body behavior and witnessed cancellation.
+The final ordinary candidate's API checker exited 0 with 235 schema validations and 16 exact
+receipts; this remains development evidence for those bytes, not independent final acceptance.
+
+The first actual Playwright matrix passed all five observations, CNAME/original-name separation,
+light/dark/mobile/keyboard flows, history/download equality, lost-admission reconciliation,
+partial/stop/serial controls, inert opt-in body capture and cancellation after actual GET.
+Frontend final inspection then corrected independent root/target URL-selection preservation and
+rounded observation numbers that could corrupt displayed PID/UID identities. Focused red/green
+regressions are retained and pass. The final asset/browser rerun is complete: 49 frontend tests,
+typecheck/lint/generated/build and actual Playwright exited 0. Fourteen exact receipts passed 28
+schema validations. The executed privately installed copy came from readonly DATA
+`target/diagnostics-ui/save-final`, SHA-256
+`368f58838ae68dc31c716269c51f0a71af53d084d0a1c502c8525223c3e8ecbe`; manifest
+`target/ui/diagnostics-frontend-exact-identities/diagnostics-browser-receipts.json`, SHA-256
+`590ddc3ac1b05826ca384d73b9c3e67f3dd80ff45d6ea3b30a96d423ef902aa3`.
+Cached dependencies and existing private sandboxes are reused; no download, host listener or
+privilege change occurred. Both builders are quiescent; immutable capture and affected gates are
+next, with a fresh 8 GiB floor required before capture/staging.
+
+**Completed cache and retained DATA:** Root removed only this checkout's completed `target/debug`
+after both builders confirmed no users/jobs remained. All 358 source bytes/modes/refs/status and
+187 current binary/evidence/archive paths matched before/after. The 1,236,299,776-byte free-space
+gain still left the floor unmet. Record `/tmp/agenticsre-diagnostics-ui-cache-cleanup-yhypez0w.json`,
+SHA-256 `f0a1c41f81d062fab7bb1a7c2e55b3d89a5c46328375e13974bcb251baafa8c1`.
+
+Two historical debug-heavy Grafana baselines are now retained as mode-0444 lossless DATA archives
+under the original checkout's `target/baselines/`: `grafana-initial-save.data.gz` and
+`grafana-r1-save.data.gz`. Their decoded SHA-256 values are respectively
+`686cf188c73975adc549b319c2a37ead4d14af89fff4e95d0d5ee975298c41a1` and
+`67befd5ec2c18787aeb59c867393c983b40963d6ef06b150182a997711c69ae5`, verified against the actual
+125,398,792/125,438,032-byte originals before retiring the uncompressed path representations.
+This changes storage representation, not unique binary content; `target/baselines/retention.json`
+records restoration size, hash and original mode. Decode into private scratch and verify those
+facts before any future executable use. Current candidates and all three development release
+archives remain unchanged. Net logical storage saving is 186,123,630 bytes; actual free space
+reached 8,618,618,880 bytes. Record
+`/tmp/agenticsre-debug-baseline-lossless-retention-suhva2tv.json`, SHA-256
+`4d48c80427ee5d60bc0f058cf72f7e67942b392c9f8ce8973517ab249c489243`.
+
+Five identical readonly source-archive DATA copies, SHA-256
+`434a1cfd039b3a6d56ab4875a2f586c24bdf33775e8c0816e8ba4df0da41e0ec`, were atomically hard-linked
+to their first retained copy. All logical paths, bytes, sizes, modes and sealed manifest bytes
+remain; archive inode/link-count/ctime/shared timestamp changes are explicit. Snapshot source
+inodes are untouched. This released 17,088,512 bytes, reaching 8,635,555,840 bytes free. Record
+`/tmp/agenticsre-diagnostics-source-archive-dedup-w3bwx8yz.json`, SHA-256
+`eee3b1b08638ee92ffd5fedec2ce330ea1eef67f0821d6cf5e1a05d0eb677e1b`.
+
+**Immutable browser review target:** `/tmp/agenticsre-diagnostics-ui-r0-snapshot-44t1hasz`, candidate
+`c72af6c653f66cfadc7d6e0c9fd69145fd12b296`, tree
+`d3b97c3b2a201d252088997483c9666f80424d61`, parent `2c4e422`.
+Manifest `/tmp/agenticsre-diagnostics-ui-r0-snapshot.json`, SHA-256
+`85dfa0f05da6de95b931376660cd5969fdb5bfdd8ff1d7667611589719e36600`: 358 regular files,
+5,385,643 bytes. Fresh free space was 8,634,654,720 bytes before capture. The original is sealed
+readonly and Git-clean; root matched all source hashes and the accepted R1 original unchanged.
+Readback `/tmp/agenticsre-diagnostics-ui-r0-capture-readback-v94ov_61.json`, SHA-256
+`61595dce63c35bce6c689b287e353ece00ec1edf495a9a5d6455779396b75101`, lists all 29 affected
+product/build/frontend paths. Both independent affected static reviews completed against this
+exact original. This disposable capture changes no working source ref or published commit.
+Root's subsequent progress entry is outside frozen executable source.
+
+**Independent R0 gates:** Security ACCEPT, zero validated findings and zero unresolved candidates
+(P0/P1 count 0), after the complete affected authority/input/worker/history/lifecycle/rendering/
+provider source-to-sink trace and immediate callers. It matched all 358 frozen files, unchanged
+dependency locks, selected cached Rust archives/source and frontend package manifests. The existing
+unverified npm-archive integrity and runtime/platform limits remain explicit. This is static
+evidence, not executable acceptance.
+
+Correctness REQUEST CHANGES found one P2 at `web/src/DiagnosticResult.tsx`: failed TCP observations
+retain an attempted peer, and denied DNS observations retain their answers, but the UI captions
+claimed "Connected peer" and "Accepted service addresses". The full affected review found no
+additional reportable defect and independently counted P0/P1 as 0. Frontend owns the neutral
+captions, focused renderer red/green cases retaining genuine failed observation fields and rebuilt
+dist. No backend/core/network source change is required. The accepted backend/local predecessor
+evidence remains attributed to its old assets; final ordinary assets will be built and exercised
+on Cally after the corrected snapshot's affected gates pass. Fix/review rounds: 1 in progress;
+incomplete builder returns: 0.
+
+**R1 builder correction:** Failed observations now use "Attempted service peer", "Observed service
+addresses" and neutral "Service peer" detail. Nonempty retained observations no longer say
+"No observation returned"; their summary says "Observation details below". Focused renderer cases
+preserve denied DNS addresses with null selected peer and refused TCP peer/hostname/port fields.
+Proper caption/fallback red evidence is retained; 15 renderer tests, typecheck, lint and asset build
+exited 0 through the existing private cached-provider sandbox. Only the renderer, its tests and
+dist changed; Rust/backend source and existing API proof are reused. Final JS
+`web/dist/assets/index-C3-PEPjo.js` has SHA-256
+`c563559765d64b7623776a3d5da071b0b95ed12440056ba1ec56c7c174fc54ce`.
+No new ordinary binary or browser PASS is claimed before the corrected frozen Cally build/run.
+
+**Corrected immutable R1:** `/tmp/agenticsre-diagnostics-ui-r1-snapshot-0rzjumlc`, candidate
+`bca5b19a8d448ac72202f30ff120446127582a38`, tree
+`4f221ff5cad9fe78342e25c866a0258529e4622c`, parent `2c4e422`.
+Manifest `/tmp/agenticsre-diagnostics-ui-r1-snapshot.json`, SHA-256
+`0b942d654f4013ed59e3b9e895ca08ee108eb4bd3a1c6c1dea7a7fb08bf11477`: 358 files, 5,391,853 bytes.
+Fresh 8,613,580,800 free bytes passed the capture floor. Original is readonly and clean; all source
+hashes match. Readback `/tmp/agenticsre-diagnostics-ui-r1-capture-readback-zqainor2.json`, SHA-256
+`c12877a98c02fe00fadcbac972416326f6862cceb6d46f49dbe10e148dcab7a6`, confirms only renderer/tests,
+dist index/old-new JS and roadmap differ from R0; both frozen originals remain unchanged.
+
+**Independent R1 gates:** Correctness ACCEPT/APPROVE resolves the P2 and reports no new findings,
+independent P0/P1 count 0. Security ACCEPT reports zero validated findings and unresolved candidates,
+P0/P1 count 0; the whole new bundle equals R0 with exactly four reviewed caption/fallback
+substitutions. Complete affected R0 coverage carries for identical backend/authority/API/lifecycle/
+dependency/provider bytes. These are static gates, not a runtime PASS. Fix/review round 1 is resolved;
+no second round is needed at this boundary. Incomplete builder returns remain 0.
+
+**Frozen native release:** Root matched all 19 sealed support files and read the exact driver/lane/
+resource/cleanup plan. Preparation
+`/tmp/agenticsre-diagnostics-ui-r1-release-prep-lQUHzLBM/release-preparation.json`, SHA-256
+`8fe74e3479414858f1959a28ad52a4e27f5b16b4d90412a286987c2e8d4b3124`, binds the affected cold
+workspace/native MCP/ordinary build and independent actual API/browser mission to R1. Six minimal
+rebind DATA checks passed; the earlier 26+19 parser, 31 runtime-stream and 12 integration checks
+retain their original attribution. The corrected browser includes real denied-DNS/refused-TCP
+caption assertions. It retains the fixed nine-PNG DATA export, receipt/manifest bounds, 900-second
+outer/800-second work ceiling, 180-second staging and existing private resource/isolation limits.
+Sealed source and the cached browser runtime stream directly into the COPY-only image; no duplicate
+local product/runtime archive is created. Driver rechecks the actual 8 GiB floor before allocation.
+Root releases exactly one prepared lane after a fresh passing free-space readback; the native
+command exits, final binary, screenshots and cleanup are still pending. Passed core/Grafana full
+matrices are reused, and the positive system-resolver port-53 fixture gap remains excluded.
+
+**R1 Cally staging failure:** Authoritative handle 67887 reached own exit 1 before native launch.
+The COPY-only context reached image commit/blob copying, but the private driver's post-stream
+`wait(timeout=20)` expired before its declared 180-second stage limit. No build command terminal
+status was retained; it cannot be called successful or timeout exit 124. There were zero Cargo/
+product/API/browser invocations, canonical receipts or screenshots, and no product finding.
+An independent readback caught a late image after the initial absence check: exact owned tag
+`localhost/agenticsre-diagnostics-ui:0rwh7ay6`, ID
+`sha256:72ae02f732700ad0f59c9e2290a67b3c9074d3348a550033f3fe46c4a99498e9`, matching the R1 label.
+Only that verified late image was removed; repeated exact tag/ID/label/container absence, cached
+base identity, local staging/job cleanup and all frozen source/preparation bytes were reconciled.
+The initial absence race and primary failure are retained rather than rewritten as clean execution.
+
+Root matched all 44 failed artifacts. The unchanged summary is copied into `docs/evidence` from
+`/tmp/agenticsre-diagnostics-ui-cally-0rwh7ay6/VERIFICATION.md`, SHA-256
+`61c5828d3bac8f7fb58daa6602499727f9d61ea8e8ac87dc0920440d755fab2e`; artifact manifest
+`8e3b7de23b5ae0ff8fbb6f20e9b962ddfe83af60d97fc256f05150e5b15e0c12`.
+The same immutable product/static gates remain accepted. The private verifier must correct the
+single staging deadline and prove remote build/group quiescence before cleanup and another lane;
+no retry was released at that boundary. This is a verifier repair, not product fix/review round 2.
+
+**Repaired staging lane released:** Root matched and inspected the sealed 20-file preparation
+`/tmp/agenticsre-diagnostics-ui-stage-repair-prep-258mryHc/repair-preparation.json`, SHA-256
+`9eb457a54cfd47738af5077a1cd45dad2c353dcd81fbbe0df4606b68876364f2`. Thirty-three DATA checks,
+including seven modeled control flows, passed. One 180-second deadline now covers ownership
+witness, streaming and commit. A standard remote timeout sends TERM at 160 seconds and allows
+10 seconds before KILL; bounded read-only tag/PID/process-group observations must establish remote
+quiescence before any owned-image cleanup claim. The extra 30 seconds is cleanup observation only,
+not added successful staging time. All product, native lane, API/browser, runtime/export bounds and
+cached-source bytes remain unchanged; both accepted R1 static gates carry.
+
+Fresh 8,593,944,576 free bytes passed the 8 GiB floor. Root release
+`/tmp/agenticsre-diagnostics-ui-r1-repaired-native-release-0btidzdt.json`, SHA-256
+`ca84cee2dcebaa7a4bc06a683abe5ad526fb6873e45d118314b0fdc14d48cbdc`, authorizes one corrected
+lane, authoritative handle 59978, evidence `/tmp/agenticsre-diagnostics-ui-cally-zg8qx5ix`.
+The cached base and exact-name preflights passed. Corrected staging reached own exit 0 and witnessed
+timeout/sudo/podman group 553232, then established exact tag-process and group absence before native
+launch. The native workspace (175 passed, 19 existing ignored), selected MCP regression (one passed),
+ordinary build and literal installed mission each exited 0. The exported ordinary binary is
+38,993,736 bytes, SHA-256
+`566b320c424ecc583a846baeda4fccaa594ed264e6d122dbed3b321ec253344d`.
+
+The controller ultimately exited 1: its independent API check required startup exit 2 where the CLI's
+server-error branch returns 1. The actual grant-without-target refusal returned 1, empty
+stdout and a clear diagnostic; no browser run occurred. This is a private checker defect, not a product
+finding. Existing public fixture checks already accept the two startup refusal branches. Native PID-1
+cleanup ended with no residue, and the driver removed only its owned container/image after the known
+build quiescence. Independent exact container/tag/ID/label/process-group and local-job readbacks
+confirmed absence; the cached base and all 358 sealed source identities remain unchanged. Root
+matched all 60 sealed artifacts. The partial verification summary is copied unchanged into
+`docs/evidence/diagnostics-ui-cally-partial-verification-2026-10-03.txt`, SHA-256
+`dfe2b289ff7d2bee7a6a6c9fa44469598ddc53349f65d37cc6286aecb0aa9d63`; artifact manifest
+`cacf96e3bc216caae3175e76523b45ad88cbfe0019874b7979fcdf7d88a908cf`. The exact single literal
+receipt passed its canonical schema; zero API/browser records or PNGs exist for this partial run.
+Retain the completed native criteria; the next prepared lane must reuse this verified binary for
+only the remaining API/browser mission, rather than repeat Cargo or alter accepted product source.
+
+A bounded static comparison of the private remaining assertions found additional harness-only
+mismatches before another run: continue mode with an independently successful process produces
+`partial`; capture-off retains body metadata with no content; installed pack discovery legitimately
+names its `process` step while hiding actual configured selectors; process observation locators must
+exclude nested vantage fields; and the history link's accessible name includes its live count.
+Corrections and DATA controls belong only in the private verification preparation. These are not
+newly executed product results or product findings, and no suffix was released by that entry.
+
+**Same-binary suffix:** Root read the full four-file private diff and contract audit and matched all
+23 sealed preparation files. Preparation
+`/tmp/agenticsre-diagnostics-ui-tail-prep-os11isrh/repair-preparation.json`, SHA-256
+`b86d38f8b3f4c56b1c3ac992062cbd1d698cf50be9e2ba1a9cae4462a0e6cccd`, retains six assertion/locator
+corrections, a witnessed active-body cancellation precondition and 52 passing DATA controls with
+three test-authoring failures retained. No product source, fixture helper, runtime stream, export
+parser or remote quiescence helper changed. Native limits tighten to 420 seconds outer/390 work;
+API and browser each get at most 180 seconds from the remaining work deadline. There is no Cargo,
+vendor, build or passed mission replay and no local source/runtime/binary duplicate.
+
+Fresh 8,629,514,240 free bytes passed the floor. Root release
+`/tmp/agenticsre-diagnostics-ui-tail-release-h1_n0ism.json`, SHA-256
+`25c085cfc84a40d24aec803a86230e1d99ea6429340ee541c2660fe8eb15942a`, releases one lane,
+authoritative handle 97467, evidence `/tmp/agenticsre-diagnostics-ui-cally-jp3hu_hv`.
+COPY staging, ownership/quiescence and initial frozen source/runtime/same-binary guards passed.
+All six actual independent API groups exited 0 in 6.27 seconds. Real browser execution, exact
+schemas/screenshots, final guards and independently reconciled cleanup remain pending.
+
+**Final qualified acceptance:** Handle 97467 reached own exit 0. The independent actual browser
+exited 0 in 7.04 seconds after all six API groups passed. Final native source/browser/binary guards
+reached success and the PID-1 adopted-child reaper ended with no residue. Independent readback
+confirmed exact container/tag/ID/label images, build group 565999 and local staging/jobs absent,
+the cached base unchanged and frozen source/preparation/checkpoint bytes preserved. No runtime
+work remains pending for this released scope.
+
+Frozen schema validation passed 28 new canonical values, 20 diagnostic-data values, 110 API records
+and 25 exact receipt-byte records. Seven browser receipts are included in the 28; the carried
+literal makes 29 integrated records. Nine actual PNGs and their complete 1,914,880-byte archive
+passed export validation and visual inspection; root viewed final light/mobile images. The ordinary
+binary remains SHA-256 `566b320c424ecc583a846baeda4fccaa594ed264e6d122dbed3b321ec253344d`.
+Root matched all 77 sealed artifacts, manifest SHA-256
+`8e804cbeb05ddb83fa80f06f9719279aa322b8abf876a183b316fdd77fe2dd7a`, and copied the unchanged
+final summary/index/integrated receipts into `docs/evidence`. Final verification SHA-256
+`1ba15b9b7b82644b30cabc7dee12319d342ff677c064692daef63895ed095b88`; accepted index
+`94fec124e54266145b32d4df8efead8cd7c491c28da4db78496f8dd2c239356c`. The named inherited positive
+system-resolver port-53 fixture gap remains open and excluded. Review/fix round 1 is resolved;
+incomplete builder returns remain 0. The [acceptance record](diagnostics-ui-verification.md) binds
+each completed criterion to its actual source/build/evidence scope.
+
+**Precursor DATA retention:** Three old local UI precursor binaries (`save-before-assets`,
+`save-assets-1`, `save-candidate`) are retained as readonly lossless `.data.gz` archives in
+`target/diagnostics-ui/`. All original decoded hashes/sizes were verified before retiring their
+uncompressed representations. The 88,410,272-byte net saving restored 8,639,311,872 free bytes.
+`target/diagnostics-ui/retention.json`, SHA-256
+`e34429e9f72aa8f81fdf305ef6e7e40183740254bf07f94a0169498ca34efde3`, records exact archive/original
+identities and private-scratch restoration. The accepted local `save-final`, new Cally binary,
+frozen source and all failed evidence remain unchanged.
+
+**Boundary/gates:** Reuse accepted core/network and browser evidence for unchanged bytes.
+Require a real end-to-end walking skeleton, affected correctness/security review, frozen-source
+independent execution and actual Playwright screenshots/receipts. No host listener, durable store,
+AI chat, live service onboarding or MCP diagnostic grant is inferred. Review/fix rounds: 1 resolved;
+incomplete builder returns: 0. Publication still needs its own owner request.
+
+## WORKBENCH-012 — installed saved queries
+
+**Status:** Complete for the Linux core/CLI fixture increment. The
+[acceptance record](saved-queries-verification.md) binds independent correctness/security review,
+199 passing workspace tests (19 existing native tests ignored), strict lint/format checks and
+independent installed execution to frozen source and binary identities. The installed mission
+returned 24 schema-valid receipts, including 21 query-data receipts, and joined its fixture workers.
+
+**Delivered:** Two embedded version-1 PromQL/LogQL definitions, exact definition digests, offline
+discovery, literal typed parameters, explicit target/datasource and one resolved parent window.
+The CLI provides `queries list`, `queries describe` and `queries run`; structured execution uses
+`query.run`. The existing Grafana permission, transport, redaction, deadline, cancellation and
+output limits are preserved. Hosted callers cannot inherit a saved-query grant. The default human
+receipt safely displays definition, parameters, window, observation and coverage.
+
+**Resolved findings:** Independent review found one P2 in default text rendering; its real HTTPS
+control-character regression failed before the fix and passed afterward. Parameter schemas now
+reject trailing controls explicitly, and the new renderer/compiled-expression canaries cover
+escaped credential echoes. Earlier failed checks remain in the acceptance packet.
+
+**Identity:** Snapshot `target/saved-queries/review-r2`, 378 files, manifest SHA-256
+`aea5c74c7d92a2890c0ba249589f7aa71070c9b28470c3acdcf19117e48910e8`; ordinary binary SHA-256
+`fa1cc9eff529f6f867bd3ff8a15f4056ff7c590ef96c6bff1ed41e574fb1e104`.
+All independent before/after identities matched. Subsequent acceptance documentation changes do
+not alter those product bytes. Verification used an uncommitted working-tree snapshot retained in the evidence packet.
+
+**Next:** Evidence collection and comparison using versioned receipts. Browser/MCP query grants,
+live compatibility, native non-Linux acceptance and release packaging remain separate requirements.
+
+## WORKBENCH-013 — evidence collection and local storage
+
+**Status:** Complete for the Linux core/CLI fixture increment. The
+[acceptance record](evidence-collection-verification.md) binds the implementation to independent
+source review, 260 passing workspace tests (19 existing native tests ignored), lint/format/build
+checks and a separate installed mission. The full product backlog remains open; comparison is recorded below.
+
+**Delivered:** Real context-bound Prometheus/Loki collection with one window and deadline, finalized
+sanitized child receipts, explicit capture/coverage/omissions, and private local store format 1.
+Discovery, collection, list/show, protection, deletion, pruning and recovery share the core with
+structured calls. DEC-08 selects bounded files with seven-day/one-GiB defaults. Hosted evidence
+grants remain unavailable; read commands never initialize or recover storage.
+
+**Verification:** The installed mission produced 23 command outcomes, 34 HTTPS requests and 32
+canonical receipts, including 10 strict query receipts, five collection receipts and five manifests.
+Real ENOSPC on a private 64 KiB tmpfs preserved an earlier receipt without claiming a bundle.
+Recovery never replayed queries; source/binary guards matched and all fixture workers joined.
+
+**Resolved findings:** Four independent P2s covered receipt depth, bulk domain validation,
+management cancellation/progress and late delivery signals changing a sealed payload. Targeted
+regressions and corrected source review close them. A reproduced sub-millisecond deadline handoff
+race now enters one fixed cleanup phase; 21 repeated passes and deterministic bounds checks cover
+that correction. Initial failed tests and both checker-only corrections are retained in the packet.
+
+**Identity:** Final installed snapshot `target/evidence-collection/review-r4`, 423 files, manifest
+SHA-256 `df9ad3800f2d25eaa679d6ba30c39153b47543f6265df7b035b70156eb5a7be1`.
+Ordinary binary SHA-256 `c450790c52de7a7d84b200de2bf76f7953f78f417320969248b126eb7503eba2`.
+Product build/tests/review bind r3; r4 changes only the independently checked verifier assertion.
+Acceptance documentation added afterward does not change product bytes. Verification used an uncommitted working-tree snapshot.
+
+**Live prerequisites:** The owner selected the home lab. Local configuration identifies Dradis
+Grafana, organization 1, and Prometheus/Loki datasources. The existing automation identity is
+administrative; a scoped read identity is not yet established for this pilot. Cally remains the
+isolated Linux test lane, while its source address is denied by the Grafana proxy. Use a confirmed
+controller/operator vantage for live reads without changing the firewall. Galactica appears as
+Windows Pro in backup configuration, but no native product test lane is established. These
+prerequisites do not block the remaining authorized implementation.
+
+**Next:** Typed before/after comparison over verified bundles, then runbooks, offline replay,
+reports, toil metadata and configuration checks in the preserved dependency order.
+
+## WORKBENCH-014 — typed evidence comparison
+
+**Status:** Complete for the Linux core/CLI fixture increment. The
+[acceptance record](evidence-comparison-verification.md) binds source review and installed execution
+to frozen source/binary bytes. The full product backlog remains open.
+
+**Delivered:** Offline comparison over verified bundle references; exact-window and window-offset
+policies; compatible service/connection/query/datasource/parameter/sampling identities; bounded
+Prometheus samples and duplicate-preserving Loki entries with exact timestamps. Missing, redacted,
+unsupported, interrupted and partial observations remain explicit. Hosted grants remain unavailable.
+
+**Verification:** 291 workspace tests passed (19 existing native tests ignored), with nine public
+comparison tests freshly passed after the final source-metadata correction. Format, lint, build and
+38-schema specification checks passed. Independent installed r2 passed ten commands, 16 canonical
+receipts and seven comparison cases; all 17 store files remained unchanged. Fixture workers joined
+before offline comparison, and all 765 source files plus the binary matched their guards.
+
+**Resolved findings:** Per-series sampling compatibility, shared detail-array/prefix limits, and
+canonical source metadata. Failing regressions and installed r1 are retained alongside final proof;
+independent review reports no unresolved findings.
+
+**Identity:** Snapshot `target/evidence-comparison/review-r2`, manifest SHA-256
+`e80369b5af3eb33c479c37b7270f020693f88bbe081964f6c6c595c0e85295f7`.
+Binary SHA-256 `319eabdd1a0f85d1c480362848d900c7b06abebfefaafbd4722b4c7ea8a14e70`.
+The packet retains 115 hashed artifacts. Verification used an uncommitted working-tree snapshot; later acceptance
+documentation does not change tested product bytes.
+
+**Next:** Reviewed observation-only runbooks with typed branches/checkpoints and version-aware
+resume, followed by offline replay, reports, toil metadata and configuration checks. Live home-lab
+compatibility and native Windows evidence remain separate prerequisites; unchanged collection/store
+proof is reused.
+
+## WORKBENCH-015 — guided runbooks
+
+**Status:** Complete for the Linux core/CLI fixture increment. The
+[acceptance record](runbooks-verification.md) binds implementation, independent review and installed
+execution to frozen source/binary identities.
+
+**Delivered:** Installed `evidence-review`/1; actual verified before/after reads and typed comparison;
+complete/partial/incompatible human checkpoints; bounded retained comparisons and instructions;
+revision-bound resume preserving completed observations; explicit fresh attempts; separate private
+journal with durable in-flight state, CAS, quotas and no-follow filesystem access. Hosted grants
+remain unavailable. Evidence store format and immutable bundles remain unchanged.
+
+**Verification:** 317 workspace tests passed (19 existing native tests ignored), including eleven
+public runbook tests. Format, strict lint, ordinary build and 44-schema specification checks passed.
+Independent installed execution passed 14 commands and validated 29 unique canonical receipts.
+All evidence bytes and completed child receipts remained unchanged during acknowledgement;
+source/binary guards matched and fixture workers joined. Real 64 KiB private-tmpfs ENOSPC failed
+without claiming a checkpoint, preserving truthful recording/effect metadata.
+
+**Resolved findings:** Cancellation/deadline/contention classification during resume revalidation,
+and recording mode before initial publication. Independent review reports no unresolved findings.
+The packet retains 130 hashed artifacts, including initial failed checks and their corrections.
+
+**Identity:** Snapshot `target/runbooks/review-r1`, 898 files, manifest SHA-256
+`f8dd2c1b1283395f5041e2f21e8709af5026e80d38c5810bff3fa515dde373b8`.
+Binary SHA-256 `334c4bc1a876ee8873fb094b2ad15727b3bf7b2e47b95ecb15e2499d15664fad`.
+Verification used an uncommitted working-tree snapshot; later acceptance documentation does not change tested code.
+
+**Next:** Offline evidence open/replay, then reports, toil metadata and configuration checks.
+Live home-lab compatibility and native Windows evidence remain separate requirements. The complete
+backlog is not finished by this guided-runbook increment.
+
 ## Remaining product queue
 
-The remaining product queue is unchanged: native Windows and
+The following ledger preserves the complete requested scope. Accepted slices are evidence for
+their named boundaries, not completion of an entire capability or its live/platform acceptance.
+Requirement and acceptance IDs remain authoritative in [capabilities](sre-workbench/capabilities.md)
+and [verification](sre-workbench/verification.md).
+
+| Capability | Evidence available | Requirement still open |
+|---|---|---|
+| CAP-01 command execution/inspection | [Linux runner](poc-verification.md) and [restricted Git/rg](read-profile-verification.md) | Remaining reviewed host/service/disk forms and native platform cases |
+| CAP-02 PowerShell/shell | Generic human literal-argv runner exists | Named reviewed PowerShell/Bash entrypoints, native quoting/profile/pipeline tests and later explicit shell grant |
+| CAP-03 Grafana observations | [Dashboard/PromQL/LogQL controlled fixtures](grafana-verification.md) | Selected live compatibility; search/history/alerts/inventory increments |
+| CAP-04 named tasks | [Dashboard hygiene](dashboard-verification.md) and [error budget](error-budget-verification.md) | Additional reviewed task/runtime/platform bindings and compatibility |
+| CAP-05 CLI/discovery | Accepted public CLI, help, JSON, availability and refusal paths in the linked slice records | Discovery/help for each future capability and native host usability |
+| CAP-06 MCP | [Bounded stdio tasks, restricted commands and Grafana](mcp-verification.md) | Actual selected agent-host registration; context/diagnostic and future operation grants |
+| CAP-07 context | [Offline core/CLI source resolver](context-verification.md) | Approved real team source, hosted context grants and live target selection |
+| CAP-08 diagnostics | WORKBENCH-010 core/CLI and [WORKBENCH-011 browser](diagnostics-ui-verification.md) qualified native acceptance with frozen correctness/security reviews | Positive system-resolver fixture gap and later live/platform bindings |
+| CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery | Other operation recording policies, hosted views/grants and live/platform acceptance |
+| CAP-10 comparison | [Typed Linux fixture comparison](evidence-comparison-verification.md), compatibility, normalization and explicit missing/partial outcomes | Live datasource/plugin compatibility, other supported evidence kinds, hosted/platform acceptance |
+| CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted | Dependent browser/MCP grants and live/platform acceptance |
+| CAP-12 runbooks | [Installed evidence-review workflow](runbooks-verification.md), typed checkpoints, durable revision-bound resume and fresh attempts | Additional reviewed runbooks, hosted/platform acceptance; live observation workflows remain separate |
+| CAP-13 configuration checks | Dashboard task implements a supported offline validator slice | `config.check` contract, declared kind/version/digest and other supported validators |
+| CAP-14 offline investigation | No product evidence replay is accepted | Bundle validation and deterministic no-network analysis with original observation times |
+| CAP-15 reports/handoff | No product report generation is accepted | Evidence-backed Markdown/JSON, missing checks/redaction and reviewable knowledge proposals |
+| CAP-16 toil | No product toil aggregation is accepted | Opt-in metadata, baseline/candidate samples, retention and cost-aware arithmetic |
+| CAP-17 extensions | Compiled built-ins exist | Reviewed external package protocol/inspection/install, independent grants and fourth-capability experiment |
+| CAP-18 jobs | Foreground cancellation and session invocation handles exist | Durable jobs/events, reconnect, duplicate admission and restart reconciliation |
+| CAP-19 remote execution | Cally is a development verification boundary | Product runner identity/protocol, target-side policy and partition/cancellation conformance |
+| CAP-20 multiple targets | No product fleet collection is accepted | Frozen bounded target sets, per-target outcomes and fair deadline/failure control |
+| CAP-21 scheduling | No product scheduling is accepted | Owned persistent read schedules, timezone/overlap/misfire/restart rules |
+| CAP-22 controlled changes | No live write or change grant exists | Named legitimate consumer, accepted executor, exact-plan approval, readback/reconciliation/recovery |
+| CAP-23 browser UI | [Local browser commands/task/results/history](ui-verification.md) and [diagnostics](diagnostics-ui-verification.md) | Context and evidence/compare/report views, then permitted remote/team surfaces |
+| CAP-24 integrations/visual evidence | Diagnostic network/process and Grafana API fixture slices exist | Every planned connector family retains its separate API/identity/limit/acceptance increment; requested operational visual capture remains separate |
+| CAP-25 installation/diagnostics | [Linux development archives, doctor and private install/rollback](packaging-verification.md) | Release/dependency clearance, platform artifacts, online doctor, store migration/uninstall and human/agent pilot |
+
+The [browser diagnostics increment](diagnostics-ui-verification.md) is now qualified PASS. It grants
+explicit target aliases, pins configuration/CA identities and exposes five actual observations
+through the existing form, result and session-history flow. Generic hosted/MCP diagnostic refusal
+remains its existing boundary. Installed saved queries, evidence storage, comparison and guided
+runbooks are now accepted for their recorded Linux fixture scopes.
+
+Installed saved queries and evidence collection supply versioned, verified receipts with explicit
+provenance and partial outcomes. Typed comparison and resumable guided runbooks now use those
+bundles. Next implement offline evidence open/replay, followed by reports and toil metadata. Complete the configuration-check operation alongside these investigation features.
+Extensions/jobs, remote/fleet/scheduling and a named controlled change retain the delivery plan's
+dependency order. Connector work and native/live acceptance keep their own prerequisites; an
+unavailable live source does not block authorized offline implementation.
+
+The remaining product queue includes native Windows and
 restricted-profile namespace-refusal evidence; release/dependency clearance and the AC-36 human/
-agent pilot; actual team source selection (DEC-09); and the P3 diagnostic/query/capture/compare
-features in the delivery plan. The context-containing Linux artifact now has its own source/build
+agent pilot; actual team source selection (DEC-09); and the remaining investigation features
+and live diagnostic/query acceptance. The context-containing Linux artifact now has its own source/build
 identity and installed mission evidence. Keep the earlier accepted archives and frontend/runtime
 proofs as baselines. Source-aware UI/MCP context grants and live integrations remain separate work.

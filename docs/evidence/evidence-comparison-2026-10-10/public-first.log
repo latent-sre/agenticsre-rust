@@ -1,0 +1,82 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 3.38s
+     Running tests/comparison.rs (target/debug/deps/comparison-7f9213595f1b621b)
+
+running 8 tests
+test datasource_and_service_identity_changes_are_explicitly_incompatible ... FAILED
+test item_and_byte_limits_disclose_omissions_and_manifest_pins_are_checked ... FAILED
+test offset_policy_aligns_equal_duration_windows_and_preserves_original_times ... FAILED
+test malformed_references_and_policy_are_denied_before_store_access ... ok
+test parameter_identity_changes_refuse_observation_diff ... FAILED
+test partial_collection_keeps_missing_check_visible ... FAILED
+test public_comparison_counts_changes_and_preserves_store_without_external_access ... FAILED
+test typed_frame_failures_and_nulls_never_become_complete_comparisons ... FAILED
+
+failures:
+
+---- datasource_and_service_identity_changes_are_explicitly_incompatible stdout ----
+
+thread 'datasource_and_service_identity_changes_are_explicitly_incompatible' (157) panicked at crates/workbench-cli/tests/comparison.rs:122:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"This local operation only; no service health assessment","state":"not_applicable"},"data":{},"duration_ms":0,"effect_outcome":"not_attempted","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"invalid_usage","message":"Invalid CLI usage; consult save --help and the selected command's --help.","retryable":false}],"execution":{"child_exit_code":null,"signal":null,"status":"denied"},"finished_at":"2026-10-11T04:47:06.256799119Z","operation":"request.invalid","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-162-18dd60395d3999b8-0","resolved_target":{},"run_id":"run-162-18dd60395d3a4048-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T04:47:06.256799119Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(2)
+ right: Some(0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- item_and_byte_limits_disclose_omissions_and_manifest_pins_are_checked stdout ----
+
+thread 'item_and_byte_limits_disclose_omissions_and_manifest_pins_are_checked' (158) panicked at crates/workbench-cli/tests/comparison.rs:122:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"This local operation only; no service health assessment","state":"not_applicable"},"data":{},"duration_ms":0,"effect_outcome":"not_attempted","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"invalid_usage","message":"Invalid CLI usage; consult save --help and the selected command's --help.","retryable":false}],"execution":{"child_exit_code":null,"signal":null,"status":"denied"},"finished_at":"2026-10-11T04:47:06.256800051Z","operation":"request.invalid","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-161-18dd60395d399a76-0","resolved_target":{},"run_id":"run-161-18dd60395d3a400c-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T04:47:06.256800051Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(2)
+ right: Some(0)
+
+---- offset_policy_aligns_equal_duration_windows_and_preserves_original_times stdout ----
+
+thread 'offset_policy_aligns_equal_duration_windows_and_preserves_original_times' (164) panicked at crates/workbench-cli/tests/comparison.rs:122:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"This local operation only; no service health assessment","state":"not_applicable"},"data":{},"duration_ms":0,"effect_outcome":"not_attempted","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"invalid_usage","message":"Invalid CLI usage; consult save --help and the selected command's --help.","retryable":false}],"execution":{"child_exit_code":null,"signal":null,"status":"denied"},"finished_at":"2026-10-11T04:47:06.261220134Z","operation":"request.invalid","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-168-18dd60395d7d2150-0","resolved_target":{},"run_id":"run-168-18dd60395d7d8e3b-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T04:47:06.261220134Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(2)
+ right: Some(0)
+
+---- parameter_identity_changes_refuse_observation_diff stdout ----
+
+thread 'parameter_identity_changes_refuse_observation_diff' (170) panicked at crates/workbench-cli/tests/comparison.rs:122:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"This local operation only; no service health assessment","state":"not_applicable"},"data":{},"duration_ms":0,"effect_outcome":"not_attempted","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"invalid_usage","message":"Invalid CLI usage; consult save --help and the selected command's --help.","retryable":false}],"execution":{"child_exit_code":null,"signal":null,"status":"denied"},"finished_at":"2026-10-11T04:47:06.263935445Z","operation":"request.invalid","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-172-18dd60395da68ed2-0","resolved_target":{},"run_id":"run-172-18dd60395da6f7b5-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T04:47:06.263935445Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(2)
+ right: Some(0)
+
+---- partial_collection_keeps_missing_check_visible stdout ----
+
+thread 'partial_collection_keeps_missing_check_visible' (173) panicked at crates/workbench-cli/tests/comparison.rs:122:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"This local operation only; no service health assessment","state":"not_applicable"},"data":{},"duration_ms":0,"effect_outcome":"not_attempted","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"invalid_usage","message":"Invalid CLI usage; consult save --help and the selected command's --help.","retryable":false}],"execution":{"child_exit_code":null,"signal":null,"status":"denied"},"finished_at":"2026-10-11T04:47:06.265761569Z","operation":"request.invalid","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-175-18dd60395dc2727f-0","resolved_target":{},"run_id":"run-175-18dd60395dc2d8e0-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T04:47:06.265761569Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(2)
+ right: Some(0)
+
+---- public_comparison_counts_changes_and_preserves_store_without_external_access stdout ----
+
+thread 'public_comparison_counts_changes_and_preserves_store_without_external_access' (176) panicked at crates/workbench-cli/tests/comparison.rs:122:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"This local operation only; no service health assessment","state":"not_applicable"},"data":{},"duration_ms":0,"effect_outcome":"not_attempted","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"invalid_usage","message":"Invalid CLI usage; consult save --help and the selected command's --help.","retryable":false}],"execution":{"child_exit_code":null,"signal":null,"status":"denied"},"finished_at":"2026-10-11T04:47:06.266555254Z","operation":"request.invalid","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-178-18dd60395dce8fd9-0","resolved_target":{},"run_id":"run-178-18dd60395dcef889-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T04:47:06.266555254Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(2)
+ right: Some(0)
+
+---- typed_frame_failures_and_nulls_never_become_complete_comparisons stdout ----
+
+thread 'typed_frame_failures_and_nulls_never_become_complete_comparisons' (179) panicked at crates/workbench-cli/tests/comparison.rs:122:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"This local operation only; no service health assessment","state":"not_applicable"},"data":{},"duration_ms":0,"effect_outcome":"not_attempted","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"invalid_usage","message":"Invalid CLI usage; consult save --help and the selected command's --help.","retryable":false}],"execution":{"child_exit_code":null,"signal":null,"status":"denied"},"finished_at":"2026-10-11T04:47:06.268634438Z","operation":"request.invalid","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-181-18dd60395dee4c66-0","resolved_target":{},"run_id":"run-181-18dd60395deeb3cc-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T04:47:06.268634438Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(2)
+ right: Some(0)
+
+
+failures:
+    datasource_and_service_identity_changes_are_explicitly_incompatible
+    item_and_byte_limits_disclose_omissions_and_manifest_pins_are_checked
+    offset_policy_aligns_equal_duration_windows_and_preserves_original_times
+    parameter_identity_changes_refuse_observation_diff
+    partial_collection_keeps_missing_check_visible
+    public_comparison_counts_changes_and_preserves_store_without_external_access
+    typed_frame_failures_and_nulls_never_become_complete_comparisons
+
+test result: FAILED. 1 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p workbench-cli --test comparison`

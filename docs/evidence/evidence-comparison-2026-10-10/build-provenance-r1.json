@@ -1,0 +1,79 @@
+{
+  "source_manifest_sha256": "6978e1bf76c0989fd1d3f8ed078e174f7560419aa5b0f115bdd5fdd6ecb544f9",
+  "source_files": 765,
+  "source_guard_before": true,
+  "source_guard_after": true,
+  "binary_sha256": "7778e2dd132b9ac67115305041abea5bc54bcab3bc7e47d8b773bcfa6e2d176a",
+  "binary_bytes": 41699016,
+  "binary_path": "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/debug/save",
+  "checks": [
+    {
+      "label": "fmt-final",
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.363
+    },
+    {
+      "label": "clippy-final",
+      "argv": [
+        "tools/test-sandbox.sh",
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "seconds": 2.796
+    },
+    {
+      "label": "workspace-final",
+      "argv": [
+        "tools/test-sandbox.sh",
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "seconds": 41.657
+    },
+    {
+      "label": "specs-final",
+      "argv": [
+        ".venv/bin/python",
+        "-B",
+        "docs/sre-workbench/verify_specs.py"
+      ],
+      "exit": 0,
+      "seconds": 0.362
+    },
+    {
+      "label": "build-final",
+      "argv": [
+        "tools/test-sandbox.sh",
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "-p",
+        "workbench-cli"
+      ],
+      "exit": 0,
+      "seconds": 0.56
+    }
+  ]
+}

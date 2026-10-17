@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:query-run-data:0.1",
+  "title": "Installed saved query identity and bounded Grafana observation",
+  "type": "object",
+  "properties": {
+    "adapter": {
+      "$ref": "urn:sre-workbench:spec:grafana-query-data:0.1#/properties/adapter"
+    },
+    "binding": {
+      "$ref": "urn:sre-workbench:spec:grafana-query-data:0.1#/properties/binding"
+    },
+    "request": {
+      "$ref": "urn:sre-workbench:spec:grafana-query-data:0.1#/properties/request"
+    },
+    "response": {
+      "$ref": "urn:sre-workbench:spec:grafana-query-data:0.1#/properties/response"
+    },
+    "redaction": {
+      "$ref": "urn:sre-workbench:spec:grafana-query-data:0.1#/properties/redaction"
+    },
+    "transport": {
+      "$ref": "urn:sre-workbench:spec:grafana-query-data:0.1#/properties/transport"
+    },
+    "cancellation_signal": {
+      "$ref": "urn:sre-workbench:spec:grafana-query-data:0.1#/properties/cancellation_signal"
+    },
+    "definition": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "const": "prometheus.up-by-job"
+                },
+                "version": {
+                  "const": 1
+                },
+                "dialect": {
+                  "const": "promql"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$",
+                  "minLength": 64,
+                  "maxLength": 64
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "dialect",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "const": "loki.logs-by-job"
+                },
+                "version": {
+                  "const": 1
+                },
+                "dialect": {
+                  "const": "logql"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$",
+                  "minLength": 64,
+                  "maxLength": 64
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "dialect",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      ]
+    },
+    "parameters": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "job": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "description": "Literal job label value; runtime additionally enforces 128 UTF-8 bytes and the legacy macro guard.",
+                  "not": {
+                    "pattern": "[\\u0000-\\u001f\\u007f-\\u009f]"
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "redacted": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "redacted"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "job"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "window": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "from": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "redacted": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "redacted"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "to": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "redacted": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "redacted"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "from",
+            "to"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "adapter",
+    "binding",
+    "request",
+    "response",
+    "redaction",
+    "transport",
+    "cancellation_signal",
+    "definition",
+    "parameters",
+    "window"
+  ],
+  "additionalProperties": false
+}

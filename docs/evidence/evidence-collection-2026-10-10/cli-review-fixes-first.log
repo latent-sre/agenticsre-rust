@@ -1,0 +1,115 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 4.77s
+     Running unittests tests/support/profile_fixture.rs (target/debug/deps/profile_fixture-312118eb7805bdb4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests tests/support/runner_fixture.rs (target/debug/deps/runner_fixture-3b1dcc75c05f4b9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/save-d16ea909f57de400)
+
+running 1 test
+test delivery_tests::a_late_delivery_signal_preserves_the_sealed_collection_payload ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/context.rs (target/debug/deps/context-9247d93f9b72bc8f)
+
+running 10 tests
+test absent_optional_fields_differ_from_declared_empty_and_text_is_only_data ... ok
+test malformed_unknown_null_and_environment_mismatch_are_refused ... ok
+test review_r1_positional_source_objects_are_refused ... ok
+test review_r1_unsupported_timestamp_lexical_forms_are_refused ... ok
+test selectors_refuse_ambiguity_and_missing_without_first_match ... ok
+test review_r1_valid_utc_lexical_forms_preserve_original_review_text ... ok
+test source_descriptor_refuses_fifo_and_every_symlink_component ... ok
+test startup_pairing_and_adapter_refusal_precede_any_listener_or_server ... ok
+test stale_retired_future_and_required_omissions_never_become_usable ... ok
+test unique_cli_and_call_preserve_source_and_dependency_directions ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/diagnostics.rs (target/debug/deps/diagnostics-6cc0d08b1378cbd7)
+
+running 7 tests
+test configuration_and_ca_symlinks_are_refused_at_every_component ... ok
+test configuration_and_ca_bounds_refuse_nonregular_and_oversized_sources ... ok
+test declaration_cardinality_and_ca_syntax_are_admitted_before_network_work ... ok
+test configuration_objects_nulls_duplicates_and_hostile_destinations_cannot_dispatch ... ok
+test discovery_does_not_open_the_configured_fifo_or_probe_a_process ... ok
+test missing_alias_and_hosted_startup_grants_do_not_fall_back ... ok
+test wire_bindings_and_positional_pack_objects_are_refused_before_configuration_io ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/error_budget.rs (target/debug/deps/error_budget-b482d5972876d48d)
+
+running 8 tests
+test array_encodings_cannot_replace_object_inputs_or_envelopes ... ok
+test high_precision_finite_inputs_survive_the_real_child_protocol ... ok
+test nonfinite_or_duplicate_json_and_derived_range_errors_never_become_calculations ... ok
+test pure_python_regressions_run_in_the_isolated_supported_runtime ... ok
+test small_complete_reply_fits_the_minimum_capture_limit_but_deadline_still_applies ... ok
+test text_call_and_cli_calculations_share_units_threshold_and_normalized_input ... ok
+test typed_domain_and_exit_policy_failures_are_denied_before_dispatch ... ok
+test independent_numerical_goldens_match_without_turning_verdicts_into_process_failure ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests/evidence.rs (target/debug/deps/evidence-c49a14f415b27521)
+
+running 21 tests
+test bulk_management_refuses_unknown_payloads_and_inconsistent_receipt_summaries ... FAILED
+test changed_stored_receipt_bytes_are_detected_without_replaying_queries ... ok
+test accepted_response_depth_survives_receipt_envelope_redaction_and_restart ... ok
+test collection_requires_durable_recording_before_any_effect ... ok
+test collection_runs_both_installed_queries_and_seals_exact_finalized_receipts ... ok
+test closed_result_consumer_stops_active_query_and_later_dispatch ... ok
+test concurrent_collection_cannot_bypass_the_store_lock_or_dispatch_queries ... ok
+test context_selection_and_every_binding_are_required_before_store_or_http ... ok
+test installed_pack_discovery_requires_no_configuration_store_or_credentials ... ok
+test continue_and_stop_keep_failed_receipts_and_make_later_omissions_explicit ... ok
+test interrupted_delete_retry_preserves_and_checks_the_original_manifest_digest ... ok
+test interrupted_process_is_recovered_without_replaying_or_claiming_complete_capture ... ok
+test malformed_or_unpinned_inputs_are_rejected_before_http_or_store_creation ... ok
+test newer_store_format_is_preserved_by_read_collection_and_management ... ok
+test private_credential_canaries_do_not_reappear_in_projection_or_persisted_files ... ok
+test read_after_restart_and_protection_work_without_provider_or_network ... ok
+test relative_window_is_resolved_once_from_the_collection_parent ... ok
+test signals_cancel_active_queries_and_seal_only_already_observed_receipts ... ok
+test structured_collection_dispatches_the_same_pack_and_retains_the_same_observations ... ok
+test unsafe_or_underfunded_stores_refuse_collection_before_http ... ok
+test parent_deadline_limits_the_second_query_and_retains_both_real_outcomes ... FAILED
+
+failures:
+
+---- bulk_management_refuses_unknown_payloads_and_inconsistent_receipt_summaries stdout ----
+
+thread 'bulk_management_refuses_unknown_payloads_and_inconsistent_receipt_summaries' (688) panicked at crates/workbench-cli/tests/evidence.rs:130:9:
+assertion `left == right` failed: {"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"Owned local evidence bytes only; integrity is not source authenticity or service health.","state":"not_applicable"},"data":{"expired":[]},"duration_ms":4,"effect_outcome":"succeeded","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[],"execution":{"child_exit_code":null,"signal":null,"status":"succeeded"},"finished_at":"2026-10-11T03:45:53.438922105Z","operation":"evidence.prune","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"never","request_id":"request-697-18dd5ce237f1d4bc-0","resolved_target":{},"run_id":"run-697-18dd5ce237f23c49-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T03:45:53.434292988Z","target":{"id":"workstation","kind":"local"}}
+  left: Some(0)
+ right: Some(1)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- parent_deadline_limits_the_second_query_and_retains_both_real_outcomes stdout ----
+
+thread 'parent_deadline_limits_the_second_query_and_retains_both_real_outcomes' (802) panicked at crates/workbench-cli/tests/evidence.rs:147:44:
+called `Option::unwrap()` on a `None` value
+
+
+failures:
+    bulk_management_refuses_unknown_payloads_and_inconsistent_receipt_summaries
+    parent_deadline_limits_the_second_query_and_retains_both_real_outcomes
+
+test result: FAILED. 19 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.38s
+
+error: test failed, to rerun pass `-p workbench-cli --test evidence`

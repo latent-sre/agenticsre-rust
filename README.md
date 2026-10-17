@@ -11,6 +11,8 @@ The bounded stdio MCP adapter is also [independently verified](docs/mcp-verifica
 launcher grants and controlled Linux fixtures.
 The [Linux development bundle](docs/packaging-verification.md) includes offline context resolution
 and is verified for versioned installation, upgrade and rollback in the tested Cally environment.
+The current source also includes [verified installed saved queries](docs/saved-queries-verification.md)
+for the Linux core/CLI fixture scope; the retained bundle predates these commands.
 The `save` CLI executes literal arguments
 with bounded output, deadlines and cancellation, or inspects commands without running them.
 It provides text/JSON receipts, structured requests, discovery and offline diagnostics. The
@@ -27,6 +29,7 @@ CARGO_INCREMENTAL=0 CARGO_PROFILE_DEV_DEBUG=0 cargo build --locked -p workbench-
 target/debug/save --json exec --cwd . -- /usr/bin/printf '%s\n' 'hello workbench'
 target/debug/save task run dashboard-hygiene --input tests/fixtures/dashboard-hygiene/clean-input.json
 target/debug/save task run error-budget --input tests/fixtures/error-budget/time-input.json
+target/debug/save --json queries list
 target/debug/save ui serve --allow task.run
 ```
 
@@ -52,6 +55,20 @@ are embedded in `save`, so running it requires no separate Node server.
 [Native Grafana observations](docs/grafana.md) use explicit operator configuration and synthetic
 fixtures for current acceptance. [Restricted commands](docs/read-profile.md) and the
 [GUI](docs/ui.md) and [stdio MCP adapter](docs/mcp.md) use the shared core.
+The [installed saved queries](docs/saved-queries.md) add versioned PromQL/LogQL definitions,
+literal job parameters, optional definition-digest pinning and one resolved time window to the
+core/CLI Grafana workflow.
+The [evidence collection increment](docs/evidence.md) builds on those queries with fresh context
+bindings, sanitized receipts and a private versioned local store, with
+[Linux fixture acceptance](docs/evidence-collection-verification.md). See
+[collection commands](docs/development.md#evidence-collection-and-local-store).
+Offline `evidence compare` checks two verified bundles and reports typed metric/log differences
+with explicit normalization, incompatibilities and missing observations; see the
+[comparison contract](docs/evidence.md#comparison-interface-and-projections) and
+[Linux fixture acceptance](docs/evidence-comparison-verification.md).
+[Guided runbooks](docs/runbooks.md) add an installed evidence-review workflow with typed
+checkpoints, durable revision-bound resume and explicit fresh attempts, with
+[Linux fixture acceptance](docs/runbooks-verification.md).
 See [development installation and rollback](docs/development.md#development-artifact-and-rollback).
 Offline [service-context fixtures](docs/context.md) are implemented through the core/CLI and
 [independently verified](docs/context-verification.md). The current development archive includes

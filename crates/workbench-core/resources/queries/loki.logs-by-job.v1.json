@@ -1,0 +1,32 @@
+{
+  "id": "loki.logs-by-job",
+  "version": 1,
+  "dialect": "logql",
+  "parameter_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["job"],
+    "properties": {
+      "job": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "not": {"pattern": "[\\u0000-\\u001f\\u007f-\\u009f]"},
+        "description": "One literal job label value, limited to 1-128 UTF-8 bytes with no control characters."
+      }
+    }
+  },
+  "expression_structure": {
+    "kind": "stream_selector",
+    "matchers": [{"label": "job", "operator": "=", "parameter": "job"}]
+  },
+  "purpose": "Observe the selected job's returned log entries.",
+  "units": "entries",
+  "expected_shape": "log_frames",
+  "limits": {"max_range_seconds": 86400, "max_data_points": 1000, "max_lines": 500},
+  "limitations": [
+    "Returned log entries do not establish service health or complete event coverage.",
+    "Log retention, sampling, job-label reuse and incomplete returned data can limit the observation.",
+    "Requested lines do not prove returned coverage; empty results are not zero or an all-clear."
+  ]
+}

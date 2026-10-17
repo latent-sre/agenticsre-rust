@@ -1,0 +1,233 @@
+[
+  {
+    "case": "prometheus.up-by-job:direct-and-structured",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/grafana/api/org",
+        "body": null
+      },
+      {
+        "method": "GET",
+        "path": "/grafana/api/datasources/uid/metrics-1?ds_type=prometheus",
+        "body": null
+      },
+      {
+        "method": "POST",
+        "path": "/grafana/api/ds/query",
+        "body": {
+          "from": "1790899200123",
+          "queries": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "metrics-1"
+              },
+              "expr": "up{job=\"café\\\\worker\\\"},other=\\\"value\\\"} or vector(1) #\"}",
+              "format": "time_series",
+              "instant": false,
+              "intervalMs": 1000,
+              "maxDataPoints": 1000,
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "to": "1790899260123"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/grafana/api/org",
+        "body": null
+      },
+      {
+        "method": "GET",
+        "path": "/grafana/api/datasources/uid/metrics-1?ds_type=prometheus",
+        "body": null
+      },
+      {
+        "method": "POST",
+        "path": "/grafana/api/ds/query",
+        "body": {
+          "from": "1790899200123",
+          "queries": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "metrics-1"
+              },
+              "expr": "up{job=\"café\\\\worker\\\"},other=\\\"value\\\"} or vector(1) #\"}",
+              "format": "time_series",
+              "instant": false,
+              "intervalMs": 1000,
+              "maxDataPoints": 1000,
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "to": "1790899260123"
+        }
+      }
+    ]
+  },
+  {
+    "case": "loki.logs-by-job:direct-and-structured",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/grafana/api/org",
+        "body": null
+      },
+      {
+        "method": "GET",
+        "path": "/grafana/api/datasources/uid/metrics-1?ds_type=loki",
+        "body": null
+      },
+      {
+        "method": "POST",
+        "path": "/grafana/api/ds/query",
+        "body": {
+          "from": "1790899200123",
+          "queries": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "metrics-1"
+              },
+              "expr": "{job=\"café\\\\worker\\\"},other=\\\"value\\\"} or vector(1) #\"}",
+              "intervalMs": 1000,
+              "maxDataPoints": 1000,
+              "maxLines": 500,
+              "queryType": "range",
+              "refId": "A"
+            }
+          ],
+          "to": "1790899260123"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/grafana/api/org",
+        "body": null
+      },
+      {
+        "method": "GET",
+        "path": "/grafana/api/datasources/uid/metrics-1?ds_type=loki",
+        "body": null
+      },
+      {
+        "method": "POST",
+        "path": "/grafana/api/ds/query",
+        "body": {
+          "from": "1790899200123",
+          "queries": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "metrics-1"
+              },
+              "expr": "{job=\"café\\\\worker\\\"},other=\\\"value\\\"} or vector(1) #\"}",
+              "intervalMs": 1000,
+              "maxDataPoints": 1000,
+              "maxLines": 500,
+              "queryType": "range",
+              "refId": "A"
+            }
+          ],
+          "to": "1790899260123"
+        }
+      }
+    ]
+  },
+  {
+    "case": "one-parent-relative-window",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/grafana/api/org",
+        "body": null
+      },
+      {
+        "method": "GET",
+        "path": "/grafana/api/datasources/uid/metrics-1?ds_type=prometheus",
+        "body": null
+      },
+      {
+        "method": "POST",
+        "path": "/grafana/api/ds/query",
+        "body": {
+          "from": "1791685762714",
+          "queries": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "metrics-1"
+              },
+              "expr": "up{job=\"fixture\"}",
+              "format": "time_series",
+              "instant": false,
+              "intervalMs": 1000,
+              "maxDataPoints": 1000,
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "to": "1791686062714"
+        }
+      }
+    ]
+  },
+  {
+    "case": "datasource:failure",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/grafana/api/org",
+        "body": null
+      },
+      {
+        "method": "GET",
+        "path": "/grafana/api/datasources/uid/metrics-1?ds_type=prometheus",
+        "body": null
+      }
+    ]
+  },
+  {
+    "case": "query:failure",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/grafana/api/org",
+        "body": null
+      },
+      {
+        "method": "GET",
+        "path": "/grafana/api/datasources/uid/metrics-1?ds_type=prometheus",
+        "body": null
+      },
+      {
+        "method": "POST",
+        "path": "/grafana/api/ds/query",
+        "body": {
+          "from": "1790899200123",
+          "queries": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "metrics-1"
+              },
+              "expr": "up{job=\"fixture\"}",
+              "format": "time_series",
+              "instant": false,
+              "intervalMs": 1000,
+              "maxDataPoints": 1000,
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "to": "1790899260123"
+        }
+      }
+    ]
+  }
+]

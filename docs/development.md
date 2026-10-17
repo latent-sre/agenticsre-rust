@@ -268,6 +268,76 @@ The current development archive below includes `context resolve`. Its installed 
 request workflow passed on Cally. Earlier MCP/browser archives remain retained for rollback and
 have their own feature sets and source identities.
 
+## Installed saved queries
+
+Build the current source, then inspect its embedded query catalog without configuration or network
+access:
+
+```bash
+target/debug/save --json queries list
+target/debug/save --json queries describe prometheus.up-by-job --version 1
+target/debug/save --json queries describe loki.logs-by-job --version 1
+```
+
+Each definition reports its exact `definition_sha256`, literal parameter schema, purpose, units,
+requested limits and blind spots. To run one, supply an explicit operator Grafana configuration,
+target and datasource, plus regular JSON files for the parameters and window:
+
+```bash
+target/debug/save --json --config /absolute/operator.json \
+  queries run prometheus.up-by-job --version 1 \
+  --target fixture --datasource metrics-1 \
+  --parameters tests/fixtures/queries/parameters.json \
+  --window tests/fixtures/queries/window.json
+```
+
+The example files contain `{"job":"fixture"}` and
+`{"kind":"relative","lookback_seconds":300}`. Replace the explicit target/datasource and job
+with values authorized by your own configuration. An absolute window instead has `kind: absolute`
+and exact-millisecond RFC3339 `from`/`to` strings. Add `--expected-definition-sha256` with a digest
+from discovery to pin the inspected definition. The existing credential provider must allow
+`grafana.query`; the [Grafana contract](grafana.md) describes that binding.
+
+The equivalent structured operation is `query.run`; see the
+[request example](sre-workbench/examples/request-saved-query.json). Direct and structured calls
+use the same core, receipt, transport deadline and cancellation behavior. Parameters are literal
+label values, and relative windows resolve once from the parent receipt's start time. Browser and
+MCP saved-query grants are not yet available. See [the query contract](saved-queries.md) for limits.
+
+The retained context development archive below predates saved queries. Build current source for
+the new commands; its acceptance does not change the identity or contents of that archive.
+
+## Evidence collection and local store
+
+The [collection contract](evidence.md) executes the installed Prometheus/Loki pack using one
+resolved window. It requires a fresh unique context record whose target/environment/organization
+bindings match the selected Grafana connection. Inspect the pack before preparing its strict JSON
+input; [the example](sre-workbench/examples/request-evidence.json) shows the structured form.
+
+```bash
+target/debug/save --json evidence packs list
+target/debug/save --json evidence packs describe service-queries --version 1
+target/debug/save --json --config /absolute/path/operator.json \
+  --context-source /absolute/path/reviewed-context-export.json --context-max-age-days 30 \
+  --state-dir /absolute/private/evidence --record always \
+  evidence collect --target approved-alias --input /absolute/path/collection-input.json
+target/debug/save --json --state-dir /absolute/private/evidence evidence list
+target/debug/save --json --state-dir /absolute/private/evidence evidence show GENERATED_RUN_ID
+target/debug/save --json --state-dir /absolute/private/evidence evidence protect GENERATED_RUN_ID
+```
+
+Store policy is supplied only at startup. `--store-max-bytes` defaults to one GiB and
+`--retention-days` to seven; pruning is an explicit `evidence prune` command. Protected runs cannot
+be expired or deleted until `evidence unprotect`. `evidence recover` reconciles interrupted writes
+without repeating queries. `show`, `protect`, `unprotect` and `delete` accept
+`--expected-manifest-sha256 sha256:HEX` to pin the manifest. Read commands never initialize a store.
+The current browser and MCP launchers refuse these store options.
+
+Only a successful manifest commit yields a bundle reference. Read each step's status, retained
+artifact and omission, plus capture completeness and telemetry coverage; retained receipts do not
+establish health. The store's hashes verify bytes, not source authenticity. Implementation and
+acceptance status is tracked in [WORKBENCH-013](roadmap.md#workbench-013--evidence-collection-and-local-storage).
+
 ## Development artifact and rollback
 
 The [Linux development bundle](packaging.md) contains the ordinary `save` binary, embedded browser
@@ -353,3 +423,38 @@ accepted MCP baseline without rebuilding it. Repacking identical
 inputs passed deterministically; reproducibility of separate Rust builds is not asserted.
 Shipping still requires license/distribution clearance, broader native platform evidence and the
 human/agent usefulness pilot identified in the roadmap.
+
+### Offline evidence comparison
+
+After collecting two bundles, use their generated run IDs:
+
+```sh
+target/debug/save --json --state-dir /absolute/private/store evidence compare BEFORE_RUN AFTER_RUN \
+  --normalization exact-window-v1 --max-items 100
+```
+
+Use `window-offset-v1` only when comparing equal-duration windows by their relative offsets.
+Optional `--before-manifest-sha256` and `--after-manifest-sha256` pin the inspected manifests.
+Comparison reads only the selected store and requires no Grafana/provider/context options.
+An incomplete or incompatible comparison exits 1 and retains explicit reasons; it never asserts
+service health or log rates. The [contract](evidence.md#comparison-interface-and-projections)
+documents supported frames, provenance, limits and structured request parity.
+
+
+### Guided evidence review
+
+Prepare the typed before/after reference input described in [guided runbooks](runbooks.md), then:
+
+```sh
+target/debug/save --json --state-dir /absolute/evidence --runbook-state-dir /absolute/runbooks \
+  --record always runbook run evidence-review --input review.json
+target/debug/save --json --runbook-state-dir /absolute/runbooks runbook status RUN_ID
+target/debug/save --json --state-dir /absolute/evidence --runbook-state-dir /absolute/runbooks \
+  --record always runbook resume RUN_ID --expected-revision REVISION \
+  --input review.json --acknowledge CHECKPOINT
+```
+
+Read the retained comparison and checkpoint instructions before acknowledging. Waiting and limited
+results exit 1; successful completed review exits 0. Status is read-only and exits 0 after a valid
+read regardless of workflow state. Resume requires unchanged inputs and the current revision;
+fresh attempts use a new run ID and preserve the original journal.

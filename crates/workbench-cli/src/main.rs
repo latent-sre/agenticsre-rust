@@ -6,7 +6,7 @@ use std::fs::OpenOptions;
 use std::path::PathBuf;
 use std::sync::atomic::Ordering;
 use workbench_core::{
-    OperatorContext, RunControl, execute_with_context,
+    EvidenceStoreOptions, OperatorContext, RunControl, execute_with_context,
     request::{Problem, Request, parse_json, parse_request},
     result::OperationResult,
 };
@@ -20,6 +20,31 @@ use workbench_core::{
     after_help = "Example: save --json exec --cwd . -- /usr/bin/printf '%s\\n' 'hello workbench'\nDefaults: 30s timeout, 1MiB per pipe, 2MiB encoded JSON, record=never, closed stdin.\nChild environment: PATH=/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 TZ=UTC.\nOnly bare names from /usr/bin:/bin or absolute native executable paths are admitted.\nShells and scripts need future named-task bindings. Process groups do not contain\ndeliberately escaping programs. Cleanup allows 2s grace plus 500ms final drainage.\nExit: 0 success; 1 failed/partial/timeout/unknown; 2 usage/denied/unsupported;\n130 SIGINT; 143 SIGTERM. Child exit and signal remain separate in the receipt."
 )]
 struct Cli {
+    #[arg(
+        long,
+        global = true,
+        value_name = "DIRECTORY",
+        help = "Explicit absolute private evidence store; no default or wire-selected path"
+    )]
+    state_dir: Option<PathBuf>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "DIRECTORY",
+        help = "Explicit private guided-runbook journal, separate from the evidence store"
+    )]
+    runbook_state_dir: Option<PathBuf>,
+    #[arg(long, global = true, requires = "state_dir", value_parser = clap::value_parser!(u64).range(1..=1_073_741_824), help = "Evidence store byte cap, at most 1GiB; defaults to 1GiB")]
+    store_max_bytes: Option<u64>,
+    #[arg(long, global = true, requires = "state_dir", value_parser = clap::value_parser!(u16).range(1..=3650), help = "Unprotected sealed evidence retention in days, 1..3650; defaults to 7")]
+    retention_days: Option<u16>,
+    #[arg(
+        long,
+        global = true,
+        value_name = "FILE",
+        help = "Explicit absolute diagnostics target configuration; no target, resolver, CA or PID can come from wire input"
+    )]
+    diagnostics_config: Option<PathBuf>,
     #[arg(
         long,
         global = true,
@@ -54,7 +79,7 @@ struct Cli {
         long,
         global = true,
         default_value = "never",
-        help = "Evidence recording; this increment accepts never only"
+        help = "Evidence collection and runbook execution require auto or always; read operations accept never"
     )]
     record: String,
     #[command(subcommand)]
@@ -63,6 +88,40 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
+    /// Run reviewed observations with typed branches and durable human checkpoints
+    Runbook {
+        #[command(subcommand)]
+        command: RunbookCommands,
+    },
+    /// Collect fixed saved queries and manage private, versioned local evidence
+    Evidence {
+        #[command(subcommand)]
+        command: EvidenceCommands,
+    },
+    /// Discover fixed installed diagnostic packs without reading configuration or probing targets
+    Diagnostics {
+        #[command(subcommand)]
+        command: DiagnosticsCommands,
+    },
+    /// Observe DNS, TCP, TLS, HTTP and one exact configured local process; no health assessment
+    Diagnose {
+        #[arg(long)]
+        target: String,
+        #[arg(long, default_value = "connectivity")]
+        pack: String,
+        #[arg(
+            long,
+            value_name = "FILE",
+            help = "Typed JSON input: optional capture_body boolean and on_failure continue/stop only"
+        )]
+        input: PathBuf,
+        #[arg(long, default_value = "60s", value_parser = parse_duration)]
+        timeout: u64,
+        #[arg(long, default_value_t = 16384)]
+        max_output_bytes: usize,
+        #[arg(long, default_value_t = 2, value_parser = clap::value_parser!(u64).range(1..=2))]
+        concurrency: u64,
+    },
     /// Resolve offline service metadata without selecting a live execution target
     Context {
         #[command(subcommand)]
@@ -99,6 +158,11 @@ enum Commands {
         #[command(subcommand)]
         command: GrafanaCommands,
     },
+    /// Discover or run installed versioned PromQL/LogQL queries with literal parameters
+    Queries {
+        #[command(subcommand)]
+        command: QueriesCommands,
+    },
     /// Serve the local browser workbench with explicit immutable operation and root grants
     Ui {
         #[command(subcommand)]
@@ -125,6 +189,137 @@ enum ContextCommands {
         #[arg(long)]
         deployment: Option<String>,
     },
+}
+
+#[derive(Subcommand)]
+enum DiagnosticsCommands {
+    List,
+    Describe { id: String },
+}
+
+#[derive(Subcommand)]
+enum RunbookCommands {
+    List,
+    Show {
+        id: String,
+        #[arg(long, default_value_t = 1)]
+        version: u64,
+    },
+    Run {
+        id: String,
+        #[arg(long, default_value_t = 1)]
+        version: u64,
+        #[arg(long)]
+        input: PathBuf,
+        #[arg(long)]
+        expected_definition_sha256: Option<String>,
+        #[arg(long, requires = "fresh_from_revision")]
+        fresh_from: Option<String>,
+        #[arg(long, requires = "fresh_from")]
+        fresh_from_revision: Option<u64>,
+        #[arg(long, default_value_t = 30_000)]
+        timeout_ms: u64,
+        #[arg(long, default_value_t = 1_048_576)]
+        max_output_bytes: usize,
+    },
+    Resume {
+        run_id: String,
+        #[arg(long)]
+        expected_revision: u64,
+        #[arg(long)]
+        input: PathBuf,
+        #[arg(long)]
+        acknowledge: Option<String>,
+        #[arg(long, default_value_t = 30_000)]
+        timeout_ms: u64,
+        #[arg(long, default_value_t = 1_048_576)]
+        max_output_bytes: usize,
+    },
+    Status {
+        run_id: String,
+    },
+}
+
+#[derive(Subcommand)]
+enum EvidenceCommands {
+    /// Inspect installed packs without accessing a store, credential or network
+    Packs {
+        #[command(subcommand)]
+        command: EvidencePackCommands,
+    },
+    /// Resolve context, execute the installed pack and retain sanitized receipts
+    Collect {
+        #[command(flatten)]
+        target: GrafanaTarget,
+        #[arg(
+            long,
+            value_name = "FILE",
+            help = "Strict collection selection, pack, window, metrics/logs parameters and failure policy"
+        )]
+        input: PathBuf,
+    },
+    /// Compare retained metric samples and log entries without contacting their sources
+    Compare {
+        /// Generated run ID for the earlier observation
+        before: String,
+        /// Generated run ID for the later observation
+        after: String,
+        #[arg(long, value_parser = ["exact-window-v1", "window-offset-v1"])]
+        normalization: String,
+        #[arg(long)]
+        before_manifest_sha256: Option<String>,
+        #[arg(long)]
+        after_manifest_sha256: Option<String>,
+        #[arg(long, default_value_t = 100, value_parser = clap::value_parser!(u64).range(1..=1000))]
+        max_items: u64,
+        #[arg(
+            long,
+            default_value_t = 1_048_576,
+            help = "Encoded difference detail budget; at most 1MiB is effective"
+        )]
+        max_output_bytes: usize,
+        #[arg(long, default_value_t = 30_000)]
+        timeout_ms: u64,
+    },
+    List,
+    Show(EvidenceReference),
+    Protect(EvidenceReference),
+    Unprotect(EvidenceReference),
+    Delete(EvidenceReference),
+    /// Expire sufficiently old, unprotected sealed runs; no younger eviction
+    Prune,
+    /// Reconcile interrupted writes without repeating observations
+    Recover,
+}
+
+#[derive(Subcommand)]
+enum EvidencePackCommands {
+    List,
+    Describe {
+        id: String,
+        #[arg(long, default_value_t = 1)]
+        version: u64,
+    },
+}
+
+#[derive(Args)]
+struct EvidenceReference {
+    /// Generated run ID in the selected store, never an artifact path
+    id: String,
+    #[arg(
+        long,
+        value_name = "SHA256",
+        help = "Expected manifest digest, sha256: followed by 64 lowercase hexadecimal digits"
+    )]
+    expected_manifest_sha256: Option<String>,
+}
+
+fn evidence_reference(operation: &str, reference: EvidenceReference) -> Request {
+    let mut inputs = json!({"id":reference.id});
+    if let Some(digest) = reference.expected_manifest_sha256 {
+        inputs["expected_manifest_sha256"] = json!(digest);
+    }
+    Request::new(operation, inputs)
 }
 
 #[derive(Subcommand)]
@@ -167,7 +362,7 @@ enum UiCommands {
         #[arg(
             long,
             value_name = "OPERATION",
-            help = "Repeat process.exec, command.inspect or task.run; empty grants expose no checks"
+            help = "Repeat process.exec, command.inspect, task.run or diagnostics.run; empty grants expose no checks"
         )]
         allow: Vec<String>,
         #[arg(
@@ -176,6 +371,12 @@ enum UiCommands {
             help = "Repeat trusted policy root IDs; commands also require --read-policy"
         )]
         root: Vec<String>,
+        #[arg(
+            long,
+            value_name = "TARGET_ID",
+            help = "Repeat unique trusted diagnostic aliases; requires diagnostics.run and --diagnostics-config"
+        )]
+        target: Vec<String>,
     },
 }
 
@@ -224,6 +425,42 @@ struct GrafanaTarget {
     timeout: u64,
     #[arg(long, default_value_t = 2_097_152)]
     max_output_bytes: usize,
+}
+
+#[derive(Subcommand)]
+enum QueriesCommands {
+    /// List installed definitions without reading configuration or contacting a server
+    List,
+    /// Inspect one installed definition and its exact SHA-256 identity
+    Describe {
+        id: String,
+        #[arg(long)]
+        version: u64,
+    },
+    /// Run an installed query using explicit target, datasource, parameters and time window
+    Run {
+        id: String,
+        #[arg(long)]
+        version: u64,
+        #[command(flatten)]
+        target: GrafanaTarget,
+        #[arg(long)]
+        datasource: String,
+        #[arg(
+            long,
+            value_name = "FILE",
+            help = "Strict JSON object containing the literal job string"
+        )]
+        parameters: PathBuf,
+        #[arg(
+            long,
+            value_name = "FILE",
+            help = "Explicit absolute from/to or relative lookback_seconds JSON window"
+        )]
+        window: PathBuf,
+        #[arg(long, value_name = "SHA256")]
+        expected_definition_sha256: Option<String>,
+    },
 }
 
 #[derive(Subcommand)]
@@ -324,6 +561,129 @@ fn parse_duration(value: &str) -> Result<u64, &'static str> {
 fn normalize(cli: Cli) -> Result<Request, Problem> {
     let restricted = cli.read_policy.is_some();
     let mut request = match cli.command {
+        Commands::Runbook { command } => match command {
+            RunbookCommands::List => Request::new("runbook.list", json!({})),
+            RunbookCommands::Show { id, version } => {
+                Request::new("runbook.show", json!({"id":id,"version":version}))
+            }
+            RunbookCommands::Status { run_id } => {
+                Request::new("runbook.status", json!({"run_id":run_id}))
+            }
+            RunbookCommands::Run {
+                id,
+                version,
+                input,
+                expected_definition_sha256,
+                fresh_from,
+                fresh_from_revision,
+                timeout_ms,
+                max_output_bytes,
+            } => {
+                let mut inputs =
+                    json!({"id":id,"version":version,"input":parse_json(input_file(input)?)?});
+                if let Some(pin) = expected_definition_sha256 {
+                    inputs["expected_definition_sha256"] = json!(pin);
+                }
+                if let Some(id) = fresh_from {
+                    inputs["fresh_from"] = json!({"id":id,"expected_revision":fresh_from_revision.expect("paired CLI option")});
+                }
+                let mut request = Request::new("runbook.run", inputs);
+                request.limits.timeout_ms = timeout_ms;
+                request.limits.max_output_bytes = max_output_bytes;
+                request
+            }
+            RunbookCommands::Resume {
+                run_id,
+                expected_revision,
+                input,
+                acknowledge,
+                timeout_ms,
+                max_output_bytes,
+            } => {
+                let mut inputs = json!({"run_id":run_id,"expected_revision":expected_revision,"input":parse_json(input_file(input)?)?});
+                if let Some(step) = acknowledge {
+                    inputs["acknowledge"] = json!(step);
+                }
+                let mut request = Request::new("runbook.resume", inputs);
+                request.limits.timeout_ms = timeout_ms;
+                request.limits.max_output_bytes = max_output_bytes;
+                request
+            }
+        },
+        Commands::Evidence { command } => match command {
+            EvidenceCommands::Packs {
+                command: EvidencePackCommands::List,
+            } => Request::new("evidence.packs.list", json!({})),
+            EvidenceCommands::Packs {
+                command: EvidencePackCommands::Describe { id, version },
+            } => Request::new(
+                "evidence.packs.describe",
+                json!({"id":id,"version":version}),
+            ),
+            EvidenceCommands::Collect { target, input } => {
+                grafana_request("evidence.collect", target, parse_json(input_file(input)?)?)
+            }
+            EvidenceCommands::Compare {
+                before,
+                after,
+                normalization,
+                before_manifest_sha256,
+                after_manifest_sha256,
+                max_items,
+                max_output_bytes,
+                timeout_ms,
+            } => {
+                let mut inputs = json!({"before":{"id":before},"after":{"id":after},"normalization":normalization});
+                if let Some(digest) = before_manifest_sha256 {
+                    inputs["before"]["expected_manifest_sha256"] = json!(digest);
+                }
+                if let Some(digest) = after_manifest_sha256 {
+                    inputs["after"]["expected_manifest_sha256"] = json!(digest);
+                }
+                let mut request = Request::new("evidence.compare", inputs);
+                request.limits.max_items = Some(max_items);
+                request.limits.max_output_bytes = max_output_bytes;
+                request.limits.timeout_ms = timeout_ms;
+                request
+            }
+            EvidenceCommands::List => Request::new("evidence.list", json!({})),
+            EvidenceCommands::Show(reference) => evidence_reference("evidence.show", reference),
+            EvidenceCommands::Protect(reference) => {
+                evidence_reference("evidence.protect", reference)
+            }
+            EvidenceCommands::Unprotect(reference) => {
+                evidence_reference("evidence.unprotect", reference)
+            }
+            EvidenceCommands::Delete(reference) => evidence_reference("evidence.delete", reference),
+            EvidenceCommands::Prune => Request::new("evidence.prune", json!({})),
+            EvidenceCommands::Recover => Request::new("evidence.recover", json!({})),
+        },
+        Commands::Diagnostics {
+            command: DiagnosticsCommands::List,
+        } => Request::new("diagnostics.list", json!({})),
+        Commands::Diagnostics {
+            command: DiagnosticsCommands::Describe { id },
+        } => Request::new("diagnostics.describe", json!({"id":id})),
+        Commands::Diagnose {
+            target,
+            pack,
+            input,
+            timeout,
+            max_output_bytes,
+            concurrency,
+        } => {
+            let input = parse_json(input_file(input)?)?;
+            let mut request = Request::new(
+                "diagnostics.run",
+                json!({"id":pack,"version":1,"input":input}),
+            );
+            request.target.kind = "connection".into();
+            request.target.id = target;
+            request.limits.timeout_ms = timeout;
+            request.limits.max_output_bytes = max_output_bytes;
+            request.limits.concurrency = Some(concurrency);
+            request
+        }
         Commands::Context {
             command:
                 ContextCommands::Resolve {
@@ -406,6 +766,32 @@ fn normalize(cli: Cli) -> Result<Request, Problem> {
         Commands::Capabilities {
             command: CapabilityCommands::Describe { operation },
         } => Request::new("capability.describe", json!({"operation":operation})),
+        Commands::Queries {
+            command: QueriesCommands::List,
+        } => Request::new("queries.list", json!({})),
+        Commands::Queries {
+            command: QueriesCommands::Describe { id, version },
+        } => Request::new("queries.describe", json!({"id":id,"version":version})),
+        Commands::Queries {
+            command:
+                QueriesCommands::Run {
+                    id,
+                    version,
+                    target,
+                    datasource,
+                    parameters,
+                    window,
+                    expected_definition_sha256,
+                },
+        } => {
+            let parameters = parse_json(input_file(parameters)?)?;
+            let window = parse_json(input_file(window)?)?;
+            let mut input = json!({"id":id,"version":version,"datasource":datasource,"parameters":parameters,"window":window});
+            if let Some(digest) = expected_definition_sha256 {
+                input["expected_definition_sha256"] = json!(digest);
+            }
+            grafana_request("query.run", target, input)
+        }
         Commands::Grafana {
             command:
                 GrafanaCommands::Dashboard {
@@ -554,8 +940,13 @@ fn run() -> u8 {
     {
         if cli.json
             || cli.record != "never"
+            || cli.state_dir.is_some()
+            || cli.runbook_state_dir.is_some()
+            || cli.store_max_bytes.is_some()
+            || cli.retention_days.is_some()
             || cli.context_source.is_some()
             || cli.context_max_age_days.is_some()
+            || cli.diagnostics_config.is_some()
         {
             workbench_mcp::invalid_startup();
             return 2;
@@ -569,17 +960,29 @@ fn run() -> u8 {
         });
     }
     if let Commands::Ui {
-        command: UiCommands::Serve { port, allow, root },
+        command:
+            UiCommands::Serve {
+                port,
+                allow,
+                root,
+                target,
+            },
     } = &cli.command
     {
         if cli.json
             || cli.record != "never"
+            || cli.state_dir.is_some()
+            || cli.runbook_state_dir.is_some()
+            || cli.store_max_bytes.is_some()
+            || cli.retention_days.is_some()
             || cli.config.is_some()
             || cli.context_source.is_some()
             || cli.context_max_age_days.is_some()
+            || (cli.diagnostics_config.is_some()
+                && !allow.iter().any(|operation| operation == "diagnostics.run"))
         {
             eprintln!(
-                "ui serve does not accept --json, --config, context source options or recording modes other than never"
+                "ui serve does not accept --json, --config, context source, evidence store or runbook journal options, ungranted diagnostic configuration or recording modes other than never"
             );
             return 2;
         }
@@ -588,6 +991,8 @@ fn run() -> u8 {
             allow: allow.clone(),
             roots: root.clone(),
             read_policy: cli.read_policy.clone(),
+            diagnostics_config: cli.diagnostics_config.clone(),
+            targets: target.clone(),
         }) {
             Ok(code) => code,
             Err(message) => {
@@ -598,6 +1003,18 @@ fn run() -> u8 {
     }
     let json = cli.json;
     let context = OperatorContext {
+        runbook_state_dir: cli.runbook_state_dir.clone(),
+        evidence_store: cli.state_dir.clone().map(|directory| {
+            let mut options = EvidenceStoreOptions::new(directory);
+            if let Some(max_bytes) = cli.store_max_bytes {
+                options.max_bytes = max_bytes;
+            }
+            if let Some(retention_days) = cli.retention_days {
+                options.retention_days = retention_days;
+            }
+            options
+        }),
+        diagnostics_config_path: cli.diagnostics_config.clone(),
         context_source_path: cli.context_source.clone(),
         context_max_age_days: cli.context_max_age_days,
         config_path: cli.config.clone(),
@@ -667,11 +1084,22 @@ fn run() -> u8 {
     }
 }
 
-fn deliver(mut result: OperationResult, json: bool, control: &RunControl) -> u8 {
-    let signal = control.signal.load(Ordering::Relaxed);
+fn note_delivery_signal(result: &mut OperationResult, signal: usize) {
     if signal != 0 {
-        result.data["cancellation_signal"] = json!(signal);
+        // A collection payload may already be sealed. Delivery is a later boundary:
+        // preserve its observations and capture state, and report the signal separately.
+        let field = if result.operation == "evidence.collect" && result.data.get("bundle").is_some()
+        {
+            "delivery_cancellation_signal"
+        } else {
+            "cancellation_signal"
+        };
+        result.data[field] = json!(signal);
     }
+}
+
+fn deliver(mut result: OperationResult, json: bool, control: &RunControl) -> u8 {
+    note_delivery_signal(&mut result, control.signal.load(Ordering::Relaxed));
     let code = result.exit_code();
     let bytes = if json {
         result.json_bytes()
@@ -690,5 +1118,35 @@ fn deliver(mut result: OperationResult, json: bool, control: &RunControl) -> u8 
         Ok(()) => code,
         Err(_) if matches!(code, 130 | 143) => code,
         Err(_) => 1,
+    }
+}
+
+#[cfg(test)]
+mod delivery_tests {
+    use super::*;
+
+    #[test]
+    fn a_late_delivery_signal_preserves_the_sealed_collection_payload() {
+        for signal in [2, 15] {
+            let mut result = OperationResult::new(&Request::new("evidence.collect", json!({})));
+            let sealed_payload = json!({"capture":{"state":"complete","expected_steps":2,"retained_receipts":2},"cancellation_signal":null});
+            let sealed_bytes = serde_json::to_vec(&sealed_payload).unwrap();
+            result.data = sealed_payload;
+            result.data["bundle"] =
+                json!({"id":"run-1-ab-c","digest":format!("sha256:{}", "a".repeat(64))});
+            result.data["delivery_cancellation_signal"] = serde_json::Value::Null;
+            // Same hook that delivery invokes when a signal arrives after core finalization.
+            note_delivery_signal(&mut result, signal);
+            assert_eq!(result.data["delivery_cancellation_signal"], signal);
+            assert!(result.data["cancellation_signal"].is_null());
+            assert_eq!(result.data["capture"]["state"], "complete");
+            result.data.as_object_mut().unwrap().remove("bundle");
+            result
+                .data
+                .as_object_mut()
+                .unwrap()
+                .remove("delivery_cancellation_signal");
+            assert_eq!(serde_json::to_vec(&result.data).unwrap(), sealed_bytes);
+        }
     }
 }

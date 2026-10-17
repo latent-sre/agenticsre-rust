@@ -1,0 +1,326 @@
+{
+  "binding": {
+    "allowed_ips": [
+      "127.0.0.1"
+    ],
+    "hostname": "diagnostics.workbench.test",
+    "identity": {
+      "additional_ca_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "bundled_roots": {
+        "package": "webpki-root-certs",
+        "sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "version": "1.0.9"
+      },
+      "configuration_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "path": "/probe",
+    "port": 8443,
+    "target": "fixture-web"
+  },
+  "cancellation_signal": null,
+  "input": {
+    "capture_body": false,
+    "on_failure": "continue"
+  },
+  "pack": {
+    "definition": {
+      "effects": "observe",
+      "id": "connectivity",
+      "input_schema": {
+        "$ref": "urn:sre-workbench:spec:diagnostics-pack-input:0.1"
+      },
+      "max_concurrency": 2,
+      "max_timeout_ms": 60000,
+      "output_schema": {
+        "$ref": "urn:sre-workbench:spec:diagnostics-data:0.1"
+      },
+      "platforms": [
+        "linux"
+      ],
+      "steps": [
+        {
+          "id": "dns",
+          "max_timeout_ms": 10000,
+          "operation": "network.dns.lookup",
+          "operation_version": 1,
+          "prerequisites": []
+        },
+        {
+          "id": "tcp",
+          "max_timeout_ms": 10000,
+          "operation": "network.tcp.connect",
+          "operation_version": 1,
+          "prerequisites": [
+            "dns"
+          ]
+        },
+        {
+          "id": "tls",
+          "max_timeout_ms": 10000,
+          "operation": "network.tls.handshake",
+          "operation_version": 1,
+          "prerequisites": [
+            "tcp"
+          ]
+        },
+        {
+          "id": "http",
+          "max_timeout_ms": 10000,
+          "operation": "network.http.get",
+          "operation_version": 1,
+          "prerequisites": [
+            "tls"
+          ]
+        },
+        {
+          "id": "process",
+          "max_timeout_ms": 10000,
+          "operation": "local.process.observe",
+          "operation_version": 1,
+          "prerequisites": []
+        }
+      ],
+      "version": 1
+    },
+    "sha256": "sha256:a9f9ca23c192d7c300c802df458fde42c4fb2fbc76b1ffac9a2cd9c632672338"
+  },
+  "redaction": {
+    "applied": false,
+    "sensitive_content_detection": false
+  },
+  "steps": [
+    {
+      "attempted": true,
+      "duration_ms": 0,
+      "id": "dns",
+      "observation": {
+        "addresses": [
+          "127.0.0.1"
+        ],
+        "cname_chains": {
+          "a": [
+            "diagnostics.workbench.test"
+          ],
+          "aaaa": [
+            "diagnostics.workbench.test"
+          ]
+        },
+        "hostname": "diagnostics.workbench.test",
+        "mode": "dns_lookup",
+        "port": 8443,
+        "resolver": {
+          "attempts_per_query": 1,
+          "cache": false,
+          "configuration_sha256": null,
+          "connection_reconnect": false,
+          "dnssec_validation": false,
+          "endpoint": "127.0.0.1:5353",
+          "endpoint_fallback": false,
+          "hosts_file": false,
+          "max_cname_hops": 8,
+          "max_queries_per_family": 9,
+          "questions": [
+            {
+              "name": "diagnostics.workbench.test",
+              "type": "A"
+            },
+            {
+              "name": "diagnostics.workbench.test",
+              "type": "AAAA"
+            }
+          ],
+          "search_domains": false,
+          "selection": "explicit",
+          "strategy": "a_and_aaaa",
+          "synthetic_answers": false,
+          "transport": "udp",
+          "transport_fallback": false
+        },
+        "selected_peer": "127.0.0.1:8443"
+      },
+      "observed_at": "2026-10-02T00:00:00Z",
+      "operation": "network.dns.lookup",
+      "operation_version": 1,
+      "prerequisites": [],
+      "reason": null,
+      "started_offset_ms": 0,
+      "state": "succeeded",
+      "timeout_ms": 10000
+    },
+    {
+      "attempted": true,
+      "duration_ms": 0,
+      "id": "tcp",
+      "observation": {
+        "hostname": "diagnostics.workbench.test",
+        "local_address": "127.0.0.1:50000",
+        "peer": "127.0.0.1:8443",
+        "port": 8443
+      },
+      "observed_at": "2026-10-02T00:00:00Z",
+      "operation": "network.tcp.connect",
+      "operation_version": 1,
+      "prerequisites": [
+        "dns"
+      ],
+      "reason": null,
+      "started_offset_ms": 0,
+      "state": "succeeded",
+      "timeout_ms": 10000
+    },
+    {
+      "attempted": true,
+      "duration_ms": 0,
+      "id": "tls",
+      "observation": {
+        "alpn": "http/1.1",
+        "certificate_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "cipher_suite": "TLS13_AES_256_GCM_SHA384",
+        "hostname": "diagnostics.workbench.test",
+        "hostname_verified": true,
+        "local_address": "127.0.0.1:50000",
+        "peer": "127.0.0.1:8443",
+        "port": 8443,
+        "protocol": "TLSv1_3",
+        "trust_verified": true
+      },
+      "observed_at": "2026-10-02T00:00:00Z",
+      "operation": "network.tls.handshake",
+      "operation_version": 1,
+      "prerequisites": [
+        "tcp"
+      ],
+      "reason": null,
+      "started_offset_ms": 0,
+      "state": "succeeded",
+      "timeout_ms": 10000
+    },
+    {
+      "attempted": true,
+      "duration_ms": 0,
+      "id": "http",
+      "observation": {
+        "body_capture": {
+          "captured_bytes": 0,
+          "classification": "untrusted_content",
+          "content": null,
+          "content_encoding": "identity",
+          "decompressed": false,
+          "encoding": "base64",
+          "framing_complete": true,
+          "limit_bytes": 16384,
+          "redaction_applied": false,
+          "requested": false,
+          "truncated": false
+        },
+        "connection": {
+          "alpn": "http/1.1",
+          "certificate_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "cipher_suite": "TLS13_AES_256_GCM_SHA384",
+          "hostname": "diagnostics.workbench.test",
+          "hostname_verified": true,
+          "local_address": "127.0.0.1:50000",
+          "peer": "127.0.0.1:8443",
+          "port": 8443,
+          "protocol": "TLSv1_3",
+          "trust_verified": true
+        },
+        "headers": {
+          "content-length": "5",
+          "content-type": "text/plain"
+        },
+        "headers_untrusted": true,
+        "path": "/probe",
+        "proxy_used": false,
+        "redirect_followed": false,
+        "retries": 0,
+        "status": 200
+      },
+      "observed_at": "2026-10-02T00:00:00Z",
+      "operation": "network.http.get",
+      "operation_version": 1,
+      "prerequisites": [
+        "tls"
+      ],
+      "reason": null,
+      "started_offset_ms": 0,
+      "state": "succeeded",
+      "timeout_ms": 10000
+    },
+    {
+      "attempted": true,
+      "duration_ms": 0,
+      "id": "process",
+      "observation": {
+        "backend": "linux-process-v1",
+        "identity_verified": true,
+        "pid": 17,
+        "start_time_ticks": "123456",
+        "state": "sleeping",
+        "uid": 1000,
+        "uids": {
+          "effective": 1000,
+          "filesystem": 1000,
+          "real": 1000,
+          "saved": 1000
+        },
+        "vantage": {
+          "effective_uid": 1000,
+          "namespaces": {
+            "mnt": {
+              "device": "0",
+              "inode": "0"
+            },
+            "net": {
+              "device": "0",
+              "inode": "0"
+            },
+            "pid": {
+              "device": "0",
+              "inode": "0"
+            },
+            "user": {
+              "device": "0",
+              "inode": "0"
+            }
+          },
+          "observer_pid": 42,
+          "platform": "linux",
+          "uid": 1000
+        }
+      },
+      "observed_at": "2026-10-02T00:00:00Z",
+      "operation": "local.process.observe",
+      "operation_version": 1,
+      "prerequisites": [],
+      "reason": null,
+      "started_offset_ms": 0,
+      "state": "succeeded",
+      "timeout_ms": 10000
+    }
+  ],
+  "vantage": {
+    "effective_uid": 1000,
+    "namespaces": {
+      "mnt": {
+        "device": "0",
+        "inode": "0"
+      },
+      "net": {
+        "device": "0",
+        "inode": "0"
+      },
+      "pid": {
+        "device": "0",
+        "inode": "0"
+      },
+      "user": {
+        "device": "0",
+        "inode": "0"
+      }
+    },
+    "observer_pid": 42,
+    "platform": "linux",
+    "uid": 1000
+  }
+}

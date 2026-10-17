@@ -1,0 +1,26 @@
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 0.44s
+     Running tests/evidence.rs (target/debug/deps/evidence-c49a14f415b27521)
+
+running 18 tests
+test changed_stored_receipt_bytes_are_detected_without_replaying_queries ... ok
+test collection_requires_durable_recording_before_any_effect ... ok
+test closed_result_consumer_stops_active_query_and_later_dispatch ... ok
+test collection_runs_both_installed_queries_and_seals_exact_finalized_receipts ... ok
+test concurrent_collection_cannot_bypass_the_store_lock_or_dispatch_queries ... ok
+test context_selection_and_every_binding_are_required_before_store_or_http ... ok
+test installed_pack_discovery_requires_no_configuration_store_or_credentials ... ok
+test interrupted_process_is_recovered_without_replaying_or_claiming_complete_capture ... ok
+test continue_and_stop_keep_failed_receipts_and_make_later_omissions_explicit ... ok
+test malformed_or_unpinned_inputs_are_rejected_before_http_or_store_creation ... ok
+test newer_store_format_is_preserved_by_read_collection_and_management ... ok
+test private_credential_canaries_do_not_reappear_in_projection_or_persisted_files ... ok
+test read_after_restart_and_protection_work_without_provider_or_network ... ok
+test relative_window_is_resolved_once_from_the_collection_parent ... ok
+test signals_cancel_active_queries_and_seal_only_already_observed_receipts ... ok
+test structured_collection_dispatches_the_same_pack_and_retains_the_same_observations ... ok
+test unsafe_or_underfunded_stores_refuse_collection_before_http ... ok
+test parent_deadline_limits_the_second_query_and_retains_both_real_outcomes ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.26s
+

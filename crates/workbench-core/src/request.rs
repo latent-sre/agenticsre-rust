@@ -150,9 +150,12 @@ impl Request {
         }
         let grafana = matches!(
             self.operation.as_str(),
-            "grafana.dashboard.get" | "grafana.query"
+            "grafana.dashboard.get" | "grafana.query" | "query.run"
         );
-        let target_supported = if grafana {
+        let diagnostics = self.operation == "diagnostics.run";
+        let collection = self.operation == "evidence.collect";
+        let runbook_write = matches!(self.operation.as_str(), "runbook.run" | "runbook.resume");
+        let target_supported = if grafana || diagnostics || collection {
             self.target.kind == "connection" && valid_operation(&self.target.id)
         } else {
             self.target.kind == "local" && self.target.id == "workstation"
@@ -160,19 +163,30 @@ impl Request {
         if !target_supported || self.target.environment.is_some() {
             return Err(Problem::unsupported(
                 "unsupported_target",
-                "Grafana requires a named connection; other operations require the local workstation. Environment selectors are unsupported.",
+                "Grafana, saved queries, diagnostics and collection require a named connection; other operations require the local workstation. Environment selectors are unsupported.",
             ));
         }
-        if self.record != "never" {
+        if (collection || runbook_write) && self.record == "never" {
+            return Err(Problem::invalid(
+                "recording_required",
+                "Durable collection and runbook execution require record=auto or record=always.",
+            ));
+        }
+        if !collection && !runbook_write && self.record != "never" {
             return Err(Problem::unsupported(
                 "unsupported_record_mode",
-                "Persistence is unavailable; explicitly select record=never.",
+                "This operation does not record evidence; explicitly select record=never.",
             ));
         }
-        if self.limits.max_items.is_some() || self.limits.concurrency.is_some() {
+        if (self.limits.max_items.is_some() && self.operation != "evidence.compare")
+            || self
+                .limits
+                .concurrency
+                .is_some_and(|value| !diagnostics || value > 2)
+        {
             return Err(Problem::unsupported(
                 "unsupported_limits",
-                "These operations do not accept max_items or concurrency controls.",
+                "Only evidence.compare accepts max_items; only diagnostics.run accepts concurrency, with a ceiling of two checks.",
             ));
         }
         Ok(())

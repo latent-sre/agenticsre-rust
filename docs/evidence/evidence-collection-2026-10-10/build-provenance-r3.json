@@ -1,0 +1,54 @@
+{
+  "source_identity": "manifest-frozen working-tree snapshot",
+  "base_head": "2c4e4220654d85d5be22ac42a034beb51fcc5624",
+  "source_manifest_sha256": "f88e334bafbea920fd6f693bf6e87f146365e1eb3ed8f9af3058c3885568d173",
+  "source_files": 423,
+  "binary": {
+    "path": "target/evidence-collection/save-r3.data",
+    "bytes": 40609208,
+    "sha256": "c450790c52de7a7d84b200de2bf76f7953f78f417320969248b126eb7503eba2"
+  },
+  "rustc": {
+    "release": "1.98.0",
+    "commit": "88d9e12ae178fab0fb5cc050a94da85685d449ea",
+    "host": "x86_64-unknown-linux-gnu",
+    "LLVM": "22.1.8"
+  },
+  "cargo": "1.98.0 (797e8a9bc 2026-08-05)",
+  "boundary": "tools/test-sandbox.sh; private user/net/PID namespaces; readonly source/toolchain; writable target and private scratch; no host credentials",
+  "checks": [
+    {
+      "command": "tools/test-sandbox.sh cargo test --workspace --all-features --locked --offline",
+      "exit_code": 0,
+      "log": "workspace-r3.log",
+      "passed": 260,
+      "failed": 0,
+      "ignored": 19,
+      "log_sha256": "9eafd97250cdfb44aa751f7287c093c5e254d14c2368f92ac36bc67aad4b18c9"
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+      "exit_code": 0,
+      "log": "clippy-r3.log",
+      "log_sha256": "f11ff225ce410df86a445b6cbfa8d65541dbaf8896cf4d3dd41002c13202ce17"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "exit_code": 0,
+      "log": "fmt-r3.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "tools/test-sandbox.sh cargo build --locked --offline -p workbench-cli",
+      "exit_code": 0,
+      "log": "build-r3.log",
+      "log_sha256": "fd340b6cee091064f9b9a154613a90e16324150fd766b3ace6155b08845faa3e"
+    },
+    {
+      "command": ".venv/bin/python -B docs/sre-workbench/verify_specs.py",
+      "exit_code": 0,
+      "log": "specifications-r3.log",
+      "log_sha256": "4ad8b99796b940ed73307a549db0bfc2371130d1ed42c9904e61983622aa079f"
+    }
+  ]
+}

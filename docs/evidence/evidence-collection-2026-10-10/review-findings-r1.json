@@ -1,0 +1,32 @@
+{
+  "source_manifest_sha256": "7babfde6d9334c5cf258cfaf9230be3913586ee10265d48a8de9ef015ab46d48",
+  "basis": "independent static review; findings reasoned before targeted reproduction",
+  "findings": [
+    {
+      "id": "depth",
+      "severity": "P2",
+      "problem": "Storage decoder40 and domain decoder64 reject valid finalized query responses accepted at HTTP depth64 plus redaction/envelope overhead."
+    },
+    {
+      "id": "bulk-validation",
+      "severity": "P2",
+      "problem": "Bulk classification/prune/recovery bypass domain payload and receipt-summary consistency validation."
+    },
+    {
+      "id": "management-cancellation",
+      "severity": "P2",
+      "problem": "Management observes only initial signal and can admit later mutations after cancellation."
+    },
+    {
+      "id": "late-signal",
+      "severity": "P2",
+      "problem": "CLI delivery can mutate cancellation_signal within an already-sealed collection payload."
+    }
+  ],
+  "followup_reproduced": {
+    "id": "deadline-finalization",
+    "problem": "Millisecond-rounded child deadline returns before parent deadline; receipt storage crosses deadline before cleanup allowance begins. Repeated cleanup calls can also reset an early cancellation allowance.",
+    "log": "collector-deadline-before-repeated.log"
+  },
+  "status": "fixes being verified; not yet accepted"
+}

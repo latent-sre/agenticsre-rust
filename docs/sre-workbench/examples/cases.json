@@ -212,5 +212,106 @@
     "reason": "Offline context fixture shape; source authenticity and resolution are separately tested",
     "schema": "context-resolve-input",
     "valid": false
+  },
+  {
+    "file": "diagnostics-config.json",
+    "schema": "diagnostics-config",
+    "valid": true,
+    "reason": "Synthetic trusted bindings; no live or kernel identity established"
+  },
+  {
+    "file": "request-diagnostics.json",
+    "schema": "request",
+    "input_schema": "diagnostics-run-input",
+    "valid": true,
+    "reason": "Fixed pack selectors and typed input only; target admission is a runtime property"
+  },
+  {
+    "file": "invalid-diagnostics-input.json",
+    "schema": "diagnostics-run-input",
+    "valid": false,
+    "reason": "Wire input cannot substitute a host or other trusted binding"
+  },
+  {
+    "file": "diagnostics-data.json",
+    "schema": "diagnostics-data",
+    "valid": true,
+    "reason": "Synthetic illustrative five-check data; zero source/certificate/vantage identities are not actual runtime evidence"
+  },
+  {
+    "file": "request-saved-query.json",
+    "schema": "request",
+    "input_schema": "query-run-input",
+    "valid": true,
+    "reason": "Explicit installed identity, typed literal and relative window; target authorization and window resolution require runtime checks."
+  },
+  {
+    "file": "invalid-saved-query-input.json",
+    "schema": "query-run-input",
+    "valid": false,
+    "reason": "An explicit null is not a bounded relative lookback."
+  },
+  {
+    "file": "invalid-saved-query-parameter.json",
+    "schema": "query-run-input",
+    "valid": false,
+    "reason": "Trailing newline is a control character even where regex end anchors can match before it."
+  },
+  {
+    "file": "request-evidence.json",
+    "schema": "request",
+    "valid": true,
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence.",
+    "input_schema": "evidence-collect-input"
+  },
+  {
+    "file": "invalid-evidence-input.json",
+    "schema": "evidence-collect-input",
+    "valid": false,
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
+  },
+  {
+    "file": "invalid-evidence-reference.json",
+    "schema": "evidence-reference-input",
+    "valid": false,
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
+  },
+  {
+    "file": "evidence-interrupted-manifest.json",
+    "schema": "evidence-manifest",
+    "valid": true,
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
+  },
+  {
+    "file": "evidence-cancelled-data.json",
+    "schema": "evidence-collection-data",
+    "valid": true,
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
+  },
+  {
+    "file": "request-evidence-comparison.json",
+    "schema": "request",
+    "valid": true,
+    "reason": "Explicit offline bundle references and named normalization; compatibility is checked at runtime",
+    "input_schema": "evidence-compare-input"
+  },
+  {
+    "file": "invalid-evidence-comparison.json",
+    "schema": "evidence-compare-input",
+    "valid": false,
+    "reason": "Implicit or unknown normalization cannot establish aligned observations"
+  },
+  {
+    "file": "request-runbook.json",
+    "schema": "request",
+    "valid": true,
+    "input_schema": "runbook-run-input",
+    "reason": "Explicit installed runbook and typed references; durable admission is checked at runtime"
+  },
+  {
+    "file": "invalid-runbook-input.json",
+    "schema": "runbook-run-input",
+    "valid": false,
+    "reason": "Caller-defined steps cannot override an installed observation-only runbook"
   }
 ]

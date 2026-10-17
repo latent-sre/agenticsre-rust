@@ -1,0 +1,75 @@
+# PASS — WORKBENCH-011 released API/browser scope
+
+[verified] Independent public API and real Playwright acceptance passed on the exact frozen R1 source and the previously built ordinary CLI. Both commands and the authoritative continuation driver exited0. Exact receipt schemas, fixed browser artifacts, source/runtime/binary postguards, owned-child cleanup and independent remote/local absence checks passed. No product finding remains in this verification scope.
+
+[unverified] Positive system-resolver traffic remains the explicitly inherited WORKBENCH-010 private-port53 EACCES13 prerequisite gap. It was excluded from this explicit-resolver UI mission and was not retried; this qualified PASS does not close that gap or claim universal resolver coverage.
+
+## Target and accepted build
+
+[verified] Repository `latent-sre/agenticsre-rust`; sealed source `/tmp/agenticsre-diagnostics-ui-r1-snapshot-0rzjumlc`; commit `bca5b19a8d448ac72202f30ff120446127582a38`, tree `4f221ff5cad9fe78342e25c866a0258529e4622c`, base `2c4e4220654d85d5be22ac42a034beb51fcc5624`. Manifest SHA256 `0b942d654f4013ed59e3b9e895ca08ee108eb4bd3a1c6c1dea7a7fb08bf11477`,358 regular files/5,391,853bytes. Root release envelope is retained; both affected static gates accepted this exact source. The original sealed source and user checkout/ref state were not changed. Independent COPY image bytes were the execution copy.
+
+[verified] Ordinary CLI `save` SHA256 `566b320c424ecc583a846baeda4fccaa594ed264e6d122dbed3b321ec253344d`,38,993,736bytes. It was built once by `cargo build -p workbench-cli --locked --offline` in the earlier Cally checkpoint after native all-feature tests; build own0. This continuation streamed the same readonly DATA bytes, checked their digest and runtime/source binding, then used a0755 private-container copy. Local exported bytes remain0444 DATA. No Cargo tests/build, vendor staging, literal replay or host product execution occurred in the continuation; `rustc -vV` and `cargo --version` only confirmed runtime versions.
+
+## Actual commands and results
+
+[verified] Authoritative session97467 ran exactly `python3 -I -B /tmp/agenticsre-diagnostics-ui-tail-prep-os11isrh/prepare-ui.py --evidence-parent /tmp`, own exit0. Preparation SHA256 `b86d38f8b3f4c56b1c3ac992062cbd1d698cf50be9e2ba1a9cae4462a0e6cccd`; parent release SHA256 `25c085cfc84a40d24aec803a86230e1d99ea6429340ee541c2660fe8eb15942a`. Native commands below used cwd `/tmp/workbench-diagnostics-export`; full argv/env/status/timing records are in `commands.json`, `verification.json` and original `diagnostics-cally.log`.
+
+| Check | Own exit | Observed |
+|---|---:|---|
+| COPY-only image build |0|17.150s including remote ownership/quiescence;532,029,440 streamed bytes |
+| `/usr/bin/python3 -B /opt/verification/verify-ui-api.py /tmp/workbench-diagnostics-export/save --scratch /tmp/ui-api` |0|6.269s, all6 independent API groups |
+| `/opt/workbench-source/.ui-runtime/python/bin/python3.14 -S -B /opt/verification/verify-ui-browser.py /tmp/workbench-diagnostics-export/save --scratch /tmp/ui-browser --output /tmp/browser-evidence` |0|7.042s, real Chromium mission,7 receipts and9 screenshots |
+| Frozen canonical/API schema validation as host DATA |0|28 canonical,20 diagnostic-data,110 API response records,25 exact receipt-byte records |
+| Independent cleanup/source/browser-artifact readback as DATA |0|All selected identities/bytes/modes and fixed exports matched; exact owned resources absent |
+
+[verified] Carried unchanged-source checkpoint `/tmp/agenticsre-diagnostics-ui-cally-zg8qx5ix/VERIFICATION.md` SHA256 `dfe2b289ff7d2bee7a6a6c9fa44469598ddc53349f65d37cc6286aecb0aa9d63` provides cold workspace175passed/0failed/19ignored, native MCP grant regression1passed, ordinary build and literal installed mission, each own0. The literal receipt asserts child0/succeeded/not_assessed/never and exact `hello workbench\n`. Ignored tests are not claimed passed. All60 checkpoint artifact hashes and the earlier44-file staging-failure packet were rechecked unchanged.
+
+## Criterion evidence
+
+- **PASS — source/build/runtime identity.** 358 frozen files plus carried ordinary binary hash, current runtime equality and initial/final source/browser/binary guards.
+- **PASS carried — cold workspace and native grant regression.** 175passed/19ignored and nativeMCP1 at identical source/binary lineage; no rerun.
+- **PASS carried — installed literal mission.** Exact hello workbench receipt from checkpoint, own0.
+- **PASS — startup and explicit grant-only discovery.** 8 exact refusal codes/emptystdout/clearstderr + no-dispatch ledgers; selected aliases and public installed pack only.
+- **PASS — strict admission and effective dedup/conflict.** Unknown/null/cross-operation/duplicate JSON/operation+alias denial, normalized defaults and output cap, conflicting retries.
+- **PASS — real five-check and CLI/call/API parity.** Actual private DNS/TCP/TLS/HTTP/process observations with peer/config/CA/pack/process identity and constrained volatile exclusions.
+- **PASS — config and CA pinning.** Same regular bytes accepted; changed/invalid/symlink/FIFO refused before dispatch with unchanged canaries/process.
+- **PASS — partial stop concurrency and bounded bodies.** Actual denied DNS and independent process, blocked unattempted timing null; captureoff/on oversized non2xx inert metadata/body bounds.
+- **PASS — active IO lifecycle.** DNS/body busy+cancel, parentdeadline during headers/body witness, SIGTERM own143, no subsequent request effects and cleanup.
+- **PASS — real browser mission.** Keyboard five-check, aliases, inert503 content, history exactdownload, light/dark/mobile, partial/stop, witnessed bodycancel, refusedTCP and emptygrant.
+- **PASS — truthful failure captions and process identity.** Actual deniedDNS/refusedTCP DOM facts; configured PID/UID/ticks at top-level observation.
+- **PASS — exact schema and response bytes.** 28new canonical,20data,110API,25rawreceipt records;7browser embeddedrecords crossmatched; carried1literal yields29.
+- **PASS — fixed artifact export and screenshots.** Three regular bounded exports with cp0/SHA;9PNG fixed count/type/path/mode/pixel limits; direct visual review.
+- **PASS — source/checkpoint/canary invariants and cleanup.** All source358/checkpoint60/prior44/prep23 preserved; native reaper after[]; independent exact remote/local absence.
+- **INCONCLUSIVE inherited — positive system-resolver port53.** EACCES13 prerequisite from010 remains; excluded from011 browser scope, not retried.
+
+[verified] Real fixtures used private DNS/HTTPS listeners and an exact owned sleeping process. Actual wire/kernel ledgers, service peers, selected IP/name, CA/config/pack hashes, PID/start ticks/UID and canaries are retained. Startup, shape/alias/operation denial, dedup and pinning checks observed no unauthorized resolver/service effects and no configured process mutation. This is not a syscall trace proving absence of every procfs read.
+
+[verified] API cancellation observed active DNS/body IO, busy409 and pending receipt409, cancellation202 and eventual cancelled receipt; SIGTERM during witnessed body IO exited143. Browser cancel POST occurred0.058s after the fixture header within its2.5s held-body interval, with no body-sent event before cancellation. The receipt recorded cancelled HTTP while completed checks remained intact. Failure captions used actual denied DNS and refused TCP observations; no route mocks or invented per-step progress were used.
+
+## Exact records and artifacts
+
+[verified] `schema-validation/receipts.jsonl` contains the28 newly emitted canonical JSON records unchanged. `integrated-receipts.jsonl` concatenates the one carried literal plus28 new records:29 total, SHA256 `190336dcc3477b8340acd95e808f28294ea785ceb85cecfb2f5d57bdcb984b65`. `schema-validation/api-responses.jsonl` preserves110 exact emitted API records. The7 browser receipts and25 exact-byte observations are included in these counts, not additional unique runs. Frozen schema hashes and offline reference registry are in `schema-validation/validation.json`, SHA256 `ca8a28548aae9bd6a37b71c7930f7b87adce527dd100fed1ca4eba02384906b5`. Schema conformance is separate from behavioral acceptance.
+
+[verified] Fixed exports, all engine cp own0 and local0444 DATA:
+
+- `save`: SHA256 `566b320c424ecc583a846baeda4fccaa594ed264e6d122dbed3b321ec253344d`,38,993,736bytes.
+- `verification.json`: SHA256 `ef10412138fb4cf848c9e533c53b98ab7e2137c80113614b8f51ba0a80ee1b49`,9,778bytes.
+- `browser-evidence.tar`: SHA256 `d733fd07058b4bbe9dd6a73f1382c76947699b69beab336b48f0eec6a780e836`,1,914,880bytes; complete=true,11 files comprising9 PNGs,7-receipt JSONL and observations JSON.
+
+[verified] Every browser member passed fixed-name/type/count/size/hash/PNG pixel limits before DATA extraction. All9 actual PNGs were directly viewed: light,dark,mobile,history,body-inert,partial,stopped,cancelled,empty. Paths, exact dimensions/hashes and visual observations are in `visual-inspection.json`; screenshots are under `browser-artifacts/`. Browser receipt raw-base64 bytes/digests match parsed canonical JSON and emitted logs. Download/history equality was tested in the real browser. No extra TCP image widened the accepted list; exact TCP receipt and live rendered caption are retained instead. Visual inspection is scoped mission evidence, not comprehensive accessibility certification.
+
+## Isolation, cleanup and limits
+
+[verified] COPY-only image `sha256:9c4e04e5da1676a50d42b2a86370dbda81ac0fa61360a6dc9cec8dd7b9280419`, container `agenticsre-diagnostics-ui-jp3hu_hv`, cached base digest `620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959`, base imageID `ab239914c9d2fbe5ef024c5314dae21e2a2c43618086e169d78a754429978b97`. UID1000/PID1, root/source read-only, private network/PID, empty routes, capabilities0/NNP1,2.5CPU/4GiB/512PIDs, /tmp512MiB and unchanged target2GiB tmpfs. No host mounts, secrets/live targets, downloads, privilege changes, host listeners or host product execution. Browser runs with its accepted no-sandbox option only inside this enforced outer boundary.
+
+[verified] Fresh exact8GiB floor was checked before allocation. Stage180s includes streaming/commit with standard remote160sTERM+10sKILL and30s cleanup-only margin; actual timeout/sudo/Podman group565999 was witnessed then observed absent before image reconciliation. Runtime was bounded420s/work390s, API/browser each<=180s within the shared work clock. Original fixed export caps remained64MiB/1MiB/32MiB and log16MiB with bounded reader/line/queue. Source/runtime/binary streamed directly; no duplicate local source/runtime/build tar or vendor cache was staged.
+
+[verified] Runtime matched the accepted build: Rust/Cargo1.98, CallyPython3.13.5 (SHA17b78e0a93175e86f9ac03141924fd7a7f0c0c52e66b34bfa0de20ffef989df1), glibc2.41, OpenSSL3.5.6. Cached browserPython3.14.7/Playwright1.63.0 and1376 runtime files/485,411,895bytes were hash/mode/root-owner checked before and after. Actual Chromium version is in raw BROWSER_RUNTIME evidence. Native source/runtime/binary final checks reached success.
+
+[verified] PID1 reaped only its two adopted exited Chromium children, recording raw Z-state/stat and waitpid; final inventory[]. Exact container, tag, image ID, candidate-label images, build-tag processes and group565999 were independently absent; cached base unchanged; no owned local driver/staging process/directories remained. Readback SHA256 `7db16a7d1d3d483226844440b17505839374b635aadf3c4e1cc1ad0e74497813`. No broad cleanup or storage mutation occurred.
+
+## Preserved failures and authored verification
+
+[verified] The original COPY20s wait/late-image race and the first API startup expectation failure remain sealed at their original paths. This successful suffix does not alter their statuses. Root released four private-file changes only: artifact-only driver/lane and six API/browser assertion/locator corrections with a bounded body-phase witness.52 DATA controls and their three test-authoring errors are retained in the sealed preparation; they are not counted as runtime acceptance. Production source, schemas, assets and fixtures were unchanged. Both real native attempts and their exact product/build attribution remain explicit.
+
+[sourced] Earlier unaffected core DNS/Grafana acceptance is carried from packet `685da9ea4aa1b038b01966b90052cf666b484162ac9a61e3f46d02920379884b`; unchanged original GUI command/task/theme proofs remain tied to their original revisions. They were not broadly rerun. The named system-resolver53 gap remains open. No new runtime job is pending.

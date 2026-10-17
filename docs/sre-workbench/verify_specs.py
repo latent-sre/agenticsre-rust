@@ -96,6 +96,17 @@ def main() -> int:
         ROOT / "docs/mcp-verification.md", ROOT / "docs/packaging.md",
         ROOT / "docs/packaging-verification.md", ROOT / "docs/context.md",
         ROOT / "docs/context-verification.md",
+        ROOT / "docs/diagnostics.md", ROOT / "docs/diagnostics-config.md",
+        ROOT / "docs/diagnostics-ui.md",
+        ROOT / "docs/diagnostics-ui-verification.md",
+        ROOT / "docs/diagnostics-verification.md",
+        ROOT / "docs/saved-queries.md",
+        ROOT / "docs/saved-queries-verification.md",
+        ROOT / "docs/evidence.md",
+        ROOT / "docs/evidence-collection-verification.md",
+        ROOT / "docs/evidence-comparison-verification.md",
+        ROOT / "docs/runbooks.md",
+        ROOT / "docs/runbooks-verification.md",
     ]
     for document in [*markdown, *repository_docs]:
         text = FENCE.sub("", document.read_text(encoding="utf-8"))

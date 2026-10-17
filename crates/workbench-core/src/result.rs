@@ -7,6 +7,11 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 use time::{OffsetDateTime, format_description::well_known::Rfc3339};
 
+/// Grafana admits response bodies through depth 64. Retained receipts add the
+/// result/data envelope and can add credential-redaction marker objects. Readers
+/// share this bounded allowance rather than imposing a tighter response profile.
+pub(crate) const MAX_RECEIPT_DEPTH: usize = 72;
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Status {
@@ -240,7 +245,7 @@ impl OperationResult {
             // metadata. Enforce the structured limit on the complete receipt here.
             if matches!(
                 self.operation.as_str(),
-                "grafana.dashboard.get" | "grafana.query"
+                "grafana.dashboard.get" | "grafana.query" | "query.run"
             ) && self
                 .data
                 .get("response")
@@ -425,9 +430,17 @@ impl OperationResult {
             }
         } else if matches!(
             self.operation.as_str(),
-            "grafana.dashboard.get" | "grafana.query"
+            "grafana.dashboard.get" | "grafana.query" | "query.run"
         ) {
             text.push_str(&format!("Connection: {}\n", terminal_safe(&self.target.id)));
+            if self.operation == "query.run" && self.data["definition"].is_object() {
+                text.push_str(&format!(
+                    "Definition: {}\nParameters: {}\nWindow: {}\n",
+                    terminal_safe(&self.data["definition"].to_string()),
+                    terminal_safe(&self.data["parameters"].to_string()),
+                    terminal_safe(&self.data["window"].to_string())
+                ));
+            }
             if self.data["binding"].is_object() {
                 text.push_str(&format!(
                     "Origin: {}\nOrganization: {} (verified: {})\n",
@@ -447,6 +460,20 @@ impl OperationResult {
             }
             text.push_str(&format!(
                 "Coverage: {} — {}\n",
+                self.coverage.state,
+                terminal_safe(&self.coverage.scope)
+            ));
+            for limitation in &self.coverage.limitations {
+                text.push_str(&format!("Limit: {}\n", terminal_safe(limitation)));
+            }
+        } else if self.operation == "diagnostics.run"
+            || self.operation.starts_with("evidence.")
+            || self.operation.starts_with("runbook.")
+        {
+            text.push_str(&format!(
+                "Connection: {}\nObservation:\n{}\nCoverage: {} — {}\n",
+                terminal_safe(&self.target.id),
+                terminal_safe(&self.data.to_string()),
                 self.coverage.state,
                 terminal_safe(&self.coverage.scope)
             ));

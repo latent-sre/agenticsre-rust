@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "targets": [
+    {
+      "id": "fixture-web",
+      "host": "diagnostics.workbench.test",
+      "port": 8443,
+      "path": "/probe",
+      "allowed_ips": [
+        "127.0.0.1"
+      ],
+      "resolver": {
+        "kind": "explicit",
+        "address": "127.0.0.1",
+        "port": 5353,
+        "transport": "udp"
+      },
+      "tls_ca_file": "/tmp/fixture/ca.pem",
+      "process": {
+        "backend": "linux-process-v1",
+        "pid": 17,
+        "start_time_ticks": "123456",
+        "uid": 1000
+      }
+    }
+  ]
+}

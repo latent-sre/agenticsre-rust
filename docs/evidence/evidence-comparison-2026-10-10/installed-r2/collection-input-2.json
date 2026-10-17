@@ -1,0 +1,26 @@
+{
+  "environment": "dev",
+  "logs": {
+    "datasource": "logs-1",
+    "parameters": {
+      "job": "fixture"
+    }
+  },
+  "metrics": {
+    "datasource": "metrics-1",
+    "parameters": {
+      "job": "fixture"
+    }
+  },
+  "on_failure": "continue",
+  "pack": {
+    "id": "service-queries",
+    "version": 1
+  },
+  "service": "fixture-web",
+  "window": {
+    "from": "2026-10-02T00:05:00Z",
+    "kind": "absolute",
+    "to": "2026-10-02T00:10:00Z"
+  }
+}

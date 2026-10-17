@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:runbook-show-input:0.1",
+  "title": "Runbook show input",
+  "type": "object",
+  "properties": {
+    "id": {
+      "const": "evidence-review"
+    },
+    "version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "id",
+    "version"
+  ],
+  "additionalProperties": false
+}

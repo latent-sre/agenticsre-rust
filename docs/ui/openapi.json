@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "AgenticSRE local workbench",
-    "version": "0.1.1",
-    "description": "Local bearer-authenticated browser adapter. Normative semantics: docs/ui.md. Core schemas are embedded unchanged except local reference relocation."
+    "version": "0.1.2",
+    "description": "Local bearer-authenticated browser adapter. Normative semantics: docs/ui.md and docs/diagnostics-ui.md. Core schemas preserve validation semantics with local schema-reference relocation, named CNAME/step components and equivalent shared constraints on each fixed step tuple entry; metadata literal references remain unchanged."
   },
   "paths": {
     "/api/v1/session": {
@@ -21,6 +21,98 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Session"
+                },
+                "examples": {
+                  "diagnostics": {
+                    "value": {
+                      "api_version": "0.1",
+                      "session_id": "s-example",
+                      "roots": [],
+                      "targets": [
+                        {
+                          "id": "fixture-web",
+                          "label": "fixture-web"
+                        }
+                      ],
+                      "operations": [
+                        {
+                          "id": "diagnostics.run",
+                          "version": 1,
+                          "packs": [
+                            {
+                              "definition": {
+                                "id": "connectivity",
+                                "version": 1,
+                                "steps": [
+                                  {
+                                    "id": "dns",
+                                    "operation": "network.dns.lookup",
+                                    "operation_version": 1,
+                                    "prerequisites": [],
+                                    "max_timeout_ms": 10000
+                                  },
+                                  {
+                                    "id": "tcp",
+                                    "operation": "network.tcp.connect",
+                                    "operation_version": 1,
+                                    "prerequisites": [
+                                      "dns"
+                                    ],
+                                    "max_timeout_ms": 10000
+                                  },
+                                  {
+                                    "id": "tls",
+                                    "operation": "network.tls.handshake",
+                                    "operation_version": 1,
+                                    "prerequisites": [
+                                      "tcp"
+                                    ],
+                                    "max_timeout_ms": 10000
+                                  },
+                                  {
+                                    "id": "http",
+                                    "operation": "network.http.get",
+                                    "operation_version": 1,
+                                    "prerequisites": [
+                                      "tls"
+                                    ],
+                                    "max_timeout_ms": 10000
+                                  },
+                                  {
+                                    "id": "process",
+                                    "operation": "local.process.observe",
+                                    "operation_version": 1,
+                                    "prerequisites": [],
+                                    "max_timeout_ms": 10000
+                                  }
+                                ],
+                                "max_concurrency": 2,
+                                "max_timeout_ms": 60000,
+                                "input_schema": {
+                                  "$ref": "urn:sre-workbench:spec:diagnostics-pack-input:0.1"
+                                },
+                                "output_schema": {
+                                  "$ref": "urn:sre-workbench:spec:diagnostics-data:0.1"
+                                },
+                                "effects": "observe",
+                                "platforms": [
+                                  "linux"
+                                ]
+                              },
+                              "sha256": "sha256:a9f9ca23c192d7c300c802df458fde42c4fb2fbc76b1ffac9a2cd9c632672338"
+                            }
+                          ]
+                        }
+                      ],
+                      "limits": {
+                        "active_runs": 1,
+                        "history_entries": 50,
+                        "history_bytes": 16777216,
+                        "max_request_bytes": 65536,
+                        "max_submissions": 1024
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -53,6 +145,21 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RunSummary"
+                },
+                "examples": {
+                  "diagnostics": {
+                    "value": {
+                      "id": "inv-example",
+                      "operation": "diagnostics.run",
+                      "check_label": "Connectivity diagnostics",
+                      "root_id": null,
+                      "target_id": "fixture-web",
+                      "state": "running",
+                      "submitted_at": "2026-10-03T12:00:00Z",
+                      "execution_status": null,
+                      "receipt_url": null
+                    }
+                  }
                 }
               }
             },
@@ -83,6 +190,46 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/RunSubmission"
+              },
+              "examples": {
+                "diagnostics": {
+                  "value": {
+                    "submission_id": "d23a5a58-5e88-4729-a142-0f3cb6339200",
+                    "operation": "diagnostics.run",
+                    "operation_version": 1,
+                    "target_id": "fixture-web",
+                    "inputs": {
+                      "id": "connectivity",
+                      "version": 1,
+                      "input": {
+                        "capture_body": false,
+                        "on_failure": "continue"
+                      }
+                    },
+                    "limits": {
+                      "timeout_ms": 30000,
+                      "max_output_bytes": 16384,
+                      "concurrency": 2
+                    }
+                  }
+                },
+                "diagnosticsDefaults": {
+                  "value": {
+                    "submission_id": "d23a5a58-5e88-4729-a142-0f3cb6339200",
+                    "operation": "diagnostics.run",
+                    "operation_version": 1,
+                    "target_id": "fixture-web",
+                    "inputs": {
+                      "id": "connectivity",
+                      "version": 1,
+                      "input": {}
+                    },
+                    "limits": {
+                      "timeout_ms": 30000,
+                      "max_output_bytes": 1048576
+                    }
+                  }
+                }
               }
             }
           }
@@ -1019,10 +1166,13 @@
                 },
                 {
                   "$ref": "#/components/schemas/TaskOperation"
+                },
+                {
+                  "$ref": "#/components/schemas/DiagnosticOperation"
                 }
               ]
             },
-            "maxItems": 3
+            "maxItems": 4
           },
           "limits": {
             "type": "object",
@@ -1051,6 +1201,13 @@
               "max_submissions"
             ],
             "additionalProperties": false
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticTarget"
+            },
+            "maxItems": 16
           }
         },
         "required": [
@@ -1058,9 +1215,100 @@
           "session_id",
           "roots",
           "operations",
-          "limits"
+          "limits",
+          "targets"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "examples": [
+          {
+            "api_version": "0.1",
+            "session_id": "s-example",
+            "roots": [],
+            "targets": [
+              {
+                "id": "fixture-web",
+                "label": "fixture-web"
+              }
+            ],
+            "operations": [
+              {
+                "id": "diagnostics.run",
+                "version": 1,
+                "packs": [
+                  {
+                    "definition": {
+                      "id": "connectivity",
+                      "version": 1,
+                      "steps": [
+                        {
+                          "id": "dns",
+                          "operation": "network.dns.lookup",
+                          "operation_version": 1,
+                          "prerequisites": [],
+                          "max_timeout_ms": 10000
+                        },
+                        {
+                          "id": "tcp",
+                          "operation": "network.tcp.connect",
+                          "operation_version": 1,
+                          "prerequisites": [
+                            "dns"
+                          ],
+                          "max_timeout_ms": 10000
+                        },
+                        {
+                          "id": "tls",
+                          "operation": "network.tls.handshake",
+                          "operation_version": 1,
+                          "prerequisites": [
+                            "tcp"
+                          ],
+                          "max_timeout_ms": 10000
+                        },
+                        {
+                          "id": "http",
+                          "operation": "network.http.get",
+                          "operation_version": 1,
+                          "prerequisites": [
+                            "tls"
+                          ],
+                          "max_timeout_ms": 10000
+                        },
+                        {
+                          "id": "process",
+                          "operation": "local.process.observe",
+                          "operation_version": 1,
+                          "prerequisites": [],
+                          "max_timeout_ms": 10000
+                        }
+                      ],
+                      "max_concurrency": 2,
+                      "max_timeout_ms": 60000,
+                      "input_schema": {
+                        "$ref": "urn:sre-workbench:spec:diagnostics-pack-input:0.1"
+                      },
+                      "output_schema": {
+                        "$ref": "urn:sre-workbench:spec:diagnostics-data:0.1"
+                      },
+                      "effects": "observe",
+                      "platforms": [
+                        "linux"
+                      ]
+                    },
+                    "sha256": "sha256:a9f9ca23c192d7c300c802df458fde42c4fb2fbc76b1ffac9a2cd9c632672338"
+                  }
+                ]
+              }
+            ],
+            "limits": {
+              "active_runs": 1,
+              "history_entries": 50,
+              "history_bytes": 16777216,
+              "max_request_bytes": 65536,
+              "max_submissions": 1024
+            }
+          }
+        ]
       },
       "Limits": {
         "type": "object",
@@ -1201,6 +1449,9 @@
           },
           {
             "$ref": "#/components/schemas/TaskSubmission"
+          },
+          {
+            "$ref": "#/components/schemas/DiagnosticSubmission"
           }
         ]
       },
@@ -1216,7 +1467,8 @@
             "enum": [
               "process.exec",
               "command.inspect",
-              "task.run"
+              "task.run",
+              "diagnostics.run"
             ]
           },
           "check_label": {
@@ -1270,6 +1522,17 @@
                 "type": "null"
               }
             ]
+          },
+          "target_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DiagnosticTarget/properties/id"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The selected diagnostic alias; null for commands/tasks. Never substituted for root_id."
           }
         },
         "required": [
@@ -1280,9 +1543,68 @@
           "state",
           "submitted_at",
           "execution_status",
-          "receipt_url"
+          "receipt_url",
+          "target_id"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "operation": {
+                  "const": "diagnostics.run"
+                }
+              },
+              "required": [
+                "operation"
+              ]
+            },
+            "then": {
+              "properties": {
+                "root_id": {
+                  "type": "null"
+                },
+                "target_id": {
+                  "$ref": "#/components/schemas/DiagnosticTarget/properties/id"
+                },
+                "check_label": {
+                  "const": "Connectivity diagnostics"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "target_id": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ],
+        "examples": [
+          {
+            "id": "inv-example",
+            "operation": "diagnostics.run",
+            "check_label": "Connectivity diagnostics",
+            "root_id": null,
+            "target_id": "fixture-web",
+            "state": "running",
+            "submitted_at": "2026-10-03T12:00:00Z",
+            "execution_status": null,
+            "receipt_url": null
+          },
+          {
+            "id": "inv-example",
+            "operation": "diagnostics.run",
+            "check_label": "Connectivity diagnostics",
+            "root_id": null,
+            "target_id": "fixture-web",
+            "state": "terminal",
+            "submitted_at": "2026-10-03T12:00:00Z",
+            "execution_status": "succeeded",
+            "receipt_url": "/api/v1/runs/inv-example/receipt"
+          }
+        ]
       },
       "RunList": {
         "type": "object",
@@ -1403,7 +1725,3025 @@
         "properties": {},
         "required": [],
         "additionalProperties": false
+      },
+      "CoreDiagnosticsPackInput": {
+        "additionalProperties": false,
+        "properties": {
+          "capture_body": {
+            "type": "boolean"
+          },
+          "on_failure": {
+            "enum": [
+              "continue",
+              "stop"
+            ]
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "CoreDiagnosticsRunInput": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "const": "connectivity"
+          },
+          "input": {
+            "$ref": "#/components/schemas/CoreDiagnosticsPackInput"
+          },
+          "version": {
+            "const": 1
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "input"
+        ],
+        "type": "object"
+      },
+      "CoreDiagnosticsData": {
+        "additionalProperties": false,
+        "properties": {
+          "binding": {
+            "additionalProperties": false,
+            "properties": {
+              "allowed_ips": {
+                "items": {
+                  "maxLength": 45,
+                  "type": "string"
+                },
+                "maxItems": 16,
+                "minItems": 1,
+                "type": "array"
+              },
+              "hostname": {
+                "maxLength": 1024,
+                "minLength": 1,
+                "type": "string"
+              },
+              "identity": {
+                "additionalProperties": false,
+                "properties": {
+                  "additional_ca_sha256": {
+                    "anyOf": [
+                      {
+                        "pattern": "^sha256:[0-9a-f]{64}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "bundled_roots": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "package": {
+                        "const": "webpki-root-certs"
+                      },
+                      "sha256": {
+                        "pattern": "^sha256:[0-9a-f]{64}$",
+                        "type": "string"
+                      },
+                      "version": {
+                        "const": "1.0.9"
+                      }
+                    },
+                    "required": [
+                      "package",
+                      "version",
+                      "sha256"
+                    ],
+                    "type": "object"
+                  },
+                  "configuration_sha256": {
+                    "pattern": "^sha256:[0-9a-f]{64}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "configuration_sha256",
+                  "additional_ca_sha256",
+                  "bundled_roots"
+                ],
+                "type": "object"
+              },
+              "path": {
+                "maxLength": 1024,
+                "minLength": 1,
+                "type": "string"
+              },
+              "port": {
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "target": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "target",
+              "hostname",
+              "port",
+              "path",
+              "allowed_ips",
+              "identity"
+            ],
+            "type": "object"
+          },
+          "cancellation_signal": {
+            "minimum": 1,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "input": {
+            "$ref": "#/components/schemas/CoreDiagnosticsPackInput"
+          },
+          "pack": {
+            "additionalProperties": false,
+            "properties": {
+              "definition": {
+                "additionalProperties": false,
+                "properties": {
+                  "effects": {
+                    "const": "observe"
+                  },
+                  "id": {
+                    "const": "connectivity"
+                  },
+                  "input_schema": {
+                    "const": {
+                      "$ref": "urn:sre-workbench:spec:diagnostics-pack-input:0.1"
+                    }
+                  },
+                  "max_concurrency": {
+                    "const": 2
+                  },
+                  "max_timeout_ms": {
+                    "const": 60000
+                  },
+                  "output_schema": {
+                    "const": {
+                      "$ref": "urn:sre-workbench:spec:diagnostics-data:0.1"
+                    }
+                  },
+                  "platforms": {
+                    "const": [
+                      "linux"
+                    ]
+                  },
+                  "steps": {
+                    "items": false,
+                    "maxItems": 5,
+                    "minItems": 5,
+                    "prefixItems": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "const": "dns"
+                          },
+                          "max_timeout_ms": {
+                            "const": 10000
+                          },
+                          "operation": {
+                            "const": "network.dns.lookup"
+                          },
+                          "operation_version": {
+                            "const": 1
+                          },
+                          "prerequisites": {
+                            "const": []
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "operation",
+                          "operation_version",
+                          "prerequisites",
+                          "max_timeout_ms"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "const": "tcp"
+                          },
+                          "max_timeout_ms": {
+                            "const": 10000
+                          },
+                          "operation": {
+                            "const": "network.tcp.connect"
+                          },
+                          "operation_version": {
+                            "const": 1
+                          },
+                          "prerequisites": {
+                            "const": [
+                              "dns"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "operation",
+                          "operation_version",
+                          "prerequisites",
+                          "max_timeout_ms"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "const": "tls"
+                          },
+                          "max_timeout_ms": {
+                            "const": 10000
+                          },
+                          "operation": {
+                            "const": "network.tls.handshake"
+                          },
+                          "operation_version": {
+                            "const": 1
+                          },
+                          "prerequisites": {
+                            "const": [
+                              "tcp"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "operation",
+                          "operation_version",
+                          "prerequisites",
+                          "max_timeout_ms"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "const": "http"
+                          },
+                          "max_timeout_ms": {
+                            "const": 10000
+                          },
+                          "operation": {
+                            "const": "network.http.get"
+                          },
+                          "operation_version": {
+                            "const": 1
+                          },
+                          "prerequisites": {
+                            "const": [
+                              "tls"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "operation",
+                          "operation_version",
+                          "prerequisites",
+                          "max_timeout_ms"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "const": "process"
+                          },
+                          "max_timeout_ms": {
+                            "const": 10000
+                          },
+                          "operation": {
+                            "const": "local.process.observe"
+                          },
+                          "operation_version": {
+                            "const": 1
+                          },
+                          "prerequisites": {
+                            "const": []
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "operation",
+                          "operation_version",
+                          "prerequisites",
+                          "max_timeout_ms"
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "type": "array"
+                  },
+                  "version": {
+                    "const": 1
+                  }
+                },
+                "required": [
+                  "id",
+                  "version",
+                  "effects",
+                  "platforms",
+                  "max_timeout_ms",
+                  "max_concurrency",
+                  "input_schema",
+                  "output_schema",
+                  "steps"
+                ],
+                "type": "object"
+              },
+              "sha256": {
+                "pattern": "^sha256:[0-9a-f]{64}$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "definition",
+              "sha256"
+            ],
+            "type": "object"
+          },
+          "redaction": {
+            "additionalProperties": false,
+            "properties": {
+              "applied": {
+                "const": false
+              },
+              "sensitive_content_detection": {
+                "const": false
+              }
+            },
+            "required": [
+              "applied",
+              "sensitive_content_detection"
+            ],
+            "type": "object"
+          },
+          "steps": {
+            "items": {
+              "additionalProperties": false,
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "dns"
+                      },
+                      "state": {
+                        "const": "succeeded"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "state"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "attempted": {
+                        "const": true
+                      },
+                      "duration_ms": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "observation": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "addresses": {
+                            "items": {
+                              "maxLength": 45,
+                              "type": "string"
+                            },
+                            "maxItems": 16,
+                            "minItems": 1,
+                            "type": "array"
+                          },
+                          "cname_chains": {
+                            "anyOf": [
+                              {
+                                "$ref": "#/components/schemas/CoreDiagnosticsCnameChains"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "hostname": {
+                            "maxLength": 1024,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "mode": {
+                            "enum": [
+                              "literal_ip",
+                              "dns_lookup"
+                            ]
+                          },
+                          "port": {
+                            "maximum": 65535,
+                            "minimum": 1,
+                            "type": "integer"
+                          },
+                          "resolver": {
+                            "anyOf": [
+                              {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "attempts_per_query": {
+                                    "const": 1
+                                  },
+                                  "cache": {
+                                    "const": false
+                                  },
+                                  "configuration_sha256": {
+                                    "anyOf": [
+                                      {
+                                        "pattern": "^sha256:[0-9a-f]{64}$",
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "connection_reconnect": {
+                                    "const": false
+                                  },
+                                  "dnssec_validation": {
+                                    "const": false
+                                  },
+                                  "endpoint": {
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "type": "string"
+                                  },
+                                  "endpoint_fallback": {
+                                    "const": false
+                                  },
+                                  "hosts_file": {
+                                    "const": false
+                                  },
+                                  "max_cname_hops": {
+                                    "const": 8
+                                  },
+                                  "max_queries_per_family": {
+                                    "const": 9
+                                  },
+                                  "questions": {
+                                    "items": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "name": {
+                                          "maxLength": 253,
+                                          "minLength": 1,
+                                          "type": "string"
+                                        },
+                                        "type": {
+                                          "enum": [
+                                            "A",
+                                            "AAAA"
+                                          ]
+                                        }
+                                      },
+                                      "required": [
+                                        "name",
+                                        "type"
+                                      ],
+                                      "type": "object"
+                                    },
+                                    "maxItems": 18,
+                                    "type": "array"
+                                  },
+                                  "search_domains": {
+                                    "const": false
+                                  },
+                                  "selection": {
+                                    "enum": [
+                                      "explicit",
+                                      "system_first_nameserver"
+                                    ]
+                                  },
+                                  "strategy": {
+                                    "const": "a_and_aaaa"
+                                  },
+                                  "synthetic_answers": {
+                                    "const": false
+                                  },
+                                  "transport": {
+                                    "enum": [
+                                      "udp",
+                                      "tcp"
+                                    ]
+                                  },
+                                  "transport_fallback": {
+                                    "const": false
+                                  }
+                                },
+                                "required": [
+                                  "selection",
+                                  "endpoint",
+                                  "transport",
+                                  "configuration_sha256",
+                                  "strategy",
+                                  "attempts_per_query",
+                                  "endpoint_fallback",
+                                  "transport_fallback",
+                                  "hosts_file",
+                                  "search_domains",
+                                  "cache",
+                                  "dnssec_validation",
+                                  "synthetic_answers",
+                                  "connection_reconnect",
+                                  "max_cname_hops",
+                                  "max_queries_per_family",
+                                  "questions"
+                                ],
+                                "type": "object"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "selected_peer": {
+                            "maxLength": 1024,
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "hostname",
+                          "mode",
+                          "addresses",
+                          "resolver",
+                          "selected_peer",
+                          "port",
+                          "cname_chains"
+                        ],
+                        "type": "object"
+                      },
+                      "observed_at": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "reason": {
+                        "type": "null"
+                      },
+                      "started_offset_ms": {
+                        "minimum": 0,
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "tcp"
+                      },
+                      "state": {
+                        "const": "succeeded"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "state"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "attempted": {
+                        "const": true
+                      },
+                      "duration_ms": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "observation": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "hostname": {
+                            "maxLength": 1024,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "local_address": {
+                            "maxLength": 128,
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "peer": {
+                            "maxLength": 1024,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "port": {
+                            "maximum": 65535,
+                            "minimum": 1,
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "peer",
+                          "local_address",
+                          "hostname",
+                          "port"
+                        ],
+                        "type": "object"
+                      },
+                      "observed_at": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "reason": {
+                        "type": "null"
+                      },
+                      "started_offset_ms": {
+                        "minimum": 0,
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "tls"
+                      },
+                      "state": {
+                        "const": "succeeded"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "state"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "attempted": {
+                        "const": true
+                      },
+                      "duration_ms": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "observation": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "alpn": {
+                            "enum": [
+                              "http/1.1",
+                              null
+                            ]
+                          },
+                          "certificate_sha256": {
+                            "pattern": "^sha256:[0-9a-f]{64}$",
+                            "type": "string"
+                          },
+                          "cipher_suite": {
+                            "maxLength": 128,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "hostname": {
+                            "maxLength": 1024,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "hostname_verified": {
+                            "const": true
+                          },
+                          "local_address": {
+                            "maxLength": 128,
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "peer": {
+                            "maxLength": 1024,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "port": {
+                            "maximum": 65535,
+                            "minimum": 1,
+                            "type": "integer"
+                          },
+                          "protocol": {
+                            "enum": [
+                              "TLSv1_2",
+                              "TLSv1_3"
+                            ]
+                          },
+                          "trust_verified": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "peer",
+                          "local_address",
+                          "hostname",
+                          "port",
+                          "certificate_sha256",
+                          "hostname_verified",
+                          "trust_verified",
+                          "protocol",
+                          "cipher_suite",
+                          "alpn"
+                        ],
+                        "type": "object"
+                      },
+                      "observed_at": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "reason": {
+                        "type": "null"
+                      },
+                      "started_offset_ms": {
+                        "minimum": 0,
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "http"
+                      },
+                      "state": {
+                        "const": "succeeded"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "state"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "attempted": {
+                        "const": true
+                      },
+                      "duration_ms": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "observation": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "body_capture": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "captured_bytes": {
+                                "maximum": 16384,
+                                "minimum": 0,
+                                "type": "integer"
+                              },
+                              "classification": {
+                                "const": "untrusted_content"
+                              },
+                              "content": {
+                                "maxLength": 21848,
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "content_encoding": {
+                                "enum": [
+                                  "identity",
+                                  "gzip",
+                                  "deflate",
+                                  "br",
+                                  "zstd"
+                                ]
+                              },
+                              "decompressed": {
+                                "const": false
+                              },
+                              "encoding": {
+                                "const": "base64"
+                              },
+                              "framing_complete": {
+                                "type": "boolean"
+                              },
+                              "limit_bytes": {
+                                "maximum": 16384,
+                                "minimum": 1024,
+                                "type": "integer"
+                              },
+                              "redaction_applied": {
+                                "const": false
+                              },
+                              "requested": {
+                                "type": "boolean"
+                              },
+                              "truncated": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "requested",
+                              "encoding",
+                              "content_encoding",
+                              "decompressed",
+                              "limit_bytes",
+                              "captured_bytes",
+                              "truncated",
+                              "framing_complete",
+                              "classification",
+                              "redaction_applied",
+                              "content"
+                            ],
+                            "type": "object"
+                          },
+                          "connection": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "alpn": {
+                                "enum": [
+                                  "http/1.1",
+                                  null
+                                ]
+                              },
+                              "certificate_sha256": {
+                                "pattern": "^sha256:[0-9a-f]{64}$",
+                                "type": "string"
+                              },
+                              "cipher_suite": {
+                                "maxLength": 128,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "hostname": {
+                                "maxLength": 1024,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "hostname_verified": {
+                                "const": true
+                              },
+                              "local_address": {
+                                "maxLength": 128,
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "peer": {
+                                "maxLength": 1024,
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "port": {
+                                "maximum": 65535,
+                                "minimum": 1,
+                                "type": "integer"
+                              },
+                              "protocol": {
+                                "enum": [
+                                  "TLSv1_2",
+                                  "TLSv1_3"
+                                ]
+                              },
+                              "trust_verified": {
+                                "const": true
+                              }
+                            },
+                            "required": [
+                              "peer",
+                              "local_address",
+                              "hostname",
+                              "port",
+                              "certificate_sha256",
+                              "hostname_verified",
+                              "trust_verified",
+                              "protocol",
+                              "cipher_suite",
+                              "alpn"
+                            ],
+                            "type": "object"
+                          },
+                          "headers": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "content-length": {
+                                "pattern": "^[0-9]{1,20}$",
+                                "type": "string"
+                              },
+                              "content-type": {
+                                "maxLength": 256,
+                                "type": "string"
+                              }
+                            },
+                            "required": [],
+                            "type": "object"
+                          },
+                          "headers_untrusted": {
+                            "const": true
+                          },
+                          "path": {
+                            "maxLength": 1024,
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "proxy_used": {
+                            "const": false
+                          },
+                          "redirect_followed": {
+                            "const": false
+                          },
+                          "retries": {
+                            "const": 0
+                          },
+                          "status": {
+                            "maximum": 299,
+                            "minimum": 200,
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "status",
+                          "headers",
+                          "headers_untrusted",
+                          "body_capture",
+                          "connection",
+                          "path",
+                          "redirect_followed",
+                          "proxy_used",
+                          "retries"
+                        ],
+                        "type": "object"
+                      },
+                      "observed_at": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "reason": {
+                        "type": "null"
+                      },
+                      "started_offset_ms": {
+                        "minimum": 0,
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "process"
+                      },
+                      "state": {
+                        "const": "succeeded"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "state"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "attempted": {
+                        "const": true
+                      },
+                      "duration_ms": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "observation": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "backend": {
+                            "const": "linux-process-v1"
+                          },
+                          "identity_verified": {
+                            "const": true
+                          },
+                          "pid": {
+                            "maximum": 2147483647,
+                            "minimum": 1,
+                            "type": "integer"
+                          },
+                          "start_time_ticks": {
+                            "pattern": "^(?:0|[1-9][0-9]{0,19})$",
+                            "type": "string"
+                          },
+                          "state": {
+                            "enum": [
+                              "running",
+                              "sleeping",
+                              "stopped",
+                              "zombie"
+                            ]
+                          },
+                          "uid": {
+                            "maximum": 4294967295,
+                            "minimum": 0,
+                            "type": "integer"
+                          },
+                          "uids": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "effective": {
+                                "maximum": 4294967295,
+                                "minimum": 0,
+                                "type": "integer"
+                              },
+                              "filesystem": {
+                                "maximum": 4294967295,
+                                "minimum": 0,
+                                "type": "integer"
+                              },
+                              "real": {
+                                "maximum": 4294967295,
+                                "minimum": 0,
+                                "type": "integer"
+                              },
+                              "saved": {
+                                "maximum": 4294967295,
+                                "minimum": 0,
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "real",
+                              "effective",
+                              "saved",
+                              "filesystem"
+                            ],
+                            "type": "object"
+                          },
+                          "vantage": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "effective_uid": {
+                                "maximum": 4294967295,
+                                "minimum": 0,
+                                "type": "integer"
+                              },
+                              "namespaces": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "mnt": {
+                                    "anyOf": [
+                                      {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                          "device": {
+                                            "pattern": "^[0-9]+$",
+                                            "type": "string"
+                                          },
+                                          "inode": {
+                                            "pattern": "^[0-9]+$",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "device",
+                                          "inode"
+                                        ],
+                                        "type": "object"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "net": {
+                                    "anyOf": [
+                                      {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                          "device": {
+                                            "pattern": "^[0-9]+$",
+                                            "type": "string"
+                                          },
+                                          "inode": {
+                                            "pattern": "^[0-9]+$",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "device",
+                                          "inode"
+                                        ],
+                                        "type": "object"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "pid": {
+                                    "anyOf": [
+                                      {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                          "device": {
+                                            "pattern": "^[0-9]+$",
+                                            "type": "string"
+                                          },
+                                          "inode": {
+                                            "pattern": "^[0-9]+$",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "device",
+                                          "inode"
+                                        ],
+                                        "type": "object"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "user": {
+                                    "anyOf": [
+                                      {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                          "device": {
+                                            "pattern": "^[0-9]+$",
+                                            "type": "string"
+                                          },
+                                          "inode": {
+                                            "pattern": "^[0-9]+$",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "device",
+                                          "inode"
+                                        ],
+                                        "type": "object"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "net",
+                                  "pid",
+                                  "user",
+                                  "mnt"
+                                ],
+                                "type": "object"
+                              },
+                              "observer_pid": {
+                                "minimum": 1,
+                                "type": "integer"
+                              },
+                              "platform": {
+                                "const": "linux"
+                              },
+                              "uid": {
+                                "maximum": 4294967295,
+                                "minimum": 0,
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "platform",
+                              "observer_pid",
+                              "uid",
+                              "effective_uid",
+                              "namespaces"
+                            ],
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "backend",
+                          "pid",
+                          "start_time_ticks",
+                          "uid",
+                          "uids",
+                          "state",
+                          "vantage",
+                          "identity_verified"
+                        ],
+                        "type": "object"
+                      },
+                      "observed_at": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "reason": {
+                        "type": "null"
+                      },
+                      "started_offset_ms": {
+                        "minimum": 0,
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "attempted": {
+                        "const": false
+                      }
+                    },
+                    "required": [
+                      "attempted"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "duration_ms": {
+                        "type": "null"
+                      },
+                      "observed_at": {
+                        "type": "null"
+                      },
+                      "reason": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "started_offset_ms": {
+                        "type": "null"
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "dns"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "operation": {
+                        "const": "network.dns.lookup"
+                      },
+                      "prerequisites": {
+                        "const": []
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "tcp"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "operation": {
+                        "const": "network.tcp.connect"
+                      },
+                      "prerequisites": {
+                        "const": [
+                          "dns"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "tls"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "operation": {
+                        "const": "network.tls.handshake"
+                      },
+                      "prerequisites": {
+                        "const": [
+                          "tcp"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "http"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "operation": {
+                        "const": "network.http.get"
+                      },
+                      "prerequisites": {
+                        "const": [
+                          "tls"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "id": {
+                        "const": "process"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "operation": {
+                        "const": "local.process.observe"
+                      },
+                      "prerequisites": {
+                        "const": []
+                      }
+                    }
+                  }
+                }
+              ],
+              "properties": {
+                "attempted": {
+                  "type": "boolean"
+                },
+                "duration_ms": {
+                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "id": {
+                  "enum": [
+                    "dns",
+                    "tcp",
+                    "tls",
+                    "http",
+                    "process"
+                  ]
+                },
+                "observation": {
+                  "type": "object"
+                },
+                "observed_at": {
+                  "format": "date-time",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "operation": {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "operation_version": {
+                  "const": 1
+                },
+                "prerequisites": {
+                  "items": {
+                    "enum": [
+                      "dns",
+                      "tcp",
+                      "tls"
+                    ]
+                  },
+                  "maxItems": 1,
+                  "type": "array"
+                },
+                "reason": {
+                  "maxLength": 128,
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "started_offset_ms": {
+                  "minimum": 0,
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "state": {
+                  "enum": [
+                    "succeeded",
+                    "failed",
+                    "partial",
+                    "blocked",
+                    "unconfigured",
+                    "unsupported",
+                    "cancelled",
+                    "timed_out"
+                  ]
+                },
+                "timeout_ms": {
+                  "maximum": 10000,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "operation",
+                "operation_version",
+                "prerequisites",
+                "state",
+                "attempted",
+                "reason",
+                "started_offset_ms",
+                "duration_ms",
+                "timeout_ms",
+                "observed_at",
+                "observation"
+              ],
+              "type": "object"
+            },
+            "maxItems": 5,
+            "minItems": 5,
+            "prefixItems": [
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CoreDiagnosticsStep"
+                  },
+                  {
+                    "properties": {
+                      "id": {
+                        "const": "dns"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CoreDiagnosticsStep"
+                  },
+                  {
+                    "properties": {
+                      "id": {
+                        "const": "tcp"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CoreDiagnosticsStep"
+                  },
+                  {
+                    "properties": {
+                      "id": {
+                        "const": "tls"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CoreDiagnosticsStep"
+                  },
+                  {
+                    "properties": {
+                      "id": {
+                        "const": "http"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CoreDiagnosticsStep"
+                  },
+                  {
+                    "properties": {
+                      "id": {
+                        "const": "process"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "type": "array"
+          },
+          "vantage": {
+            "additionalProperties": false,
+            "properties": {
+              "effective_uid": {
+                "maximum": 4294967295,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "namespaces": {
+                "additionalProperties": false,
+                "properties": {
+                  "mnt": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "device": {
+                            "pattern": "^[0-9]+$",
+                            "type": "string"
+                          },
+                          "inode": {
+                            "pattern": "^[0-9]+$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "device",
+                          "inode"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "net": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "device": {
+                            "pattern": "^[0-9]+$",
+                            "type": "string"
+                          },
+                          "inode": {
+                            "pattern": "^[0-9]+$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "device",
+                          "inode"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "pid": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "device": {
+                            "pattern": "^[0-9]+$",
+                            "type": "string"
+                          },
+                          "inode": {
+                            "pattern": "^[0-9]+$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "device",
+                          "inode"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "user": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "device": {
+                            "pattern": "^[0-9]+$",
+                            "type": "string"
+                          },
+                          "inode": {
+                            "pattern": "^[0-9]+$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "device",
+                          "inode"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "net",
+                  "pid",
+                  "user",
+                  "mnt"
+                ],
+                "type": "object"
+              },
+              "observer_pid": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "platform": {
+                "const": "linux"
+              },
+              "uid": {
+                "maximum": 4294967295,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "platform",
+              "observer_pid",
+              "uid",
+              "effective_uid",
+              "namespaces"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "pack",
+          "binding",
+          "vantage",
+          "input",
+          "steps",
+          "cancellation_signal",
+          "redaction"
+        ],
+        "type": "object"
+      },
+      "DiagnosticTarget": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[a-z](?:[a-z0-9]|[._-][a-z0-9])*$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "id",
+          "label"
+        ],
+        "additionalProperties": false,
+        "description": "Only launcher-granted alias IDs. Labels equal the alias ID; no configured destination, path, process selector or CA is exposed."
+      },
+      "DiagnosticOperation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "const": "diagnostics.run"
+          },
+          "version": {
+            "const": 1
+          },
+          "packs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CoreDiagnosticsData/properties/pack"
+            },
+            "minItems": 1,
+            "maxItems": 1
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "packs"
+        ],
+        "additionalProperties": false
+      },
+      "DiagnosticLimits": {
+        "type": "object",
+        "properties": {
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60000
+          },
+          "max_output_bytes": {
+            "type": "integer",
+            "minimum": 1024,
+            "maximum": 2097152
+          },
+          "concurrency": {
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ],
+            "default": 2
+          }
+        },
+        "required": [
+          "timeout_ms",
+          "max_output_bytes"
+        ],
+        "additionalProperties": false,
+        "description": "Timeout 1\u201360000ms; output uses the existing core request bounds 1024\u20132097152 bytes and normalizes to the effective diagnostics ceiling of 16384 bytes before fingerprinting/dispatch. Omitted concurrency normalizes to 2; null is invalid."
+      },
+      "DiagnosticSubmission": {
+        "type": "object",
+        "properties": {
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation": {
+            "const": "diagnostics.run"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "target_id": {
+            "$ref": "#/components/schemas/DiagnosticTarget/properties/id"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/CoreDiagnosticsRunInput"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/DiagnosticLimits"
+          }
+        },
+        "required": [
+          "submission_id",
+          "operation",
+          "operation_version",
+          "target_id",
+          "inputs",
+          "limits"
+        ],
+        "additionalProperties": false,
+        "description": "Only the fixed connectivity v1 pack and a granted target alias. root_id is forbidden even when null. Pack input omissions normalize to capture_body=false,on_failure=continue. No endpoint/path/PID/trust override exists. The submission fingerprint includes operation/version, alias, normalized pack input and every effective core limit.",
+        "examples": [
+          {
+            "submission_id": "d23a5a58-5e88-4729-a142-0f3cb6339200",
+            "operation": "diagnostics.run",
+            "operation_version": 1,
+            "target_id": "fixture-web",
+            "inputs": {
+              "id": "connectivity",
+              "version": 1,
+              "input": {
+                "capture_body": false,
+                "on_failure": "continue"
+              }
+            },
+            "limits": {
+              "timeout_ms": 30000,
+              "max_output_bytes": 16384,
+              "concurrency": 2
+            }
+          }
+        ]
+      },
+      "CoreDiagnosticsStep": {
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "dns"
+                },
+                "state": {
+                  "const": "succeeded"
+                }
+              },
+              "required": [
+                "id",
+                "state"
+              ]
+            },
+            "then": {
+              "properties": {
+                "attempted": {
+                  "const": true
+                },
+                "duration_ms": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "observation": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "addresses": {
+                      "items": {
+                        "maxLength": 45,
+                        "type": "string"
+                      },
+                      "maxItems": 16,
+                      "minItems": 1,
+                      "type": "array"
+                    },
+                    "cname_chains": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/CoreDiagnosticsCnameChains"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "hostname": {
+                      "maxLength": 1024,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "mode": {
+                      "enum": [
+                        "literal_ip",
+                        "dns_lookup"
+                      ]
+                    },
+                    "port": {
+                      "maximum": 65535,
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "resolver": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "properties": {
+                            "attempts_per_query": {
+                              "const": 1
+                            },
+                            "cache": {
+                              "const": false
+                            },
+                            "configuration_sha256": {
+                              "anyOf": [
+                                {
+                                  "pattern": "^sha256:[0-9a-f]{64}$",
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "connection_reconnect": {
+                              "const": false
+                            },
+                            "dnssec_validation": {
+                              "const": false
+                            },
+                            "endpoint": {
+                              "maxLength": 1024,
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "endpoint_fallback": {
+                              "const": false
+                            },
+                            "hosts_file": {
+                              "const": false
+                            },
+                            "max_cname_hops": {
+                              "const": 8
+                            },
+                            "max_queries_per_family": {
+                              "const": 9
+                            },
+                            "questions": {
+                              "items": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "name": {
+                                    "maxLength": 253,
+                                    "minLength": 1,
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "enum": [
+                                      "A",
+                                      "AAAA"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "name",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "maxItems": 18,
+                              "type": "array"
+                            },
+                            "search_domains": {
+                              "const": false
+                            },
+                            "selection": {
+                              "enum": [
+                                "explicit",
+                                "system_first_nameserver"
+                              ]
+                            },
+                            "strategy": {
+                              "const": "a_and_aaaa"
+                            },
+                            "synthetic_answers": {
+                              "const": false
+                            },
+                            "transport": {
+                              "enum": [
+                                "udp",
+                                "tcp"
+                              ]
+                            },
+                            "transport_fallback": {
+                              "const": false
+                            }
+                          },
+                          "required": [
+                            "selection",
+                            "endpoint",
+                            "transport",
+                            "configuration_sha256",
+                            "strategy",
+                            "attempts_per_query",
+                            "endpoint_fallback",
+                            "transport_fallback",
+                            "hosts_file",
+                            "search_domains",
+                            "cache",
+                            "dnssec_validation",
+                            "synthetic_answers",
+                            "connection_reconnect",
+                            "max_cname_hops",
+                            "max_queries_per_family",
+                            "questions"
+                          ],
+                          "type": "object"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "selected_peer": {
+                      "maxLength": 1024,
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "hostname",
+                    "mode",
+                    "addresses",
+                    "resolver",
+                    "selected_peer",
+                    "port",
+                    "cname_chains"
+                  ],
+                  "type": "object"
+                },
+                "observed_at": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "null"
+                },
+                "started_offset_ms": {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "tcp"
+                },
+                "state": {
+                  "const": "succeeded"
+                }
+              },
+              "required": [
+                "id",
+                "state"
+              ]
+            },
+            "then": {
+              "properties": {
+                "attempted": {
+                  "const": true
+                },
+                "duration_ms": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "observation": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "hostname": {
+                      "maxLength": 1024,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "local_address": {
+                      "maxLength": 128,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "peer": {
+                      "maxLength": 1024,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "port": {
+                      "maximum": 65535,
+                      "minimum": 1,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "peer",
+                    "local_address",
+                    "hostname",
+                    "port"
+                  ],
+                  "type": "object"
+                },
+                "observed_at": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "null"
+                },
+                "started_offset_ms": {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "tls"
+                },
+                "state": {
+                  "const": "succeeded"
+                }
+              },
+              "required": [
+                "id",
+                "state"
+              ]
+            },
+            "then": {
+              "properties": {
+                "attempted": {
+                  "const": true
+                },
+                "duration_ms": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "observation": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "alpn": {
+                      "enum": [
+                        "http/1.1",
+                        null
+                      ]
+                    },
+                    "certificate_sha256": {
+                      "pattern": "^sha256:[0-9a-f]{64}$",
+                      "type": "string"
+                    },
+                    "cipher_suite": {
+                      "maxLength": 128,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "hostname": {
+                      "maxLength": 1024,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "hostname_verified": {
+                      "const": true
+                    },
+                    "local_address": {
+                      "maxLength": 128,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "peer": {
+                      "maxLength": 1024,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "port": {
+                      "maximum": 65535,
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "protocol": {
+                      "enum": [
+                        "TLSv1_2",
+                        "TLSv1_3"
+                      ]
+                    },
+                    "trust_verified": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "peer",
+                    "local_address",
+                    "hostname",
+                    "port",
+                    "certificate_sha256",
+                    "hostname_verified",
+                    "trust_verified",
+                    "protocol",
+                    "cipher_suite",
+                    "alpn"
+                  ],
+                  "type": "object"
+                },
+                "observed_at": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "null"
+                },
+                "started_offset_ms": {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "http"
+                },
+                "state": {
+                  "const": "succeeded"
+                }
+              },
+              "required": [
+                "id",
+                "state"
+              ]
+            },
+            "then": {
+              "properties": {
+                "attempted": {
+                  "const": true
+                },
+                "duration_ms": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "observation": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "body_capture": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "captured_bytes": {
+                          "maximum": 16384,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "classification": {
+                          "const": "untrusted_content"
+                        },
+                        "content": {
+                          "maxLength": 21848,
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "content_encoding": {
+                          "enum": [
+                            "identity",
+                            "gzip",
+                            "deflate",
+                            "br",
+                            "zstd"
+                          ]
+                        },
+                        "decompressed": {
+                          "const": false
+                        },
+                        "encoding": {
+                          "const": "base64"
+                        },
+                        "framing_complete": {
+                          "type": "boolean"
+                        },
+                        "limit_bytes": {
+                          "maximum": 16384,
+                          "minimum": 1024,
+                          "type": "integer"
+                        },
+                        "redaction_applied": {
+                          "const": false
+                        },
+                        "requested": {
+                          "type": "boolean"
+                        },
+                        "truncated": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "requested",
+                        "encoding",
+                        "content_encoding",
+                        "decompressed",
+                        "limit_bytes",
+                        "captured_bytes",
+                        "truncated",
+                        "framing_complete",
+                        "classification",
+                        "redaction_applied",
+                        "content"
+                      ],
+                      "type": "object"
+                    },
+                    "connection": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "alpn": {
+                          "enum": [
+                            "http/1.1",
+                            null
+                          ]
+                        },
+                        "certificate_sha256": {
+                          "pattern": "^sha256:[0-9a-f]{64}$",
+                          "type": "string"
+                        },
+                        "cipher_suite": {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "hostname": {
+                          "maxLength": 1024,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "hostname_verified": {
+                          "const": true
+                        },
+                        "local_address": {
+                          "maxLength": 128,
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "peer": {
+                          "maxLength": 1024,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "port": {
+                          "maximum": 65535,
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "protocol": {
+                          "enum": [
+                            "TLSv1_2",
+                            "TLSv1_3"
+                          ]
+                        },
+                        "trust_verified": {
+                          "const": true
+                        }
+                      },
+                      "required": [
+                        "peer",
+                        "local_address",
+                        "hostname",
+                        "port",
+                        "certificate_sha256",
+                        "hostname_verified",
+                        "trust_verified",
+                        "protocol",
+                        "cipher_suite",
+                        "alpn"
+                      ],
+                      "type": "object"
+                    },
+                    "headers": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "content-length": {
+                          "pattern": "^[0-9]{1,20}$",
+                          "type": "string"
+                        },
+                        "content-type": {
+                          "maxLength": 256,
+                          "type": "string"
+                        }
+                      },
+                      "required": [],
+                      "type": "object"
+                    },
+                    "headers_untrusted": {
+                      "const": true
+                    },
+                    "path": {
+                      "maxLength": 1024,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "proxy_used": {
+                      "const": false
+                    },
+                    "redirect_followed": {
+                      "const": false
+                    },
+                    "retries": {
+                      "const": 0
+                    },
+                    "status": {
+                      "maximum": 299,
+                      "minimum": 200,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "headers",
+                    "headers_untrusted",
+                    "body_capture",
+                    "connection",
+                    "path",
+                    "redirect_followed",
+                    "proxy_used",
+                    "retries"
+                  ],
+                  "type": "object"
+                },
+                "observed_at": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "null"
+                },
+                "started_offset_ms": {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "process"
+                },
+                "state": {
+                  "const": "succeeded"
+                }
+              },
+              "required": [
+                "id",
+                "state"
+              ]
+            },
+            "then": {
+              "properties": {
+                "attempted": {
+                  "const": true
+                },
+                "duration_ms": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "observation": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "backend": {
+                      "const": "linux-process-v1"
+                    },
+                    "identity_verified": {
+                      "const": true
+                    },
+                    "pid": {
+                      "maximum": 2147483647,
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "start_time_ticks": {
+                      "pattern": "^(?:0|[1-9][0-9]{0,19})$",
+                      "type": "string"
+                    },
+                    "state": {
+                      "enum": [
+                        "running",
+                        "sleeping",
+                        "stopped",
+                        "zombie"
+                      ]
+                    },
+                    "uid": {
+                      "maximum": 4294967295,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "uids": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "effective": {
+                          "maximum": 4294967295,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "filesystem": {
+                          "maximum": 4294967295,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "real": {
+                          "maximum": 4294967295,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "saved": {
+                          "maximum": 4294967295,
+                          "minimum": 0,
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "real",
+                        "effective",
+                        "saved",
+                        "filesystem"
+                      ],
+                      "type": "object"
+                    },
+                    "vantage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "effective_uid": {
+                          "maximum": 4294967295,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "namespaces": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "mnt": {
+                              "anyOf": [
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "device": {
+                                      "pattern": "^[0-9]+$",
+                                      "type": "string"
+                                    },
+                                    "inode": {
+                                      "pattern": "^[0-9]+$",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "device",
+                                    "inode"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "net": {
+                              "anyOf": [
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "device": {
+                                      "pattern": "^[0-9]+$",
+                                      "type": "string"
+                                    },
+                                    "inode": {
+                                      "pattern": "^[0-9]+$",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "device",
+                                    "inode"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "pid": {
+                              "anyOf": [
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "device": {
+                                      "pattern": "^[0-9]+$",
+                                      "type": "string"
+                                    },
+                                    "inode": {
+                                      "pattern": "^[0-9]+$",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "device",
+                                    "inode"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "user": {
+                              "anyOf": [
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "device": {
+                                      "pattern": "^[0-9]+$",
+                                      "type": "string"
+                                    },
+                                    "inode": {
+                                      "pattern": "^[0-9]+$",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "device",
+                                    "inode"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "net",
+                            "pid",
+                            "user",
+                            "mnt"
+                          ],
+                          "type": "object"
+                        },
+                        "observer_pid": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "platform": {
+                          "const": "linux"
+                        },
+                        "uid": {
+                          "maximum": 4294967295,
+                          "minimum": 0,
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "platform",
+                        "observer_pid",
+                        "uid",
+                        "effective_uid",
+                        "namespaces"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "backend",
+                    "pid",
+                    "start_time_ticks",
+                    "uid",
+                    "uids",
+                    "state",
+                    "vantage",
+                    "identity_verified"
+                  ],
+                  "type": "object"
+                },
+                "observed_at": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "null"
+                },
+                "started_offset_ms": {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "attempted": {
+                  "const": false
+                }
+              },
+              "required": [
+                "attempted"
+              ]
+            },
+            "then": {
+              "properties": {
+                "duration_ms": {
+                  "type": "null"
+                },
+                "observed_at": {
+                  "type": "null"
+                },
+                "reason": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "started_offset_ms": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "dns"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "operation": {
+                  "const": "network.dns.lookup"
+                },
+                "prerequisites": {
+                  "const": []
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "tcp"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "operation": {
+                  "const": "network.tcp.connect"
+                },
+                "prerequisites": {
+                  "const": [
+                    "dns"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "tls"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "operation": {
+                  "const": "network.tls.handshake"
+                },
+                "prerequisites": {
+                  "const": [
+                    "tcp"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "http"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "operation": {
+                  "const": "network.http.get"
+                },
+                "prerequisites": {
+                  "const": [
+                    "tls"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "process"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "operation": {
+                  "const": "local.process.observe"
+                },
+                "prerequisites": {
+                  "const": []
+                }
+              }
+            }
+          }
+        ],
+        "properties": {
+          "attempted": {
+            "type": "boolean"
+          },
+          "duration_ms": {
+            "minimum": 0,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "id": {
+            "enum": [
+              "dns",
+              "tcp",
+              "tls",
+              "http",
+              "process"
+            ]
+          },
+          "observation": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "observed_at": {
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "operation": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "prerequisites": {
+            "items": {
+              "enum": [
+                "dns",
+                "tcp",
+                "tls"
+              ]
+            },
+            "maxItems": 1,
+            "type": "array"
+          },
+          "reason": {
+            "maxLength": 128,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "started_offset_ms": {
+            "minimum": 0,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "state": {
+            "enum": [
+              "succeeded",
+              "failed",
+              "partial",
+              "blocked",
+              "unconfigured",
+              "unsupported",
+              "cancelled",
+              "timed_out"
+            ]
+          },
+          "timeout_ms": {
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "operation",
+          "operation_version",
+          "prerequisites",
+          "state",
+          "attempted",
+          "reason",
+          "started_offset_ms",
+          "duration_ms",
+          "timeout_ms",
+          "observed_at",
+          "observation"
+        ],
+        "type": "object"
+      },
+      "CoreDiagnosticsCnameChains": {
+        "additionalProperties": false,
+        "properties": {
+          "a": {
+            "items": {
+              "maxLength": 253,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 9,
+            "minItems": 1,
+            "type": "array"
+          },
+          "aaaa": {
+            "items": {
+              "maxLength": 253,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 9,
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "a",
+          "aaaa"
+        ],
+        "type": "object"
       }
     }
+  },
+  "x-diagnostic-normalization": {
+    "capture_body": false,
+    "on_failure": "continue",
+    "concurrency": 2,
+    "max_effective_output_bytes": 16384,
+    "fingerprint_fields": [
+      "operation",
+      "operation_version",
+      "target_id",
+      "normalized_inputs",
+      "all_effective_limits"
+    ],
+    "refusals": [
+      "root_id presence including null",
+      "target_id or concurrency presence on command/task including null",
+      "unknown or ungranted alias",
+      "changed pinned configuration/CA bytes or invalid file/path admission"
+    ]
   }
 }

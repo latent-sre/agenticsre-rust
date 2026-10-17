@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/evidence-collection/review-r3/tools/verify-evidence.py", line 622, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/target/evidence-collection/review-r3/tools/verify-evidence.py", line 467, in main
+    assert shown["data"]["manifest"]["payload"] == {key: value for key, value in data.items() if key != "bundle"}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

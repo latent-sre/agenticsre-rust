@@ -1,6 +1,7 @@
 # Preserve generated bundle bytes and retained raw test output exactly.
 /web/dist/** -whitespace
 /docs/evidence/*.txt -whitespace
+/docs/evidence/**/*.log -whitespace
 /docs/ui/previews/*.log -whitespace
 # Retain upstream license text, including its original whitespace.
 /third-party/frontend-notices/** -whitespace

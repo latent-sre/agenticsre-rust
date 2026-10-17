@@ -1,0 +1,63 @@
+[
+  {
+    "label": "fmt-r2",
+    "argv": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 0.362
+  },
+  {
+    "label": "clippy-r2",
+    "argv": [
+      "tools/test-sandbox.sh",
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 2.774
+  },
+  {
+    "label": "public-r2",
+    "argv": [
+      "tools/test-sandbox.sh",
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "workbench-cli",
+      "--all-features",
+      "--test",
+      "comparison"
+    ],
+    "exit": 0,
+    "seconds": 4.125
+  },
+  {
+    "label": "build-r2",
+    "argv": [
+      "tools/test-sandbox.sh",
+      "cargo",
+      "build",
+      "--locked",
+      "--offline",
+      "-p",
+      "workbench-cli"
+    ],
+    "exit": 0,
+    "seconds": 0.558
+  }
+]

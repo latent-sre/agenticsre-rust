@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:runbook-run-input:0.1",
+  "title": "Runbook run input",
+  "type": "object",
+  "properties": {
+    "id": {
+      "const": "evidence-review"
+    },
+    "version": {
+      "const": 1
+    },
+    "input": {
+      "$ref": "urn:sre-workbench:spec:runbook-input:0.1"
+    },
+    "expected_definition_sha256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "fresh_from": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96,
+          "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "id",
+        "expected_revision"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "version",
+    "input"
+  ],
+  "additionalProperties": false
+}

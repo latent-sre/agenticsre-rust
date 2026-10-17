@@ -1,0 +1,3 @@
+Command: tools/test-sandbox.sh cargo test --locked --offline -p workbench-core --test evidence comparison_discovery_is_observational_and_offline
+Exit: 101
+1 failed: comparison_discovery_is_observational_and_offline, assertion status Unsupported != Succeeded. Capability is absent before comparison integration.

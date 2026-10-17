@@ -1,0 +1,96 @@
+{
+  "source": {
+    "repository": "latent-sre/agenticsre-rust",
+    "source_snapshot": "/tmp/agenticsre-diagnostics-ui-r1-snapshot-0rzjumlc",
+    "commit": "bca5b19a8d448ac72202f30ff120446127582a38",
+    "tree": "4f221ff5cad9fe78342e25c866a0258529e4622c",
+    "manifest_sha256": "0b942d654f4013ed59e3b9e895ca08ee108eb4bd3a1c6c1dea7a7fb08bf11477",
+    "files": 358,
+    "bytes": 5391853,
+    "base": "docker.io/library/rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+    "base_id": "sha256:ab239914c9d2fbe5ef024c5314dae21e2a2c43618086e169d78a754429978b97",
+    "container": "agenticsre-diagnostics-ui-jp3hu_hv",
+    "image_name": "localhost/agenticsre-diagnostics-ui:jp3hu_hv",
+    "free_bytes_before_staging": 8978464768,
+    "source_copy": "Independent root-owned COPY image; no local product checkout/archive duplicate",
+    "support_hashes": {
+      "prepare-ui.py": "4f918e389275051f5b1218dbd98ddb83d5f35448c7761fc1efc54309aa98e69f",
+      "ui-lane.py": "60d5e0a812d224710188fb4b7ec1ad5cc58bbdbad93748a9cb0d150a6d7277c1",
+      "base-staging.py": "74cdc6499888a2f437ec517f06096acd92088a0de0e1460294b0c6209fe4b0d2",
+      "fixtures.py": "bb472e4713eabe855e5c16b11c3baf54170fff0e5750030411c3df63fc4b5642",
+      "core-witnesses.py": "4f34451e36a1c5b14324494f77e1c9c5951196518e5a6ac8577670d1e694ea94",
+      "ui_support.py": "188fe6f6ff75b33f4046093018cd8efe32d54463a9789da3fbeb12b26bf9acf1",
+      "verify-ui-api.py": "35ce5da19046b572c9b9d596ca7ab30c85eea7cc31d4df2e15b5d711a6306045",
+      "verify-ui-browser.py": "984e2b6d14ac42438c2dacc883c7f1f60769eee9e656cb027257ee1e6e2aca78",
+      "browser-artifacts.py": "8edadf47e342d9b884d40bf075d7263aa8ac1c74b445fe54cb66a27e33d6e471",
+      "validate-ui-receipts.py": "21670a46e5068b0d54af269033e724f3d955ff67b4ebd8e10bf8394028c4907c",
+      "export-controller.py": "d61d5f56a579032eef33d06a8a7bf550ce873ce1e75bae72c7827c3fd2fd248a",
+      "stream-browser-data.py": "5fd3ff3f3d80e45a49513afbdb294ad4aa41a411ebb7f677630d9f810eda8295",
+      "pid1-cleanup.py": "5d1b3451b6e6a68ec411aba11ec5f91bc2cd214a93503efb6409fb05b49515d4",
+      "copy-build-control.py": "98039f5ff3619d6f6afe5646d18430a31728b3185bdcc5bdbd8476d692bc468c"
+    },
+    "accepted_binary": {
+      "path": "/tmp/agenticsre-diagnostics-ui-cally-zg8qx5ix/save",
+      "sha256": "566b320c424ecc583a846baeda4fccaa594ed264e6d122dbed3b321ec253344d",
+      "bytes": 38993736,
+      "build_report_sha256": "f5f9b3279d8e185c0c809304952028c48ac337efd88e1ac6051df32b999dd1f4",
+      "checkpoint_manifest_sha256": "cacf96e3bc216caae3175e76523b45ad88cbfe0019874b7979fcdf7d88a908cf",
+      "build_performed_this_lane": false
+    }
+  },
+  "binary": {
+    "path": "/tmp/agenticsre-diagnostics-ui-cally-jp3hu_hv/save",
+    "sha256": "566b320c424ecc583a846baeda4fccaa594ed264e6d122dbed3b321ec253344d",
+    "bytes": 38993736,
+    "mode": "0444 DATA",
+    "build_performed_this_lane": false
+  },
+  "exports": [
+    {
+      "name": "save",
+      "sha256": "566b320c424ecc583a846baeda4fccaa594ed264e6d122dbed3b321ec253344d",
+      "bytes": 38993736
+    },
+    {
+      "name": "verification.json",
+      "sha256": "ef10412138fb4cf848c9e533c53b98ab7e2137c80113614b8f51ba0a80ee1b49",
+      "bytes": 9778
+    },
+    {
+      "name": "browser-evidence.tar",
+      "sha256": "d733fd07058b4bbe9dd6a73f1382c76947699b69beab336b48f0eec6a780e836",
+      "bytes": 1914880
+    }
+  ],
+  "carried_checkpoint": {
+    "path": "/tmp/agenticsre-diagnostics-ui-cally-zg8qx5ix",
+    "packet_sha256": "dfe2b289ff7d2bee7a6a6c9fa44469598ddc53349f65d37cc6286aecb0aa9d63",
+    "manifest_sha256": "cacf96e3bc216caae3175e76523b45ad88cbfe0019874b7979fcdf7d88a908cf"
+  },
+  "current_counts": {
+    "canonical_this_run": 28,
+    "canonical_carried_literal": 1,
+    "canonical_integrated": 29,
+    "diagnostics_data_this_run": 20,
+    "api_responses": 110,
+    "exact_receipt_byte_records": 25,
+    "browser_receipts_within_28": 7,
+    "pngs": 9,
+    "startup_refusals": 8,
+    "api_groups": 6,
+    "workspace_carried_passed": 175,
+    "workspace_carried_ignored": 19,
+    "native_mcp_carried_passed": 1
+  },
+  "exact_receipts": {
+    "new": "/tmp/agenticsre-diagnostics-ui-cally-jp3hu_hv/schema-validation/receipts.jsonl",
+    "new_sha256": "240b9de351481a2ad3974624b7a17d072e0cca99a69e5ee32eb3663ed4a892f4",
+    "integrated": "/tmp/agenticsre-diagnostics-ui-cally-jp3hu_hv/integrated-receipts.jsonl",
+    "integrated_sha256": "190336dcc3477b8340acd95e808f28294ea785ceb85cecfb2f5d57bdcb984b65",
+    "api": "/tmp/agenticsre-diagnostics-ui-cally-jp3hu_hv/schema-validation/api-responses.jsonl",
+    "api_sha256": "775a5aab286edd880b107f8cb85342e524f51b22cfa1c9dadd1b421849fec467"
+  },
+  "cleanup_readback_sha256": "7db16a7d1d3d483226844440b17505839374b635aadf3c4e1cc1ad0e74497813",
+  "schema_validation_sha256": "ca8a28548aae9bd6a37b71c7930f7b87adce527dd100fed1ca4eba02384906b5",
+  "browser_manifest": "/tmp/agenticsre-diagnostics-ui-cally-jp3hu_hv/browser-artifacts/manifest.json"
+}

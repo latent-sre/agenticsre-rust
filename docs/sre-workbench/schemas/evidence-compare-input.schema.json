@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:evidence-compare-input:0.1",
+  "title": "Offline comparison selection",
+  "type": "object",
+  "properties": {
+    "before": {
+      "$ref": "urn:sre-workbench:spec:evidence-reference-input:0.1"
+    },
+    "after": {
+      "$ref": "urn:sre-workbench:spec:evidence-reference-input:0.1"
+    },
+    "normalization": {
+      "enum": [
+        "exact-window-v1",
+        "window-offset-v1"
+      ]
+    }
+  },
+  "required": [
+    "before",
+    "after",
+    "normalization"
+  ],
+  "additionalProperties": false
+}

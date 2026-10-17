@@ -1,0 +1,19 @@
+{
+  "result": "failed",
+  "binary_sha256": "2b37378fbcc2b933405e44bf72cc9c52d4b694c81efaed3bf92bf9ca0ddbf179",
+  "source_manifest_sha256": "9bd24c38c33d59805955ee722758c32fc6e6bf5d3dfd692137c1f9c86fb279f0",
+  "base_head": "2c4e4220654d85d5be22ac42a034beb51fcc5624",
+  "source_identity": "manifest-frozen working-tree snapshot",
+  "source_files": 423,
+  "python": "3.14.7 (main, Aug 25 2026, 14:02:56) [Clang 22.1.3 ]",
+  "platform": "linux",
+  "remaining_scope": [
+    "live Grafana compatibility",
+    "native non-Linux acceptance",
+    "comparison semantics",
+    "build provenance must be established by the caller"
+  ],
+  "completed_cases": [
+    "installed-pack-discovery-and-schema-identities"
+  ]
+}

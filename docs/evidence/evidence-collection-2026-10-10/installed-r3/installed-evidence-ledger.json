@@ -1,0 +1,68 @@
+[
+  {
+    "method": "GET",
+    "path": "/grafana/api/org",
+    "body": "",
+    "at_monotonic_ns": 565718723459182,
+    "auth_matches": true,
+    "organization_matches": true,
+    "case": "complete",
+    "body_path": "http-bodies/complete-000.body",
+    "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "method": "GET",
+    "path": "/grafana/api/datasources/uid/metrics-1?ds_type=prometheus",
+    "body": "",
+    "at_monotonic_ns": 565718724908262,
+    "auth_matches": true,
+    "organization_matches": true,
+    "case": "complete",
+    "body_path": "http-bodies/complete-001.body",
+    "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "method": "POST",
+    "path": "/grafana/api/ds/query",
+    "body": "{\"from\":\"1791690736324\",\"queries\":[{\"datasource\":{\"type\":\"prometheus\",\"uid\":\"metrics-1\"},\"expr\":\"up{job=\\\"fixture\\\"}\",\"format\":\"time_series\",\"instant\":false,\"intervalMs\":1000,\"maxDataPoints\":1000,\"range\":true,\"refId\":\"A\"}],\"to\":\"1791691036324\"}",
+    "at_monotonic_ns": 565718726235320,
+    "auth_matches": true,
+    "organization_matches": true,
+    "case": "complete",
+    "body_path": "http-bodies/complete-002.body",
+    "body_sha256": "f56328290bf4de83be0b743ae254dd2efdecfb0d16a1822c89588036babad052"
+  },
+  {
+    "method": "GET",
+    "path": "/grafana/api/org",
+    "body": "",
+    "at_monotonic_ns": 565718731068852,
+    "auth_matches": true,
+    "organization_matches": true,
+    "case": "complete",
+    "body_path": "http-bodies/complete-003.body",
+    "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "method": "GET",
+    "path": "/grafana/api/datasources/uid/logs-1?ds_type=loki",
+    "body": "",
+    "at_monotonic_ns": 565718732216839,
+    "auth_matches": true,
+    "organization_matches": true,
+    "case": "complete",
+    "body_path": "http-bodies/complete-004.body",
+    "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "method": "POST",
+    "path": "/grafana/api/ds/query",
+    "body": "{\"from\":\"1791690736324\",\"queries\":[{\"datasource\":{\"type\":\"loki\",\"uid\":\"logs-1\"},\"expr\":\"{job=\\\"fixture\\\"}\",\"intervalMs\":1000,\"maxDataPoints\":1000,\"maxLines\":500,\"queryType\":\"range\",\"refId\":\"A\"}],\"to\":\"1791691036324\"}",
+    "at_monotonic_ns": 565718733373294,
+    "auth_matches": true,
+    "organization_matches": true,
+    "case": "complete",
+    "body_path": "http-bodies/complete-005.body",
+    "body_sha256": "bfa0c4b8f9eeba57073e38aa0f0c5031bcd209e76d4cdc996b7a692cb8ec9c8c"
+  }
+]

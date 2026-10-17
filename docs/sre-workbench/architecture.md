@@ -109,13 +109,14 @@ The contract can evolve while draft; published versions use the compatibility ru
 
 ## Storage and artifacts
 
-The PoC uses `record=never` and invocation correlation IDs, with no durable store. It rejects other
-recording modes until implemented. The following is the later persistence design, selected when
-the first evidence consumer needs it.
+The original PoC uses `record=never` and invocation correlation IDs. The first durable consumer,
+[evidence collection](../evidence.md), requires explicit `auto` or `always`; other operations retain
+their `never` contract. Completion and verification status belongs in the roadmap.
 
 Use a per-user state directory with restrictive permissions, run metadata and content-addressed
-artifacts. Proposed initial storage is SQLite metadata plus ordinary artifact files (DEC-08).
-Single-host locking and atomic writes are required; a network-shared SQLite database is unsupported.
+artifacts. Format 1 selects versioned metadata files and run-local artifacts (DEC-08), with bounded
+scans and no cross-run hardlinks or deduplication. Single-host locking and atomic writes are required;
+shared network filesystems have no acceptance claim.
 An in-memory/no-record route remains for operations that do not require audit persistence.
 
 Runs record request fingerprints, configuration/operation versions, sanitized target identity,
@@ -124,8 +125,8 @@ integrity, not source truth, authorship or trusted execution. A bundle manifest 
 producer version, source observations, artifact sizes/digests, classification and omitted material.
 Export produces only the selected sanitized representation; it never copies the entire state store.
 
-Retention is explicit and configurable. Proposed defaults are seven days of retained run evidence
-and a one-GiB per-user store cap, subject to DEC-08. Protected audit records require a separately
+Retention is explicit and configurable. Format-1 defaults are seven days of retained run evidence
+and a one-GiB per-user store cap; 1,024 runs and eight MiB per collection also bound the initial store. Protected audit records require a separately
 approved retention policy. Garbage collection removes only owned, unreferenced artifacts; it must
 not erase an active run, an unresolved change record or an operator-protected bundle.
 

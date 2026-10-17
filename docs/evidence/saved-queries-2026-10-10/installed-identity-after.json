@@ -1,0 +1,21 @@
+{
+  "phase": "after",
+  "source_files": 378,
+  "source_manifest_sha256": "aea5c74c7d92a2890c0ba249589f7aa71070c9b28470c3acdcf19117e48910e8",
+  "binary_sha256": "fa1cc9eff529f6f867bd3ff8a15f4056ff7c590ef96c6bff1ed41e574fb1e104",
+  "binary_bytes": 39346720,
+  "manifest_matches": true,
+  "binary_read_only": true,
+  "capture_metadata_sha256": "960e6eb83516b340a3e62bcf8b64994aaaf8238b7df769c4a9e5010f5a4a5ee6",
+  "mission_exit": 0,
+  "canonical_receipts": 24,
+  "strict_query_data_receipts": 21,
+  "receipt_statuses": {
+    "succeeded": 14,
+    "denied": 7,
+    "failed": 3
+  },
+  "maximum_receipt_bytes": 3329,
+  "retained_ledger_cases": 5,
+  "retained_ledger_requests": 20
+}

@@ -1,0 +1,8 @@
+{
+  "id": "connectivity",
+  "version": 1,
+  "input": {
+    "capture_body": false,
+    "hostname": "private.invalid"
+  }
+}

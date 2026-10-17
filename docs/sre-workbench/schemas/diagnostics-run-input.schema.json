@@ -1,0 +1,22 @@
+{
+  "$id": "urn:sre-workbench:spec:diagnostics-run-input:0.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "const": "connectivity"
+    },
+    "input": {
+      "$ref": "urn:sre-workbench:spec:diagnostics-pack-input:0.1"
+    },
+    "version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "id",
+    "version",
+    "input"
+  ],
+  "type": "object"
+}

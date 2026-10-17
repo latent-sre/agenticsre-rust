@@ -5,6 +5,24 @@ IFS=$'\n\t'
 repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
 node_binary=$(readlink -f -- "$(command -v node)")
 node_dir=$(dirname -- "$(dirname -- "$node_binary")")
+# A trusted cached provider avoids installing or duplicating dependencies in a worktree.
+node_modules_dir=$(readlink -f -- "${WORKBENCH_UI_NODE_MODULES:-$repo_dir/web/node_modules}")
+if [[ ! -d "$node_modules_dir" || "$(basename -- "$node_modules_dir")" != node_modules ]]; then
+    printf '%s\n' 'WORKBENCH_UI_NODE_MODULES must select the existing cached node_modules directory.' >&2
+    exit 2
+fi
+"$node_binary" --input-type=module - "$repo_dir/web/package.json" "$node_modules_dir" <<'JS'
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+const [manifest, directory] = process.argv.slice(2);
+const expected = JSON.parse(readFileSync(manifest, 'utf8'));
+for (const [name, version] of Object.entries({ ...expected.dependencies, ...expected.devDependencies })) {
+    const installed = JSON.parse(readFileSync(path.join(directory, name, 'package.json'), 'utf8'));
+    if (installed.name !== name || installed.version !== version) {
+        throw new Error('Cached UI dependency does not match the pinned manifest: ' + name);
+    }
+}
+JS
 compiler_path=$(rustup which rustc)
 toolchain_dir=$(dirname -- "$(dirname -- "$compiler_path")")
 cargo_registry=${CARGO_HOME:-${HOME}/.cargo}/registry
@@ -42,7 +60,8 @@ mounts=(--ro-bind /usr /usr --ro-bind /lib /lib --ro-bind /lib64 /lib64
     --ro-bind "$node_dir" /node --ro-bind "$toolchain_dir" /toolchain
     --bind "$scratch_dir/cargo" /tmp/cargo --ro-bind "$cargo_registry" /tmp/cargo/registry
     --bind "$scratch_dir/npm" /tmp/npm-cache
-    --ro-bind "$repo_dir" "$repo_dir" --bind "$repo_dir/target" "$repo_dir/target")
+    --ro-bind "$repo_dir" "$repo_dir" --bind "$repo_dir/target" "$repo_dir/target"
+    --ro-bind "$node_modules_dir" "$repo_dir/web/node_modules")
 for output_dir in web/dist web/src/generated web/node_modules/.cache web/node_modules/.vite web/node_modules/.vite-temp; do
     mounts+=(--bind "$repo_dir/$output_dir" "$repo_dir/$output_dir")
 done

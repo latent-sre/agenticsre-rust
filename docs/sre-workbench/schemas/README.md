@@ -8,11 +8,17 @@ registers them locally and never retrieves schema references over the network.
 |---|---|
 | [Common](common.schema.json) | Reusable target, limit, artifact and source definitions |
 | [Request](request.schema.json) | Shared operation envelope; no caller identity or grant override |
+| [Diagnostics pack input](diagnostics-pack-input.schema.json) | Typed body capture and stop/continue policy only |
+| [Diagnostics run input](diagnostics-run-input.schema.json) | Fixed installed connectivity pack/version |
+| [Diagnostics configuration](diagnostics-config.schema.json) | Trusted startup aliases, allowlisted destinations, resolver/CA/process bindings |
+| [Diagnostics data](diagnostics-data.schema.json) | Five typed observations, prerequisite states, timings and provenance |
 | [Process input](process-input.schema.json) | Explicit program, argument vector and absolute working directory |
 | [Context input](context-resolve-input.schema.json) | Explicit service/environment selectors; no wire source or grant |
 | [Context export](context-export.schema.json) | Bounded offline fixture declarations; separate dependency directions |
 | [Context data](context-data.schema.json) | Selected metadata, observed source identity and usable/coverage state |
 | [Grafana query input](grafana-query-input.schema.json) | Selected datasource/dialect and fixed timestamps |
+| [Saved query input](query-run-input.schema.json) | Installed version, literal parameters, explicit datasource and absolute/relative window |
+| [Saved query data](query-run-data.schema.json) | Definition digest, redacted parameters/resolved window and the original Grafana observation |
 | [Grafana dashboard input](grafana-dashboard-input.schema.json) | One dashboard UID |
 | [Result](result.schema.json) | Execution, assessment, coverage, effects, output and evidence |
 | [Event](event.schema.json) | Sequenced progress/event framing |
@@ -47,3 +53,17 @@ Run the repeatable planning checks from the repository root:
 
 The verifier reads only this package and linked local documents. It does not invoke tasks,
 contact Grafana, inspect credentials, install a dependency or run a model.
+
+Evidence format 1 adds strict [collection input](evidence-collect-input.schema.json),
+[reference input](evidence-reference-input.schema.json),
+[stored payload](evidence-collection-payload.schema.json),
+[terminal collection data](evidence-collection-data.schema.json) and
+[manifest](evidence-manifest.schema.json). Runtime checks additionally enforce byte limits,
+identity/count consistency, digest-to-path equality and artifact/receipt integrity.
+
+`evidence-compare-input` selects two generated local references and an explicit normalization.
+`evidence-comparison-data` describes bounded returned-observation differences and their
+compatibility, omissions and source limitations; it does not establish full telemetry coverage.
+
+The `runbook-*` schemas describe installed guided review inputs and bounded checkpoint summaries.
+Recording and revision/source identity admission remain runtime checks.

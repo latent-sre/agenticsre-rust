@@ -1,0 +1,35 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 3.56s
+     Running tests/runbooks.rs (target/debug/deps/runbooks-58b0a5d6bf7175c7)
+
+running 11 tests
+test changed_source_after_waiting_refuses_resume_without_mutating_checkpoint ... ok
+test busy_evidence_store_is_transient_and_preserves_the_waiting_checkpoint ... ok
+test competing_resumes_cannot_acknowledge_the_same_revision_twice ... ok
+test invalid_admission_and_readonly_discovery_never_initialize_journal ... ok
+test explicit_fresh_attempt_gets_new_id_and_preserves_old_run ... ok
+test journal_refuses_symlink_and_nonprivate_directory ... ok
+test runbook_partial_and_incompatible_observations_select_distinct_human_checkpoints ... ok
+test runbook_pauses_and_resumes_across_processes_without_repeating_observations ... ok
+test runbook_refuses_wrong_ack_stale_revision_changed_input_and_definition_without_writes ... ok
+test stored_definition_drift_is_refused_before_checkpoint_mutation ... FAILED
+test uncertain_in_flight_crash_state_requires_fresh_attempt_without_replay ... ok
+
+failures:
+
+---- stored_definition_drift_is_refused_before_checkpoint_mutation stdout ----
+
+thread 'stored_definition_drift_is_refused_before_checkpoint_mutation' (227) panicked at crates/workbench-cli/tests/runbooks.rs:215:5:
+{"artifacts":[],"assessment":"not_assessed","coverage":{"limitations":[],"scope":"This local operation only; no service health assessment","state":"not_applicable"},"data":{},"duration_ms":1,"effect_outcome":"not_attempted","effective_limits":{"max_output_bytes":1048576,"timeout_ms":30000},"errors":[{"code":"runbook_definition_mismatch","message":"The guided runbook request or durable state did not satisfy its pinned contract; no step was substituted or replayed.","retryable":false}],"execution":{"child_exit_code":null,"signal":null,"status":"denied"},"finished_at":"2026-10-11T06:02:15.608508443Z","operation":"runbook.resume","operation_version":1,"output":{"encoding":"utf-8","stderr":"","stderr_truncated":false,"stdout":"","stdout_truncated":false},"record_mode":"always","request_id":"request-241-18dd6453476da304-0","resolved_target":{},"run_id":"run-241-18dd6453476deb58-1","sources":[],"spec_version":"0.1","started_at":"2026-10-11T06:02:15.606763344Z","target":{"id":"workstation","kind":"local"}}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    stored_definition_drift_is_refused_before_checkpoint_mutation
+
+test result: FAILED. 10 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+
+error: test failed, to rerun pass `-p workbench-cli --test runbooks`

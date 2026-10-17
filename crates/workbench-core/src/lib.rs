@@ -1,5 +1,11 @@
 //! Shared, bounded operation semantics for the experimental `save` CLI.
 mod context;
+mod evidence;
+pub use evidence::EvidenceStoreOptions;
+mod diagnostics;
+pub use diagnostics::{
+    DiagnosticsGrant, diagnostics_grant, diagnostics_pack_metadata, normalize_diagnostics_input,
+};
 pub mod discovery;
 mod grafana;
 pub use grafana::{
@@ -7,8 +13,10 @@ pub use grafana::{
     grafana_config_description,
 };
 mod process;
+mod queries;
 mod read_launcher;
 mod read_profile;
+mod runbooks;
 pub use read_launcher::{ReadProfileLauncher, read_launcher_entry};
 pub use read_profile::{ReadPolicyDescription, ReadPolicyRoot, read_policy_description};
 pub mod request;
@@ -28,6 +36,12 @@ use std::time::Instant;
 /// Explicit operator startup configuration, never a wire-request field or a grant.
 #[derive(Default)]
 pub struct OperatorContext {
+    /// Explicit private guided-runbook journal root, never a wire field or hosted grant.
+    pub runbook_state_dir: Option<std::path::PathBuf>,
+    /// Explicit local evidence storage policy; never supplied by wire input or a hosted grant.
+    pub evidence_store: Option<EvidenceStoreOptions>,
+    /// Explicit startup-only diagnostics destination/configuration binding; never a wire grant.
+    pub diagnostics_config_path: Option<std::path::PathBuf>,
     /// Explicit offline fixture export and bounded freshness policy; never wire fields.
     pub context_source_path: Option<std::path::PathBuf>,
     pub context_max_age_days: Option<u16>,
@@ -69,9 +83,10 @@ pub fn execute_with_policy_identity(
         request,
         control,
         context,
-        expected_policy_digest,
-        None,
-        false,
+        Identities {
+            policy: expected_policy_digest,
+            ..Identities::default()
+        },
     )
 }
 
@@ -89,41 +104,92 @@ pub fn execute_with_authority_identities(
         request,
         control,
         context,
-        expected_policy_digest,
-        expected_grafana_identity,
-        true,
+        Identities {
+            policy: expected_policy_digest,
+            grafana: expected_grafana_identity,
+            required: true,
+            ..Identities::default()
+        },
     )
+}
+
+/// Explicit hosted diagnostic grant path. The caller admits the selected aliases with
+/// `diagnostics_grant`; generic hosted execution continues to refuse diagnostics.
+pub fn execute_with_diagnostic_grant(
+    request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    expected_policy_digest: Option<&str>,
+    grant: &DiagnosticsGrant,
+) -> OperationResult {
+    execute_with_identities(
+        request,
+        control,
+        context,
+        Identities {
+            policy: expected_policy_digest,
+            diagnostics: Some(grant),
+            required: true,
+            ..Identities::default()
+        },
+    )
+}
+
+#[derive(Default)]
+struct Identities<'a> {
+    policy: Option<&'a str>,
+    grafana: Option<&'a GrafanaConfigIdentity>,
+    diagnostics: Option<&'a DiagnosticsGrant>,
+    required: bool,
 }
 
 fn execute_with_identities(
     request: Request,
     control: &RunControl,
     context: &OperatorContext,
-    expected_policy_digest: Option<&str>,
-    expected_grafana_identity: Option<&GrafanaConfigIdentity>,
-    require_identities: bool,
+    identities: Identities<'_>,
 ) -> OperationResult {
     let start = Instant::now();
     let mut result = OperationResult::new(&request);
     if let Err(problem) = request.validate() {
         result.reject(problem);
-    } else if require_identities
-        && expected_policy_digest.is_none()
+    } else if identities.required && request.operation.starts_with("runbook.") {
+        result.reject(Problem::unsupported(
+            "runbook_grants_unavailable",
+            "Guided runbook grants are not implemented for hosted adapters; use explicit operator CLI bindings.",
+        ));
+    } else if identities.required && request.operation.starts_with("evidence.") {
+        result.reject(Problem::unsupported(
+            "evidence_grants_unavailable",
+            "Evidence store and collection grants are not implemented for hosted adapters; use the explicit operator CLI binding.",
+        ));
+    } else if identities.required && request.operation == "query.run" {
+        result.reject(Problem::unsupported(
+            "query_grants_unavailable",
+            "Saved query grants are not implemented for hosted adapters; use the explicit operator CLI binding.",
+        ));
+    } else if identities.required
+        && identities.diagnostics.is_none()
+        && request.operation == "diagnostics.run"
+    {
+        result.reject(Problem::unsupported("diagnostics_grants_unavailable", "Diagnostics grants are not implemented for hosted adapters; use the explicit operator CLI binding."));
+    } else if identities.required
+        && identities.policy.is_none()
         && matches!(
             request.operation.as_str(),
             "process.exec" | "command.inspect"
         )
     {
         result.reject(Problem::invalid("read_policy_identity_required", "A pinned command grant requires its trusted policy identity; unpinned execution is refused."));
-    } else if require_identities
-        && expected_grafana_identity.is_none()
+    } else if identities.required
+        && identities.grafana.is_none()
         && matches!(
             request.operation.as_str(),
             "grafana.dashboard.get" | "grafana.query"
         )
     {
         result.reject(Problem::invalid("grafana_identity_required", "A pinned Grafana grant requires its trusted configuration identity; unpinned execution is refused."));
-    } else if expected_policy_digest.is_some()
+    } else if identities.policy.is_some()
         && context.read_policy_path.is_none()
         && matches!(
             request.operation.as_str(),
@@ -136,15 +202,97 @@ fn execute_with_identities(
         result.error("cancelled", "The invocation was cancelled before dispatch.");
         result.data = json!({"cancellation_signal":control.signal.load(Ordering::Relaxed)});
     } else {
-        dispatch(
-            &request,
-            control,
-            context,
-            expected_policy_digest,
-            expected_grafana_identity,
-            start,
-            &mut result,
+        dispatch(&request, control, context, &identities, start, &mut result);
+    }
+    result.finish(start);
+    result
+}
+
+/// Fixed collection children only. Keep a real child clock while narrowing its work to the
+/// absolute parent deadline; no caller-selected operation, nested collection or hosted fallback.
+pub(crate) fn execute_collection_child(
+    mut request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    expected_grafana_identity: Option<&GrafanaConfigIdentity>,
+    deadline: Instant,
+) -> OperationResult {
+    let start = Instant::now();
+    let mut result = OperationResult::new(&request);
+    let remaining = deadline.saturating_duration_since(start).as_millis();
+    if remaining == 0 {
+        result.execution.status = Status::TimedOut;
+        result.error(
+            "parent_deadline_exceeded",
+            "The collection deadline expired before this child could start.",
         );
+    } else if control.signal.load(Ordering::Relaxed) != 0 {
+        result.execution.status = Status::Cancelled;
+        result.data = json!({"cancellation_signal":control.signal.load(Ordering::Relaxed)});
+        result.error(
+            "cancelled",
+            "The collection was cancelled before this child could start.",
+        );
+    } else {
+        request.limits.timeout_ms = request.limits.timeout_ms.min(remaining.min(60_000) as u64);
+        result.effective_limits.timeout_ms = request.limits.timeout_ms;
+        if let Err(problem) = request.validate() {
+            result.reject(problem);
+        } else {
+            match request.operation.as_str() {
+                "context.resolve" => context::run(&request, control, context, start, &mut result),
+                "query.run" if expected_grafana_identity.is_some() => grafana::run_with_deadline(
+                    &request, control, context, expected_grafana_identity, start, deadline, &mut result,
+                ),
+                _ => result.reject(Problem::unsupported(
+                    "unsupported_collection_child",
+                    "Collection permits only its fixed context resolution and pinned saved queries.",
+                )),
+            }
+        }
+    }
+    result.finish(start);
+    result
+}
+
+/// Only installed observation capabilities may be dispatched by guided runbooks.
+/// Keep a single parent deadline; never recurse through public execution.
+pub(crate) fn execute_runbook_child(
+    mut request: Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    deadline: Instant,
+) -> OperationResult {
+    let start = Instant::now();
+    let mut result = OperationResult::new(&request);
+    let remaining = deadline.saturating_duration_since(start).as_millis();
+    if remaining == 0 {
+        result.execution.status = Status::TimedOut;
+        result.error(
+            "parent_deadline_exceeded",
+            "The runbook deadline expired before this check.",
+        );
+    } else if control.signal.load(Ordering::Relaxed) != 0 {
+        result.execution.status = Status::Cancelled;
+        result.data = json!({"cancellation_signal":control.signal.load(Ordering::Relaxed)});
+        result.error("cancelled", "The runbook was cancelled before this check.");
+    } else {
+        request.limits.timeout_ms = request.limits.timeout_ms.min(remaining.min(300_000) as u64);
+        result.effective_limits.timeout_ms = request.limits.timeout_ms;
+        if let Err(problem) = request.validate() {
+            result.reject(problem);
+        } else {
+            match request.operation.as_str() {
+                "evidence.show" => evidence::manage(&request, control, context, start, &mut result),
+                "evidence.compare" => {
+                    evidence::compare::run(&request, control, context, start, &mut result)
+                }
+                _ => result.reject(Problem::unsupported(
+                    "unsupported_runbook_step",
+                    "Only installed evidence observations are permitted as runbook checks.",
+                )),
+            }
+        }
     }
     result.finish(start);
     result
@@ -154,21 +302,44 @@ fn dispatch(
     request: &Request,
     control: &RunControl,
     context: &OperatorContext,
-    expected_policy_digest: Option<&str>,
-    expected_grafana_identity: Option<&GrafanaConfigIdentity>,
+    identities: &Identities<'_>,
     start: Instant,
     result: &mut OperationResult,
 ) {
     match request.operation.as_str() {
-        "context.resolve" => context::run(request, control, context, start, result),
-        "grafana.dashboard.get" | "grafana.query" => grafana::run(
+        "runbook.list" if request.inputs == json!({}) => {
+            result.data = runbooks::list();
+            result.effect_outcome = "not_applicable".into();
+        }
+        "runbook.list" => result.reject(Problem::invalid(
+            "invalid_runbook_input",
+            "Runbook listing accepts an empty input object only.",
+        )),
+        "runbook.show" => runbooks::show(&request.inputs, result),
+        "runbook.run" | "runbook.resume" | "runbook.status" => {
+            runbooks::run(request, control, context, start, result)
+        }
+        "evidence.collect" => evidence::collect::run(request, control, context, start, result),
+        "evidence.compare" => evidence::compare::run(request, control, context, start, result),
+        "evidence.packs.describe" => evidence::pack::describe(&request.inputs, result),
+        "evidence.list" | "evidence.show" | "evidence.protect" | "evidence.unprotect"
+        | "evidence.delete" | "evidence.prune" | "evidence.recover" => {
+            evidence::manage(request, control, context, start, result)
+        }
+        "diagnostics.run" => diagnostics::run(
             request,
             control,
             context,
-            expected_grafana_identity,
+            identities.diagnostics,
             start,
             result,
         ),
+        "diagnostics.describe" => diagnostics::describe(&request.inputs, result),
+        "context.resolve" => context::run(request, control, context, start, result),
+        "grafana.dashboard.get" | "grafana.query" | "query.run" => {
+            grafana::run(request, control, context, identities.grafana, start, result)
+        }
+        "queries.describe" => queries::describe(&request.inputs, result),
         "task.run" => tasks::run(request, control, result),
         "task.describe" => tasks::describe(&request.inputs, result),
         "process.exec" | "command.inspect" if context.read_policy_path.is_some() => {
@@ -180,7 +351,7 @@ fn dispatch(
                     .as_deref()
                     .expect("guarded read policy"),
                 context.read_profile_launcher.as_ref(),
-                expected_policy_digest,
+                identities.policy,
                 start,
                 result,
             );
@@ -204,10 +375,21 @@ fn dispatch(
             }
             Err(problem) => result.reject(problem),
         },
-        "capability.list" | "doctor" | "task.list" => {
+        "capability.list"
+        | "doctor"
+        | "task.list"
+        | "diagnostics.list"
+        | "queries.list"
+        | "evidence.packs.list" => {
             if request.inputs.as_object().is_some_and(|map| map.is_empty()) {
                 result.effect_outcome = "not_applicable".into();
-                result.data = if request.operation == "task.list" {
+                result.data = if request.operation == "evidence.packs.list" {
+                    evidence::pack::list()
+                } else if request.operation == "queries.list" {
+                    queries::list()
+                } else if request.operation == "diagnostics.list" {
+                    diagnostics::list()
+                } else if request.operation == "task.list" {
                     tasks::list()
                 } else if request.operation == "doctor" {
                     discovery::doctor()

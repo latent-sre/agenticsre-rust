@@ -50,6 +50,21 @@ pub struct GrafanaConfigIdentity {
     ca_digests: BTreeMap<String, [u8; 32]>,
 }
 
+impl GrafanaConfigIdentity {
+    /// Selected trust-bundle provenance only; paths and provider values remain private.
+    pub(super) fn ca_digest(&self, alias: &str) -> Option<String> {
+        self.ca_digests.get(alias).map(|digest| {
+            format!(
+                "sha256:{}",
+                digest
+                    .iter()
+                    .map(|byte| format!("{byte:02x}"))
+                    .collect::<String>()
+            )
+        })
+    }
+}
+
 impl std::fmt::Debug for GrafanaConfigIdentity {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         formatter
