@@ -551,6 +551,9 @@ impl Store {
         management_signal: Option<Arc<AtomicUsize>>,
     ) -> Result<Self, StoreError> {
         options.validate()?;
+        if create && options.identity.is_some() {
+            return Err(StoreError::new("store_identity_changed", false));
+        }
         check_control(deadline, management_signal.as_deref())?;
         let format = json_bytes(&Format {
             format_version: FORMAT_VERSION,
@@ -559,6 +562,16 @@ impl Store {
             return Err(StoreError::new("store_quota_exceeded", false));
         }
         let (root, created) = fs::open_root(&options.directory, create)?;
+        if let Some(expected) = options.identity {
+            use std::os::unix::fs::MetadataExt;
+            let metadata = root
+                .0
+                .metadata()
+                .map_err(|error| fs::io_error(error, false))?;
+            if (metadata.dev(), metadata.ino(), metadata.uid()) != expected {
+                return Err(StoreError::new("store_identity_changed", false));
+            }
+        }
         let mut effects = created;
         let initialized = (|| {
             // Inspect existing format before creating anything. A missing lock in an initialized
@@ -640,6 +653,16 @@ impl Store {
             }
         })?;
         Ok(store)
+    }
+
+    pub(crate) fn identity(&self) -> Result<(u64, u64, u32), StoreError> {
+        use std::os::unix::fs::MetadataExt;
+        let metadata = self
+            .root
+            .0
+            .metadata()
+            .map_err(|error| fs::io_error(error, false))?;
+        Ok((metadata.dev(), metadata.ino(), metadata.uid()))
     }
 
     pub(crate) fn progress(&self) -> &ManagementProgress {

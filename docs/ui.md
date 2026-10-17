@@ -1,6 +1,6 @@
 # Local browser workbench — interface contract
 
-- **Version:** 0.1.1 (wire `api_version` remains `0.1`), 2026-10-02.
+- **Version:** 0.1.4 (wire `api_version` remains `0.1`), 2026-10-17.
 - **Owner:** GUI backend builder owns this contract and `docs/ui/openapi.json` during implementation;
   changes go through the coordinator and must reach the frontend builder before use.
 - **Status:** The owner selected a local browser app with direct checks and results/history, ahead
@@ -21,9 +21,16 @@ execution path. Preserve the current-image internal launcher before ordinary CLI
 
 Initial forms cover Git status, diff and bounded log; ripgrep listing and literal text search;
 and a numerical time-budget calculation. The API permits only the existing numerical error-budget
-input schema for `task.run`. Dashboard file tasks, browser filesystem browsing/uploads, Grafana
-forms, arbitrary shell input, AI chat, MCP, persistent history and remote/team access are later
-increments. Existing CLI capabilities retain their current behavior.
+input schema for `task.run`. Dashboard file tasks, browser filesystem browsing/uploads, arbitrary
+Grafana expression forms, shell input, AI chat, persistent history and remote/team access are later
+increments. [Browser diagnostics](diagnostics-ui.md) and [offline investigations](investigation-ui.md)
+extend these initial forms through the same checks, receipts and history. Existing CLI capabilities
+retain their current behavior.
+
+[Saved queries](query-ui.md) add installed catalog listing, definition inspection and execution
+through independently granted operations. Execution uses explicit `--config` and `--query-target`
+IDs; diagnostic `--target` aliases remain separate. The browser supplies literal parameters and
+an explicit window, with no arbitrary expression or endpoint input.
 
 ## Packaging and execution
 
@@ -41,10 +48,16 @@ implicitly authorize LAN exposure or deployment.
 The launcher supplies repeated `--allow` operation IDs (`process.exec`, `command.inspect`,
 `task.run`) and `--root` IDs. Empty grants expose no checks. Command grants require an explicit
 trusted `--read-policy` and at least one declared, permitted root. `task.run` grants only
-`error-budget` version 1. Unknown/duplicate grants and missing prerequisites fail startup clearly.
+`error-budget` version 1. The diagnostic extension grants `diagnostics.run` separately. Offline
+investigations independently grant `context.resolve`, `evidence.list`, `evidence.open`,
+`evidence.compare` and `report.create`. Context requires paired `--context-source` and
+`--context-max-age-days`; evidence/report grants require an existing private `--state-dir`.
+Startup inputs without their matching grants are refused, as are browser store size/retention
+overrides. Unknown/duplicate grants and missing prerequisites fail startup clearly.
 
-Browser requests contain IDs, never cwd/config/policy/executable paths, URLs, environments,
-runtimes or permission overrides. Root IDs map to the trusted policy's exact roots. Keep the
+Browser requests contain IDs, never cwd/config/policy/executable paths, live endpoint URLs, execution environments,
+runtimes or permission overrides. Offline context selectors use the typed service/environment
+fields in their existing core schema. Root IDs map to the trusted policy's exact roots. Keep the
 mapping/policy identity fixed for the session; refuse dispatch on policy replacement rather than
 silently changing a grant. Revalidate through the core at every execution. Discovery intersects
 these grants and actual dependencies; configured isolation is not a successful kernel probe.
@@ -96,6 +109,13 @@ Response `200`:
 ```json
 {"api_version":"0.1","session_id":"s-example","roots":[{"id":"checkout","label":"agenticsre-rust"}],"operations":[{"id":"process.exec","version":1,"profile":"linux-read-v1"},{"id":"command.inspect","version":1,"profile":"linux-read-v1"},{"id":"task.run","version":1,"tasks":["error-budget"]}],"limits":{"active_runs":1,"history_entries":50,"history_bytes":16777216,"max_request_bytes":65536,"max_submissions":1024}}
 ```
+
+Offline investigation descriptors contain only `id`, `version: 1` and `profile`:
+`offline-context-v1` for `context.resolve`, `verified-evidence-v1` for the other four.
+They add no source/store paths or new session fields. Their submissions use direct core inputs
+and omit `root_id` and `target_id`; `max_items` is available only for open/compare, with an effective
+default of 100 and range 1–1000. The [investigation contract](investigation-ui.md) gives each input
+and result view. All operations use the existing run and receipt endpoints.
 
 ### Start a check
 
@@ -240,6 +260,10 @@ development debug symbols to preserve the restricted launcher's 64MiB current-im
 CARGO_PROFILE_DEV_DEBUG=0 CARGO_INCREMENTAL=0 cargo build --locked -p workbench-cli
 ./target/debug/save ui serve --allow task.run
 ./target/debug/save --read-policy /absolute/policy.json ui serve --allow process.exec --allow command.inspect --allow task.run --root checkout
+./target/debug/save --context-source /absolute/reviewed-export.json --context-max-age-days 30 \
+  --state-dir /absolute/private/existing-store ui serve \
+  --allow context.resolve --allow evidence.list --allow evidence.open \
+  --allow evidence.compare --allow report.create
 ```
 
 The printed launch link is sensitive. Empty `--allow` grants start a session with no checks.
@@ -255,3 +279,4 @@ same policy digest at admission and records an unchanged denial receipt if it ch
 |---|---|---|
 | 0.1 | Owner-selected browser/checks scope, approved mockup, shared-core HTTP/session contract | GUI backend and frontend builders |
 | 0.1.1 | Pin fragment format, bootstrap, HTTP/worker bounds and embedded-build behavior; wire API stays 0.1 | GUI frontend and coordinator |
+| 0.1.3 | Independently granted offline context, evidence inspection/comparison and report previews; existing run/history boundary | GUI backend and frontend builders |

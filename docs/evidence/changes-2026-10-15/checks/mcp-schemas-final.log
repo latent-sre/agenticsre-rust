@@ -1,0 +1,40 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+    Finished `test` profile [unoptimized] target(s) in 5.20s
+     Running unittests src/lib.rs (target/debug/deps/workbench_mcp-20bdc413b9f2f057)
+
+running 25 tests
+test grants::tests::privileged_operations_require_explicit_scope_and_configuration ... ok
+test grants::tests::empty_authority_is_empty_and_unknown_or_duplicate_operations_fail ... ok
+test grants::tests::unused_or_duplicate_selectors_fail_before_reading_configuration ... ok
+test mapping::tests::expanded_request_must_fit_the_core_byte_bound ... ok
+test mapping::tests::malformed_shapes_and_authority_overrides_never_normalize ... ok
+test mapping::tests::requests_use_launcher_bindings_and_operation_defaults ... ok
+test mapping::tests::discovery_filters_grants_and_embeds_resolvable_authoritative_result_schema ... ok
+test protocol::tests::tool_errors_derive_from_execution_and_capture_not_budget_findings ... ok
+test server::tests::cancellation_keeps_worker_busy_until_owned_cleanup_and_suppresses_result ... ok
+test server::tests::core_cleanup_uncertainty_closes_admission_after_normal_completion ... ok
+test server::tests::core_cleanup_uncertainty_survives_cancelled_result_suppression ... ok
+test server::tests::eof_cleanup_does_not_equate_worker_join_with_core_cleanup ... ok
+test server::tests::malformed_notification_metadata_cannot_cancel_or_initialize ... ok
+test server::tests::nested_supervisor_uncertainty_is_not_hidden_by_missing_top_level_error ... ok
+test server::tests::normal_and_cancelled_uncertain_results_end_real_loop_unsuccessfully ... ok
+test server::tests::partial_frame_cancellation_closes_transport_and_worker_failure_has_no_receipt ... ok
+test server::tests::serialized_capacity_and_request_slots_are_live_not_lifetime_bounded ... ok
+test protocol::tests::output_limit_includes_json_escaping_and_delimiter ... ok
+test server::tests::terminal_drain_ignores_invalid_envelopes ... ok
+test server::tests::terminal_drain_ignores_invalid_ids ... ok
+test server::tests::terminal_drain_ignores_malformed_json ... ok
+test server::tests::terminal_drain_ignores_non_object_json ... ok
+test server::tests::terminal_drain_ignores_work_and_preserves_only_valid_matching_cancellation ... ok
+test server::tests::terminal_drain_deadline_is_absolute_under_paced_malformed_input ... ok
+test server::tests::terminal_drain_paced_malformed_input_cannot_append_to_real_pipe_output ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+   Doc-tests workbench_mcp
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

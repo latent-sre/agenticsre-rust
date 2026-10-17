@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:schedule-definition:0.1",
+  "title": "Versioned observational schedule definition; overlap and missed-run policy are fixed to skip",
+  "type": "object",
+  "properties": {
+    "enabled": {
+      "type": "boolean"
+    },
+    "timezone": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "cadence": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "daily"
+            },
+            "at": {
+              "type": "string",
+              "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+            }
+          },
+          "required": [
+            "kind",
+            "at"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "interval"
+            },
+            "anchor": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            "every_seconds": {
+              "type": "integer",
+              "minimum": 60,
+              "maximum": 86400
+            }
+          },
+          "required": [
+            "kind",
+            "anchor",
+            "every_seconds"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "collection": {
+      "type": "object",
+      "properties": {
+        "targets": {
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          },
+          "minItems": 1
+        },
+        "task": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "error-budget"
+            },
+            "version": {
+              "const": 1
+            },
+            "input": {
+              "$ref": "urn:sre-workbench:spec:error-budget-input:0.1"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "input"
+          ],
+          "additionalProperties": false
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "failure_threshold": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "timeout_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300000
+        }
+      },
+      "required": [
+        "targets",
+        "task",
+        "concurrency",
+        "failure_threshold",
+        "timeout_ms"
+      ],
+      "additionalProperties": false
+    },
+    "misfire_grace_ms": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 60000
+    },
+    "retention_limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 128
+    }
+  },
+  "required": [
+    "enabled",
+    "timezone",
+    "cadence",
+    "collection",
+    "misfire_grace_ms",
+    "retention_limit"
+  ],
+  "additionalProperties": false
+}

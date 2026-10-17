@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:prometheus-config-data:0.1",
+  "title": "prometheus-config-data",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "const": "prometheus-rules"
+    },
+    "validator": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "promtool"
+        },
+        "version": {
+          "const": 1
+        },
+        "checker_digest": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        "binding_digest": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        "upstream_revision": {
+          "const": "5241a27fe3c6983549fccc32f6e65917408c63cd"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "checker_digest",
+        "binding_digest",
+        "upstream_revision"
+      ],
+      "additionalProperties": false
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^/",
+          "not": {
+            "pattern": "[\\u0000-\\u001f\\u007f]"
+          }
+        },
+        "digest": {
+          "anyOf": [
+            {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bytes": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "file",
+        "digest",
+        "bytes"
+      ],
+      "additionalProperties": false
+    },
+    "implemented_rules": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "strict_yaml_known_fields",
+          "rule_schema",
+          "promql_syntax",
+          "template_syntax",
+          "duplicate_rules"
+        ]
+      }
+    },
+    "unsupported_sections": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "live_rule_evaluation",
+          "metric_existence",
+          "alert_routing",
+          "template_execution",
+          "future_rule_formats"
+        ]
+      }
+    },
+    "validation_state": {
+      "enum": [
+        "complete",
+        "partial",
+        "not_established",
+        "unsupported"
+      ]
+    },
+    "validation_outcome": {
+      "enum": [
+        "valid",
+        "invalid",
+        "lint_findings",
+        "uncheckable",
+        "unknown"
+      ]
+    },
+    "checked_rules": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule": {
+            "enum": [
+              "promtool-invalid",
+              "duplicate-rules",
+              "no-rules"
+            ]
+          },
+          "location": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "required": [
+          "rule",
+          "location",
+          "detail"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "findings_total": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "diagnostics": {
+      "type": "object",
+      "properties": {
+        "stdout": {
+          "type": "string",
+          "maxLength": 262144
+        },
+        "stderr": {
+          "type": "string",
+          "maxLength": 262144
+        },
+        "untrusted": {
+          "const": true
+        },
+        "truncated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "stdout",
+        "stderr",
+        "untrusted",
+        "truncated"
+      ],
+      "additionalProperties": false
+    },
+    "runtime": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "executable": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "version": {
+              "const": "3.15.0"
+            },
+            "revision": {
+              "const": "5241a27fe3c6983549fccc32f6e65917408c63cd"
+            },
+            "executable_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "executable",
+            "version",
+            "revision",
+            "executable_sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "cancellation_signal": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 64
+    },
+    "supervisor": {
+      "$ref": "urn:sre-workbench:spec:dashboard-hygiene-data:0.1#/oneOf/0/properties/supervisor"
+    }
+  },
+  "required": [
+    "kind",
+    "validator",
+    "input",
+    "implemented_rules",
+    "unsupported_sections",
+    "validation_state",
+    "validation_outcome",
+    "checked_rules",
+    "findings",
+    "findings_total",
+    "diagnostics",
+    "runtime",
+    "cancellation_signal"
+  ],
+  "additionalProperties": false
+}

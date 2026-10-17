@@ -1,0 +1,36 @@
+    Finished `test` profile [unoptimized] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-3566ffb7bd3d67a7)
+
+running 29 tests
+test change::client::tests::fabricated_verified_response_without_a_plan_is_refused ... ok
+test change::client::tests::lost_write_reply_is_unknown_and_keeps_original_recovery_identity ... ok
+test change::client::tests::incomplete_or_unfinished_validation_cannot_authorize_a_plan ... ok
+test change::engine::tests::config_rejects_overlap_unknown_principals_aliases_and_bad_pins ... ok
+test change::engine::tests::exact_digest_mutation_and_plan_quota_refuse_without_replacement ... ok
+test change::engine::tests::exact_approval_applies_once_and_reconciles_retained_inode ... ok
+test change::engine::tests::expiration_restart_and_changed_preconditions_do_not_dispatch ... ok
+test change::engine::tests::mutex_contention_and_corrupt_ledger_fail_closed ... ok
+test change::engine::tests::no_op_and_backwards_wall_clock_refuse_before_validator ... ok
+test change::fs::tests::original_bytes_on_wrong_inode_are_unknown ... ok
+test change::fs::tests::original_mutation_refuses_dispatch ... ok
+test change::fs::tests::oversize_or_nonprivate_targets_are_refused ... ok
+test change::fs::tests::parent_bookkeeping_does_not_invalidate_target_precondition ... ok
+test change::fs::tests::preparation_rechecks_original_and_retains_collision ... ok
+test change::fs::tests::prepare_replace_and_reconcile_keep_identity ... ok
+test change::fs::tests::replaced_lease_refuses_all_observation_and_dispatch ... ok
+test change::fs::tests::replaced_or_missing_prepared_file_refuses_dispatch ... ok
+test change::fs::tests::replacement_bytes_on_wrong_inode_are_unknown ... ok
+test change::fs::tests::substituted_directory_is_refused ... ok
+test change::fs::tests::symlinks_hardlinks_and_fifo_are_refused ... ok
+test change::fs::tests::target_specific_nonblocking_lease_is_held_for_lifetime ... ok
+test change::fs::tests::unsafe_metadata_after_prepare_refuses_dispatch ... ok
+test change::engine::tests::reconcile_save_failure_keeps_current_unknown_observation ... ok
+test change::ledger::tests::replacing_the_lifetime_lease_poisons_the_original_service ... ok
+test change::ledger::tests::full_private_disk_keeps_old_ledger_and_requires_recovery ... ok
+test evidence::frames::tests::log_label_classification_changes_are_not_erased ... ok
+test evidence::frames::tests::hand_calculated_metric_changes_preserve_additions_removals_and_nulls ... ok
+test runner::server::tests::disabled_change_refusal_keeps_bounded_request_identity ... ok
+test runner::transport::tests::tls_roundtrip_authenticates_both_leaf_identities_and_allows_one_exchange ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 217 filtered out; finished in 8.57s
+

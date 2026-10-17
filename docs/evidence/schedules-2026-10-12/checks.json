@@ -1,0 +1,70 @@
+{
+  "all_execution_boundary": "tools/test-sandbox.sh; private user/network/PID namespaces, read-only source/toolchain, synthetic identities and no host credentials",
+  "base_head": "9016dcba4d42adbf3dd1972cb0f2dba6ed8fc664",
+  "source_files": 2220,
+  "workspace": {
+    "command": "cargo test --workspace --all-features --locked --offline",
+    "exit_code": 0,
+    "passed": 508,
+    "failed": 0,
+    "ignored": 26
+  },
+  "focused_scheduler": {
+    "command": "cargo test -p workbench-core schedule:: --locked --offline",
+    "exit_code": 0,
+    "passed": 24,
+    "failed": 0
+  },
+  "installed": {
+    "commands": 76,
+    "exit_code": 0,
+    "private_enospc": true,
+    "ordinary_binary": true
+  },
+  "format": {
+    "command": "cargo fmt --all -- --check",
+    "exit_code": 0
+  },
+  "strict_clippy": {
+    "command": "cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+    "exit_code": 0
+  },
+  "ordinary_cli_build": {
+    "command": "cargo build -p workbench-cli --bin save --locked --offline",
+    "exit_code": 0
+  },
+  "specification_before_acceptance_docs": {
+    "schemas": 101,
+    "positive": 60,
+    "negative": 52,
+    "package_docs": 15,
+    "repository_docs": 59,
+    "exit_code": 0
+  },
+  "final_specification": {
+    "schemas": 101,
+    "positive": 60,
+    "negative": 52,
+    "package_docs": 15,
+    "repository_docs": 60,
+    "exit_code": 0
+  },
+  "post_acceptance_source_check": {
+    "unchanged_product_tests_installed_verifier": true,
+    "modified_acceptance_docs": [
+      "README.md",
+      "docs/development.md",
+      "docs/roadmap.md",
+      "docs/schedules.md",
+      "docs/sre-workbench/verify_specs.py"
+    ],
+    "new_acceptance_doc": "docs/schedules-verification.md",
+    "ordinary_binary_restored_and_hash_matches": true
+  },
+  "initial_installed_fixture_failure": {
+    "cause": "Verifier dictionary shadowed original executable Path at final hash assertion; all scenario assertions completed, but run was not counted as acceptance.",
+    "source_manifest_sha256": "46861f2fc8e29e0a1090be21f6f3edbdcfaa293f16b75fb56d5758ff6c45b1f8",
+    "binary_sha256": "e36a390bbd1d71fc2e093e6a68415de97f6ee5a0b85726a656ad66c46ec0b288",
+    "corrected_rust_bytes": false
+  }
+}

@@ -2,6 +2,7 @@
 mod grants;
 mod http;
 mod input;
+mod queries;
 mod state;
 mod assets {
     include!(concat!(env!("OUT_DIR"), "/assets.rs"));
@@ -135,10 +136,26 @@ async fn run(
     let worker = std::thread::Builder::new()
         .name("workbench-ui-core".into())
         .spawn(move || {
-            run_worker(
-                receiver,
-                worker_state,
-                |request, control| match &worker_grants.diagnostic_grant {
+            run_worker(receiver, worker_state, |request, control| {
+                if request.operation == "query.run" {
+                    return workbench_core::execute_with_saved_query_grant(
+                        request,
+                        control,
+                        &worker_grants.context,
+                        worker_grants
+                            .grafana_identity
+                            .as_ref()
+                            .expect("admitted saved-query identity"),
+                    );
+                }
+                if let Some(grant) = &worker_grants.investigation_grant
+                    && grant.allows(&request.operation)
+                {
+                    return workbench_core::execute_with_investigation_grant(
+                        request, control, grant,
+                    );
+                }
+                match &worker_grants.diagnostic_grant {
                     Some(grant) => workbench_core::execute_with_diagnostic_grant(
                         request,
                         control,
@@ -153,8 +170,8 @@ async fn run(
                         worker_grants.policy_digest.as_deref(),
                         None,
                     ),
-                },
-            );
+                }
+            });
         })
         .map_err(|_| "the owned execution worker could not be started")?;
     let app = Arc::new(App {

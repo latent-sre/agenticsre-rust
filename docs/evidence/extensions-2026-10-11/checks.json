@@ -1,0 +1,59 @@
+{
+  "acceptance_scope": "Package management only; external protocol, enablement, fourth capability experiment and overall CAP17 remain pending.",
+  "boundary": "tools/test-sandbox.sh; no credentials/network; disk-full uses private64KiB tmpfs via --small-evidence-disk",
+  "build": {
+    "command": "cargo build -p workbench-cli --locked --offline",
+    "exit": 0
+  },
+  "clippy": {
+    "command": "cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+    "exit": 0
+  },
+  "fixture": {
+    "binary_sha256": "3b6d6da9a87cddd5e2eb8200623804a55ac6f73a42e18eb9129392a4c0d37ce1",
+    "command": "rustc --edition=2024 -C opt-level=1 -C strip=symbols tests/fixtures/extensions/no-execution.rs -o target/extensions/no-execution",
+    "exit": 0,
+    "marker_remained_absent": true,
+    "protocol_conformance": false,
+    "source": "tests/fixtures/extensions/no-execution.rs"
+  },
+  "format": {
+    "command": "cargo fmt --all -- --check",
+    "exit": 0
+  },
+  "independent_static_review": {
+    "executed_checks": false,
+    "p0_p1": 0,
+    "resolved": [
+      "Canonical effect_outcome changed from unsupported completed to succeeded, including post-deadline check.",
+      "Descriptions now honor reported effective1MiB budget; real32-package inventory exceeding1MiB is regression covered."
+    ],
+    "unresolved_material_findings": 0
+  },
+  "initial_test_defects": [
+    "CLI SHA256 array does not implement LowerHex; format individual digest bytes.",
+    "Safe integer maximum literal in JSON fixture needed i64 suffix.",
+    "Array inputs are rejected by common envelope validation as invalid_request, preceding extension-specific validation."
+  ],
+  "installed": {
+    "commands": 28,
+    "exit": 0,
+    "initial_26_command_pass_extended_with_real_disk_full": "Only driver/development docs changed after initial installed pass; product binary unchanged.",
+    "source_manifest": "source-manifest.json",
+    "verifier": "tools/verify-extensions.py"
+  },
+  "specification": {
+    "command": ".venv/bin/python -B docs/sre-workbench/verify_specs.py",
+    "exit": 0,
+    "negative": 33,
+    "positive": 44,
+    "schemas": 65
+  },
+  "workspace": {
+    "command": "cargo test --workspace --all-features --locked --offline",
+    "exit": 0,
+    "failed": 0,
+    "ignored": 22,
+    "passed": 402
+  }
+}

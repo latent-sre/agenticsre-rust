@@ -259,6 +259,20 @@ impl OperationResult {
                 self.error("structured_response_too_large", "The complete encoded Grafana receipt exceeded its limit; the structured response was omitted.");
                 continue;
             }
+            if self.operation == "report.create" && self.data["rendering"]["content"].is_string() {
+                self.data["rendering"]["content"] = Value::Null;
+                self.data["rendering"]["state"] = json!("omitted");
+                self.data["report"]["state"] = json!("partial");
+                self.execution.status = Status::Partial;
+                self.coverage.state = "partial".into();
+                let limitation = "The rendered report was omitted because the complete encoded receipt exceeded its limit.";
+                self.coverage.limitations.push(limitation.into());
+                if let Some(limitations) = self.data["report"]["limitations"].as_array_mut() {
+                    limitations.push(json!(limitation));
+                }
+                self.error("report_rendering_omitted", limitation);
+                continue;
+            }
             self.note_output_loss();
             let text = if self.output.stdout.len() >= self.output.stderr.len() {
                 &mut self.output.stdout
@@ -339,7 +353,142 @@ impl OperationResult {
         for error in &self.errors {
             text.push_str(&format!("{}: {}\n", error.code, error.message));
         }
-        if self.operation == "task.run" {
+        if self.operation.starts_with("change.") {
+            text.push_str(&format!("Change action: {}\nState: {}\nRequester: {}\nTarget: {}\nPlan SHA-256: {}\nApproval: {}\nRemote error: {}\n", terminal_safe(&self.data["action"].to_string()), terminal_safe(&self.data["state"].to_string()), terminal_safe(&self.data["requester"].to_string()), terminal_safe(&self.data["target"].to_string()), terminal_safe(&self.data["plan_sha256"].to_string()), terminal_safe(&self.data["approval_id"].to_string()), terminal_safe(&self.data["remote_error"].to_string())));
+            if self.data["plan"].is_object() {
+                text.push_str(&format!(
+                    "Exact plan (untrusted file contents are base64): {}\n",
+                    terminal_safe(&self.data["plan"].to_string())
+                ));
+            }
+        }
+        if self.operation.starts_with("schedule.") {
+            text.push_str(&format!(
+                "Schedule action: {}\n",
+                terminal_safe(self.data["action"].as_str().unwrap_or("unknown"))
+            ));
+            if let Some(rows) = self.data["schedules"].as_array() {
+                for row in rows {
+                    text.push_str(&format!(
+                        "{} revision {} generation {} enabled {} occurrences {} active {} timezone {} tzdb {}\n",
+                        terminal_safe(row["id"].as_str().unwrap_or("?")),
+                        row["revision"],
+                        row["generation"],
+                        row["enabled"],
+                        row["total_occurrences"],
+                        row["active_occurrences"],
+                        terminal_safe(row["definition"]["timezone"].as_str().unwrap_or("unknown")),
+                        terminal_safe(row["tzdb_version"].as_str().unwrap_or("unknown"))
+                    ));
+                }
+            }
+            if let Some(rows) = self.data["occurrences"].as_array() {
+                for row in rows {
+                    text.push_str(&format!(
+                        "Occurrence {} {} fleet {} outcome {} cancel_requested {} reason {}\n",
+                        terminal_safe(row["id"].as_str().unwrap_or("?")),
+                        row["state"],
+                        terminal_safe(row["fleet_request_id"].as_str().unwrap_or("?")),
+                        row["fleet_aggregate"],
+                        row["cancel_requested"],
+                        terminal_safe(&row["reason"].to_string())
+                    ));
+                }
+            }
+            if let Some(rows) = self.data["preview"].as_array() {
+                for row in rows {
+                    text.push_str(&format!(
+                        "Preview ordinal {} due UTC {} scheduled UTC {} local {} state {}\n",
+                        row["ordinal"],
+                        terminal_safe(row["due_utc"].as_str().unwrap_or("unknown")),
+                        terminal_safe(row["scheduled_utc"].as_str().unwrap_or("none")),
+                        terminal_safe(row["local"].as_str().unwrap_or("unknown")),
+                        terminal_safe(row["state"].as_str().unwrap_or("unknown"))
+                    ));
+                }
+            }
+        }
+        if self.operation.starts_with("fleet.") {
+            text.push_str(&format!("Fleet run: {}\nAggregate: {}\nCounts: {}\nTargets (untrusted remote observations): {}\n",terminal_safe(&self.data["run"].to_string()),terminal_safe(&self.data["aggregate"].to_string()),terminal_safe(&self.data["counts"].to_string()),terminal_safe(&self.data["targets"].to_string())));
+        }
+        if self.operation.starts_with("runner.") {
+            text.push_str(&format!("Authenticated runner: {}\nPrincipal: {}\nAdmission: {}\nRecovery request ID: {}\nTarget snapshot: {}\n", terminal_safe(&self.data["runner"].to_string()), terminal_safe(&self.data["principal"].to_string()), terminal_safe(&self.data["admission"].to_string()), terminal_safe(&self.data["request_id"].to_string()), terminal_safe(&self.data["target"].to_string())));
+        }
+        if self.operation.starts_with("job.") || self.operation.starts_with("runner.") {
+            text.push_str(&format!(
+                "Job action: {}\nJob: {}\nEvents: {}\nCursor: {}\n",
+                terminal_safe(self.data["action"].as_str().unwrap_or("not established")),
+                terminal_safe(&self.data["job"].to_string()),
+                terminal_safe(&self.data["events"].to_string()),
+                terminal_safe(&self.data["cursor"].to_string())
+            ));
+            if self.data["result"].is_object() {
+                text.push_str(&format!(
+                    "Stored child receipt (untrusted output): {}\n",
+                    terminal_safe(&self.data["result"].to_string())
+                ));
+            }
+            if self.data["result_omitted"] == true {
+                text.push_str(
+                    "Stored result omitted by the detail budget; its digest is retained.\n",
+                );
+            }
+        } else if self.operation.starts_with("ext.") {
+            text.push_str("External execution under ordinary operator-reviewed authority; not an untrusted-code sandbox.\n");
+            for field in [
+                "package",
+                "authorization",
+                "protocol",
+                "progress",
+                "terminal",
+                "diagnostics",
+            ] {
+                text.push_str(&format!(
+                    "{field}: {}\n",
+                    terminal_safe(&self.data[field].to_string())
+                ));
+            }
+        } else if self.operation.starts_with("extension.") {
+            text.push_str(&format!("Package action: {}\nInstalled: {}; descriptions: {}; omitted: {}\n{}\n",
+                terminal_safe(self.data["action"].as_str().unwrap_or("not established")),
+                self.data["installed_count"], self.data["total_packages"], self.data["omitted_packages"],
+                if self.data["execution_available"]==true {"Execution authorized for selected exact capabilities by attached policy; provenance unverified."}else{"Disabled; execution unavailable; provenance unverified."}));
+            if let Some(packages) = self.data["packages"].as_array() {
+                for package in packages {
+                    text.push_str(&format!("Package {} version {} — {} ({} bytes)\nManifest (untrusted declarations): {}\n",
+                        terminal_safe(package["manifest"]["id"].as_str().unwrap_or("unknown")),
+                        package["manifest"]["version"],
+                        terminal_safe(package["package_sha256"].as_str().unwrap_or("unknown")),
+                        package["package_bytes"], terminal_safe(&package["manifest"].to_string())));
+                }
+            }
+            for limitation in &self.coverage.limitations {
+                text.push_str(&format!("Limit: {}\n", terminal_safe(limitation)));
+            }
+        } else if self.operation == "report.create" {
+            text.push_str(&format!(
+                "Coverage: {} — {}\n",
+                self.coverage.state,
+                terminal_safe(&self.coverage.scope)
+            ));
+            for limitation in &self.coverage.limitations {
+                text.push_str(&format!("Limit: {}\n", terminal_safe(limitation)));
+            }
+            if let Some(document) = self.data["rendering"]["content"].as_str() {
+                text.push('\n');
+                text.push_str(&terminal_safe(document));
+            } else if self.data["rendering"]["state"] == "omitted" {
+                text.push_str("Rendered report omitted by the output budget; structured report is available with --json.\n");
+            }
+        } else if matches!(self.operation.as_str(), "task.run" | "config.check") {
+            if self.operation == "config.check" && self.data["validator"].is_object() {
+                text.push_str(&format!("Configuration kind: {}\nValidator: {}\nInput: {}\nValidation: {}\nUnsupported sections: {}\n",
+                    terminal_safe(self.data["kind"].as_str().unwrap_or("unknown")),
+                    terminal_safe(&self.data["validator"].to_string()),
+                    terminal_safe(&self.data["input"].to_string()),
+                    self.data["validation_state"].as_str().unwrap_or("not_established"),
+                    terminal_safe(&self.data["unsupported_sections"].to_string())));
+            }
             if let Some(calculation) = self.data.get("calculation") {
                 text.push_str(&format!(
                     "Allowed bad fraction: {}\n",
@@ -404,11 +553,28 @@ impl OperationResult {
                     }
                 }
             }
-            if let Some(count) = self.data.get("checked_panels").and_then(Value::as_u64) {
-                text.push_str(&format!(
-                    "Checked panels: {count}\nFindings: {}\n",
-                    self.data["findings_total"]
-                ));
+            if self
+                .data
+                .get("findings_total")
+                .and_then(Value::as_u64)
+                .is_some()
+            {
+                if let Some(count) = self.data.get("checked_panels").and_then(Value::as_u64) {
+                    text.push_str(&format!("Checked panels: {count}\n"));
+                }
+                if self.data.get("checked_rules").is_some() {
+                    text.push_str(&format!(
+                        "Checked rules: {}\nOutcome: {}\n",
+                        self.data["checked_rules"]
+                            .as_u64()
+                            .map(|count| count.to_string())
+                            .unwrap_or_else(|| "not established".into()),
+                        self.data["validation_outcome"]
+                            .as_str()
+                            .unwrap_or("unknown")
+                    ));
+                }
+                text.push_str(&format!("Findings: {}\n", self.data["findings_total"]));
                 if let Some(findings) = self.data.get("findings").and_then(Value::as_array) {
                     for finding in findings {
                         text.push_str(&format!(
@@ -418,6 +584,22 @@ impl OperationResult {
                             terminal_safe(finding["detail"].as_str().unwrap_or("unknown"))
                         ));
                     }
+                }
+            }
+            if let Some(diagnostics) = self.data.get("diagnostics") {
+                for stream in ["stdout", "stderr"] {
+                    if let Some(value) = diagnostics[stream]
+                        .as_str()
+                        .filter(|value| !value.is_empty())
+                    {
+                        text.push_str(&format!(
+                            "Native {stream} (untrusted):\n{}\n",
+                            terminal_safe(value)
+                        ));
+                    }
+                }
+                if diagnostics["truncated"] == true {
+                    text.push_str("Native diagnostics are incomplete.\n");
                 }
             }
             text.push_str(&format!(

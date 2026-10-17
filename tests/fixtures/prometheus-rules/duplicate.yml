@@ -1,0 +1,7 @@
+groups:
+  - name: duplicate.rules
+    rules:
+      - record: job:requests:rate5m
+        expr: sum(rate(http_requests_total[5m]))
+      - record: job:requests:rate5m
+        expr: sum(rate(other_requests_total[5m]))

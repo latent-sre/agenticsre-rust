@@ -1,0 +1,16 @@
+{
+  "format_version": 1,
+  "action": "collect",
+  "run": null,
+  "counts": {
+    "succeeded": 0,
+    "failed": 0,
+    "unknown": 0,
+    "skipped": 0,
+    "pending": 0
+  },
+  "targets": [],
+  "aggregate": "healthy",
+  "aggregate_effect_outcome": "not_attempted",
+  "cancellation_signal": null
+}

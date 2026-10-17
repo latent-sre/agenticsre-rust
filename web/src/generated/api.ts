@@ -136,10 +136,10 @@ export interface components {
             }[];
             sources: components["schemas"]["CoreCommon"]["$defs"]["source"][];
             artifacts: components["schemas"]["CoreCommon"]["$defs"]["artifact"][];
-            effective_limits: components["schemas"]["CoreCommon"]["$defs"]["limits"];
+            effective_limits: components["schemas"]["CoreCommon"]["$defs"]["effective_limits"];
             /** @enum {unknown} */
             record_mode: "auto" | "always" | "never";
-        } & (unknown & unknown);
+        } & (unknown & unknown & unknown);
         /** SRE Workbench common draft 0.1 */
         CoreCommon: {
             $defs: {
@@ -173,6 +173,13 @@ export interface components {
                 operation: string;
                 digest: string;
                 path: string;
+                /** @description Effective execution limits; explicit durable jobs may use up to one hour. Foreground request admission retains the separate 300-second limits definition. */
+                effective_limits: {
+                    timeout_ms: number;
+                    max_output_bytes: number;
+                    max_items?: number;
+                    concurrency?: number;
+                };
             };
         };
         /** error-budget-input version 0.1 */
@@ -222,6 +229,63 @@ export interface components {
             /** @constant */
             version: 1;
             tasks: "error-budget"[];
+        };
+        /** @description Launcher-granted Grafana alias only, separate from diagnostic targets. */
+        QueryTarget: {
+            id: string;
+            label: string;
+        };
+        QueryCatalogOperation: {
+            /** @enum {unknown} */
+            id: "queries.list" | "queries.describe";
+            /** @constant */
+            version: 1;
+            /** @constant */
+            profile: "installed-query-catalog-v1";
+        };
+        QueryRunOperation: {
+            /** @constant */
+            id: "query.run";
+            /** @constant */
+            version: 1;
+            /** @constant */
+            profile: "saved-query-v1";
+        };
+        QueryListSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation: "queries.list";
+            /** @constant */
+            operation_version: 1;
+            inputs: Record<string, never>;
+            limits: components["schemas"]["Limits"];
+        };
+        QueryDescribeSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation: "queries.describe";
+            /** @constant */
+            operation_version: 1;
+            inputs: {
+                /** @enum {unknown} */
+                id: "prometheus.up-by-job" | "loki.logs-by-job";
+                /** @constant */
+                version: 1;
+            };
+            limits: components["schemas"]["Limits"];
+        };
+        QueryRunSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation: "query.run";
+            /** @constant */
+            operation_version: 1;
+            target_id: components["schemas"]["QueryTarget"]["id"];
+            inputs: components["schemas"]["CoreQueryRunInput"];
+            limits: components["schemas"]["Limits"];
         };
         /**
          * @example {
@@ -318,7 +382,7 @@ export interface components {
             api_version: "0.1";
             session_id: string;
             roots: components["schemas"]["Root"][];
-            operations: (components["schemas"]["CommandOperation"] | components["schemas"]["TaskOperation"] | components["schemas"]["DiagnosticOperation"])[];
+            operations: (components["schemas"]["CommandOperation"] | components["schemas"]["TaskOperation"] | components["schemas"]["DiagnosticOperation"] | components["schemas"]["ContextOperation"] | components["schemas"]["EvidenceOperation"] | components["schemas"]["QueryCatalogOperation"] | components["schemas"]["QueryRunOperation"])[];
             limits: {
                 /** @constant */
                 active_runs: 1;
@@ -331,6 +395,7 @@ export interface components {
                 /** @constant */
                 max_submissions: 1024;
             };
+            query_targets?: components["schemas"]["QueryTarget"][];
             targets: components["schemas"]["DiagnosticTarget"][];
         };
         Limits: {
@@ -370,7 +435,7 @@ export interface components {
             operation: "task.run";
             inputs: components["schemas"]["TaskInputs"];
         };
-        RunSubmission: components["schemas"]["CommandSubmission"] | components["schemas"]["TaskSubmission"] | components["schemas"]["DiagnosticSubmission"];
+        RunSubmission: components["schemas"]["CommandSubmission"] | components["schemas"]["TaskSubmission"] | components["schemas"]["DiagnosticSubmission"] | components["schemas"]["ContextSubmission"] | components["schemas"]["EvidenceListSubmission"] | components["schemas"]["EvidenceOpenSubmission"] | components["schemas"]["EvidenceCompareSubmission"] | components["schemas"]["ReportSubmission"] | components["schemas"]["QueryListSubmission"] | components["schemas"]["QueryDescribeSubmission"] | components["schemas"]["QueryRunSubmission"];
         /**
          * @example {
          *       "id": "inv-example",
@@ -398,7 +463,7 @@ export interface components {
         RunSummary: {
             id: string;
             /** @enum {unknown} */
-            operation: "process.exec" | "command.inspect" | "task.run" | "diagnostics.run";
+            operation: "process.exec" | "command.inspect" | "task.run" | "diagnostics.run" | "context.resolve" | "evidence.list" | "evidence.open" | "evidence.compare" | "report.create" | "queries.list" | "queries.describe" | "query.run";
             check_label: string;
             root_id: string | null;
             /** @enum {unknown} */
@@ -407,9 +472,9 @@ export interface components {
             submitted_at: string;
             execution_status: string | null;
             receipt_url: string | null;
-            /** @description The selected diagnostic alias; null for commands/tasks. Never substituted for root_id. */
-            target_id: components["schemas"]["DiagnosticTarget"]["id"] | null;
-        } & unknown;
+            /** @description The selected diagnostic or saved-query alias; null for other operations. Never substituted for root_id. */
+            target_id: string | null;
+        } & (unknown & unknown);
         RunList: {
             runs: components["schemas"]["RunSummary"][];
             next_offset: number | null;
@@ -692,6 +757,1286 @@ export interface components {
         CoreDiagnosticsCnameChains: {
             a: string[];
             aaaa: string[];
+        };
+        /** dashboard-hygiene-data version 0.1 */
+        CoreDashboardHygieneData: {
+            task: {
+                /** @constant */
+                id: "dashboard-hygiene";
+                /** @constant */
+                version: 1;
+            };
+            source: {
+                /** @constant */
+                upstream_revision: "7d900fb999abee3b3712e1da881dcc7e80b1f6e7";
+                /** @constant */
+                checker_digest: "sha256:8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2";
+                binding_digest: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            };
+            supervisor: {
+                process_id: number;
+                process_group_id: number;
+                cancellation_signal: number | null;
+                stdout_bytes_observed: number;
+                stderr_bytes_observed: number;
+                cleanup: {
+                    /** @enum {unknown} */
+                    trigger: null | "timeout" | "cancellation" | "result_consumer_closed" | "descendants_after_leader_exit" | "supervisor_io_error";
+                    term_sent: boolean;
+                    kill_sent: boolean;
+                    group_absent: boolean;
+                    primary_reaped: boolean;
+                    stdout_closed: boolean;
+                    stderr_closed: boolean;
+                    confirmed: boolean;
+                    /** @constant */
+                    grace_ms: 2000;
+                    /** @constant */
+                    final_drain_ms: 500;
+                    scope: string;
+                };
+            };
+            cancellation_signal: number | null;
+            runtime: {
+                executable: string;
+                version: string;
+            };
+            input: {
+                file: string;
+                digest: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+                bytes: number;
+            };
+            checked_panels: number;
+            findings: {
+                /** @enum {unknown} */
+                rule: "panel-title" | "panel-description" | "panel-units" | "panel-no-targets" | "panel-no-value" | "panel-datasource" | "target-rate-interval" | "target-counter-agg" | "template-all-value" | "dashboard-tags";
+                location: string;
+                detail: string;
+            }[];
+            findings_total: number;
+            findings_truncated: boolean;
+            fields_truncated: boolean;
+            coverage: {
+                /** @enum {unknown} */
+                state: "complete" | "partial";
+                scope: string;
+                limitations: string[];
+            };
+        } | {
+            task: {
+                /** @constant */
+                id: "dashboard-hygiene";
+                /** @constant */
+                version: 1;
+            };
+            source: {
+                /** @constant */
+                upstream_revision: "7d900fb999abee3b3712e1da881dcc7e80b1f6e7";
+                /** @constant */
+                checker_digest: "sha256:8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2";
+                binding_digest: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            };
+            supervisor?: {
+                process_id: number;
+                process_group_id: number;
+                cancellation_signal: number | null;
+                stdout_bytes_observed: number;
+                stderr_bytes_observed: number;
+                cleanup: {
+                    /** @enum {unknown} */
+                    trigger: null | "timeout" | "cancellation" | "result_consumer_closed" | "descendants_after_leader_exit" | "supervisor_io_error";
+                    term_sent: boolean;
+                    kill_sent: boolean;
+                    group_absent: boolean;
+                    primary_reaped: boolean;
+                    stdout_closed: boolean;
+                    stderr_closed: boolean;
+                    confirmed: boolean;
+                    /** @constant */
+                    grace_ms: 2000;
+                    /** @constant */
+                    final_drain_ms: 500;
+                    scope: string;
+                };
+            };
+            cancellation_signal?: number | null;
+        };
+        /** prometheus-config-data */
+        CorePrometheusConfigData: {
+            /** @constant */
+            kind: "prometheus-rules";
+            validator: {
+                /** @constant */
+                id: "promtool";
+                /** @constant */
+                version: 1;
+                checker_digest: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+                binding_digest: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+                /** @constant */
+                upstream_revision: "5241a27fe3c6983549fccc32f6e65917408c63cd";
+            };
+            input: {
+                file: string;
+                digest: components["schemas"]["CoreCommon"]["$defs"]["digest"] | null;
+                bytes: number | null;
+            };
+            implemented_rules: ("strict_yaml_known_fields" | "rule_schema" | "promql_syntax" | "template_syntax" | "duplicate_rules")[];
+            unsupported_sections: ("live_rule_evaluation" | "metric_existence" | "alert_routing" | "template_execution" | "future_rule_formats")[];
+            /** @enum {unknown} */
+            validation_state: "complete" | "partial" | "not_established" | "unsupported";
+            /** @enum {unknown} */
+            validation_outcome: "valid" | "invalid" | "lint_findings" | "uncheckable" | "unknown";
+            checked_rules: number | null;
+            findings: {
+                /** @enum {unknown} */
+                rule: "promtool-invalid" | "duplicate-rules" | "no-rules";
+                location: string;
+                detail: string;
+            }[];
+            findings_total: number;
+            diagnostics: {
+                stdout: string;
+                stderr: string;
+                /** @constant */
+                untrusted: true;
+                truncated: boolean;
+            };
+            runtime: {
+                executable: string;
+                /** @constant */
+                version: "3.15.0";
+                /** @constant */
+                revision: "5241a27fe3c6983549fccc32f6e65917408c63cd";
+                executable_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            } | null;
+            cancellation_signal: number | null;
+            supervisor?: components["schemas"]["CoreDashboardHygieneSupervisor"];
+        };
+        /** change-plan */
+        CoreChangePlan: {
+            /** @constant */
+            format_version: 1;
+            /** @constant */
+            kind: "prometheus-rules-file-replacement";
+            requester: components["schemas"]["CoreCommon"]["$defs"]["operation"];
+            request_id: string;
+            target: {
+                id: components["schemas"]["CoreCommon"]["$defs"]["operation"];
+                path: string;
+            };
+            runner: {
+                id: components["schemas"]["CoreCommon"]["$defs"]["operation"];
+                server_certificate_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+                policy_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            };
+            ledger: {
+                device: number;
+                inode: number;
+            };
+            original_identity: {
+                parent: {
+                    dev: number;
+                    ino: number;
+                    uid: number;
+                    gid: number;
+                    mode: number;
+                    nlink: number;
+                    size: number;
+                    ctime_sec: number;
+                    ctime_nsec: number;
+                    mtime_sec: number;
+                    mtime_nsec: number;
+                };
+                file: {
+                    dev: number;
+                    ino: number;
+                    uid: number;
+                    gid: number;
+                    mode: number;
+                    nlink: number;
+                    size: number;
+                    ctime_sec: number;
+                    ctime_nsec: number;
+                    mtime_sec: number;
+                    mtime_nsec: number;
+                };
+                sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            };
+            /** @description Canonical RFC 4648 base64 with at most 32768 decoded bytes; exact bytes and digest remain runtime checks. */
+            original_base64: string;
+            original_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            /** @description Canonical RFC 4648 base64 with at most 32768 decoded bytes; exact bytes and digest remain runtime checks. */
+            proposed_base64: string;
+            proposed_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            validator_binding_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            validation: components["schemas"]["CoreResult"] & {
+                /** @constant */
+                operation?: "config.check";
+                execution?: {
+                    /** @constant */
+                    status?: "succeeded";
+                    /** @constant */
+                    child_exit_code?: 0;
+                    signal?: null;
+                };
+                data?: components["schemas"]["CorePrometheusConfigData"] & {
+                    /** @constant */
+                    validation_outcome?: "valid";
+                    checked_rules?: number;
+                    /** @constant */
+                    findings_total?: 0;
+                    /** @constant */
+                    validation_state?: "complete";
+                    findings?: unknown;
+                    diagnostics?: {
+                        /** @constant */
+                        truncated?: false;
+                    };
+                };
+                coverage?: {
+                    /** @constant */
+                    state?: "complete";
+                };
+                /** @constant */
+                effect_outcome?: "not_applicable";
+                errors?: unknown;
+            };
+            created_at: number;
+            expires_at: number;
+            expires_in_seconds: number;
+            /** @constant */
+            readback: "prepared_inode_and_exact_bytes";
+            /** @constant */
+            recovery: "new_approved_plan_using_original_bytes";
+            implementation_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            requester_certificate_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+        };
+        /** change-data */
+        CoreChangeData: {
+            /** @constant */
+            format_version: 1;
+            /** @enum {unknown} */
+            action: "plan" | "status" | "reconcile" | "approve" | "apply";
+            runner: {
+                id: components["schemas"]["CoreCommon"]["$defs"]["operation"];
+                server_certificate_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+                policy_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            } | null;
+            principal: {
+                id: components["schemas"]["CoreCommon"]["$defs"]["operation"];
+                client_certificate_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"];
+            } | null;
+            requester: components["schemas"]["CoreCommon"]["$defs"]["operation"] | null;
+            request_id: string | null;
+            target: components["schemas"]["CoreCommon"]["$defs"]["operation"] | null;
+            plan: components["schemas"]["CoreChangePlan"] | null;
+            plan_sha256: components["schemas"]["CoreCommon"]["$defs"]["digest"] | null;
+            approval_id: components["schemas"]["CoreCommon"]["$defs"]["digest"] | null;
+            /** @enum {unknown} */
+            state: "not_found" | "planned" | "approved" | "dispatching" | "verified" | "not_applied" | "unknown" | "expired";
+            /** @enum {unknown} */
+            effect_outcome: "not_attempted" | "verified" | "unknown";
+            remote_error: string | null;
+        };
+        /** Generated local evidence reference */
+        CoreEvidenceReferenceInput: {
+            id: string;
+            expected_manifest_sha256?: string;
+        };
+        /** Sanitized service-query collection provenance and retained scope */
+        CoreEvidenceCollectionPayload: {
+            /** @constant */
+            format_version: 1;
+            producer: {
+                /** @constant */
+                id: "save";
+                version: string;
+                /** @constant */
+                spec_version: "0.1";
+            };
+            run_id: string;
+            request_id: string;
+            /** Format: date-time */
+            started_at: string;
+            finalized_at: string | null;
+            selection: {
+                service: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                environment: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                team: (string | {
+                    /** @constant */
+                    redacted: true;
+                }) | null;
+                deployment: (string | {
+                    /** @constant */
+                    redacted: true;
+                }) | null;
+            };
+            connection: {
+                id: string;
+                origin: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                organization_id: number | {
+                    /** @constant */
+                    redacted: true;
+                };
+            };
+            provenance: {
+                grafana_config_sha256: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                grafana_ca: {
+                    /** @constant */
+                    kind: "custom";
+                    sha256: string | {
+                        /** @constant */
+                        redacted: true;
+                    };
+                } | {
+                    /** @constant */
+                    kind: "builtin";
+                    sha256: null;
+                };
+                context: {
+                    source: {
+                        /** @constant */
+                        kind: "fixture-export";
+                        id: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        revision: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        sha256: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        observed_at: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        /** @constant */
+                        evidence_state: "sourced";
+                    };
+                    record: {
+                        service: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        team: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        environment: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        deployment: (string | {
+                            /** @constant */
+                            redacted: true;
+                        }) | null;
+                        /** @constant */
+                        state: "active";
+                        last_reviewed: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        bindings: {
+                            target: string | {
+                                /** @constant */
+                                redacted: true;
+                            };
+                            environment: string | {
+                                /** @constant */
+                                redacted: true;
+                            };
+                            organization: string | {
+                                /** @constant */
+                                redacted: true;
+                            };
+                        };
+                    };
+                    resolution: {
+                        /** @constant */
+                        state: "resolved";
+                        /** @constant */
+                        usable: true;
+                        max_age_days: number;
+                        age_seconds: number;
+                    };
+                };
+            };
+            /** @constant */
+            pack: {
+                id: "service-queries";
+                version: 1;
+                sha256: "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236";
+            };
+            window: {
+                from: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                to: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+            };
+            /** @enum {unknown} */
+            on_failure: "continue" | "stop";
+            capture: {
+                /** @enum {unknown} */
+                state: "none" | "partial" | "complete";
+                /** @constant */
+                expected_steps: 2;
+                retained_receipts: number;
+            };
+            steps: [
+                {
+                    /** @constant */
+                    id: "metrics";
+                    /** @constant */
+                    operation: "query.run";
+                    /** @constant */
+                    definition: {
+                        id: "prometheus.up-by-job";
+                        version: 1;
+                        dialect: "promql";
+                        sha256: "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f";
+                    };
+                    /** @enum {unknown} */
+                    status: "omitted" | "succeeded" | "failed" | "partial" | "denied" | "unsupported" | "cancelled" | "timed_out" | "unknown";
+                    run_id: string | null;
+                    started_at: string | null;
+                    finished_at: string | null;
+                    duration_ms: number | null;
+                    errors: string[];
+                    coverage: {
+                        state: string;
+                        scope: string;
+                        limitations: string[];
+                    } | null;
+                    redaction: {
+                        applied: boolean;
+                        replacements: number;
+                    } | null;
+                    truncation: {
+                        stdout: boolean;
+                        stderr: boolean;
+                    };
+                    artifact: {
+                        path: string;
+                        /** @constant */
+                        media_type: "application/json";
+                        bytes: number;
+                        digest: string;
+                        /** @constant */
+                        classification: "restricted";
+                    } | null;
+                    /** @enum {unknown} */
+                    omission: null | "not_dispatched" | "after_failure" | "cancelled" | "deadline_exceeded" | "result_consumer_closed" | "store_unavailable" | "receipt_not_retained";
+                } & unknown,
+                {
+                    /** @constant */
+                    id: "logs";
+                    /** @constant */
+                    operation: "query.run";
+                    /** @constant */
+                    definition: {
+                        id: "loki.logs-by-job";
+                        version: 1;
+                        dialect: "logql";
+                        sha256: "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019";
+                    };
+                    /** @enum {unknown} */
+                    status: "omitted" | "succeeded" | "failed" | "partial" | "denied" | "unsupported" | "cancelled" | "timed_out" | "unknown";
+                    run_id: string | null;
+                    started_at: string | null;
+                    finished_at: string | null;
+                    duration_ms: number | null;
+                    errors: string[];
+                    coverage: {
+                        state: string;
+                        scope: string;
+                        limitations: string[];
+                    } | null;
+                    redaction: {
+                        applied: boolean;
+                        replacements: number;
+                    } | null;
+                    truncation: {
+                        stdout: boolean;
+                        stderr: boolean;
+                    };
+                    artifact: {
+                        path: string;
+                        /** @constant */
+                        media_type: "application/json";
+                        bytes: number;
+                        digest: string;
+                        /** @constant */
+                        classification: "restricted";
+                    } | null;
+                    /** @enum {unknown} */
+                    omission: null | "not_dispatched" | "after_failure" | "cancelled" | "deadline_exceeded" | "result_consumer_closed" | "store_unavailable" | "receipt_not_retained";
+                } & unknown
+            ];
+            errors: string[];
+            redaction: {
+                applied: boolean;
+                replacements: number;
+            };
+            cancellation_signal: number | null;
+        };
+        /** Local evidence format 1 immutable manifest */
+        CoreEvidenceManifest: {
+            /** @constant */
+            format_version: 1;
+            id: string;
+            /** @enum {unknown} */
+            state: "sealed" | "interrupted";
+            created_at_unix_ms: number;
+            finalized_at_unix_ms: number;
+            artifacts: {
+                [key: string]: {
+                    path: string;
+                    /** @constant */
+                    media_type: "application/json";
+                    bytes: number;
+                    digest: string;
+                    /** @constant */
+                    classification: "restricted";
+                };
+            };
+            payload: components["schemas"]["CoreEvidenceCollectionPayload"];
+        } & unknown;
+        /** Verified historical evidence inspection and deterministic replay */
+        CoreEvidenceOfflineData: {
+            /** @constant */
+            format_version: 1;
+            /** @enum {unknown} */
+            mode: "open" | "replay";
+            algorithm: {
+                /** @constant */
+                id: "retained-observations-v1";
+                /** @constant */
+                version: 1;
+            };
+            analysis: {
+                /** Format: date-time */
+                at: string;
+                /** @constant */
+                tool: "save";
+                version: string;
+                /** @constant */
+                profile: "linux-offline-v1";
+            };
+            bundle: {
+                id: components["schemas"]["CoreEvidenceReferenceInput"]["id"];
+                digest: components["schemas"]["CoreEvidenceReferenceInput"]["expected_manifest_sha256"];
+            };
+            observation: {
+                started_at: components["schemas"]["CoreEvidenceCollectionPayload"]["started_at"];
+                finalized_at: components["schemas"]["CoreEvidenceCollectionPayload"]["finalized_at"];
+                window: components["schemas"]["CoreEvidenceCollectionPayload"]["window"];
+                selection: components["schemas"]["CoreEvidenceCollectionPayload"]["selection"];
+                capture: components["schemas"]["CoreEvidenceCollectionPayload"]["capture"];
+                /** @enum {unknown} */
+                manifest_state: "sealed" | "interrupted";
+            };
+            /** @enum {unknown} */
+            state: "complete" | "partial";
+            source_limitations: string[];
+            checks: {
+                /** @enum {unknown} */
+                id: "metrics" | "logs";
+                /** @enum {unknown} */
+                kind: "prometheus" | "loki";
+                /** @enum {unknown} */
+                state: "complete" | "partial" | "missing" | "incompatible";
+                reasons: string[];
+                definition: components["schemas"]["CoreEvidenceMetricsDefinition"] | components["schemas"]["CoreEvidenceLogsDefinition"] | null;
+                /** @enum {unknown} */
+                unit: "dimensionless" | "entries";
+                summary: Record<string, never> | {
+                    retained_receipts: number;
+                } | {
+                    series: number;
+                    samples: number;
+                    finite: number;
+                    missing: number;
+                    nonfinite: number;
+                    sampling_gaps: number;
+                } | {
+                    entries: number;
+                    label_sets: number;
+                    unique_entries: number;
+                    duplicate_entries: number;
+                };
+                details: ({
+                    /** @constant */
+                    type: "receipt";
+                    receipt: components["schemas"]["CoreResult"];
+                } | {
+                    /** @constant */
+                    type: "metric_sample";
+                    series: {
+                        field: string;
+                        labels: {
+                            [key: string]: string;
+                        };
+                    };
+                    timestamp_ns: string;
+                    value: number | null;
+                    /** @enum {unknown} */
+                    state: "finite" | "null" | "non_finite";
+                    /** @enum {unknown} */
+                    nonfinite: null | "NaN" | "Inf" | "NegInf";
+                } | {
+                    /** @constant */
+                    type: "log_entry";
+                    labels: {
+                        [key: string]: string;
+                    };
+                    label_types: {
+                        [key: string]: string;
+                    };
+                    timestamp_ns: string;
+                    line: string;
+                    count: number;
+                })[];
+                omitted_details: number;
+            }[];
+            omitted_details: number;
+            manifest?: components["schemas"]["CoreEvidenceManifest"];
+            cancellation_signal?: number;
+        } & unknown;
+        CoreContextResolveInput: {
+            deployment?: string;
+            environment: string;
+            service: string;
+            team?: string;
+        };
+        /** Offline comparison selection */
+        CoreEvidenceCompareInput: {
+            before: components["schemas"]["CoreEvidenceReferenceInput"];
+            after: components["schemas"]["CoreEvidenceReferenceInput"];
+            /** @enum {unknown} */
+            normalization: "exact-window-v1" | "window-offset-v1";
+        };
+        /** Returned-observation comparison data */
+        CoreEvidenceComparisonData: {
+            /** @constant */
+            format_version: 1;
+            /** @constant */
+            algorithm: "returned-observations-v1";
+            /** @enum {unknown} */
+            normalization: "exact-window-v1" | "window-offset-v1";
+            /** @constant */
+            scope: "returned_observations";
+            /** @enum {unknown} */
+            state: "complete" | "partial" | "incompatible";
+            before: {
+                bundle: {
+                    id: string;
+                    digest: string;
+                };
+                window: {
+                    from: string | {
+                        /** @constant */
+                        redacted: true;
+                    };
+                    to: string | {
+                        /** @constant */
+                        redacted: true;
+                    };
+                };
+                capture: {
+                    /** @enum {unknown} */
+                    state: "none" | "partial" | "complete";
+                    /** @constant */
+                    expected_steps: 2;
+                    retained_receipts: number;
+                };
+                /** @enum {unknown} */
+                manifest_state: "sealed" | "interrupted";
+                /** Format: date-time */
+                started_at: string;
+                finalized_at: string | null;
+            };
+            after: {
+                bundle: {
+                    id: string;
+                    digest: string;
+                };
+                window: {
+                    from: string | {
+                        /** @constant */
+                        redacted: true;
+                    };
+                    to: string | {
+                        /** @constant */
+                        redacted: true;
+                    };
+                };
+                capture: {
+                    /** @enum {unknown} */
+                    state: "none" | "partial" | "complete";
+                    /** @constant */
+                    expected_steps: 2;
+                    retained_receipts: number;
+                };
+                /** @enum {unknown} */
+                manifest_state: "sealed" | "interrupted";
+                /** Format: date-time */
+                started_at: string;
+                finalized_at: string | null;
+            };
+            compatibility: {
+                /** @enum {unknown} */
+                state: "compatible" | "incompatible";
+                reasons: string[];
+            };
+            provenance_changes: string[];
+            source_limitations: string[];
+            checks: {
+                /** @enum {unknown} */
+                id: "metrics" | "logs";
+                /** @enum {unknown} */
+                kind: "prometheus" | "loki";
+                /** @enum {unknown} */
+                state: "complete" | "partial" | "incompatible" | "missing";
+                reasons: string[];
+                definition: {
+                    /** @enum {unknown} */
+                    id: "prometheus.up-by-job" | "loki.logs-by-job";
+                    /** @constant */
+                    version: 1;
+                    /** @enum {unknown} */
+                    dialect: "promql" | "logql";
+                    sha256: string;
+                };
+                /** @enum {unknown} */
+                unit: "dimensionless" | "entries";
+                summary: Record<string, never> | {
+                    before: {
+                        series: number;
+                        samples: number;
+                        missing: number;
+                        nonfinite: number;
+                        sampling_gaps: number;
+                    };
+                    after: {
+                        series: number;
+                        samples: number;
+                        missing: number;
+                        nonfinite: number;
+                        sampling_gaps: number;
+                    };
+                    series_added: number;
+                    series_removed: number;
+                    samples_added: number;
+                    samples_removed: number;
+                    samples_changed: number;
+                    samples_missing: number;
+                    samples_unchanged: number;
+                    sampling: {
+                        request_interval_ms: number;
+                        before_declared_intervals_ms: (number | null)[];
+                        after_declared_intervals_ms: (number | null)[];
+                    };
+                } | {
+                    before: {
+                        entries: number;
+                        label_sets: number;
+                    };
+                    after: {
+                        entries: number;
+                        label_sets: number;
+                    };
+                    entries_added: number;
+                    entries_removed: number;
+                    entries_unchanged: number;
+                };
+                details: ({
+                    /** @enum {unknown} */
+                    type: "series_added" | "series_removed";
+                    series: {
+                        field: string;
+                        labels: {
+                            [key: string]: string;
+                        };
+                    };
+                } | {
+                    /** @enum {unknown} */
+                    type: "sample_added" | "sample_removed" | "sample_changed" | "sample_missing";
+                    series: {
+                        field: string;
+                        labels: {
+                            [key: string]: string;
+                        };
+                    };
+                    timestamp_ns: string;
+                    before: number | null;
+                    after: number | null;
+                    /** @enum {unknown} */
+                    before_state: "finite" | "null" | "non_finite" | "absent";
+                    /** @enum {unknown} */
+                    after_state: "finite" | "null" | "non_finite" | "absent";
+                    before_timestamp_ns: string | null;
+                    after_timestamp_ns: string | null;
+                    /** @enum {unknown} */
+                    before_nonfinite?: "NaN" | "Inf" | "NegInf";
+                    /** @enum {unknown} */
+                    after_nonfinite?: "NaN" | "Inf" | "NegInf";
+                } | {
+                    /** @enum {unknown} */
+                    type: "entry_added" | "entry_removed";
+                    labels: {
+                        [key: string]: string;
+                    };
+                    label_types: {
+                        [key: string]: string;
+                    };
+                    timestamp_ns: string;
+                    line: string;
+                    count: number;
+                    before_count: number;
+                    after_count: number;
+                    before_timestamp_ns: string | null;
+                    after_timestamp_ns: string | null;
+                })[];
+                omitted_details: number;
+            }[];
+            cancellation_signal?: number;
+        };
+        /** Evidence-backed historical report */
+        CoreReportData: {
+            /** @constant */
+            format_version: 1;
+            /** @enum {unknown} */
+            format: "markdown" | "json";
+            report: {
+                title: string;
+                /** Format: date-time */
+                generated_at: string;
+                tool: {
+                    /** @constant */
+                    id: "save";
+                    version: string;
+                };
+                /** @enum {unknown} */
+                state: "complete" | "partial";
+                /** @constant */
+                scope: "historical_evidence";
+                /** @constant */
+                profile: "linux-offline-v1";
+                sources: {
+                    bundle: components["schemas"]["CoreEvidenceOfflineData"]["bundle"];
+                    reference: string;
+                    /** Format: date-time */
+                    observed_at: string | null;
+                    /** @constant */
+                    evidence_state: "sourced";
+                    /** @constant */
+                    untrusted: true;
+                }[];
+                observations: {
+                    started_at: components["schemas"]["CoreEvidenceOfflineData"]["observation"]["started_at"];
+                    finalized_at: components["schemas"]["CoreEvidenceOfflineData"]["observation"]["finalized_at"];
+                    window: components["schemas"]["CoreEvidenceOfflineData"]["observation"]["window"];
+                    selection: components["schemas"]["CoreEvidenceOfflineData"]["observation"]["selection"];
+                    manifest_state: components["schemas"]["CoreEvidenceOfflineData"]["observation"]["manifest_state"];
+                    capture: components["schemas"]["CoreEvidenceOfflineData"]["observation"]["capture"];
+                    bundle: components["schemas"]["CoreEvidenceOfflineData"]["bundle"];
+                    provenance: components["schemas"]["CoreEvidenceCollectionPayload"]["provenance"];
+                    redaction: components["schemas"]["CoreEvidenceCollectionPayload"]["redaction"];
+                    /** @enum {unknown} */
+                    state: "complete" | "partial";
+                    source_limitations: string[];
+                    checks: components["schemas"]["CoreEvidenceOfflineData"]["checks"];
+                }[];
+                comparisons: {
+                    before: components["schemas"]["CoreEvidenceOfflineData"]["bundle"];
+                    after: components["schemas"]["CoreEvidenceOfflineData"]["bundle"];
+                    /** @enum {unknown} */
+                    state: "complete" | "partial" | "incompatible";
+                    /** @enum {unknown} */
+                    finding: "disagreement" | "agreement" | "incomparable" | "insufficient_evidence";
+                    compatibility: components["schemas"]["CoreEvidenceComparisonData"]["compatibility"];
+                    provenance_changes: string[];
+                    source_limitations: string[];
+                    checks: components["schemas"]["CoreEvidenceComparisonData"]["checks"];
+                }[];
+                limitations: string[];
+                next_questions: string[];
+                knowledge_proposals: {
+                    /** @enum {unknown} */
+                    kind: "service_card" | "alert_card" | "runbook";
+                    title: string;
+                    content: string;
+                    evidence: components["schemas"]["CoreEvidenceOfflineData"]["bundle"][];
+                    /** @constant */
+                    provenance: "operator_proposed";
+                    /** @constant */
+                    review_status: "pending";
+                }[];
+            };
+            rendering: {
+                /** @enum {unknown} */
+                state: "complete" | "omitted";
+                /** @enum {unknown} */
+                media_type: "text/markdown" | "application/json";
+                content: string | null;
+                bytes_required: number;
+            };
+            cancellation_signal?: number;
+        };
+        CoreContextExport: {
+            records: components["schemas"]["CoreContextExport"]["$defs"]["record"][];
+            /** @constant */
+            schema_version: 1;
+            source: {
+                id: string;
+                /** @constant */
+                kind: "fixture-export";
+                revision: string;
+            };
+            $defs: {
+                record: {
+                    bindings: {
+                        environment?: string;
+                        organization?: string;
+                        target?: string;
+                    };
+                    dependencies?: {
+                        forward?: components["schemas"]["CoreContextExport"]["$defs"]["selector"][];
+                        reverse?: components["schemas"]["CoreContextExport"]["$defs"]["selector"][];
+                    };
+                    deployment?: string;
+                    environment: string;
+                    /** Format: date-time */
+                    last_reviewed: string;
+                    owners?: string[];
+                    required_bindings: ("target" | "environment" | "organization")[];
+                    resource_aliases?: {
+                        alias: string;
+                        kind: string;
+                    }[];
+                    runbooks?: string[];
+                    service: string;
+                    /** @enum {unknown} */
+                    state: "active" | "retired";
+                    team: string;
+                };
+                selector: {
+                    deployment?: string;
+                    environment: string;
+                    service: string;
+                    team?: string;
+                };
+            };
+        };
+        CoreContextData: Record<string, never> | {
+            record: components["schemas"]["CoreContextExport"]["$defs"]["record"];
+            resolution: {
+                age_seconds: number;
+                max_age_days: number;
+                missing_optional: ("target" | "environment" | "organization" | "owners" | "resource_aliases" | "runbooks" | "dependencies.forward" | "dependencies.reverse")[];
+                missing_required: ("target" | "environment" | "organization")[];
+                /** @enum {unknown} */
+                state: "resolved" | "retired" | "stale" | "incomplete_required";
+                usable: boolean;
+            };
+            source: {
+                /** @constant */
+                evidence_state: "sourced";
+                id: string;
+                /** @constant */
+                kind: "fixture-export";
+                /** Format: date-time */
+                observed_at: string;
+                revision: string;
+                sha256: string;
+            };
+        } | {
+            cancellation_signal: number;
+        };
+        /** Evidence report selection and pending proposals */
+        CoreReportCreateInput: {
+            bundles: components["schemas"]["CoreEvidenceReferenceInput"][];
+            /** @enum {unknown} */
+            format: "markdown" | "json";
+            title?: string;
+            proposals?: {
+                /** @enum {unknown} */
+                kind: "service_card" | "alert_card" | "runbook";
+                title: string;
+                content: string;
+                evidence: components["schemas"]["CoreEvidenceReferenceInput"]["id"][];
+            }[];
+        };
+        ContextOperation: {
+            /** @constant */
+            id: "context.resolve";
+            /** @constant */
+            version: 1;
+            /** @constant */
+            profile: "offline-context-v1";
+        };
+        EvidenceOperation: {
+            /** @enum {unknown} */
+            id: "evidence.list" | "evidence.open" | "evidence.compare" | "report.create";
+            /** @constant */
+            version: 1;
+            /** @constant */
+            profile: "verified-evidence-v1";
+        };
+        EvidenceLimits: {
+            timeout_ms: number;
+            max_output_bytes: number;
+            max_items?: number;
+        };
+        EvidenceListInput: Record<string, never>;
+        ContextSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation_version: 1;
+            limits: components["schemas"]["Limits"];
+            /** @constant */
+            operation: "context.resolve";
+            inputs: components["schemas"]["CoreContextResolveInput"];
+        };
+        EvidenceListSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation_version: 1;
+            limits: components["schemas"]["Limits"];
+            /** @constant */
+            operation: "evidence.list";
+            inputs: components["schemas"]["EvidenceListInput"];
+        };
+        EvidenceOpenSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation_version: 1;
+            limits: components["schemas"]["EvidenceLimits"];
+            /** @constant */
+            operation: "evidence.open";
+            inputs: components["schemas"]["CoreEvidenceReferenceInput"];
+        };
+        EvidenceCompareSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation_version: 1;
+            limits: components["schemas"]["EvidenceLimits"];
+            /** @constant */
+            operation: "evidence.compare";
+            inputs: components["schemas"]["CoreEvidenceCompareInput"];
+        };
+        ReportSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation_version: 1;
+            limits: components["schemas"]["Limits"];
+            /** @constant */
+            operation: "report.create";
+            inputs: components["schemas"]["CoreReportCreateInput"];
+        };
+        CoreDashboardHygieneSupervisor: {
+            process_id: number;
+            process_group_id: number;
+            cancellation_signal: number | null;
+            stdout_bytes_observed: number;
+            stderr_bytes_observed: number;
+            cleanup: {
+                /** @enum {unknown} */
+                trigger: null | "timeout" | "cancellation" | "result_consumer_closed" | "descendants_after_leader_exit" | "supervisor_io_error";
+                term_sent: boolean;
+                kill_sent: boolean;
+                group_absent: boolean;
+                primary_reaped: boolean;
+                stdout_closed: boolean;
+                stderr_closed: boolean;
+                confirmed: boolean;
+                /** @constant */
+                grace_ms: 2000;
+                /** @constant */
+                final_drain_ms: 500;
+                scope: string;
+            };
+        };
+        /** @constant */
+        CoreEvidenceMetricsDefinition: {
+            id: "prometheus.up-by-job";
+            version: 1;
+            dialect: "promql";
+            sha256: "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f";
+        };
+        /** @constant */
+        CoreEvidenceLogsDefinition: {
+            id: "loki.logs-by-job";
+            version: 1;
+            dialect: "logql";
+            sha256: "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019";
+        };
+        /** Installed saved query invocation */
+        CoreQueryRunInput: {
+            /** @enum {unknown} */
+            id: "prometheus.up-by-job" | "loki.logs-by-job";
+            /** @constant */
+            version: 1;
+            datasource: string;
+            parameters: {
+                /** @description Literal job label value; runtime additionally enforces 128 UTF-8 bytes and the legacy macro guard. */
+                job: string;
+            };
+            window: {
+                /** @constant */
+                kind: "absolute";
+                /** Format: date-time */
+                from: string;
+                /** Format: date-time */
+                to: string;
+            } | {
+                /** @constant */
+                kind: "relative";
+                lookback_seconds: number;
+            };
+            expected_definition_sha256?: string;
+        };
+        /** Native Grafana query observation data */
+        CoreGrafanaQueryData: {
+            adapter: {
+                /** @constant */
+                id: "grafana";
+                /** @constant */
+                version: 1;
+                /** @constant */
+                api_profile: "grafana-legacy-v1";
+                /** @constant */
+                compatibility_evidence: "fixture_only";
+                /** @constant */
+                upstream_revision: "7d900fb999abee3b3712e1da881dcc7e80b1f6e7";
+                /** @constant */
+                upstream_digest: "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7";
+            };
+            binding: null | {
+                origin: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                organization_id: number | {
+                    /** @constant */
+                    redacted: true;
+                };
+                organization_verified: boolean;
+            };
+            request: null | {
+                datasource: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                kind: ("prometheus" | "loki") | {
+                    /** @constant */
+                    redacted: true;
+                };
+                from: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                to: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                expr: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                /** @constant */
+                max_data_points: 1000;
+                interval_ms: number;
+                /** @enum {unknown} */
+                max_lines: null | 500;
+            };
+            response: null | {
+                results: {
+                    A: Record<string, never>;
+                };
+            };
+            redaction: {
+                applied: boolean;
+                replacements: number;
+            };
+            transport: {
+                /** @enum {unknown} */
+                stage: "admission" | "organization" | "dashboard" | "datasource" | "query" | "complete";
+                requests_started: number;
+                responses_received: number;
+                /** @constant */
+                request_timeout_ms: 20000;
+                response_limit_bytes: number;
+            };
+            /** @enum {unknown} */
+            cancellation_signal: null | 2 | 15;
+        };
+        /** Installed saved query identity and bounded Grafana observation */
+        CoreQueryRunData: {
+            adapter: components["schemas"]["CoreGrafanaQueryData"]["adapter"];
+            binding: components["schemas"]["CoreGrafanaQueryData"]["binding"];
+            request: components["schemas"]["CoreGrafanaQueryData"]["request"];
+            response: components["schemas"]["CoreGrafanaQueryData"]["response"];
+            redaction: components["schemas"]["CoreGrafanaQueryData"]["redaction"];
+            transport: components["schemas"]["CoreGrafanaQueryData"]["transport"];
+            cancellation_signal: components["schemas"]["CoreGrafanaQueryData"]["cancellation_signal"];
+            definition: null | ({
+                /** @constant */
+                id: "prometheus.up-by-job";
+                /** @constant */
+                version: 1;
+                /** @constant */
+                dialect: "promql";
+                sha256: string;
+            } | {
+                /** @constant */
+                id: "loki.logs-by-job";
+                /** @constant */
+                version: 1;
+                /** @constant */
+                dialect: "logql";
+                sha256: string;
+            });
+            parameters: null | {
+                job: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+            };
+            window: null | {
+                from: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                to: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+            };
         };
     };
     responses: never;

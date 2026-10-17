@@ -1,0 +1,13 @@
+{
+  "inventory_version": 1,
+  "revision": "fixture-v1",
+  "targets": [
+    {
+      "id": "east",
+      "runner_id": "east.runner",
+      "target": "prod.snapshot",
+      "runner_config": "/private/east-controller.json",
+      "principal": "fleet.observer"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "ca_certificate": "/tmp/installed-fleet-4rtoeo71/pki/ca.der",
+  "certificate": "/tmp/installed-fleet-4rtoeo71/pki/server-1.der",
+  "config_version": 1,
+  "grants": [
+    {
+      "max_runtime_ms": 1,
+      "operation": "task.run",
+      "operation_version": 1,
+      "principal": "fleet.operator",
+      "target": "observed.target",
+      "task": {
+        "binding_sha256": "sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4",
+        "id": "error-budget",
+        "version": 1
+      }
+    }
+  ],
+  "listen": "127.0.0.1:37419",
+  "principals": [
+    {
+      "certificate_sha256": "sha256:b56bf4bd42bbd06f8c04f6256122ae7294e5b0cabc893fce3b67eb35313b185e",
+      "id": "fleet.operator"
+    }
+  ],
+  "private_key": "/tmp/installed-fleet-4rtoeo71/pki/server-1.key.der",
+  "runner_id": "runner.1",
+  "state_dir": "/tmp/installed-fleet-4rtoeo71/runner-1/state",
+  "targets": [
+    {
+      "id": "observed.target",
+      "snapshot": {
+        "environment": "isolated-sandbox",
+        "name": "Target 1"
+      }
+    }
+  ]
+}

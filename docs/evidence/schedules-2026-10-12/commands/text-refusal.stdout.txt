@@ -1,0 +1,8 @@
+schedule.status: unsupported
+Run: run-23-18ddb14eb90d7907-1
+Assessment: not_assessed
+Effects: not_attempted
+Record: never
+schedule_store_required: Schedule state or pinned fleet authority could not be established. Retain original occurrence identities; uncertain intents are never replayed.
+Schedule action: status
+{"action":"status","cancellation_signal":null,"format_version":1,"occurrences":[],"omitted_occurrences":0,"preview":[],"schedules":[]}

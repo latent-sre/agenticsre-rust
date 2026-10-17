@@ -1,0 +1,24 @@
+[
+  {
+    "cancel_during_finalizing": true,
+    "case": "published-result-crash-snapshot",
+    "prior_result_adopted": true,
+    "replayed": false
+  },
+  {
+    "case": "closed-worker-output",
+    "exit_code": 1,
+    "terminal_persisted": true
+  },
+  {
+    "case": "worker-sigkill",
+    "observed_state": "recovery_required",
+    "prior_child_completed": true,
+    "replayed": false
+  },
+  {
+    "case": "private-64kib-enospc",
+    "files": 5,
+    "partial_store_preserved": true
+  }
+]

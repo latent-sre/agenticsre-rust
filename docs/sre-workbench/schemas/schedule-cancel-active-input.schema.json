@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:schedule-cancel-active-input:0.1",
+  "title": "schedule.cancel-active input",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation",
+      "maxLength": 64
+    },
+    "expected_revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    }
+  },
+  "required": [
+    "id",
+    "expected_revision"
+  ],
+  "additionalProperties": false
+}

@@ -122,6 +122,33 @@ def validate(spec):
     return panels, fields_truncated
 
 
+def config_spec(model):
+    """Config-check v1 admits only the locally accepted dashboard envelope forms."""
+    app = any(key in model for key in ("spec", "apiVersion", "kind"))
+    legacy = any(key in model for key in ("dashboard", "meta"))
+    require(not (app and legacy), "unsupported_model_schema")
+    if app:
+        require(not any(key in model for key in ("panels", "elements", "layout")),
+                "unsupported_model_schema")
+        require(model.get("kind") == "Dashboard"
+                and model.get("apiVersion") == "dashboard.grafana.app/v1beta1",
+                "unsupported_model_schema")
+        require(isinstance(model.get("spec"), dict))
+        spec = model["spec"]
+    elif legacy:
+        require("dashboard" in model and "meta" in model
+                and not any(key in model for key in ("panels", "elements", "layout")),
+                "unsupported_model_schema")
+        require(isinstance(model["dashboard"], dict) and isinstance(model["meta"], dict))
+        spec = model["dashboard"]
+    else:
+        spec = model
+    require(not any(key in spec for key in ("spec", "apiVersion", "kind", "dashboard", "meta")),
+            "unsupported_model_schema")
+    require("elements" not in spec and "layout" not in spec, "unsupported_model_v2")
+    return spec
+
+
 def encoded(value):
     return json.dumps(value, ensure_ascii=True, separators=(",", ":")).encode("ascii")
 
@@ -133,7 +160,15 @@ def main():
              "findings_truncated": False, "fields_truncated": False, "error_code": None}
     try:
         require(sys.version_info >= (3, 11), "unsupported_runtime")
-        require(len(sys.argv) == 2 and os.path.isabs(sys.argv[1]), "invalid_task_input")
+        require(len(sys.argv) in (2, 3, 4) and os.path.isabs(sys.argv[1]), "invalid_task_input")
+        config_mode = len(sys.argv) >= 3 and sys.argv[2] == "--config-check-v1"
+        require(config_mode or len(sys.argv) in (2, 3), "invalid_task_input")
+        expected_digest = (sys.argv[3] if len(sys.argv) == 4 else None) if config_mode else (
+            sys.argv[2] if len(sys.argv) == 3 else None)
+        require(expected_digest is None or (
+            len(expected_digest) == 71 and expected_digest.startswith("sha256:")
+            and all(char in "0123456789abcdef" for char in expected_digest[7:])
+        ), "invalid_task_input")
         descriptor = os.open(sys.argv[1], os.O_RDONLY | os.O_NONBLOCK | os.O_CLOEXEC)
         with os.fdopen(descriptor, "rb") as handle:
             require(stat.S_ISREG(os.fstat(handle.fileno()).st_mode), "non_regular_model")
@@ -141,19 +176,24 @@ def main():
         require(len(content) <= MAX_BYTES, "model_too_large")
         reply["input_bytes"] = len(content)
         reply["input_digest"] = "sha256:" + hashlib.sha256(content).hexdigest()
+        # Pin the exact bytes consumed below; never re-open the path to verify identity.
+        require(expected_digest is None or reply["input_digest"] == expected_digest,
+                "input_digest_mismatch")
         text = content.decode("utf-8")
         check_depth(text)
         def invalid_constant(_value):
             raise InvalidModel("invalid_model_json")
         model = json.loads(text, object_pairs_hook=unique_object, parse_constant=invalid_constant)
         require(isinstance(model, dict))
-        if "spec" in model and "apiVersion" in model:
-            require(isinstance(model["spec"], dict) and isinstance(model["apiVersion"], str))
-        if "dashboard" in model and "meta" in model:
-            require(isinstance(model["dashboard"], dict) and isinstance(model["meta"], dict))
+        if not config_mode:
+            if "spec" in model and "apiVersion" in model:
+                require(isinstance(model["spec"], dict) and isinstance(model["apiVersion"], str))
+            if "dashboard" in model and "meta" in model:
+                require(isinstance(model["dashboard"], dict) and isinstance(model["meta"], dict))
+        selected_spec = config_spec(model) if config_mode else None
         namespace = {"__name__": "workbench_dashboard_hygiene"}
         exec(compile(CHECKER_SOURCE, "<embedded-dashboard-hygiene>", "exec"), namespace)
-        spec = namespace["unwrap"](model)
+        spec = selected_spec if config_mode else namespace["unwrap"](model)
         panels, shortened = validate(spec)
         findings = namespace["check"](spec)
         reply["checked_panels"] = len(panels)

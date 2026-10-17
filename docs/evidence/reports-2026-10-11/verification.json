@@ -1,0 +1,61 @@
+{
+  "binary_sha256": "d00d0bdd44e16223bb54fd7080de03898dd2b0b5deab15faf87542ac01291196",
+  "commands": [
+    {
+      "case": "collect-0",
+      "credential_available": true,
+      "exit": 0
+    },
+    {
+      "case": "collect-1",
+      "credential_available": true,
+      "exit": 0
+    },
+    {
+      "case": "collect-2",
+      "credential_available": true,
+      "exit": 0
+    },
+    {
+      "case": "markdown",
+      "credential_available": false,
+      "exit": 0
+    },
+    {
+      "case": "json",
+      "credential_available": false,
+      "exit": 0
+    },
+    {
+      "case": "redacted",
+      "credential_available": false,
+      "exit": 1
+    },
+    {
+      "case": "limited",
+      "credential_available": false,
+      "exit": 1
+    },
+    {
+      "case": "proposals",
+      "credential_available": false,
+      "exit": 0
+    },
+    {
+      "case": "structured",
+      "credential_available": false,
+      "exit": 0
+    },
+    {
+      "case": "tampered",
+      "credential_available": false,
+      "exit": 1
+    }
+  ],
+  "fixture_requests": 18,
+  "fixture_shutdown_before_reports": true,
+  "passed": true,
+  "source_files": 1077,
+  "source_manifest_sha256": "1a15e2b0a46435a82c8d693a111a863044a39f85d8b01d50bac3465a94461d2b",
+  "store_unchanged": true
+}

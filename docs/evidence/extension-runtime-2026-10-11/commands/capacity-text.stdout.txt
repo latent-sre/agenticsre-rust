@@ -1,0 +1,14 @@
+ext.example.capacity.project: succeeded
+Run: run-14-18dda8ed1107284f-1
+Assessment: not_assessed
+Effects: unknown
+Record: never
+Child exit: 0
+Working directory: /
+External execution under ordinary operator-reviewed authority; not an untrusted-code sandbox.
+package: {"executable_sha256":"sha256:2c10ab896d97f7c27303862ba24dd93bb609e8c3e010d9fe791c514b1b616107","id":"example.capacity","package_sha256":"sha256:9cbcd22ecb67e659308f9287cc293e51e9caabea951ef9177544e931b0103435","version":1}
+authorization: {"execution_profile":"operator-reviewed-v1","policy_sha256":"sha256:2ac1767b76ea6b60149a64c8f39d03ca49dfecde1a4f9c4b4503fb7311d6023a"}
+protocol: {"error":null,"frames_received":3,"name":"save-extension","state":"terminal","terminal_received":true,"version":1}
+progress: [{"message":"Checking supplied capacity projection inputs.","sequence":1,"untrusted":true}]
+terminal: {"data":{"assumption":"Constant supplied daily growth; no live measurements.","days_remaining_floor":5,"exhausted":false,"has_finite_horizon":true,"headroom_bytes":500,"projection_state":"growing"},"error":null,"sequence":2,"status":"succeeded","untrusted":true}
+diagnostics: {"stderr":"","truncated":false,"untrusted":true}

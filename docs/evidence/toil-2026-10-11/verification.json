@@ -1,0 +1,104 @@
+{
+  "binary_sha256": "b78b80ada15a01ed2553387e0a66609505e6deee1b86592f9f2fc81be18b78eb",
+  "commands": [
+    {
+      "case": "disabled-initial",
+      "exit": 0
+    },
+    {
+      "case": "disabled-capture",
+      "exit": 2
+    },
+    {
+      "case": "enabled",
+      "exit": 0
+    },
+    {
+      "case": "record-0",
+      "exit": 0
+    },
+    {
+      "case": "record-1",
+      "exit": 0
+    },
+    {
+      "case": "record-2",
+      "exit": 0
+    },
+    {
+      "case": "record-3",
+      "exit": 0
+    },
+    {
+      "case": "summary-arithmetic",
+      "exit": 0
+    },
+    {
+      "case": "capture",
+      "exit": 0
+    },
+    {
+      "case": "summary-missing-effort",
+      "exit": 0
+    },
+    {
+      "case": "annotate",
+      "exit": 0
+    },
+    {
+      "case": "summary-estimated",
+      "exit": 0
+    },
+    {
+      "case": "raw-content-refused",
+      "exit": 2
+    },
+    {
+      "case": "record-mode-refused",
+      "exit": 2
+    },
+    {
+      "case": "old-sample",
+      "exit": 0
+    },
+    {
+      "case": "opt-out-short-retention",
+      "exit": 0
+    },
+    {
+      "case": "opt-out-record",
+      "exit": 2
+    },
+    {
+      "case": "opt-out-annotate",
+      "exit": 2
+    },
+    {
+      "case": "opt-out-capture",
+      "exit": 2
+    },
+    {
+      "case": "summary-retention",
+      "exit": 0
+    },
+    {
+      "case": "prune-disabled",
+      "exit": 0
+    },
+    {
+      "case": "delete-disabled",
+      "exit": 0
+    },
+    {
+      "case": "structured-summary",
+      "exit": 0
+    }
+  ],
+  "installed_copy_outside_checkout": true,
+  "no_credentials_or_network": true,
+  "passed": true,
+  "raw_task_input_not_persisted": true,
+  "read_and_refusal_store_unchanged": true,
+  "source_files": 1129,
+  "source_manifest_sha256": "c743cfe3e39f26503b7323c5c2aa22c2efec9cac09868deb55c34dbbb5698635"
+}

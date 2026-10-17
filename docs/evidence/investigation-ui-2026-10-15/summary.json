@@ -1,0 +1,177 @@
+{
+  "status": "passed",
+  "binary": {
+    "sha256": "008ca048619806fa4e3ba07bd1c84cf4272385c10d89541df0a86aa9b0f7f295",
+    "bytes": 51395024
+  },
+  "source_manifest_sha256": "6544125fe54bc42f75cf0c524a8ca072813b305cc9c9be12458fc9683f6f1faf",
+  "browser_version": "156.0.8078.4",
+  "cases": [
+    {
+      "name": "Context keyboard flow; pinned source, freshness, ownership and hostile text remain inert",
+      "status": "passed"
+    },
+    {
+      "name": "Saved evidence list exposes historical storage state and IDs",
+      "status": "passed"
+    },
+    {
+      "name": "Verified pinned inspection; canonical browser receipt download matches API bytes exactly",
+      "status": "passed"
+    },
+    {
+      "name": "Comparable metric/log deltas and incompatible original windows remain distinct",
+      "status": "passed"
+    },
+    {
+      "name": "Plain-text report preview and explicit Markdown download; dark mobile view has no horizontal overflow",
+      "status": "passed"
+    },
+    {
+      "name": "Explicit JSON report download matches the retained report",
+      "status": "passed"
+    },
+    {
+      "name": "Session history reopens the original invocation without recomputation",
+      "status": "passed"
+    },
+    {
+      "name": "Real API authentication/origin, independent grants and request authority override refusals",
+      "status": "passed"
+    },
+    {
+      "name": "Manifest pin mismatch, missing evidence and bounded partial inspection retain honest receipts; dedup/conflicts preserved",
+      "status": "passed"
+    },
+    {
+      "name": "All browser/API observations leave source and retained store bytes/modes unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "Changed context bytes and same-content replacement store are refused by existing grants",
+      "status": "passed"
+    },
+    {
+      "name": "Corrupt historical manifest is rejected without repair or store mutation",
+      "status": "passed"
+    },
+    {
+      "name": "Stale context retains its provenance and cannot claim usable bindings",
+      "status": "passed"
+    },
+    {
+      "name": "Ungranting all operations removes runnable browser controls and denies direct API requests",
+      "status": "passed"
+    },
+    {
+      "name": "No browser script errors/remote requests; source and installed binary identities stable throughout acceptance",
+      "status": "passed"
+    }
+  ],
+  "receipts": [
+    {
+      "name": "browser-context",
+      "file": "browser-context.receipt.json",
+      "sha256": "c5e05d4d23379c2629e064b2c097458d43e1c7b4785700b29069fcebb722d0c6",
+      "operation": "context.resolve",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-list",
+      "file": "browser-list.receipt.json",
+      "sha256": "cf8837ac421d194460fdb71cd376450e97fc0f5a7ad2d43a2fdf7bcce41f4c2f",
+      "operation": "evidence.list",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-open",
+      "file": "browser-open.receipt.json",
+      "sha256": "06614e3fb14c494421ae16f145a5978d1220ce6a89051455cc337f8d75fdecaf",
+      "operation": "evidence.open",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-compare",
+      "file": "browser-compare.receipt.json",
+      "sha256": "a527a6dcb2743f85edc1af7fdfe0e7652e7b325510f6b180724c047a89011c65",
+      "operation": "evidence.compare",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-incompatible",
+      "file": "browser-incompatible.receipt.json",
+      "sha256": "c65cf06fc199edc3ed439401ed8f7a348e1d3a55f71c1a74b02598cc5b19879f",
+      "operation": "evidence.compare",
+      "status": "partial"
+    },
+    {
+      "name": "browser-report",
+      "file": "browser-report.receipt.json",
+      "sha256": "d6bf967b88554c956d39f5ac53994aac63d17da15512807bb73048755eb1657e",
+      "operation": "report.create",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-report-json",
+      "file": "browser-report-json.receipt.json",
+      "sha256": "d3513d3f91df1927a8db9bddcea5ab67c85674f4c13e5c33cadeefb526d7b3f6",
+      "operation": "report.create",
+      "status": "succeeded"
+    },
+    {
+      "name": "api-bad-pin",
+      "file": "api-bad-pin.receipt.json",
+      "sha256": "1b5a2c7382a9f1e06189b8459e63517289738152ce7ff2ac78d7bbe5f01be06a",
+      "operation": "evidence.open",
+      "status": "failed"
+    },
+    {
+      "name": "api-missing-bundle",
+      "file": "api-missing-bundle.receipt.json",
+      "sha256": "e77f72925cacc3b328abd4219ff35f04b94ee3df508ad10bec332c58d643e4e1",
+      "operation": "evidence.open",
+      "status": "failed"
+    },
+    {
+      "name": "api-bounded-open",
+      "file": "api-bounded-open.receipt.json",
+      "sha256": "a1c405a5a02e00b8581c5ad7f05d4814c713f183f5473662d5c7c9f329660234",
+      "operation": "evidence.open",
+      "status": "partial"
+    },
+    {
+      "name": "api-source-changed",
+      "file": "api-source-changed.receipt.json",
+      "sha256": "a0cf83d0a2e36eded3898950eb926bba74fb150d14279b651a20450d685989f9",
+      "operation": "context.resolve",
+      "status": "denied"
+    },
+    {
+      "name": "api-store-replaced",
+      "file": "api-store-replaced.receipt.json",
+      "sha256": "50e881f6b84ee813c8d988657b4576325ef7a785a5ed416baf9c735481fbbfbc",
+      "operation": "evidence.list",
+      "status": "failed"
+    },
+    {
+      "name": "api-corrupt-bundle",
+      "file": "api-corrupt-bundle.receipt.json",
+      "sha256": "c4e07ff81b435995f16b11fd546792f69dc6a01ddc2b5aca0f8673782ee44b36",
+      "operation": "evidence.open",
+      "status": "failed"
+    },
+    {
+      "name": "api-stale-context",
+      "file": "api-stale-context.receipt.json",
+      "sha256": "d14d0ccd7054352b0932cfb08399d9be7ebfb30eb02f0390ca921432158e8518",
+      "operation": "context.resolve",
+      "status": "denied"
+    }
+  ],
+  "screenshots": [
+    "context-light.png",
+    "evidence-light.png",
+    "compare-dark.png",
+    "report-mobile-dark.png"
+  ]
+}

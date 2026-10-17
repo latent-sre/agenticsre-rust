@@ -1,0 +1,9 @@
+{
+  "leaf_sha256": {
+    "approver": "sha256:f5f85975e4b46b358549c5cb1d9faba7762dcd2ea8a8b0d80265a18449ad91aa",
+    "requester": "sha256:33cf59b7d900f577c053ca1b155c97e6d4a004fda5edc0d32fdf2d9936774f02",
+    "server": "sha256:ccb30db51e4a59df4d2f6b2514a55cde5d1329794bd9b7a351537afa16ffd9d7"
+  },
+  "openssl_version": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)",
+  "private_material_retained": false
+}

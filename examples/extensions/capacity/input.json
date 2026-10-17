@@ -1,0 +1,5 @@
+{
+  "capacity_bytes": 1500,
+  "used_bytes": 1000,
+  "growth_bytes_per_day": 100
+}

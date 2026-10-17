@@ -1,0 +1,9 @@
+{
+  "leaf_sha256": {
+    "client": "sha256:b56bf4bd42bbd06f8c04f6256122ae7294e5b0cabc893fce3b67eb35313b185e",
+    "server-0": "sha256:f9ef6b2f06a4a576885f841a8c11d442c0b082048eb29c5849cf6f764d6733fb",
+    "server-1": "sha256:68c2ca8a2194bc37b8a90ca1c265efd60404ba89924da739524ad2595920b2d1"
+  },
+  "openssl_version": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)",
+  "private_material_retained": false
+}

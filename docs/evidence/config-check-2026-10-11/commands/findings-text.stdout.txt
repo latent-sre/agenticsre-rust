@@ -1,0 +1,21 @@
+config.check: succeeded
+Run: run-18-18dda3efb20d3705-1
+Assessment: not_assessed
+Effects: not_applicable
+Record: never
+Child exit: 0
+Working directory: /
+Executable: /usr/bin/python3.14
+Configuration kind: grafana-dashboard
+Validator: {"binding_digest":"sha256:1b322a14c60426e4bbe05cd3f38daa496f69cd072adc725a7022bdac665b978f","checker_digest":"sha256:8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2","id":"dashboard-hygiene","upstream_revision":"7d900fb999abee3b3712e1da881dcc7e80b1f6e7","version":1}
+Input: {"bytes":935,"digest":"sha256:814da34f020caba5c186b11ac5d97a6a583644e7c5e82670e6acff984d9395ae","file":"/tmp/installed-config-shr8r9w0/model.json"}
+Validation: complete
+Unsupported sections: ["live_datasource_queries","grafana_rendering","plugin_specific_options","uncovered_dashboard_properties"]
+Checked panels: 1
+Findings: 1
+panel-description: Is checkout error ratio breaching target?
+  no description; it renders as the panel's tooltip
+Coverage: complete — Implemented static textual rules for the consumed Grafana dashboard only; no rendering, live query or deployment-health validation.
+Limit: Only the ten installed textual hygiene rules are implemented; uncovered dashboard properties and plugin-specific options are not validated.
+Limit: Findings do not establish Grafana rendering, query correctness, deployed configuration or live service health. Source bytes are untrusted data and are never executed.
+Limit: Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check.

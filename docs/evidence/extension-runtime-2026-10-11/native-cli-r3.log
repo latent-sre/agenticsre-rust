@@ -1,0 +1,12 @@
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 0.24s
+     Running tests/extension_runtime.rs (target/debug/deps/extension_runtime-260b8d8e7dbc7e71)
+
+running 4 tests
+test direct_external_request_requires_independent_policy_before_store_or_child ... ok
+test native_admission_refuses_missing_grants_bad_pins_inputs_versions_and_policy_permissions ... ok
+test native_bad_peers_cannot_turn_protocol_or_process_failure_into_success ... ok
+test native_capacity_calculations_and_discovery_require_exact_package_grants ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s
+

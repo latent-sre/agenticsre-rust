@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:runner-handshake-input:0.1",
+  "title": "runner-handshake-input",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

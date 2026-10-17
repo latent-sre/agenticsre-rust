@@ -1,0 +1,479 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:evidence-offline-data:0.1",
+  "title": "Verified historical evidence inspection and deterministic replay",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "mode": {
+      "enum": [
+        "open",
+        "replay"
+      ]
+    },
+    "algorithm": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "retained-observations-v1"
+        },
+        "version": {
+          "const": 1
+        }
+      },
+      "required": [
+        "id",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "at": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 64
+        },
+        "tool": {
+          "const": "save"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "profile": {
+          "const": "linux-offline-v1"
+        }
+      },
+      "required": [
+        "at",
+        "tool",
+        "version",
+        "profile"
+      ],
+      "additionalProperties": false
+    },
+    "bundle": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:sre-workbench:spec:evidence-reference-input:0.1#/properties/id"
+        },
+        "digest": {
+          "$ref": "urn:sre-workbench:spec:evidence-reference-input:0.1#/properties/expected_manifest_sha256"
+        }
+      },
+      "required": [
+        "id",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "started_at": {
+          "$ref": "urn:sre-workbench:spec:evidence-collection-payload:0.1#/properties/started_at"
+        },
+        "finalized_at": {
+          "$ref": "urn:sre-workbench:spec:evidence-collection-payload:0.1#/properties/finalized_at"
+        },
+        "window": {
+          "$ref": "urn:sre-workbench:spec:evidence-collection-payload:0.1#/properties/window"
+        },
+        "selection": {
+          "$ref": "urn:sre-workbench:spec:evidence-collection-payload:0.1#/properties/selection"
+        },
+        "capture": {
+          "$ref": "urn:sre-workbench:spec:evidence-collection-payload:0.1#/properties/capture"
+        },
+        "manifest_state": {
+          "enum": [
+            "sealed",
+            "interrupted"
+          ]
+        }
+      },
+      "required": [
+        "started_at",
+        "finalized_at",
+        "window",
+        "selection",
+        "capture",
+        "manifest_state"
+      ],
+      "additionalProperties": false
+    },
+    "state": {
+      "enum": [
+        "complete",
+        "partial"
+      ]
+    },
+    "source_limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 256
+      },
+      "maxItems": 32
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "metrics",
+              "logs"
+            ]
+          },
+          "kind": {
+            "enum": [
+              "prometheus",
+              "loki"
+            ]
+          },
+          "state": {
+            "enum": [
+              "complete",
+              "partial",
+              "missing",
+              "incompatible"
+            ]
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 256
+            },
+            "maxItems": 32
+          },
+          "definition": {
+            "anyOf": [
+              {
+                "$ref": "urn:sre-workbench:spec:evidence-collection-payload:0.1#/properties/steps/prefixItems/0/properties/definition"
+              },
+              {
+                "$ref": "urn:sre-workbench:spec:evidence-collection-payload:0.1#/properties/steps/prefixItems/1/properties/definition"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "unit": {
+            "enum": [
+              "dimensionless",
+              "entries"
+            ]
+          },
+          "summary": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "retained_receipts": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "retained_receipts"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "series": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "samples": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "finite": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "missing": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "nonfinite": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "sampling_gaps": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "series",
+                  "samples",
+                  "finite",
+                  "missing",
+                  "nonfinite",
+                  "sampling_gaps"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "entries": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "label_sets": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "unique_entries": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "duplicate_entries": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "entries",
+                  "label_sets",
+                  "unique_entries",
+                  "duplicate_entries"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "const": "receipt"
+                    },
+                    "receipt": {
+                      "$ref": "urn:sre-workbench:spec:result:0.1"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "receipt"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "const": "metric_sample"
+                    },
+                    "series": {
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string",
+                          "maxLength": 256
+                        },
+                        "labels": {
+                          "type": "object",
+                          "maxProperties": 64,
+                          "propertyNames": {
+                            "maxLength": 256
+                          },
+                          "additionalProperties": {
+                            "type": "string",
+                            "maxLength": 2048
+                          }
+                        }
+                      },
+                      "required": [
+                        "field",
+                        "labels"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "timestamp_ns": {
+                      "type": "string",
+                      "pattern": "^-?[0-9]+$",
+                      "maxLength": 40
+                    },
+                    "value": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "state": {
+                      "enum": [
+                        "finite",
+                        "null",
+                        "non_finite"
+                      ]
+                    },
+                    "nonfinite": {
+                      "enum": [
+                        null,
+                        "NaN",
+                        "Inf",
+                        "NegInf"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "series",
+                    "timestamp_ns",
+                    "value",
+                    "state",
+                    "nonfinite"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "const": "log_entry"
+                    },
+                    "labels": {
+                      "type": "object",
+                      "maxProperties": 64,
+                      "propertyNames": {
+                        "maxLength": 256
+                      },
+                      "additionalProperties": {
+                        "type": "string",
+                        "maxLength": 2048
+                      }
+                    },
+                    "label_types": {
+                      "type": "object",
+                      "maxProperties": 64,
+                      "propertyNames": {
+                        "maxLength": 256
+                      },
+                      "additionalProperties": {
+                        "type": "string",
+                        "maxLength": 2048
+                      }
+                    },
+                    "timestamp_ns": {
+                      "type": "string",
+                      "pattern": "^-?[0-9]+$",
+                      "maxLength": 40
+                    },
+                    "line": {
+                      "type": "string",
+                      "maxLength": 16384
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "labels",
+                    "label_types",
+                    "timestamp_ns",
+                    "line",
+                    "count"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "maxItems": 1000
+          },
+          "omitted_details": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "state",
+          "reasons",
+          "definition",
+          "unit",
+          "summary",
+          "details",
+          "omitted_details"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 2
+    },
+    "omitted_details": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "manifest": {
+      "$ref": "urn:sre-workbench:spec:evidence-manifest:0.1"
+    },
+    "cancellation_signal": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 64
+    }
+  },
+  "required": [
+    "format_version",
+    "mode",
+    "algorithm",
+    "analysis",
+    "bundle",
+    "observation",
+    "state",
+    "source_limitations",
+    "checks",
+    "omitted_details"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "open"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "manifest"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "manifest"
+          ]
+        }
+      }
+    }
+  ]
+}

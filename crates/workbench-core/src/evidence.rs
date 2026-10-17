@@ -2,7 +2,10 @@
 pub(crate) mod collect;
 pub(crate) mod compare;
 mod frames;
+pub(crate) mod grant;
+pub(crate) mod offline;
 pub(crate) mod pack;
+pub(crate) mod report;
 pub(crate) mod store;
 
 pub use store::EvidenceStoreOptions;
@@ -19,7 +22,7 @@ use std::{
 };
 use store::{Store, StoreError, VerifiedBundle};
 
-fn reference(inputs: &Value) -> Result<(&str, Option<&str>), Problem> {
+pub(crate) fn reference(inputs: &Value) -> Result<(&str, Option<&str>), Problem> {
     let invalid = || {
         Problem::invalid(
             "invalid_evidence_reference",

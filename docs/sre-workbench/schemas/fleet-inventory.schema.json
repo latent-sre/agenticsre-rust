@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:fleet-inventory:0.1",
+  "title": "fleet-inventory",
+  "type": "object",
+  "properties": {
+    "inventory_version": {
+      "const": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$"
+    },
+    "targets": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          },
+          "runner_id": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          },
+          "target": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          },
+          "runner_config": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 1024,
+            "pattern": "^/[^\\u0000-\\u001f\\u007f-\\u009f]*$"
+          },
+          "principal": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          }
+        },
+        "required": [
+          "id",
+          "runner_id",
+          "target",
+          "runner_config",
+          "principal"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "inventory_version",
+    "revision",
+    "targets"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,19 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Finished `test` profile [unoptimized] target(s) in 3.27s
+     Running tests/extensions.rs (target/debug/deps/extensions-80603b4ffdb15817)
+
+running 11 tests
+test ambiguous_policy_grants_never_enable_or_select_an_external_operation ... ok
+test conflict_corruption_staging_unknown_files_and_partial_layout_never_get_repaired ... ok
+test duplicate_json_keys_and_noncanonical_base64_are_rejected ... ok
+test inspect_install_and_list_remain_inert_digest_bound_and_private ... ok
+test invalid_or_nonprivate_policy_refuses_install_before_store_effects ... ok
+test execution_policy_is_separate_and_dynamic_discovery_reports_effective_authority ... ok
+test omitted_descriptions_preserve_installation_and_inventory_receipts ... ok
+test malicious_manifest_fields_schema_extensions_and_executable_mismatch_are_rejected ... ok
+test pins_inputs_hosted_and_cancelled_requests_refuse_before_store_creation ... ok
+test source_links_directories_fifo_and_oversize_files_are_refused ... ok
+test package_count_quota_and_effective_output_budget_preserve_inventory ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.08s
+

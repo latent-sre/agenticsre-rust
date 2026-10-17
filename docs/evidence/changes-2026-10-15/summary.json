@@ -1,0 +1,27 @@
+{
+  "workspace": {
+    "passed": 538,
+    "failed": 0,
+    "ignored": 33
+  },
+  "core_change_focused": {
+    "passed": 29,
+    "failed": 0
+  },
+  "cli_change_focused": {
+    "passed": 7,
+    "failed": 0
+  },
+  "final_schema_consumers": {
+    "runner_tests": 22,
+    "mcp_tests": 25
+  },
+  "installed_commands": 19,
+  "installed_gaps": [],
+  "source_files": 2449,
+  "source_manifest_sha256": "a4fd2c478c0510709c6961b6e244b7c9523808e5f9e9b897f82263b75102227c",
+  "binary_sha256": "a90cc135646beeb38b8d7641d9a43e2e6577f002838013778876a1c3d2a6b98c",
+  "schema_count": 108,
+  "positive_fixtures": 72,
+  "negative_fixtures": 63
+}

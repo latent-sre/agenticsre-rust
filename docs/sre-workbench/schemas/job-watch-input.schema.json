@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:job-watch-input:0.1",
+  "title": "job-watch-input",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "pattern": "^job-[0-9]+-[0-9a-f]+-[0-9a-f]+$",
+      "maxLength": 96
+    },
+    "after_sequence": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    }
+  },
+  "required": [
+    "job_id",
+    "after_sequence"
+  ],
+  "additionalProperties": false
+}

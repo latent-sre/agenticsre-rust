@@ -1,0 +1,32 @@
+   Compiling capacity-projector v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/capacity-projector)
+    Finished `test` profile [unoptimized] target(s) in 0.23s
+     Running unittests src/lib.rs (target/debug/deps/capacity_projector-65b1badd8dc91d29)
+
+running 6 tests
+test tests::missing_unknown_duplicate_and_noninteger_fields_are_rejected ... ok
+test tests::positional_arrays_cannot_substitute_for_protocol_objects ... ok
+test tests::projection_uses_integer_floor_and_discloses_nonfinite_and_exhausted_cases ... ok
+test tests::transcript_calculates_and_correlates_exactly_one_terminal ... ok
+test tests::frames_require_utf8_and_lf_and_have_a_byte_bound ... ok
+test tests::unsupported_versions_and_inconsistent_controls_cannot_succeed ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/capacity_projector-45afcb5ce80d42be)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/extension-peer-fixture.rs (target/debug/deps/extension_peer_fixture-9b9d65c16bc40c47)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests capacity_projector
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:dashboard-config-data:0.1",
+  "title": "dashboard-config-data",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "const": "grafana-dashboard"
+    },
+    "validator": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "dashboard-hygiene"
+        },
+        "version": {
+          "const": 1
+        },
+        "checker_digest": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        "binding_digest": {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        "upstream_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "checker_digest",
+        "binding_digest",
+        "upstream_revision"
+      ],
+      "additionalProperties": false
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^/",
+          "not": {
+            "pattern": "[\\u0000-\\u001f\\u007f]"
+          }
+        },
+        "digest": {
+          "anyOf": [
+            {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bytes": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2097152
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "file",
+        "digest",
+        "bytes"
+      ],
+      "additionalProperties": false
+    },
+    "implemented_rules": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "panel-title",
+          "panel-description",
+          "panel-units",
+          "panel-no-targets",
+          "panel-no-value",
+          "panel-datasource",
+          "target-rate-interval",
+          "target-counter-agg",
+          "template-all-value",
+          "dashboard-tags"
+        ]
+      },
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true
+    },
+    "unsupported_sections": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "live_datasource_queries",
+          "grafana_rendering",
+          "plugin_specific_options",
+          "uncovered_dashboard_properties",
+          "grafana_dashboard_v2",
+          "grafana_dashboard_schema"
+        ]
+      },
+      "minItems": 4,
+      "maxItems": 6,
+      "uniqueItems": true
+    },
+    "validation_state": {
+      "enum": [
+        "complete",
+        "partial",
+        "not_established",
+        "unsupported"
+      ]
+    },
+    "checked_panels": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "findings": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule": {
+            "enum": [
+              "panel-title",
+              "panel-description",
+              "panel-units",
+              "panel-no-targets",
+              "panel-no-value",
+              "panel-datasource",
+              "target-rate-interval",
+              "target-counter-agg",
+              "template-all-value",
+              "dashboard-tags"
+            ]
+          },
+          "location": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "required": [
+          "rule",
+          "location",
+          "detail"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "findings_total": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2097152
+    },
+    "findings_truncated": {
+      "type": "boolean"
+    },
+    "fields_truncated": {
+      "type": "boolean"
+    },
+    "runtime": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "executable": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+              "maxLength": 32
+            }
+          },
+          "required": [
+            "executable",
+            "version"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "cancellation_signal": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 64
+    },
+    "supervisor": {
+      "$ref": "urn:sre-workbench:spec:dashboard-hygiene-data:0.1#/oneOf/0/properties/supervisor"
+    }
+  },
+  "required": [
+    "kind",
+    "validator",
+    "input",
+    "implemented_rules",
+    "unsupported_sections",
+    "validation_state",
+    "checked_panels",
+    "findings",
+    "findings_total",
+    "findings_truncated",
+    "fields_truncated",
+    "runtime",
+    "cancellation_signal"
+  ],
+  "additionalProperties": false
+}

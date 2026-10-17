@@ -1,0 +1,80 @@
+{
+  "status": "pass",
+  "scope": "Linux x86-64 operator-local durable jobs; no deployment, hosted job grant or remote runner",
+  "base_commit": "9016dcba4d42adbf3dd1972cb0f2dba6ed8fc664",
+  "workspace": {
+    "passed": 437,
+    "failed": 0,
+    "ignored": 26,
+    "command": "tools/test-sandbox.sh cargo test --workspace --all-features --locked --offline",
+    "log": "workspace-r1.log"
+  },
+  "native_job_extension": {
+    "passed": 1,
+    "log": "native-cli-r1.log",
+    "timing": "Before equivalent discovery lint normalization and sequence regression refinement; final installed mission also exercises the extension against frozen binaries"
+  },
+  "native_foreground_extension_regression": {
+    "passed": 3,
+    "log": "extension-regression.log"
+  },
+  "capacity_unit_tests": {
+    "passed": 7,
+    "evidence": "Parent tool execution; final workspace also contains these seven tests"
+  },
+  "core_jobs_tests": {
+    "passed": 9,
+    "evidence": "Final workspace includes nine jobs:: tests; discovery effect classification is a separate test in that same workspace run."
+  },
+  "ordinary_cli_jobs": {
+    "passed": 7,
+    "evidence": "Final workspace jobs.rs; eighth test explicitly exercised by native_job_extension"
+  },
+  "strict_clippy": {
+    "exit_code": 0,
+    "log": "clippy-r2.log",
+    "initial_failure": "Duplicate equivalent input-schema conditional; normalized condition without changing its result"
+  },
+  "format": {
+    "exit_code": 0,
+    "log": "fmt-final.log"
+  },
+  "ordinary_build": {
+    "exit_code": 0,
+    "log": "build-final.log"
+  },
+  "installed_acceptance": {
+    "commands": 105,
+    "exit_code": 0,
+    "log": "installed-r2.log",
+    "details": "verification.json"
+  },
+  "review": {
+    "independently_found_p0_p1": 0,
+    "reviewer_p2_closed": 6,
+    "remaining_material_findings": 0,
+    "closed": [
+      "persisted event sequence overflow",
+      "persisted metadata syntax and lifecycle consistency",
+      "state and immutable child receipt outcome agreement",
+      "cumulative state-write effect reporting",
+      "queued-cancel finalization crash recovery",
+      "failed-worker response detail bounds"
+    ],
+    "parent_checks": [
+      "nested null request controls",
+      "outer recording consent disclosure",
+      "published-result adoption and cancellation crash snapshot"
+    ]
+  },
+  "final_source_note": "Product and Rust test files match the final workspace/strict-clippy state. The installed verifier then added published-result crash-snapshot acceptance; final frozen-source mission passed all105commands.",
+  "specifications": {
+    "exit_code": 0,
+    "schemas": 74,
+    "positive_fixtures": 49,
+    "negative_fixtures": 40,
+    "package_documents": 15,
+    "repository_documents": 53,
+    "log": "specs-final.log"
+  }
+}

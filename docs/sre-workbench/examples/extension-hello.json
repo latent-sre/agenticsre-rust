@@ -1,0 +1,7 @@
+{
+  "protocol": 1,
+  "request_id": "example",
+  "run_id": "run-example",
+  "sequence": 0,
+  "kind": "hello"
+}

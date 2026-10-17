@@ -1,0 +1,6 @@
+{
+  "address": "127.0.0.1:35415",
+  "protocol": 1,
+  "runner_id": "changes.acceptance",
+  "server_certificate_sha256": "sha256:ccb30db51e4a59df4d2f6b2514a55cde5d1329794bd9b7a351537afa16ffd9d7"
+}

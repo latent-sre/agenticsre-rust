@@ -184,7 +184,7 @@ fn read_source(
     request: &Request,
     control: &RunControl,
     start: Instant,
-) -> Result<Vec<u8>, Problem> {
+) -> Result<(Vec<u8>, ContextSourceIdentity), Problem> {
     use std::{
         ffi::CString,
         fs::{File, OpenOptions},
@@ -266,7 +266,12 @@ fn read_source(
         }
         bytes.extend_from_slice(&chunk[..length]);
     }
-    Ok(bytes)
+    let identity = ContextSourceIdentity {
+        digest: Sha256::digest(&bytes).into(),
+        device: actual.dev(),
+        inode: actual.ino(),
+    };
+    Ok((bytes, identity))
 }
 
 #[cfg(not(target_os = "linux"))]
@@ -275,11 +280,43 @@ fn read_source(
     _request: &Request,
     _control: &RunControl,
     _start: Instant,
-) -> Result<Vec<u8>, Problem> {
+) -> Result<(Vec<u8>, ContextSourceIdentity), Problem> {
     Err(Problem::unsupported(
         "unsupported_platform",
         "Offline context descriptor acceptance is currently implemented only on Linux.",
     ))
+}
+
+/// Identity of the regular inode and exact bytes consumed by a resolver invocation.
+#[derive(PartialEq, Eq)]
+pub(crate) struct ContextSourceIdentity {
+    digest: [u8; 32],
+    device: u64,
+    inode: u64,
+}
+
+pub(crate) fn normalize_input(inputs: &Value) -> Result<Value, Problem> {
+    if !inputs.is_object() || !no_null(inputs) {
+        return Err(problem("invalid_context_input"));
+    }
+    let selector: Selector =
+        serde_json::from_value(inputs.clone()).map_err(|_| problem("invalid_context_input"))?;
+    if !selector_valid(&selector) {
+        return Err(problem("invalid_context_input"));
+    }
+    serde_json::to_value(selector).map_err(|_| problem("invalid_context_input"))
+}
+
+pub(crate) fn source_identity(path: &Path) -> Result<ContextSourceIdentity, Problem> {
+    let request = Request::new(
+        "context.resolve",
+        json!({"service":"validation","environment":"validation"}),
+    );
+    let control = RunControl::default();
+    let start = Instant::now();
+    let (bytes, identity) = read_source(path, &request, &control, start)?;
+    validated_export(&bytes, OffsetDateTime::now_utc(), &request, &control, start)?;
+    Ok(identity)
 }
 
 fn resolve(
@@ -299,83 +336,10 @@ fn resolve(
     if !selector_valid(&selector) {
         return Err(problem("invalid_context_input"));
     }
-    let value = parse_bounded_json(bytes, 16)?;
-    if !export_objects(&value) || !no_null(&value) {
-        return Err(problem("invalid_context_source"));
-    }
-    let export: Export =
-        serde_json::from_value(value).map_err(|_| problem("invalid_context_source"))?;
-    if export.schema_version != 1 {
-        return Err(Problem::unsupported(
-            "unsupported_context_source_version",
-            "Only context fixture-export version 1 is supported.",
-        ));
-    }
-    if export.source.kind != "fixture-export"
-        || !bounded(&export.source.id, 1, 128)
-        || !bounded(&export.source.revision, 1, 128)
-        || export.records.len() > 128
-    {
-        return Err(problem("invalid_context_source"));
-    }
+    let export = validated_export(bytes, now, request, control, start)?;
     let mut matches = Vec::new();
     for record in &export.records {
-        check(request, control, start)?;
-        if !bounded(&record.last_reviewed, 1, 64) {
-            return Err(problem("invalid_context_review_time"));
-        }
         let reviewed = review_time(&record.last_reviewed)?;
-        if reviewed.offset().whole_seconds() != 0 {
-            return Err(problem("invalid_context_review_time"));
-        }
-        if reviewed > now {
-            return Err(problem("future_context_review_time"));
-        }
-        let valid = bounded(&record.service, 1, 128)
-            && bounded(&record.team, 1, 128)
-            && bounded(&record.environment, 1, 128)
-            && record
-                .deployment
-                .as_ref()
-                .is_none_or(|s| bounded(s, 1, 128))
-            && matches!(record.state.as_str(), "active" | "retired")
-            && record.required_bindings.len() <= 3
-            && record
-                .required_bindings
-                .iter()
-                .all(|s| matches!(s.as_str(), "target" | "environment" | "organization"))
-            && record
-                .required_bindings
-                .iter()
-                .collect::<HashSet<_>>()
-                .len()
-                == record.required_bindings.len()
-            && ["target", "environment", "organization"]
-                .iter()
-                .all(|name| record.bindings.get(name).is_none_or(|s| bounded(s, 0, 128)))
-            && record
-                .bindings
-                .environment
-                .as_ref()
-                .is_none_or(|s| s == &record.environment)
-            && strings(&record.owners, 128)
-            && strings(&record.runbooks, 2048)
-            && record.resource_aliases.as_ref().is_none_or(|items| {
-                items.len() <= 32
-                    && items
-                        .iter()
-                        .all(|s| bounded(&s.kind, 1, 128) && bounded(&s.alias, 1, 128))
-            })
-            && record.dependencies.as_ref().is_none_or(|deps| {
-                [&deps.forward, &deps.reverse].iter().all(|items| {
-                    items
-                        .as_ref()
-                        .is_none_or(|items| items.len() <= 32 && items.iter().all(selector_valid))
-                })
-            });
-        if !valid {
-            return Err(problem("invalid_context_source"));
-        }
         if record.service == selector.service
             && record.environment == selector.environment
             && selector.team.as_ref().is_none_or(|s| s == &record.team)
@@ -462,10 +426,108 @@ fn resolve(
     Ok(data)
 }
 
+fn validated_export(
+    bytes: &[u8],
+    now: OffsetDateTime,
+    request: &Request,
+    control: &RunControl,
+    start: Instant,
+) -> Result<Export, Problem> {
+    let value = parse_bounded_json(bytes, 16)?;
+    if !export_objects(&value) || !no_null(&value) {
+        return Err(problem("invalid_context_source"));
+    }
+    let export: Export =
+        serde_json::from_value(value).map_err(|_| problem("invalid_context_source"))?;
+    if export.schema_version != 1 {
+        return Err(Problem::unsupported(
+            "unsupported_context_source_version",
+            "Only context fixture-export version 1 is supported.",
+        ));
+    }
+    if export.source.kind != "fixture-export"
+        || !bounded(&export.source.id, 1, 128)
+        || !bounded(&export.source.revision, 1, 128)
+        || export.records.len() > 128
+    {
+        return Err(problem("invalid_context_source"));
+    }
+    for record in &export.records {
+        check(request, control, start)?;
+        if !bounded(&record.last_reviewed, 1, 64) {
+            return Err(problem("invalid_context_review_time"));
+        }
+        let reviewed = review_time(&record.last_reviewed)?;
+        if reviewed.offset().whole_seconds() != 0 {
+            return Err(problem("invalid_context_review_time"));
+        }
+        if reviewed > now {
+            return Err(problem("future_context_review_time"));
+        }
+        let valid = bounded(&record.service, 1, 128)
+            && bounded(&record.team, 1, 128)
+            && bounded(&record.environment, 1, 128)
+            && record
+                .deployment
+                .as_ref()
+                .is_none_or(|s| bounded(s, 1, 128))
+            && matches!(record.state.as_str(), "active" | "retired")
+            && record.required_bindings.len() <= 3
+            && record
+                .required_bindings
+                .iter()
+                .all(|s| matches!(s.as_str(), "target" | "environment" | "organization"))
+            && record
+                .required_bindings
+                .iter()
+                .collect::<HashSet<_>>()
+                .len()
+                == record.required_bindings.len()
+            && ["target", "environment", "organization"]
+                .iter()
+                .all(|name| record.bindings.get(name).is_none_or(|s| bounded(s, 0, 128)))
+            && record
+                .bindings
+                .environment
+                .as_ref()
+                .is_none_or(|s| s == &record.environment)
+            && strings(&record.owners, 128)
+            && strings(&record.runbooks, 2048)
+            && record.resource_aliases.as_ref().is_none_or(|items| {
+                items.len() <= 32
+                    && items
+                        .iter()
+                        .all(|s| bounded(&s.kind, 1, 128) && bounded(&s.alias, 1, 128))
+            })
+            && record.dependencies.as_ref().is_none_or(|deps| {
+                [&deps.forward, &deps.reverse].iter().all(|items| {
+                    items
+                        .as_ref()
+                        .is_none_or(|items| items.len() <= 32 && items.iter().all(selector_valid))
+                })
+            });
+        if !valid {
+            return Err(problem("invalid_context_source"));
+        }
+    }
+    Ok(export)
+}
+
 pub(crate) fn run(
     request: &Request,
     control: &RunControl,
     context: &OperatorContext,
+    start: Instant,
+    result: &mut OperationResult,
+) {
+    run_pinned(request, control, context, None, start, result);
+}
+
+pub(crate) fn run_pinned(
+    request: &Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    expected: Option<&ContextSourceIdentity>,
     start: Instant,
     result: &mut OperationResult,
 ) {
@@ -487,7 +549,10 @@ pub(crate) fn run(
         if !selector_valid(&selector) || !no_null(&request.inputs) {
             return Err(problem("invalid_context_input"));
         }
-        let bytes = read_source(path, request, control, start)?;
+        let (bytes, actual) = read_source(path, request, control, start)?;
+        if expected.is_some_and(|identity| identity != &actual) {
+            return Err(problem("context_source_changed"));
+        }
         resolve(
             &bytes,
             &request.inputs,

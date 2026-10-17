@@ -313,5 +313,493 @@
     "schema": "runbook-run-input",
     "valid": false,
     "reason": "Caller-defined steps cannot override an installed observation-only runbook"
+  },
+  {
+    "file": "request-evidence-replay.json",
+    "schema": "request",
+    "valid": true,
+    "input_schema": "evidence-reference-input",
+    "reason": "An explicit local retained bundle; analysis is separate from historical observation"
+  },
+  {
+    "file": "invalid-evidence-replay.json",
+    "schema": "evidence-reference-input",
+    "valid": false,
+    "reason": "Evidence cannot supply a command or change the installed analysis algorithm"
+  },
+  {
+    "file": "request-report.json",
+    "schema": "request",
+    "valid": true,
+    "input_schema": "report-create-input",
+    "reason": "Reports bind historical evidence and leave proposed knowledge edits pending review"
+  },
+  {
+    "file": "invalid-report-input.json",
+    "schema": "report-create-input",
+    "valid": false,
+    "reason": "Input cannot mark a knowledge proposal approved"
+  },
+  {
+    "file": "input-toil-configure.json",
+    "schema": "toil-configure-input",
+    "valid": true,
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+  },
+  {
+    "file": "input-toil-record.json",
+    "schema": "toil-record-input",
+    "valid": true,
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+  },
+  {
+    "file": "input-toil-capture.json",
+    "schema": "toil-capture-input",
+    "valid": true,
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+  },
+  {
+    "file": "input-toil-summary.json",
+    "schema": "toil-summary-input",
+    "valid": true,
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+  },
+  {
+    "file": "invalid-toil-null.json",
+    "schema": "toil-record-input",
+    "valid": false,
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+  },
+  {
+    "file": "invalid-toil-raw-content.json",
+    "schema": "toil-record-input",
+    "valid": false,
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+  },
+  {
+    "file": "invalid-toil-consent.json",
+    "schema": "toil-configure-input",
+    "valid": false,
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+  },
+  {
+    "file": "invalid-toil-workflow-newline.json",
+    "schema": "toil-summary-input",
+    "valid": false,
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+  },
+  {
+    "file": "toil-interrupted-data.json",
+    "schema": "toil-data",
+    "valid": true,
+    "reason": "Cancellation metadata can coexist with truthful completed configuration data."
+  },
+  {
+    "file": "input-config-check.json",
+    "schema": "config-check-input",
+    "valid": true,
+    "reason": "Declared installed validator and exact input path; actual digest matching and validation require runtime checks."
+  },
+  {
+    "file": "invalid-config-check-null.json",
+    "schema": "config-check-input",
+    "valid": false,
+    "reason": "Declared installed validator and exact input path; actual digest matching and validation require runtime checks."
+  },
+  {
+    "file": "invalid-config-check-validator.json",
+    "schema": "config-check-input",
+    "valid": false,
+    "reason": "Declared installed validator and exact input path; actual digest matching and validation require runtime checks."
+  },
+  {
+    "file": "input-prometheus-config.json",
+    "schema": "config-check-input",
+    "valid": true,
+    "reason": "Declared fixed Prometheus rule checker; executable binding is trusted startup configuration, never wire input."
+  },
+  {
+    "file": "invalid-prometheus-binding.json",
+    "schema": "config-check-input",
+    "valid": false,
+    "reason": "Declared fixed Prometheus rule checker; executable binding is trusted startup configuration, never wire input."
+  },
+  {
+    "file": "invalid-prometheus-kind-pair.json",
+    "schema": "config-check-input",
+    "valid": false,
+    "reason": "Declared fixed Prometheus rule checker; executable binding is trusted startup configuration, never wire input."
+  },
+  {
+    "file": "input-extension-install.json",
+    "schema": "extension-install-input",
+    "valid": true,
+    "reason": "Exact reviewed package pin; installation is not execution authority"
+  },
+  {
+    "file": "invalid-extension-no-pin.json",
+    "schema": "extension-install-input",
+    "valid": false,
+    "reason": "Install requires a package digest"
+  },
+  {
+    "file": "invalid-extension-wire-grant.json",
+    "schema": "extension-install-input",
+    "valid": false,
+    "reason": "Package admission cannot enable execution"
+  },
+  {
+    "file": "invalid-extension-path.json",
+    "schema": "extension-inspect-input",
+    "valid": false,
+    "reason": "Package path must be absolute"
+  },
+  {
+    "file": "extension-package.json",
+    "schema": "extension-package",
+    "valid": true,
+    "reason": "Inert header-valid example; metadata validity does not establish executable or protocol conformance"
+  },
+  {
+    "file": "invalid-extension-protocol.json",
+    "schema": "extension-manifest",
+    "valid": false,
+    "reason": "Only explicit protocol version 1 metadata is supported"
+  },
+  {
+    "file": "invalid-extension-access.json",
+    "schema": "extension-manifest",
+    "valid": false,
+    "reason": "Metadata cannot request access in the initial package format"
+  },
+  {
+    "file": "extension-policy.json",
+    "schema": "extension-policy",
+    "valid": true,
+    "reason": "Independent startup policy binds exact installed package and capability"
+  },
+  {
+    "file": "extension-hello.json",
+    "schema": "extension-protocol-frame",
+    "valid": true,
+    "reason": "Versioned correlated hello before any work"
+  },
+  {
+    "file": "invalid-extension-hello-version.json",
+    "schema": "extension-protocol-frame",
+    "valid": false,
+    "reason": "Unsupported peer versions cannot establish a handshake"
+  },
+  {
+    "file": "invalid-extension-policy-hook.json",
+    "schema": "extension-policy",
+    "valid": false,
+    "reason": "Startup policy does not select arbitrary argv or commands"
+  },
+  {
+    "file": "result-job-runtime.json",
+    "schema": "result",
+    "valid": true,
+    "reason": "Explicit durable-job child receipt can disclose the one-hour effective runtime"
+  },
+  {
+    "file": "invalid-request-job-runtime.json",
+    "schema": "request",
+    "valid": false,
+    "reason": "Foreground request admission still refuses a one-hour timeout"
+  },
+  {
+    "file": "input-job-submit.json",
+    "schema": "job-submit-input",
+    "valid": true,
+    "reason": "A bounded durable job admission contains an ordinary operation request and separate runtime"
+  },
+  {
+    "file": "input-job-watch.json",
+    "schema": "job-watch-input",
+    "valid": true,
+    "reason": "Reconnect starts strictly after the acknowledged event sequence"
+  },
+  {
+    "file": "invalid-job-runtime.json",
+    "schema": "job-submit-input",
+    "valid": false,
+    "reason": "Jobs cannot exceed the one-hour host ceiling"
+  },
+  {
+    "file": "invalid-job-owner.json",
+    "schema": "job-submit-input",
+    "valid": false,
+    "reason": "Wire input cannot supply an owner or grant"
+  },
+  {
+    "file": "invalid-job-watch-cursor.json",
+    "schema": "job-watch-input",
+    "valid": false,
+    "reason": "Negative event cursors are invalid"
+  },
+  {
+    "file": "invalid-job-nested-null.json",
+    "schema": "job-submit-input",
+    "valid": false,
+    "reason": "An embedded ordinary request must preserve rejection of explicit null controls"
+  },
+  {
+    "file": "input-runner-submit.json",
+    "schema": "runner-submit-input",
+    "valid": true,
+    "reason": "Typed error-budget remote submission; authority is separately configured"
+  },
+  {
+    "file": "runner-wire-handshake.json",
+    "schema": "runner-wire-request",
+    "valid": true,
+    "reason": "One versioned handshake request after authenticated TLS"
+  },
+  {
+    "file": "invalid-runner-principal.json",
+    "schema": "runner-submit-input",
+    "valid": false,
+    "reason": "Remote input cannot choose its authenticated identity"
+  },
+  {
+    "file": "invalid-runner-command.json",
+    "schema": "runner-submit-input",
+    "valid": false,
+    "reason": "Generic commands are outside the initial remote grants"
+  },
+  {
+    "file": "invalid-runner-wire-version.json",
+    "schema": "runner-wire-request",
+    "valid": false,
+    "reason": "Unknown transport protocol is refused"
+  },
+  {
+    "file": "runner-uncertain-data.json",
+    "schema": "runner-data",
+    "valid": true
+  },
+  {
+    "file": "invalid-runner-effect.json",
+    "schema": "runner-data",
+    "valid": false
+  },
+  {
+    "file": "input-fleet-collect.json",
+    "schema": "fleet-collect-input",
+    "valid": true
+  },
+  {
+    "file": "fleet-inventory.json",
+    "schema": "fleet-inventory",
+    "valid": true
+  },
+  {
+    "file": "runner-expected-status.json",
+    "schema": "runner-wire-request",
+    "valid": true
+  },
+  {
+    "file": "invalid-runner-expected-null.json",
+    "schema": "runner-wire-request",
+    "valid": false
+  },
+  {
+    "file": "invalid-fleet-duplicate-target.json",
+    "schema": "fleet-collect-input",
+    "valid": false
+  },
+  {
+    "file": "invalid-fleet-task.json",
+    "schema": "fleet-collect-input",
+    "valid": false
+  },
+  {
+    "file": "fleet-unadmitted-data.json",
+    "schema": "fleet-data",
+    "valid": true
+  },
+  {
+    "file": "invalid-fleet-health.json",
+    "schema": "fleet-data",
+    "valid": false
+  },
+  {
+    "file": "input-schedule-create.json",
+    "schema": "schedule-create-input",
+    "valid": true
+  },
+  {
+    "file": "input-schedule-daily.json",
+    "schema": "schedule-create-input",
+    "valid": true
+  },
+  {
+    "file": "input-schedule-run-now.json",
+    "schema": "schedule-run-now-input",
+    "valid": true
+  },
+  {
+    "file": "invalid-schedule-anchor.json",
+    "schema": "schedule-create-input",
+    "valid": false
+  },
+  {
+    "file": "invalid-schedule-notification.json",
+    "schema": "schedule-create-input",
+    "valid": false
+  },
+  {
+    "file": "invalid-schedule-empty-targets.json",
+    "schema": "schedule-create-input",
+    "valid": false
+  },
+  {
+    "file": "schedule-unadmitted-data.json",
+    "schema": "schedule-data",
+    "valid": true
+  },
+  {
+    "file": "invalid-schedule-health.json",
+    "schema": "schedule-data",
+    "valid": false
+  },
+  {
+    "file": "input-change-plan.json",
+    "schema": "change-plan-input",
+    "valid": true,
+    "reason": "Typed selectors and exact plan references; authority is resolved from mTLS configuration"
+  },
+  {
+    "file": "input-change-status.json",
+    "schema": "change-status-input",
+    "valid": true,
+    "reason": "Typed selectors and exact plan references; authority is resolved from mTLS configuration"
+  },
+  {
+    "file": "input-change-reconcile.json",
+    "schema": "change-reconcile-input",
+    "valid": true,
+    "reason": "Typed selectors and exact plan references; authority is resolved from mTLS configuration"
+  },
+  {
+    "file": "input-change-approve.json",
+    "schema": "change-approve-input",
+    "valid": true,
+    "reason": "Typed selectors and exact plan references; authority is resolved from mTLS configuration"
+  },
+  {
+    "file": "input-change-apply.json",
+    "schema": "change-apply-input",
+    "valid": true,
+    "reason": "Typed selectors and exact plan references; authority is resolved from mTLS configuration"
+  },
+  {
+    "file": "change-wire-approve.json",
+    "schema": "runner-wire-request",
+    "valid": true,
+    "reason": "Approval uses the existing mTLS transport and retained exact plan digest"
+  },
+  {
+    "file": "invalid-change-authority.json",
+    "schema": "change-plan-input",
+    "valid": false,
+    "reason": "Strict change plan inputs reject caller authority and malformed proposals"
+  },
+  {
+    "file": "invalid-change-expiry.json",
+    "schema": "change-plan-input",
+    "valid": false,
+    "reason": "Strict change plan inputs reject caller authority and malformed proposals"
+  },
+  {
+    "file": "invalid-change-base64.json",
+    "schema": "change-plan-input",
+    "valid": false,
+    "reason": "Strict change plan inputs reject caller authority and malformed proposals"
+  },
+  {
+    "file": "invalid-change-null.json",
+    "schema": "change-plan-input",
+    "valid": false,
+    "reason": "Strict change plan inputs reject caller authority and malformed proposals"
+  },
+  {
+    "file": "invalid-change-approval-label.json",
+    "schema": "change-approve-input",
+    "valid": false,
+    "reason": "A caller approval label is not authority"
+  },
+  {
+    "file": "change-not-found-data.json",
+    "schema": "change-data",
+    "valid": true,
+    "reason": "Authorized missing lookup discloses no target and records no replacement"
+  },
+  {
+    "file": "invalid-change-effect.json",
+    "schema": "change-data",
+    "valid": false,
+    "reason": "Verified readback and uncertainty are explicit change-domain outcomes"
+  },
+  {
+    "file": "invalid-change-nested-plan.json",
+    "schema": "change-data",
+    "valid": false,
+    "reason": "A retained canonical plan is fully typed"
+  },
+  {
+    "file": "change-plan.json",
+    "schema": "change-plan",
+    "valid": true,
+    "reason": "Fully typed synthetic canonical plan; runtime binds exact bytes, file identity and validator evidence"
+  },
+  {
+    "file": "change-verified-data.json",
+    "schema": "change-data",
+    "valid": true,
+    "reason": "Retained original plan and verified replacement outcome"
+  },
+  {
+    "file": "result-change-verified.json",
+    "schema": "result",
+    "valid": true,
+    "reason": "Change success receipt carries strict canonical plan data and outer succeeded effect"
+  },
+  {
+    "file": "invalid-change-file-identity.json",
+    "schema": "change-data",
+    "valid": false,
+    "reason": "Unknown nested filesystem identity fields are rejected"
+  },
+  {
+    "file": "invalid-change-unchecked-plan.json",
+    "schema": "change-plan",
+    "valid": false,
+    "reason": "A canonical plan requires a positive validated rule count"
+  },
+  {
+    "file": "change-runner-server-config.json",
+    "schema": "runner-server-config",
+    "valid": true,
+    "reason": "Trusted startup supplies the named file target, pinned validator and distinct principal roles"
+  },
+  {
+    "file": "invalid-change-relative-ledger.json",
+    "schema": "runner-server-config",
+    "valid": false,
+    "reason": "Private change ledger path must be absolute"
+  },
+  {
+    "file": "invalid-change-base64-padbits.json",
+    "schema": "change-plan-input",
+    "valid": false,
+    "reason": "Nonzero pad bits violate canonical base64 even when a permissive decoder returns bytes"
+  },
+  {
+    "file": "change-unconfirmed-data.json",
+    "schema": "change-data",
+    "valid": true,
+    "reason": "A lost reply retains the original request while remote identity and effect remain unconfirmed"
   }
 ]

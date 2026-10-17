@@ -1,0 +1,10 @@
+{
+  "format_version": 1,
+  "action": "status",
+  "schedules": [],
+  "occurrences": [],
+  "preview": [],
+  "omitted_occurrences": 0,
+  "cancellation_signal": null,
+  "health": "healthy"
+}

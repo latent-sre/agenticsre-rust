@@ -1,0 +1,22 @@
+PASS Context keyboard flow; pinned source, freshness, ownership and hostile text remain inert
+PASS Saved evidence list exposes historical storage state and IDs
+PASS Verified pinned inspection; canonical browser receipt download matches API bytes exactly
+PASS Comparable metric/log deltas and incompatible original windows remain distinct
+PASS Plain-text report preview and explicit Markdown download; dark mobile view has no horizontal overflow
+PASS Explicit JSON report download matches the retained report
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 12000ms exceeded.
+Call log:
+  - waiting for getByLabel('Session history').getByRole('button', { name: /Inspect evidence/u })
+
+    at /home/hawkfire/rusty/agenticsre-rust-diagnostics/web/tests/investigations.mjs:244:95 {
+  log: [
+    "  - waiting for getByLabel('Session history').getByRole('button', { name: /Inspect evidence/u })"
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.23.1

@@ -1,0 +1,7 @@
+{
+  "request_id": "request.fixture",
+  "target": "rules.fixture",
+  "proposed_base64": "Z3JvdXBzOiBbXQo=",
+  "expires_in_seconds": 300,
+  "approver": "caller.claim"
+}

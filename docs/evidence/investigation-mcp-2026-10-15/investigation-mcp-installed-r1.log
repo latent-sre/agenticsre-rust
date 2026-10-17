@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-investigation-mcp.py", line 279, in <module>
+    main()
+    ~~~~^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-investigation-mcp.py", line 175, in main
+    mcp.local_references(tool[field])
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-mcp.py", line 164, in local_references
+    local_references(child, root)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-mcp.py", line 164, in local_references
+    local_references(child, root)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-mcp.py", line 164, in local_references
+    local_references(child, root)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  [Previous line repeated 1 more time]
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-mcp.py", line 162, in local_references
+    node = node[part.replace("~1", "/").replace("~0", "~")]
+           ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str

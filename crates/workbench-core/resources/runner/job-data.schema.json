@@ -1,0 +1,402 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:job-data:0.1",
+  "title": "Durable local job state, reconnect cursor and retained child result",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "action": {
+      "enum": [
+        "submitted",
+        "existing",
+        "status",
+        "watch",
+        "cancel_requested",
+        "cancelled",
+        "worked",
+        "terminal",
+        "recovery_required"
+      ]
+    },
+    "job": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "job_id": {
+              "type": "string",
+              "pattern": "^job-[0-9]+-[0-9a-f]+-[0-9a-f]+$",
+              "maxLength": 96
+            },
+            "run_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "owner": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "local_uid"
+                },
+                "uid": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295
+                }
+              },
+              "required": [
+                "kind",
+                "uid"
+              ],
+              "additionalProperties": false
+            },
+            "execution_location": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "local"
+                },
+                "store_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "root": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "device": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18446744073709551615
+                },
+                "inode": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18446744073709551615
+                }
+              },
+              "required": [
+                "kind",
+                "store_id",
+                "root",
+                "device",
+                "inode"
+              ],
+              "additionalProperties": false
+            },
+            "request_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            },
+            "operation": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "operation_version": {
+              "const": 1
+            },
+            "max_runtime_ms": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600000
+            },
+            "retain_events": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 256
+            },
+            "state": {
+              "enum": [
+                "queued",
+                "running",
+                "cancelling",
+                "finalizing",
+                "terminal",
+                "recovery_required"
+              ]
+            },
+            "stored_state": {
+              "enum": [
+                "queued",
+                "running",
+                "cancelling",
+                "finalizing",
+                "terminal",
+                "recovery_required"
+              ]
+            },
+            "created_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "dispatched_at": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "finished_at": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_id": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "cancel_requested": {
+              "type": "boolean"
+            },
+            "last_sequence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18446744073709551615
+            },
+            "execution_status": {
+              "oneOf": [
+                {
+                  "enum": [
+                    "succeeded",
+                    "failed",
+                    "partial",
+                    "denied",
+                    "unsupported",
+                    "cancelled",
+                    "timed_out",
+                    "unknown"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "effect_outcome": {
+              "enum": [
+                "not_applicable",
+                "not_attempted",
+                "succeeded",
+                "failed",
+                "partial",
+                "unknown"
+              ]
+            }
+          },
+          "required": [
+            "job_id",
+            "run_id",
+            "request_id",
+            "owner",
+            "execution_location",
+            "request_sha256",
+            "operation",
+            "operation_version",
+            "max_runtime_ms",
+            "retain_events",
+            "state",
+            "stored_state",
+            "created_at",
+            "dispatched_at",
+            "finished_at",
+            "attempt_id",
+            "cancel_requested",
+            "last_sequence",
+            "execution_status",
+            "effect_outcome"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "events": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "sequence": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 18446744073709551615
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "state": {
+            "enum": [
+              "queued",
+              "running",
+              "cancelling",
+              "finalizing",
+              "terminal",
+              "recovery_required"
+            ]
+          },
+          "elapsed_ms": {
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 18446744073709551615
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "sequence",
+          "at",
+          "kind",
+          "state",
+          "elapsed_ms"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "cursor": {
+      "type": "object",
+      "properties": {
+        "after_sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "first_available_sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "last_sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "next_sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "gap": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "from_sequence": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18446744073709551615
+                },
+                "to_sequence": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18446744073709551615
+                }
+              },
+              "required": [
+                "from_sequence",
+                "to_sequence"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "has_more": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "after_sequence",
+        "first_available_sequence",
+        "last_sequence",
+        "next_sequence",
+        "gap",
+        "has_more"
+      ],
+      "additionalProperties": false
+    },
+    "result": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:result:0.1"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "result_sha256": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "result_omitted": {
+      "type": "boolean"
+    },
+    "cancellation_signal": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 64
+    }
+  },
+  "required": [
+    "format_version",
+    "action",
+    "job",
+    "events",
+    "cursor",
+    "result",
+    "result_sha256",
+    "result_omitted",
+    "cancellation_signal"
+  ],
+  "additionalProperties": false
+}

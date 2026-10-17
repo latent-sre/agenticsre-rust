@@ -1,0 +1,30 @@
+{
+  "id": "budget.hourly",
+  "definition": {
+    "enabled": true,
+    "timezone": "America/Chicago",
+    "cadence": {
+      "kind": "interval",
+      "anchor": "2026-10-12T01:00:00+01:00",
+      "every_seconds": 3600
+    },
+    "collection": {
+      "targets": [
+        "service.primary"
+      ],
+      "task": {
+        "id": "error-budget",
+        "version": 1,
+        "input": {
+          "slo": 99.9,
+          "bad_minutes": 1
+        }
+      },
+      "concurrency": 1,
+      "failure_threshold": 1,
+      "timeout_ms": 30000
+    },
+    "misfire_grace_ms": 60000,
+    "retention_limit": 32
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "binary_sha256": "5a8a0f9a45b96d79572072919526b4523049f153c04d09e7c7861cba69be28be",
+  "commands": [
+    {
+      "case": "inspect",
+      "exit": 0
+    },
+    {
+      "case": "wrong-pin",
+      "exit": 2
+    },
+    {
+      "case": "missing-store",
+      "exit": 2
+    },
+    {
+      "case": "install",
+      "exit": 0
+    },
+    {
+      "case": "repeat",
+      "exit": 0
+    },
+    {
+      "case": "list",
+      "exit": 0
+    },
+    {
+      "case": "list-text",
+      "exit": 0
+    },
+    {
+      "case": "bounded-list",
+      "exit": 1
+    },
+    {
+      "case": "replacement",
+      "exit": 2
+    },
+    {
+      "case": "protocol",
+      "exit": 2
+    },
+    {
+      "case": "hook",
+      "exit": 2
+    },
+    {
+      "case": "grants",
+      "exit": 2
+    },
+    {
+      "case": "schema-reference",
+      "exit": 2
+    },
+    {
+      "case": "payload-digest",
+      "exit": 2
+    },
+    {
+      "case": "required-mismatch",
+      "exit": 2
+    },
+    {
+      "case": "duplicate-keys",
+      "exit": 2
+    },
+    {
+      "case": "symlink",
+      "exit": 2
+    },
+    {
+      "case": "parent-symlink",
+      "exit": 2
+    },
+    {
+      "case": "hardlink",
+      "exit": 2
+    },
+    {
+      "case": "fifo",
+      "exit": 2
+    },
+    {
+      "case": "structured",
+      "exit": 0
+    },
+    {
+      "case": "disabled-dispatch",
+      "exit": 2
+    },
+    {
+      "case": "interrupted-store",
+      "exit": 1
+    },
+    {
+      "case": "replaced-installed-bytes",
+      "exit": 1
+    },
+    {
+      "case": "oversized",
+      "exit": 2
+    },
+    {
+      "case": "deadline",
+      "exit": 1
+    },
+    {
+      "case": "disk-full",
+      "exit": 1
+    },
+    {
+      "case": "disk-full-recovery-refusal",
+      "exit": 1
+    }
+  ],
+  "fixture_sha256": "3b6d6da9a87cddd5e2eb8200623804a55ac6f73a42e18eb9129392a4c0d37ce1",
+  "input_bytes_unchanged": true,
+  "installed_copy_outside_checkout": true,
+  "no_credentials_or_network": true,
+  "no_implicit_enablement": true,
+  "no_package_execution": true,
+  "passed": true,
+  "source_files": 1342,
+  "source_manifest_sha256": "ca3d0274e5afa62acdd08d31dad099d31cb4bf822270a4e8fcc8d937ea0dd389"
+}

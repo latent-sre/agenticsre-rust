@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:runner-client-config:0.1",
+  "title": "runner-client-config",
+  "type": "object",
+  "properties": {
+    "config_version": {
+      "const": 1
+    },
+    "endpoint": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^(?:[0-9.]+|\\[[0-9A-Fa-f:]+\\]):[0-9]{1,5}$"
+    },
+    "server_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 253
+    },
+    "runner_id": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+    },
+    "server_certificate_sha256": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+    },
+    "ca_certificate": {
+      "type": "string",
+      "pattern": "^/[^\\u0000-\\u001f\\u007f-\\u009f]*$",
+      "minLength": 2,
+      "maxLength": 1024
+    },
+    "certificate": {
+      "type": "string",
+      "pattern": "^/[^\\u0000-\\u001f\\u007f-\\u009f]*$",
+      "minLength": 2,
+      "maxLength": 1024
+    },
+    "private_key": {
+      "type": "string",
+      "pattern": "^/[^\\u0000-\\u001f\\u007f-\\u009f]*$",
+      "minLength": 2,
+      "maxLength": 1024
+    }
+  },
+  "required": [
+    "config_version",
+    "endpoint",
+    "server_name",
+    "runner_id",
+    "server_certificate_sha256",
+    "ca_certificate",
+    "certificate",
+    "private_key"
+  ],
+  "additionalProperties": false
+}

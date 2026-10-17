@@ -1,0 +1,21 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+    Finished `test` profile [unoptimized] target(s) in 5.27s
+     Running unittests src/lib.rs (target/debug/deps/workbench_ui-d6ff2c87ae2d199c)
+
+running 12 tests
+test grants::tests::saved_query_catalog_is_independent_and_execution_requires_its_own_configuration ... ok
+test input::tests::command_and_task_refuse_diagnostic_selector_and_control_presence_including_null ... ok
+test input::tests::diagnostic_alias_concurrency_and_each_effective_limit_change_retry_identity ... ok
+test input::tests::diagnostic_shapes_and_controls_are_strict_before_admission ... ok
+test input::tests::diagnostic_defaults_and_effective_bounds_share_one_retry_identity ... ok
+test state::tests::admission_has_no_queue_and_replays_original_even_after_clear ... ok
+test state::tests::cancellation_waits_for_real_worker_result_and_clear_preserves_active ... ok
+test input::tests::queries_keep_target_authority_and_retry_identity_separate_from_diagnostics ... ok
+test state::tests::unconfirmed_cleanup_closes_admission ... ok
+test tests::diagnostics_preserve_redirected_log_and_stderr_flags ... ok
+test tests::worker_panic_never_manufactures_a_receipt_and_shutdown_signals_owned_control ... ok
+test state::tests::history_count_bytes_and_submission_tombstones_are_bounded ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+

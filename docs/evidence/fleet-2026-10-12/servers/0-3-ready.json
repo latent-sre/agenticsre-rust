@@ -1,0 +1,6 @@
+{
+  "address": "127.0.0.1:33675",
+  "protocol": 1,
+  "runner_id": "runner.0",
+  "server_certificate_sha256": "sha256:f9ef6b2f06a4a576885f841a8c11d442c0b082048eb29c5849cf6f764d6733fb"
+}

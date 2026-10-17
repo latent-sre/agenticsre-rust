@@ -1,0 +1,46 @@
+    Checking workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+    Checking capacity-projector v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/capacity-projector)
+error: manual checked division
+   --> crates/capacity-projector/src/lib.rs:174:15
+    |
+174 |     } else if inputs.growth_bytes_per_day == 0 {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ check performed here
+...
+178 |             headroom_bytes / inputs.growth_bytes_per_day,
+    |             -------------------------------------------- division performed here
+    |
+    = help: consider using `checked_div`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#manual_checked_ops
+    = note: `-D clippy::manual-checked-ops` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::manual_checked_ops)]`
+
+error: could not compile `capacity-projector` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: this `if` statement can be collapsed
+   --> crates/workbench-core/src/extensions/execution.rs:288:16
+    |
+288 |           } else if result.execution.child_exit_code != Some(0)
+    |  ________________^
+289 | |             || result.data["supervisor"]["cleanup"]["confirmed"] != true
+290 | |         {
+291 | |             if result.execution.status == Status::Succeeded {
+...   |
+294 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+288 ~         } else if (result.execution.child_exit_code != Some(0)
+289 ~             || result.data["supervisor"]["cleanup"]["confirmed"] != true
+290 ~             || result.data["supervisor"]["cleanup"]["confirmed"] != true)
+291 |         {
+292 ~             && result.execution.status == Status::Succeeded {
+293 |                 result.execution.status = Status::Failed;
+294 ~             }
+    |
+
+error: could not compile `workbench-core` (lib) due to 1 previous error

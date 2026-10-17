@@ -1,0 +1,46 @@
+{
+  "config_version": 1,
+  "runner_id": "runner.fixture",
+  "listen": "127.0.0.1:0",
+  "state_dir": "/var/lib/save/jobs",
+  "ca_certificate": "/etc/save/ca.der",
+  "certificate": "/etc/save/server.der",
+  "private_key": "/etc/save/server.key",
+  "principals": [
+    {
+      "id": "requester.fixture",
+      "certificate_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "id": "approver.fixture",
+      "certificate_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "targets": [
+    {
+      "id": "rules.fixture",
+      "snapshot": {
+        "name": "Fixture rule target",
+        "environment": "isolated-test"
+      }
+    }
+  ],
+  "grants": [],
+  "promtool_path": "/opt/prometheus/promtool",
+  "changes": {
+    "state_dir": "relative",
+    "targets": [
+      {
+        "id": "rules.fixture",
+        "path": "/var/lib/save/rules/alerts.yml",
+        "validator_binding_sha256": "sha256:660bb6d521fb0af2a58e6752adec42d228030d5b800e7e46562a71d2f70c917a",
+        "requesters": [
+          "requester.fixture"
+        ],
+        "approvers": [
+          "approver.fixture"
+        ]
+      }
+    ]
+  }
+}

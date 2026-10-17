@@ -4,7 +4,100 @@ The PoC includes an operator-local Rust command runner and a local browser inter
 [the roadmap](roadmap.md); the [PoC contract](poc.md) defines its behavior. The draft product catalog
 is broader than the available commands. No daemon, credentials or LLM are needed.
 
+## Extension package fixtures
+
+The [extension package contract](extensions.md) separates installation from enablement and
+execution. Public tests exercise inert package headers. Installed acceptance additionally uses a
+native adversarial fixture that writes a marker if launched; inspection/install/list must leave
+that marker absent. Compile it within the existing sandbox:
+
+```sh
+tools/test-sandbox.sh rustc --edition=2024 -C opt-level=1 -C strip=symbols \
+  tests/fixtures/extensions/no-execution.rs -o target/extensions/no-execution
+tools/test-sandbox.sh cargo test -p workbench-core --test extensions --locked --offline
+tools/test-sandbox.sh cargo test -p workbench-cli --test extensions --locked --offline
+```
+
+Create `target/extensions` before compiling. The fixture deliberately does not implement the
+external protocol; never use it as evidence for a working external capability. The frozen-source
+installed driver is `tools/verify-extensions.py`, run with the sandbox's `--small-evidence-disk`
+option for a real private disk-full case; supply the ordinary CLI binary, fixture path,
+source manifest and expected hashes using its `--help`. All execution stays within the sandbox.
+
+## External capacity projector
+
+The independent peer lives in `crates/capacity-projector`; it shares locked JSON dependencies but
+does not import workbench core. Build the ordinary executable and the separate adversarial fixture
+inside the existing sandbox:
+
+```sh
+tools/test-sandbox.sh cargo build -p capacity-projector --all-features --locked --offline
+tools/test-sandbox.sh .venv/bin/python -B tools/package-extension.py \
+  --manifest examples/extensions/capacity/manifest.json \
+  --executable target/debug/capacity-projector \
+  --output target/extension-runtime/capacity.save-package.json
+```
+
+Create `target/extension-runtime` first. The packaging helper never executes the binary and refuses
+to overwrite its output; it prints the exact package SHA-256 for inspection/installation. The
+manifest template's payload identity is replaced with the actual compiled bytes. Source/license
+provenance remains a supplied declaration. The separate `extension-peer-fixture` binary is for
+disposable protocol-negative tests only. See [runtime policy and protocol](extension-runtime.md)
+before enabling a reviewed package; installation creates no grant.
+
+The three native CLI runtime cases are ignored by the generic workspace suite and require explicit
+peer paths. After the build above, run them inside the sandbox:
+
+```sh
+tools/test-sandbox.sh env \
+  WORKBENCH_TEST_CAPACITY_PEER="$PWD/target/debug/capacity-projector" \
+  WORKBENCH_TEST_EXTENSION_ADVERSARY="$PWD/target/debug/extension-peer-fixture" \
+  cargo test -p workbench-cli --test extension_runtime --locked --offline -- --include-ignored
+```
+
+The frozen-source [installed mission](../tools/verify-extension-runtime.py) additionally tests the
+actual discovered output schema, future-version refusal, detail accounting, timeout, TERM-resistant
+peer cleanup and result-consumer closure. Its `--help` lists the required binary/source identities.
+See [retained acceptance](extension-runtime-verification.md) for the exact verified snapshot.
+
 ## Local build
+
+The [remote runner experiment](runner.md) builds on the local job lifecycle with explicit mTLS
+profiles and target-side grants. Its listeners and synthetic certificates belong inside the same
+test sandbox; an ordinary workspace test must never start a host listener. Focused checks use
+`tools/test-sandbox.sh cargo test -p workbench-cli --test remote_runner --locked --offline`.
+
+The [fleet controller](fleet.md) uses explicit private inventory and parent-store paths. Its public
+checks run with `tools/test-sandbox.sh cargo test -p workbench-cli --test fleet --locked --offline`.
+The [installed fleet verifier](../tools/verify-fleet.py) takes frozen source and ordinary CLI hashes,
+copies the binary outside the checkout, and creates two disposable mTLS runners. Use
+`tools/test-sandbox.sh --small-evidence-disk` and `--small-store /tmp/evidence-small-disk/fleet`
+to include real bounded filesystem exhaustion. See [retained acceptance](fleet-verification.md).
+
+The [schedule controller](schedules.md) uses a separate private ledger and explicit worker entry.
+Focused clock/store/lifecycle checks run with
+`tools/test-sandbox.sh cargo test -p workbench-core schedule:: --locked --offline`.
+The [installed schedule verifier](../tools/verify-schedules.py) accepts frozen source/CLI hashes
+and tests two real runners, worker death/shutdown, cancellation, credential drift and revision
+ownership. Add `--small-store /tmp/evidence-small-disk/schedules` under the sandbox's
+`--small-evidence-disk` option to include actual disk exhaustion. Bundled timezone rules and
+remaining deployment/retention limits are recorded in [acceptance](schedules-verification.md).
+
+
+Durable local jobs have their own [operator contract](jobs.md) and
+[verified Linux lifecycle](jobs-verification.md). The ordinary workspace suite includes the
+native fixture job cases when `--all-features` enables `test-fixtures`. The extension job case
+requires the explicitly built peer:
+
+```sh
+tools/test-sandbox.sh env WORKBENCH_TEST_CAPACITY_PEER="$PWD/target/debug/capacity-projector" \
+  cargo test -p workbench-cli --test jobs --all-features --locked --offline -- --ignored
+```
+
+The [installed jobs verifier](../tools/verify-jobs.py) takes frozen source and executable hashes,
+copies the CLI and fixture outside the checkout, and exercises the public lifecycle. Use
+`tools/test-sandbox.sh --small-evidence-disk` with `--small-store /tmp/evidence-small-disk/jobs`
+for its bounded ENOSPC case. The tiny filesystem exists only inside that disposable sandbox.
 
 Use your existing Rust toolchain management. `rust-toolchain.toml` pins 1.98.0 with rustfmt and
 clippy. From the repository root:
@@ -57,6 +150,33 @@ target/debug/save --read-policy /absolute/path/read-policy.json ui serve \
   --allow process.exec --allow command.inspect --allow task.run --root checkout
 ```
 
+For offline context and saved evidence, select reviewed source bytes and an existing private
+store, then grant each desired operation independently:
+
+```bash
+target/debug/save --context-source /absolute/path/reviewed-export.json --context-max-age-days 30 \
+  --state-dir /absolute/private/existing-store ui serve \
+  --allow context.resolve --allow evidence.list --allow evidence.open \
+  --allow evidence.compare --allow report.create
+```
+
+Omit the source/age pair when omitting `context.resolve`; omit `--state-dir` when granting no
+evidence/report operation. The launcher refuses unrelated inputs, creates no missing store and
+accepts no store size/retention overrides. The [investigation contract](investigation-ui.md)
+describes source/store identity pinning, direct typed inputs and unchanged receipt/history routes.
+This flow inspects historical evidence and previews reports; it grants no collection or publication.
+
+For the installed Prometheus and Loki saved queries, explicitly select a configured Grafana target:
+
+```bash
+target/debug/save --config /absolute/path/grafana.json ui serve \
+  --allow queries.list --allow queries.describe --allow query.run --query-target reviewed-grafana
+```
+
+Catalog-only sessions need neither `--config` nor `--query-target`. Query execution asks for the
+datasource, literal job parameter and time window; it never accepts an arbitrary expression.
+Diagnostic targets still use their separate `--target` flag. See [browser saved queries](query-ui.md).
+
 Only granted checks/roots appear. The browser cannot select an arbitrary executable, directory,
 policy or shell command. Required Linux isolation must be available; there is no unrestricted
 fallback. This PoC permits one active check, 50 completed receipts and 16 MiB of result history
@@ -94,6 +214,23 @@ tools/test-ui-sandbox.sh bash -c '"$WORKBENCH_BROWSER_PYTHON" -B web/tests/brows
 tools/test-ui-sandbox.sh .venv/bin/python -B crates/workbench-ui/tests/http_contract.py target/debug/save
 ```
 
+Use existing cache providers through the helper's environment overrides when their locations
+differ from its development-host defaults. `WORKBENCH_UI_NODE_MODULES` selects the cached
+`node_modules` directory whose installed versions must match `web/package.json`.
+`WORKBENCH_BROWSER_EXECUTABLE` selects the cached Chromium executable and
+`WORKBENCH_BROWSER_LIBRARIES` its shared-library root (containing `usr/lib/x86_64-linux-gnu`).
+`WORKBENCH_BROWSER_PYTHON` selects the existing Python environment with Playwright; a Node browser
+driver can instead use `WORKBENCH_BROWSER_NODE_MODULES` for its cached Playwright modules.
+These trusted providers are mounted into the same private sandbox; the helper downloads nothing.
+For example:
+
+```bash
+WORKBENCH_BROWSER_EXECUTABLE=/absolute/cache/chrome-headless-shell \
+WORKBENCH_BROWSER_LIBRARIES=/absolute/cache/browser-libraries/root \
+WORKBENCH_BROWSER_PYTHON=/absolute/cache/playwright-venv/bin/python \
+  tools/test-ui-sandbox.sh bash -c '"$WORKBENCH_BROWSER_PYTHON" -B web/tests/browser.py --binary target/debug/save'
+```
+
 The browser driver starts actual embedded servers inside the sandbox. The local lane explicitly
 marks native restricted-command checks as not run; it cannot replace Cally's required native lane.
 Do not run product listeners or browser checks on the host to bypass the declared test boundary.
@@ -111,6 +248,37 @@ is refused. The [MCP contract](mcp.md) specifies request metadata for `2026-07-2
 `2025-11-25` handshake, plus command/root and Grafana/target grants. Wire arguments cannot widen
 startup authority. The [acceptance record](mcp-verification.md) covers controlled raw-client and
 native fixtures; installed-host registration remains a separate step.
+
+For offline investigations, configure the client's launch arguments with the selected source and
+an existing private evidence store. Each operation needs its own grant:
+
+```bash
+target/debug/save --context-source /absolute/path/context.json --context-max-age-days 30 \
+  --state-dir /absolute/path/existing-private-store mcp serve --transport stdio \
+  --allow context.resolve --allow evidence.list --allow evidence.open \
+  --allow evidence.compare --allow report.create
+```
+
+This exposes `workbench_context_resolve`, `workbench_evidence_list`, `workbench_evidence_open`,
+`workbench_compare` and `workbench_report_create`. Arguments contain core selectors/references and
+optional limits, never filesystem paths. Reports return content to the caller. The
+[investigation contract](investigation-mcp.md) describes pins, limits and refusal behavior.
+The launcher refuses unused source/store flags and does not create a missing store. These
+instructions do not register an integration with an agent host.
+
+For configured connectivity diagnostics, grant the fixed pack and choose diagnostic target IDs
+from its separate trusted configuration:
+
+```bash
+target/debug/save mcp serve --allow diagnostics.list --allow diagnostics.describe
+target/debug/save --diagnostics-config /absolute/path/targets.json mcp serve \
+  --allow diagnostics.list --allow diagnostics.describe --allow diagnostics.run \
+  --diagnostic-target fixture-web
+```
+
+The catalog grants need no target or configuration. `workbench_diagnostics_run` accepts only a
+granted `target_id`, `id=connectivity`, `version=1`, typed pack input and bounded limits. Grafana
+targets continue to use `--target`. See [the MCP contract](mcp.md) for wire behavior.
 
 ## Local verification
 
@@ -261,8 +429,8 @@ Use `call --request FILE` for the existing structured request interface, keeping
 options. The operation is `context.resolve`; its `inputs` object contains `service`, `environment`
 and optional `team`/`deployment`. Source path and age policy are not request fields. Discovery reports
 `requires_configuration` without opening the export. Resolution reads metadata only: bindings and
-runbook references do not select a command, target, credential or approval. The source options are
-rejected for the current UI/MCP servers.
+runbook references do not select a command, target, credential or approval. Current UI/MCP servers
+accept the paired source options only with the explicit `context.resolve` grant.
 
 The current development archive below includes `context resolve`. Its installed CLI and structured
 request workflow passed on Cally. Earlier MCP/browser archives remain retained for rollback and
@@ -301,8 +469,20 @@ from discovery to pin the inspected definition. The existing credential provider
 The equivalent structured operation is `query.run`; see the
 [request example](sre-workbench/examples/request-saved-query.json). Direct and structured calls
 use the same core, receipt, transport deadline and cancellation behavior. Parameters are literal
-label values, and relative windows resolve once from the parent receipt's start time. Browser and
-MCP saved-query grants are not yet available. See [the query contract](saved-queries.md) for limits.
+label values, and relative windows resolve once from the parent receipt's start time. Browser
+saved-query grants are not yet available. For MCP catalog discovery, grant only the offline
+operations. Add an explicit configured target
+when granting query execution:
+
+```bash
+target/debug/save mcp serve --allow queries.list --allow queries.describe
+target/debug/save --config /absolute/path/operator.json mcp serve \
+  --allow queries.list --allow queries.describe --allow query.run --target fixture
+```
+
+The `workbench_query_run` tool accepts the installed definition ID/version, datasource, literal
+parameters, time window, optional expected definition digest and the granted `target_id`. Its
+expression comes only from the installed catalog. See [the MCP contract](mcp.md) for wire bounds.
 
 The retained context development archive below predates saved queries. Build current source for
 the new commands; its acceptance does not change the identity or contents of that archive.
@@ -331,7 +511,10 @@ Store policy is supplied only at startup. `--store-max-bytes` defaults to one Gi
 be expired or deleted until `evidence unprotect`. `evidence recover` reconciles interrupted writes
 without repeating queries. `show`, `protect`, `unprotect` and `delete` accept
 `--expected-manifest-sha256 sha256:HEX` to pin the manifest. Read commands never initialize a store.
-The current browser and MCP launchers refuse these store options.
+The browser and MCP launchers accept an existing `--state-dir` only for independently granted
+`evidence.list`, `evidence.open`, `evidence.compare` or `report.create`; it refuses store size/retention
+overrides and store mutations. See [browser investigations](investigation-ui.md) and
+[MCP investigations](investigation-mcp.md).
 
 Only a successful manifest commit yields a bundle reference. Read each step's status, retained
 artifact and omission, plus capture completeness and telemetry coverage; retained receipts do not
@@ -441,6 +624,30 @@ service health or log rates. The [contract](evidence.md#comparison-interface-and
 documents supported frames, provenance, limits and structured request parity.
 
 
+### Offline inspection and replay
+
+```sh
+target/debug/save --json --state-dir /absolute/private/store evidence open RUN_ID
+target/debug/save --json --state-dir /absolute/private/store evidence replay RUN_ID --max-items 100
+```
+
+These commands verify retained evidence before inspection/analysis, preserve the old observation
+window, and add a separate analysis timestamp. They require the Linux x86-64 offline kernel
+profile; no live connection or credential configuration is needed. Limits and incomplete
+observations remain explicit. See the [offline contract](offline-evidence.md).
+
+### Evidence handoff reports
+
+Prepare the selected bundle references and `format` in the [report input](reports.md), then:
+
+```sh
+target/debug/save --json --state-dir /absolute/private/store report create --input report.json
+```
+
+The normal receipt contains the structured report and rendered Markdown/JSON document. Reports
+preserve historical times, partial coverage, redactions and disagreements. Proposed knowledge
+changes remain pending human review. Rendering creates no file or external publication.
+
 ### Guided evidence review
 
 Prepare the typed before/after reference input described in [guided runbooks](runbooks.md), then:
@@ -458,3 +665,50 @@ Read the retained comparison and checkpoint instructions before acknowledging. W
 results exit 1; successful completed review exits 0. Status is read-only and exits 0 after a valid
 read regardless of workflow state. Resume requires unchanged inputs and the current revision;
 fresh attempts use a new run ID and preserve the original journal.
+
+### Opt-in toil metadata
+
+See [the toil contract](toil.md) for explicit consent, capture, effort annotations and retention.
+Use a separate absolute `--toil-state-dir`; mutations require `--record always` or `auto`.
+`toil configure --enabled true --keep-days 30` enables collection; `--enabled false` stops new
+record/capture/annotation while retaining summary/delete/prune. The public CLI tests run with:
+
+```sh
+tools/test-sandbox.sh cargo test -p workbench-cli --test toil --locked --offline
+```
+
+### Declared configuration checks
+
+Use `save --json config check --input check.json` with a declared kind, validator ID/version and
+absolute model path. Optional validator/input digest pins bind the intended bytes; see
+[the configuration-check contract](config-check.md). `--fail-on-findings` changes the CLI exit
+for complete findings without changing execution status or making a health claim.
+
+### Native Prometheus rule fixture
+
+The [Prometheus adapter contract](alert-rules.md) records the required official binary/archive
+identities. Place the verified executable outside source, for example under
+`target/alert-validator/upstream/promtool`. The optional native CLI tests require it explicitly:
+
+```sh
+tools/test-sandbox.sh env WORKBENCH_TEST_PROMTOOL="$(pwd)/target/alert-validator/upstream/promtool" cargo test -p workbench-cli --test prometheus_rules --locked --offline -- --include-ignored
+```
+
+The ordinary workspace suite keeps these three native-dependency cases ignored; installed
+acceptance and the explicit command above must pass before claiming the adapter verified.
+
+## Approved rule-file changes
+
+See [the controlled-change contract](changes.md). The focused real-validator tests require the
+same reviewed Prometheus binary as the existing rule-check acceptance. Run them inside the sandbox:
+
+```bash
+tools/test-sandbox.sh --small-evidence-disk env WORKBENCH_TEST_PROMTOOL="$PWD/target/alert-validator/upstream/promtool" cargo test -p workbench-core --lib change:: --locked --offline -- --include-ignored
+tools/test-sandbox.sh env WORKBENCH_TEST_PROMTOOL="$PWD/target/alert-validator/upstream/promtool" cargo test -p workbench-cli --test changes --locked --offline -- --include-ignored
+```
+
+The first command includes a real ENOSPC test on the sandbox's private 64 KiB filesystem. Explicitly
+ignored validator/disk fixtures must be included for change acceptance; ordinary unit tests do not
+stand in for the authenticated lifecycle. `tools/verify-changes.py` exercises an ordinary installed
+binary against frozen source/binary identities and retains OS crash/concurrency/disk-failure evidence.
+No daemon or target service is installed by these commands.

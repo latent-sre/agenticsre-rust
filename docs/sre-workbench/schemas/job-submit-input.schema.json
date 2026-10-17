@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:job-submit-input:0.1",
+  "title": "job-submit-input",
+  "type": "object",
+  "properties": {
+    "request": {
+      "$ref": "urn:sre-workbench:spec:request:0.1"
+    },
+    "max_runtime_ms": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3600000
+    },
+    "retain_events": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 256
+    }
+  },
+  "required": [
+    "request",
+    "max_runtime_ms",
+    "retain_events"
+  ],
+  "additionalProperties": false
+}

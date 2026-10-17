@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "scope": "WORKBENCH-031 browser saved queries and WORKBENCH-032 MCP fixed evidence collection; local Linux fixtures",
+  "base_commit": "ffcef97a16cb3168e775a9fd39122ccd9e79bd02",
+  "workspace_tests": {"passed": 577, "failed": 0, "ignored": 33, "log": "workspace-tests.log"},
+  "frontend_tests": {"passed": 79, "verification": "../../query-ui-verification.md"},
+  "workspace_clippy": {"status": "passed", "log": "clippy-final.log"},
+  "final_ui_unit_tests": {"passed": 12, "failed": 0, "log": "ui-unit-final.log"},
+  "final_frontend_checks": {"status": "passed", "checks": ["generated API consistency", "TypeScript", "ESLint"], "log": "frontend-checks.log"},
+  "final_http_contract": {"validations": 26, "log": "http-contract-final.log"},
+  "ordinary_build": {"status": "passed", "log": "build-final.log", "binary_sha256": "0a5c9256bbc5891755e363f66185803e2118f6eef76b7537768664e107f55325"},
+  "installed_missions": {
+    "binary_sha256": "7c6d4d22d386cc00c5ea714c630688cad19a5d5ac681608967afdcffcabab5c6",
+    "browser_receipts": 6,
+    "browser_evidence": "../query-ui-2026-10-17/browser-query-results.json",
+    "mcp_acceptance_groups": 6,
+    "mcp_evidence": "../evidence-mcp-2026-10-17/summary.json"
+  },
+  "final_change_qualification": "After installed missions and the workspace suite, a cfg(test) module was moved to the end of the UI grants file for strict Clippy. Production logic and browser assets did not change. Final workspace Clippy, 12 UI unit tests, ordinary build, 26 live HTTP contract validations, and query/evidence catalog smoke checks passed. Installed mission records retain their original binary/source identities; no second full mission or full workspace run is claimed.",
+  "other_checks": ["cargo fmt --all -- --check", "git diff --check", "embedded schema synchronization", "108 schemas, 72 positive and 63 negative specification fixtures"],
+  "review": "Independent cross-review of the two new authority paths found no actionable boundary defect.",
+  "remaining": ["live target compatibility and pilot", "actual agent-host registration", "native Windows", "broader roadmap and release acceptance"]
+}

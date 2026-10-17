@@ -1,0 +1,51 @@
+{
+  "all_execution_boundary": "tools/test-sandbox.sh; private user/network/PID namespaces and no host credentials",
+  "workspace": {
+    "command": "cargo test --workspace --all-features --locked --offline",
+    "exit_code": 0,
+    "passed": 464,
+    "failed": 0,
+    "ignored": 26
+  },
+  "focused_runner": {
+    "passed": 19,
+    "exit_code": 0
+  },
+  "public_remote_cli": {
+    "passed": 7,
+    "exit_code": 0
+  },
+  "installed": {
+    "commands": 76,
+    "exit_code": 0,
+    "private_enospc": true
+  },
+  "format": {
+    "exit_code": 0
+  },
+  "strict_clippy": {
+    "command": "cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+    "exit_code": 0
+  },
+  "ordinary_cli_build": {
+    "exit_code": 0
+  },
+  "specification_before_acceptance_docs": {
+    "schemas": 84,
+    "positive": 52,
+    "negative": 44,
+    "package_docs": 15,
+    "repository_docs": 55,
+    "exit_code": 0
+  },
+  "source_files": 1853,
+  "base_head": "9016dcba4d42adbf3dd1972cb0f2dba6ed8fc664",
+  "final_specification": {
+    "schemas": 84,
+    "positive": 52,
+    "negative": 44,
+    "package_docs": 15,
+    "repository_docs": 56,
+    "exit_code": 0
+  }
+}

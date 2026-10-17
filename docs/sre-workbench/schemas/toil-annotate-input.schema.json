@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:toil-annotate-input:0.1",
+  "title": "toil annotate input",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^sample-[0-9]+-[a-f0-9]+-[a-f0-9]+$",
+      "not": {
+        "pattern": "[\\r\\n]"
+      }
+    },
+    "effort_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 31536000000
+    },
+    "measurement": {
+      "enum": [
+        "measured",
+        "estimated"
+      ]
+    },
+    "retries": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "manual_interventions": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    }
+  },
+  "required": [
+    "id",
+    "effort_ms",
+    "measurement"
+  ],
+  "additionalProperties": false
+}

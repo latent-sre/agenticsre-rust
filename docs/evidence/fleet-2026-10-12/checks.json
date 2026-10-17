@@ -1,0 +1,89 @@
+{
+  "all_execution_boundary": "tools/test-sandbox.sh; private user/network/PID namespaces; no host credentials",
+  "base_head": "9016dcba4d42adbf3dd1972cb0f2dba6ed8fc664",
+  "source_files": 2072,
+  "workspace": {
+    "command": "cargo test --workspace --all-features --locked --offline",
+    "exit_code": 0,
+    "passed": 484,
+    "failed": 0,
+    "ignored": 26
+  },
+  "focused_fleet": {
+    "passed": 9,
+    "exit_code": 0,
+    "evidence": [
+      "logs/focused-fleet.log",
+      "logs/authority-regression.log"
+    ]
+  },
+  "dispatch_regression": {
+    "passed": 1,
+    "exit_code": 0
+  },
+  "public_fleet": {
+    "passed": 8,
+    "exit_code": 0
+  },
+  "public_runner": {
+    "passed": 8,
+    "exit_code": 0
+  },
+  "response_validation": {
+    "passed": 4,
+    "exit_code": 0
+  },
+  "installed": {
+    "commands": 26,
+    "exit_code": 0,
+    "private_enospc": true
+  },
+  "ordinary_cli_build": {
+    "exit_code": 0
+  },
+  "specification_before_acceptance_docs": {
+    "schemas": 90,
+    "positive": 56,
+    "negative": 48,
+    "package_docs": 15,
+    "repository_docs": 57,
+    "exit_code": 0
+  },
+  "format": {
+    "exit_code": 0
+  },
+  "strict_clippy": {
+    "command": "cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+    "exit_code": 0
+  },
+  "final_specification": {
+    "schemas": 90,
+    "positive": 56,
+    "negative": 48,
+    "package_docs": 15,
+    "repository_docs": 58,
+    "exit_code": 0
+  },
+  "post_acceptance_source_check": {
+    "unchanged_product_tests_installed_verifier": true,
+    "modified_acceptance_docs": [
+      "README.md",
+      "docs/development.md",
+      "docs/fleet.md",
+      "docs/roadmap.md",
+      "docs/sre-workbench/verify_specs.py"
+    ],
+    "new_acceptance_doc": "docs/fleet-verification.md",
+    "ordinary_binary_restored_and_hash_matches": true
+  },
+  "earlier_failure_evidence": {
+    "dispatch-before-fix.json": {
+      "source_manifest_sha256": "9c850c48feb28f47c7ee4449f152a0588823b46de5dc7f287fb89f6d6e042b79",
+      "binary_sha256": "3e8e9f263a51856709e44d4ae19920efb957a61ff2a337bf3eb908cd6016fac5"
+    },
+    "authority-before-fix.json": {
+      "source_manifest_sha256": "a31f81faef25ab27d97db2f05a44bea7b0a30ddd9dcb4b6f2720c21eb0ce631a",
+      "binary_sha256": "bbb86781613eef4c489cbd0d67e4c354b540ab7ac484ee8bb9ab5d383151dbc0"
+    }
+  }
+}

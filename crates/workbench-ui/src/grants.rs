@@ -4,9 +4,11 @@ use std::{
     path::PathBuf,
 };
 use workbench_core::{
-    DiagnosticsGrant, OperatorContext, RunControl, request::Request, result::Status,
+    DiagnosticsGrant, EvidenceStoreOptions, GrafanaConfigIdentity, InvestigationGrant,
+    OperatorContext, RunControl, request::Request, result::Status,
 };
 
+#[derive(Default)]
 pub struct Options {
     pub port: u16,
     pub allow: Vec<String>,
@@ -14,6 +16,11 @@ pub struct Options {
     pub read_policy: Option<PathBuf>,
     pub diagnostics_config: Option<PathBuf>,
     pub targets: Vec<String>,
+    pub config: Option<PathBuf>,
+    pub query_targets: Vec<String>,
+    pub context_source: Option<PathBuf>,
+    pub context_max_age_days: Option<u16>,
+    pub evidence_store: Option<EvidenceStoreOptions>,
 }
 
 pub(crate) struct Root {
@@ -27,6 +34,9 @@ pub(crate) struct Grants {
     pub context: OperatorContext,
     pub policy_digest: Option<String>,
     pub diagnostic_grant: Option<DiagnosticsGrant>,
+    pub investigation_grant: Option<InvestigationGrant>,
+    pub query_targets: BTreeSet<String>,
+    pub grafana_identity: Option<GrafanaConfigIdentity>,
 }
 
 impl Grants {
@@ -35,12 +45,21 @@ impl Grants {
         for operation in &options.allow {
             if !matches!(
                 operation.as_str(),
-                "process.exec" | "command.inspect" | "task.run" | "diagnostics.run"
+                "process.exec"
+                    | "command.inspect"
+                    | "task.run"
+                    | "diagnostics.run"
+                    | "context.resolve"
+                    | "evidence.list"
+                    | "evidence.open"
+                    | "evidence.compare"
+                    | "report.create"
+                    | "queries.list"
+                    | "queries.describe"
+                    | "query.run"
             ) || !operations.insert(operation.clone())
             {
-                return Err(
-                    "--allow requires unique process.exec, command.inspect, task.run or diagnostics.run IDs",
-                );
+                return Err("--allow requires unique supported operation IDs");
             }
         }
         let commands = operations
@@ -63,9 +82,92 @@ impl Grants {
         if !diagnostics && (options.diagnostics_config.is_some() || !options.targets.is_empty()) {
             return Err("--diagnostics-config and --target require a diagnostics.run grant");
         }
-        let mut context = OperatorContext::default();
+        let query = operations.contains("query.run");
+        if query && (options.config.is_none() || options.query_targets.is_empty()) {
+            return Err("query.run requires --config and at least one explicit --query-target ID");
+        }
+        if !query && (options.config.is_some() || !options.query_targets.is_empty()) {
+            return Err("--config and --query-target require a query.run grant");
+        }
+        let query_targets: BTreeSet<_> = options.query_targets.iter().cloned().collect();
+        if query_targets.len() != options.query_targets.len() {
+            return Err("--query-target IDs must be unique");
+        }
+        let context_resolution = operations.contains("context.resolve");
+        if context_resolution
+            && (options.context_source.is_none() || options.context_max_age_days.is_none())
+        {
+            return Err("context.resolve requires --context-source and --context-max-age-days");
+        }
+        if !context_resolution
+            && (options.context_source.is_some() || options.context_max_age_days.is_some())
+        {
+            return Err(
+                "--context-source and --context-max-age-days require a context.resolve grant",
+            );
+        }
+        let evidence = operations.iter().any(|op| {
+            matches!(
+                op.as_str(),
+                "evidence.list" | "evidence.open" | "evidence.compare" | "report.create"
+            )
+        });
+        if evidence && options.evidence_store.is_none() {
+            return Err("evidence and report grants require an existing explicit --state-dir");
+        }
+        if !evidence && options.evidence_store.is_some() {
+            return Err(
+                "--state-dir requires an evidence.list, evidence.open, evidence.compare or report.create grant",
+            );
+        }
+        let mut context = OperatorContext {
+            context_source_path: options.context_source.clone(),
+            context_max_age_days: options.context_max_age_days,
+            evidence_store: options.evidence_store.clone(),
+            ..OperatorContext::default()
+        };
+        let investigation_operations = options
+            .allow
+            .iter()
+            .filter(|op| {
+                matches!(
+                    op.as_str(),
+                    "context.resolve"
+                        | "evidence.list"
+                        | "evidence.open"
+                        | "evidence.compare"
+                        | "report.create"
+                )
+            })
+            .cloned()
+            .collect::<Vec<_>>();
+        let investigation_grant = if context_resolution || evidence {
+            Some(workbench_core::investigation_grant(&context, &investigation_operations)
+                .map_err(|_| "the explicit context source or evidence store could not be admitted; use existing valid files and start a new session")?)
+        } else {
+            None
+        };
         let mut roots = BTreeMap::new();
         let mut policy_digest = None;
+        let grafana_identity = if let Some(path) = &options.config {
+            // Inspect bounded configuration and CA bytes without credentials or network work.
+            let (description, identity) = workbench_core::grafana_config_description(path)
+                .map_err(|_| "the explicit Grafana configuration is unavailable or invalid")?;
+            for id in &query_targets {
+                let target = description
+                    .targets
+                    .iter()
+                    .find(|target| &target.id == id)
+                    .ok_or("--query-target must name a target in the trusted configuration")?;
+                if target.api_profile.is_none() {
+                    return Err("a granted query target has an unsupported API profile");
+                }
+            }
+            context.config_path = Some(path.clone());
+            Some(identity)
+        } else {
+            None
+        };
         let diagnostic_grant = if let Some(path) = &options.diagnostics_config {
             let grant = workbench_core::diagnostics_grant(path, &options.targets)
                 .map_err(|_| "the diagnostic configuration, selected targets or CA could not be admitted; start a new session with valid regular files and unique known aliases")?;
@@ -143,6 +245,9 @@ impl Grants {
             context,
             policy_digest,
             diagnostic_grant,
+            investigation_grant,
+            query_targets,
+            grafana_identity,
         })
     }
 
@@ -150,11 +255,69 @@ impl Grants {
         json!({"api_version":"0.1","session_id":id,
             "roots":self.roots.iter().map(|(id, root)| json!({"id":id,"label":root.label})).collect::<Vec<_>>(),
             "targets":self.diagnostic_grant.iter().flat_map(|grant| grant.target_ids()).map(|id|json!({"id":id,"label":id})).collect::<Vec<_>>(),
+            "query_targets":self.query_targets.iter().map(|id|json!({"id":id,"label":id})).collect::<Vec<_>>(),
             "operations":self.operations.iter().map(|operation| if operation == "task.run" {
                 json!({"id":operation,"version":1,"tasks":["error-budget"]})
             } else if operation == "diagnostics.run" {
                 json!({"id":operation,"version":1,"packs":[workbench_core::diagnostics_pack_metadata()]})
+            } else if operation == "context.resolve" {
+                json!({"id":operation,"version":1,"profile":"offline-context-v1"})
+            } else if matches!(operation.as_str(), "queries.list" | "queries.describe") {
+                json!({"id":operation,"version":1,"profile":"installed-query-catalog-v1"})
+            } else if operation == "query.run" {
+                json!({"id":operation,"version":1,"profile":"saved-query-v1"})
+            } else if self.investigation_grant.as_ref().is_some_and(|grant| grant.allows(operation)) {
+                json!({"id":operation,"version":1,"profile":"verified-evidence-v1"})
             } else { json!({"id":operation,"version":1,"profile":"linux-read-v1"}) }).collect::<Vec<_>>(),
             "limits":{"active_runs":1,"history_entries":50,"history_bytes":16777216,"max_request_bytes":65536,"max_submissions":1024}})
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn saved_query_catalog_is_independent_and_execution_requires_its_own_configuration() {
+        for operation in ["queries.list", "queries.describe"] {
+            let options = Options {
+                allow: vec![operation.into()],
+                ..Options::default()
+            };
+            let grants = Grants::new(&options).unwrap();
+            let session = grants.session("test");
+            assert_eq!(session["operations"].as_array().unwrap().len(), 1);
+            assert_eq!(session["operations"][0]["id"], operation);
+            assert_eq!(session["query_targets"], json!([]));
+            assert!(grants.grafana_identity.is_none());
+        }
+        for options in [
+            Options {
+                allow: vec!["query.run".into()],
+                ..Options::default()
+            },
+            Options {
+                allow: vec!["queries.list".into()],
+                config: Some("/missing.json".into()),
+                ..Options::default()
+            },
+            Options {
+                allow: vec!["queries.describe".into()],
+                query_targets: vec!["fixture".into()],
+                ..Options::default()
+            },
+            Options {
+                allow: vec!["query.run".into()],
+                config: Some("/missing.json".into()),
+                targets: vec!["fixture".into()],
+                ..Options::default()
+            },
+            Options {
+                allow: vec!["queries.list".into(), "queries.list".into()],
+                ..Options::default()
+            },
+        ] {
+            assert!(Grants::new(&options).is_err());
+        }
     }
 }

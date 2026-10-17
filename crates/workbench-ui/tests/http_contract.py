@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import http.client
 import json
 from pathlib import Path
@@ -22,7 +23,8 @@ def main() -> int:
     args = parser.parse_args()
     specification = json.loads((ROOT / "docs/ui/openapi.json").read_text(encoding="utf-8"))
     checked = 0
-    with subprocess.Popen([str(args.binary.resolve()), "ui", "serve", "--allow", "task.run"],
+    with subprocess.Popen([str(args.binary.resolve()), "ui", "serve", "--allow", "task.run",
+                           "--allow", "queries.list", "--allow", "queries.describe"],
                           stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True) as server:
         try:
             assert server.stdout is not None
@@ -85,6 +87,37 @@ def main() -> int:
             request("POST", "/api/v1/runs", 202, "RunSummary", submission)
             request("POST", "/api/v1/runs", 422, "Problem", {})
             request("GET", "/api/v1/runs/absent", 404, "Problem")
+            for index, operation in enumerate(("queries.list", "queries.describe")):
+                catalog = {"submission_id": f"01234567-1234-4234-8234-0123456789a{index}",
+                           "operation": operation, "operation_version": 1,
+                           "inputs": {} if operation == "queries.list" else {
+                               "id": "prometheus.up-by-job", "version": 1},
+                           "limits": {"timeout_ms": 30000, "max_output_bytes": 1048576}}
+                validate("RunSubmission", catalog)
+                admitted = request("POST", "/api/v1/runs", 202, "RunSummary", catalog)
+                catalog_path = f"/api/v1/runs/{admitted['id']}"
+                deadline = time.monotonic() + 5
+                while True:
+                    catalog_summary = request("GET", catalog_path, 200, "RunSummary")
+                    if catalog_summary["state"] == "terminal":
+                        break
+                    assert time.monotonic() < deadline, "catalog receipt deadline"
+                    time.sleep(0.01)
+                catalog_receipt = request("GET", catalog_summary["receipt_url"], 200, "CoreResult")
+                assert catalog_receipt["execution"]["status"] == "succeeded"
+                assert catalog_receipt["operation"] == operation
+                definitions = (catalog_receipt["data"]["queries"] if operation == "queries.list"
+                               else [catalog_receipt["data"]["query"]])
+                for definition in definitions:
+                    installed = dict(definition)
+                    digest = installed.pop("definition_sha256")
+                    assert installed["id"] in ("prometheus.up-by-job", "loki.logs-by-job")
+                    assert installed["version"] == 1
+                    artifact = (ROOT / "crates/workbench-core/resources/queries" /
+                                f"{installed['id']}.v1.json").read_bytes()
+                    assert digest == hashlib.sha256(artifact).hexdigest()
+                    assert installed == json.loads(artifact)
+                    checked += 1
             request("DELETE", "/api/v1/runs", 200, "ClearResult", {})
             request("GET", summary["receipt_url"], 410, "Problem")
         finally:

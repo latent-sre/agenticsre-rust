@@ -1,0 +1,22 @@
+{
+  "format_version": 1,
+  "action": "status",
+  "runner": {
+    "id": "runner.fixture",
+    "server_certificate_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "policy_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "principal": {
+    "id": "requester.fixture",
+    "client_certificate_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "requester": "requester.fixture",
+  "request_id": "request.fixture",
+  "target": null,
+  "plan": null,
+  "plan_sha256": null,
+  "approval_id": null,
+  "state": "not_found",
+  "effect_outcome": "succeeded",
+  "remote_error": null
+}

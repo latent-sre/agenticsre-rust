@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:runner-wire-response:0.1",
+  "title": "One authenticated remote lifecycle RPC response",
+  "type": "object",
+  "properties": {
+    "protocol": {
+      "const": 1
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "error": {
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 128
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "data": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:runner-data:0.1"
+        },
+        {
+          "$ref": "urn:sre-workbench:spec:change-data:0.1"
+        }
+      ]
+    }
+  },
+  "required": [
+    "protocol",
+    "ok",
+    "error",
+    "data"
+  ],
+  "additionalProperties": false
+}

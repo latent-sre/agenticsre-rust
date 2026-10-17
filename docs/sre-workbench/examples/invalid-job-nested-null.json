@@ -1,0 +1,28 @@
+{
+  "request": {
+    "spec_version": "0.1",
+    "request_id": "example-job-001",
+    "operation": "process.exec",
+    "operation_version": 1,
+    "target": {
+      "kind": "local",
+      "id": "workstation",
+      "environment": null
+    },
+    "inputs": {
+      "program": "/usr/bin/printf",
+      "args": [
+        "%s\\n",
+        "job example"
+      ],
+      "cwd": "/tmp"
+    },
+    "limits": {
+      "timeout_ms": 30000,
+      "max_output_bytes": 4096
+    },
+    "record": "never"
+  },
+  "max_runtime_ms": 3600000,
+  "retain_events": 32
+}

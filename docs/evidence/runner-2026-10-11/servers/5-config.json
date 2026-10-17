@@ -1,0 +1,50 @@
+{
+  "ca_certificate": "/tmp/installed-runner-o3z8clrb/pki/ca.der",
+  "certificate": "/tmp/installed-runner-o3z8clrb/pki/server.der",
+  "config_version": 1,
+  "extension_policy_path": "/tmp/installed-runner-o3z8clrb/extension-policy.json",
+  "extension_state_dir": "/tmp/installed-runner-o3z8clrb/extensions",
+  "grants": [
+    {
+      "max_runtime_ms": 3600000,
+      "operation": "ext.example.capacity.project",
+      "operation_version": 1,
+      "package_sha256": "sha256:70a3d770c689d101d0a2294992c3b6eba77e12c3808859180ddbdef30640624c",
+      "policy_sha256": "sha256:9be14341ce10e66e12b1d703f24d70f982d7265152eb5cfa46fdf1acb9c0e105",
+      "principal": "principal.a",
+      "target": "fixture.target"
+    },
+    {
+      "max_runtime_ms": 3600000,
+      "operation": "ext.example.capacity.project",
+      "operation_version": 1,
+      "package_sha256": "sha256:70a3d770c689d101d0a2294992c3b6eba77e12c3808859180ddbdef30640624c",
+      "policy_sha256": "sha256:9be14341ce10e66e12b1d703f24d70f982d7265152eb5cfa46fdf1acb9c0e105",
+      "principal": "principal.b",
+      "target": "fixture.target"
+    }
+  ],
+  "listen": "127.0.0.1:0",
+  "principals": [
+    {
+      "certificate_sha256": "sha256:4262406cc2887aab62219adea2bb2e973b01e755cbd4ccbb76208ecbf585f3cb",
+      "id": "principal.a"
+    },
+    {
+      "certificate_sha256": "sha256:aedf849524d09a5b2d591692cbb3b5be1f5bb05cbbefd736a77d32e6226e0c79",
+      "id": "principal.b"
+    }
+  ],
+  "private_key": "/tmp/installed-runner-o3z8clrb/pki/server.key.der",
+  "runner_id": "fixture.runner",
+  "state_dir": "/tmp/installed-runner-o3z8clrb/runner-state",
+  "targets": [
+    {
+      "id": "fixture.target",
+      "snapshot": {
+        "environment": "isolated-sandbox",
+        "name": "Acceptance target"
+      }
+    }
+  ]
+}

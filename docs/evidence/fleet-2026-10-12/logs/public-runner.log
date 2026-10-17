@@ -1,0 +1,52 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+warning: function `read_private` is never used
+   --> crates/workbench-core/src/runner.rs:411:15
+    |
+411 | pub(crate) fn read_private(
+    |               ^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `prepared_call` is never used
+   --> crates/workbench-core/src/runner.rs:420:15
+    |
+420 | pub(crate) fn prepared_call(
+    |               ^^^^^^^^^^^^^
+
+warning: function `valid_budget_data` is never used
+   --> crates/workbench-core/src/runner.rs:471:15
+    |
+471 | pub(crate) fn valid_budget_data(value: &Value) -> bool {
+    |               ^^^^^^^^^^^^^^^^^
+
+warning: function `budget_data` is never used
+   --> crates/workbench-core/src/runner/response.rs:379:15
+    |
+379 | pub(super) fn budget_data(value: &Value) -> bool {
+    |               ^^^^^^^^^^^
+
+warning: function `normalize_fleet_task` is never used
+   --> crates/workbench-core/src/tasks.rs:296:15
+    |
+296 | pub(crate) fn normalize_fleet_task(inputs: &Value) -> Result<Value, Problem> {
+    |               ^^^^^^^^^^^^^^^^^^^^
+
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+warning: `workbench-core` (lib) generated 5 warnings
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 4.62s
+     Running tests/remote_runner.rs (target/debug/deps/remote_runner-4a455e051e0f6e81)
+
+running 8 tests
+test expired_server_certificate_refuses_even_with_matching_leaf_pin ... ok
+test expected_principal_and_policy_refuse_before_remote_admission ... ok
+test hosted_adapters_refuse_runner_credentials_before_startup ... ok
+test grant_revocation_keeps_owned_historical_result_observable_after_restart ... ok
+test lost_ack_is_reconciled_by_status_without_resubmission_and_invalid_wire_never_dispatches ... ok
+test server_bind_failure_discloses_retained_startup_writes ... ok
+test tls_identity_and_unknown_principal_refusals_leave_no_owned_admission ... ok
+test principal_owned_requests_deduplicate_conflict_and_reconnect_without_cross_account_lookup ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.47s
+

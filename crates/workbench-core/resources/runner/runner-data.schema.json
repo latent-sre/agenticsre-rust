@@ -1,0 +1,502 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:runner-data:0.1",
+  "title": "Authenticated remote admission and lifecycle observation",
+  "type": "object",
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "action": {
+      "enum": [
+        "handshake",
+        "submit",
+        "status",
+        "watch",
+        "cancel",
+        "submitted",
+        "existing",
+        "cancel_requested",
+        "cancelled",
+        "terminal",
+        "recovery_required"
+      ]
+    },
+    "admission": {
+      "enum": [
+        "not_requested",
+        "accepted",
+        "not_found",
+        "unknown"
+      ]
+    },
+    "runner": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "protocol": {
+              "const": 1
+            },
+            "platform": {
+              "enum": [
+                "linux-x86_64",
+                null
+              ]
+            },
+            "server_certificate_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            },
+            "policy_sha256": {
+              "oneOf": [
+                {
+                  "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "protocol",
+            "platform",
+            "server_certificate_sha256",
+            "policy_sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "principal": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "client_certificate_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "id",
+            "client_certificate_sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "target": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+            },
+            "snapshot": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$"
+                },
+                "environment": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$"
+                }
+              },
+              "required": [
+                "name",
+                "environment"
+              ],
+              "additionalProperties": false
+            },
+            "snapshot_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            }
+          },
+          "required": [
+            "id",
+            "snapshot",
+            "snapshot_sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_id": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_sha256": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "job": {
+      "$ref": "urn:sre-workbench:spec:job-data:0.1#/properties/job"
+    },
+    "events": {
+      "$ref": "urn:sre-workbench:spec:job-data:0.1#/properties/events"
+    },
+    "cursor": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:job-data:0.1#/properties/cursor"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "result": {
+      "$ref": "urn:sre-workbench:spec:job-data:0.1#/properties/result"
+    },
+    "result_sha256": {
+      "oneOf": [
+        {
+          "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "result_omitted": {
+      "type": "boolean"
+    },
+    "clock": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "runner_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "offset_established": {
+              "const": false
+            }
+          },
+          "required": [
+            "runner_at",
+            "offset_established"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "cancellation_signal": {
+      "$ref": "urn:sre-workbench:spec:job-data:0.1#/properties/cancellation_signal"
+    },
+    "capabilities": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          },
+          "operation": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+          },
+          "version": {
+            "const": 1
+          },
+          "implementation_sha256": {
+            "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+          },
+          "max_runtime_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3600000
+          }
+        },
+        "required": [
+          "target",
+          "operation",
+          "version",
+          "implementation_sha256",
+          "max_runtime_ms"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "max_request_bytes": {
+          "const": 65536
+        },
+        "max_response_bytes": {
+          "const": 2097152
+        },
+        "max_runtime_ms": {
+          "const": 3600000
+        },
+        "max_workers": {
+          "const": 2
+        },
+        "max_connections": {
+          "const": 8
+        }
+      },
+      "required": [
+        "max_request_bytes",
+        "max_response_bytes",
+        "max_runtime_ms",
+        "max_workers",
+        "max_connections"
+      ],
+      "additionalProperties": false
+    },
+    "remote_error": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "maxLength": 128
+        },
+        {
+          "$ref": "urn:sre-workbench:spec:result:0.1#/properties/errors"
+        }
+      ]
+    },
+    "admission_expires_at": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "management_effect_outcome": {
+      "$ref": "urn:sre-workbench:spec:result:0.1#/properties/effect_outcome"
+    },
+    "binding": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "remote"
+            },
+            "scope": {
+              "type": "object",
+              "properties": {
+                "principal": {
+                  "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+                },
+                "runner_id": {
+                  "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+                },
+                "policy_sha256": {
+                  "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+                },
+                "target": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+                    },
+                    "snapshot": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128,
+                          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$"
+                        },
+                        "environment": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128,
+                          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "environment"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "snapshot_sha256": {
+                      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "snapshot",
+                    "snapshot_sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                "grant": {
+                  "$ref": "urn:sre-workbench:spec:runner-server-config:0.1#/properties/grants/items"
+                },
+                "grant_sha256": {
+                  "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+                }
+              },
+              "required": [
+                "principal",
+                "runner_id",
+                "policy_sha256",
+                "target",
+                "grant",
+                "grant_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "expires_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "submission_sha256": {
+              "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+            },
+            "implementation": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "task"
+                    },
+                    "id": {
+                      "const": "error-budget"
+                    },
+                    "version": {
+                      "const": 1
+                    },
+                    "source": {
+                      "$ref": "urn:sre-workbench:spec:error-budget-data:0.1#/oneOf/0/properties/source"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "id",
+                    "version",
+                    "source"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "extension"
+                    },
+                    "policy_sha256": {
+                      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+                    },
+                    "package_sha256": {
+                      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+                    },
+                    "executable_sha256": {
+                      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/digest"
+                    },
+                    "operation": {
+                      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation"
+                    },
+                    "operation_version": {
+                      "const": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "policy_sha256",
+                    "package_sha256",
+                    "executable_sha256",
+                    "operation",
+                    "operation_version"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "scope",
+            "expires_at",
+            "submission_sha256",
+            "implementation"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "format_version",
+    "action",
+    "admission",
+    "runner",
+    "principal",
+    "target",
+    "request_id",
+    "request_sha256",
+    "job",
+    "events",
+    "cursor",
+    "result",
+    "result_sha256",
+    "result_omitted",
+    "clock",
+    "cancellation_signal",
+    "capabilities",
+    "limits",
+    "remote_error",
+    "admission_expires_at",
+    "management_effect_outcome",
+    "binding"
+  ],
+  "additionalProperties": false
+}

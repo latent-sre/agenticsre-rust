@@ -1,0 +1,62 @@
+{
+  "content": [
+    {
+      "text": "Workbench execution denied; assessment not_assessed. Inspect structuredContent for the complete receipt.",
+      "type": "text"
+    }
+  ],
+  "structuredContent": {
+    "spec_version": "0.1",
+    "request_id": "request-17-18df63210774b1a8-26",
+    "run_id": "run-17-18df63210777d2dd-27",
+    "operation": "evidence.collect",
+    "operation_version": 1,
+    "target": {
+      "kind": "connection",
+      "id": "fixture"
+    },
+    "resolved_target": {},
+    "started_at": "2026-10-17T18:02:50.227096162Z",
+    "finished_at": "2026-10-17T18:02:50.228025235Z",
+    "duration_ms": 0,
+    "execution": {
+      "status": "denied",
+      "child_exit_code": null,
+      "signal": null
+    },
+    "effect_outcome": "not_attempted",
+    "assessment": "not_assessed",
+    "coverage": {
+      "state": "not_established",
+      "scope": "Retained receipts for the fixed service queries; source-data coverage and service health remain unestablished.",
+      "limitations": [
+        "Complete capture means successful receipt retention, not complete telemetry coverage or service health.",
+        "Known credential echoes are redacted; unrelated sensitive telemetry is not automatically detected.",
+        "Finalization may use up to 2500 ms for observed bytes and metadata; synchronous filesystem I/O cannot forcibly preempt an uninterruptible kernel operation."
+      ]
+    },
+    "output": {
+      "stdout": "",
+      "stderr": "",
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "encoding": "utf-8"
+    },
+    "data": {},
+    "errors": [
+      {
+        "code": "grafana_configuration_changed",
+        "message": "The evidence collection's Grafana binding or query could not be admitted; private configuration and query details are withheld.",
+        "retryable": false
+      }
+    ],
+    "sources": [],
+    "artifacts": [],
+    "effective_limits": {
+      "timeout_ms": 60000,
+      "max_output_bytes": 1048576
+    },
+    "record_mode": "always"
+  },
+  "isError": true
+}

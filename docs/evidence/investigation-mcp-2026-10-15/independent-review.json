@@ -1,0 +1,19 @@
+{
+  "mode": "Independent static review of scoped local working-tree bytes",
+  "base_sha": "9016dcba4d42adbf3dd1972cb0f2dba6ed8fc664",
+  "scope": [
+    "MCP startup/grants",
+    "investigation tool schemas and admission",
+    "dedicated worker dispatch",
+    "CLI MCP startup pairing/help"
+  ],
+  "findings": [],
+  "reviewed_sha256": {
+    "crates/workbench-mcp/src/grants.rs": "5a88d5670b3bd754ffa10f84234d21c38e7ed06dc455b9775e21175d42020885",
+    "crates/workbench-mcp/src/mapping.rs": "6394f7a4f498ae3305caabf721d8e3a3c7b71994d74c1099ef729a3f1f2f465b",
+    "crates/workbench-mcp/src/server.rs": "b8d2936ee1c804fe04cc45313aaa20a403081cb74562cee69297ffd78a6a4ba6",
+    "crates/workbench-cli/src/main.rs": "e73d03dcac997d103cecbd0dd76a6fa59d1c431dd187e5c7e085b39b48a1b598"
+  },
+  "conclusion": "No material finding blocks local acceptance. Independent grant pairing, separated offline authority, strict admission and shared cancellation/receipt/cleanup paths match the contract.",
+  "limits": "No tests executed by the static reviewer. Accepted backlog was excluded using the contract, supplied history and identified hunks; a clean WB027-to-WB028 source diff was unavailable. No formal merge or publication approval."
+}

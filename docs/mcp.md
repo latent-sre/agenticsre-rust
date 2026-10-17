@@ -5,6 +5,31 @@ records acceptance; current execution status belongs in [the roadmap](roadmap.md
 covers local fixture work, not an installed host
 integration or a grant to access production systems.
 
+The [offline investigation extension](investigation-mcp.md) adds five independent grants for
+context resolution, evidence listing/inspection/comparison and report creation. It reuses the
+same bounded transport and the core's pinned offline authority. The initial five tools below
+remain unchanged; no tools are enabled by default.
+
+Installed saved queries add three independent grants: `queries.list`, `queries.describe` and
+`query.run`. The catalog grants need no configuration or credential and do no network work.
+`query.run` requires the launcher's `--config` and at least one `--target` ID. It uses the
+installed definition and the same pinned configuration, CA and credential checks as the existing
+Grafana observation; the wire cannot supply an expression or an ungranted target. Generic hosted
+saved-query requests remain refused. See [the saved-query contract](saved-queries.md).
+
+Configured diagnostics add `diagnostics.list`, `diagnostics.describe` and `diagnostics.run` as
+independent grants. The catalog tools are offline. Execution requires the launcher's
+`--diagnostics-config` and at least one `--diagnostic-target` ID; these IDs are separate from
+Grafana's `--target` IDs. The adapter reuses the core's opaque diagnostic grant, including the
+configuration and CA byte checks at each run. Wire arguments cannot choose endpoints, process
+identities, resolvers, trust files or another target. See [the diagnostic contract](diagnostics.md).
+
+[Evidence collection](evidence-mcp.md) adds independent `evidence.packs.list`,
+`evidence.packs.describe` and `evidence.collect` grants. Catalog discovery uses embedded metadata
+only. Collection requires the configured target, a pinned context source and freshness policy,
+and an existing private evidence store. Its explicit grant authorizes recording with
+`record=always`; offline investigation grants do not authorize collection or store management.
+
 ## Mission
 
 A controlled MCP client discovers only its launcher-granted operations, runs a permitted command,
@@ -34,7 +59,8 @@ Grafana calls are limited to explicitly granted configured target IDs and operat
 the credential provider's independent origin/org/operation binding and all existing limits.
 
 Use local stdio only. Do not add an HTTP listener, host registration, sampling, elicitation,
-arbitrary resource/file reads, task installation, evidence persistence or a live model campaign.
+arbitrary resource/file reads, task installation or a live model campaign. Evidence persistence
+is limited to the separately granted fixed collection pack described above.
 A process under the same OS account does not establish a separate protected identity. Host
 installation and actual Claude/Copilot compatibility need their own later acceptance.
 
@@ -97,6 +123,26 @@ selected configuration target IDs. The five wire tools are:
 | `workbench_task_run` | `id=error-budget`, `version=1`, numerical `input`, optional `limits` |
 | `workbench_grafana_dashboard_get` | `target_id`, `uid`, optional `limits` |
 | `workbench_grafana_query` | `target_id`, `datasource`, `kind`, `from`, `to`, `expr`, optional `limits` |
+
+The additional tools are `workbench_context_resolve`, `workbench_evidence_list`,
+`workbench_evidence_open`, `workbench_compare` and `workbench_report_create`. Their direct core
+arguments, startup pairing and narrower offline limits are specified in the
+[investigation contract](investigation-mcp.md#tool-contracts). Context requires an explicit source
+and max-age policy; the four evidence/report operations require an existing private store.
+
+The saved-query tools are `workbench_queries_list` (empty inputs),
+`workbench_queries_describe` (installed `id` and `version`) and `workbench_query_run`
+(`target_id` plus the [query-run input](sre-workbench/schemas/query-run-input.schema.json)).
+The optional expected definition digest pins catalog discovery to execution. The first two tools
+are offline; the third inherits the 60-second Grafana deadline and 2 MiB receipt ceiling.
+
+The diagnostic tools are `workbench_diagnostics_list` (empty inputs),
+`workbench_diagnostics_describe` (`id=connectivity`) and `workbench_diagnostics_run`
+(`target_id` plus the [fixed pack input](sre-workbench/schemas/diagnostics-run-input.schema.json)).
+The run tool normalizes the same defaults as the core: body capture off, continue after failure,
+30-second deadline, 16 KiB data allowance and concurrency two. Callers may lower those limits;
+the maximum deadline is 60 seconds and concurrency never exceeds two. Receipts remain the unchanged
+core results, including partial, blocked, cancelled and timed-out observations.
 
 Tool objects reject unknown fields. Limits use existing core names, defaults and operation-specific
 ceilings; normalized requests must still fit 64 KiB/depth 16. Schemas embed the authoritative core

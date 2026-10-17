@@ -1,0 +1,212 @@
+{
+  "adversary_sha256": "9199dbb8894ce506fab6bb45444498ba60d1222e024b0b7f1ec65ea79002bd57",
+  "binary_sha256": "4caf56aae60aeb5635d89e4489d0a61e170dbbd6c3cf825baa567777d42dfe6c",
+  "closed_consumer_cleanup": true,
+  "commands": [
+    {
+      "case": "install-peer",
+      "exit": 0
+    },
+    {
+      "case": "disabled-dispatch",
+      "exit": 2
+    },
+    {
+      "case": "disabled-description",
+      "exit": 0
+    },
+    {
+      "case": "authorized-inventory",
+      "exit": 0
+    },
+    {
+      "case": "authorized-discovery",
+      "exit": 0
+    },
+    {
+      "case": "authorized-description",
+      "exit": 0
+    },
+    {
+      "case": "capacity-cli",
+      "exit": 0
+    },
+    {
+      "case": "capacity-text",
+      "exit": 0
+    },
+    {
+      "case": "structured-unicode-id",
+      "exit": 0
+    },
+    {
+      "case": "no-growth",
+      "exit": 0
+    },
+    {
+      "case": "exhausted",
+      "exit": 0
+    },
+    {
+      "case": "subday",
+      "exit": 0
+    },
+    {
+      "case": "safe-maximum",
+      "exit": 0
+    },
+    {
+      "case": "old-operation-version",
+      "exit": 2
+    },
+    {
+      "case": "wire-grant",
+      "exit": 2
+    },
+    {
+      "case": "fractional-input",
+      "exit": 2
+    },
+    {
+      "case": "unsafe-integer",
+      "exit": 2
+    },
+    {
+      "case": "public-policy",
+      "exit": 2
+    },
+    {
+      "case": "wrong-policy-pin",
+      "exit": 2
+    },
+    {
+      "case": "replaced-package",
+      "exit": 1
+    },
+    {
+      "case": "install-adversary",
+      "exit": 0
+    },
+    {
+      "case": "one-grant-selects-original",
+      "exit": 0
+    },
+    {
+      "case": "ambiguous-grants",
+      "exit": 2
+    },
+    {
+      "case": "peer-unsupported",
+      "exit": 1
+    },
+    {
+      "case": "peer-correlation",
+      "exit": 1
+    },
+    {
+      "case": "peer-malformed",
+      "exit": 1
+    },
+    {
+      "case": "peer-invalid-utf8",
+      "exit": 1
+    },
+    {
+      "case": "peer-oversized",
+      "exit": 1
+    },
+    {
+      "case": "peer-sequence",
+      "exit": 1
+    },
+    {
+      "case": "peer-early-result",
+      "exit": 1
+    },
+    {
+      "case": "peer-duplicate-terminal",
+      "exit": 1
+    },
+    {
+      "case": "peer-trailing-progress",
+      "exit": 1
+    },
+    {
+      "case": "peer-missing-terminal",
+      "exit": 1
+    },
+    {
+      "case": "peer-progress-flood",
+      "exit": 1
+    },
+    {
+      "case": "peer-invalid-output",
+      "exit": 1
+    },
+    {
+      "case": "peer-unterminated",
+      "exit": 1
+    },
+    {
+      "case": "peer-duplicate-key",
+      "exit": 1
+    },
+    {
+      "case": "peer-array-frame",
+      "exit": 1
+    },
+    {
+      "case": "peer-crash-beforehello",
+      "exit": 1
+    },
+    {
+      "case": "peer-nonzero",
+      "exit": 1
+    },
+    {
+      "case": "peer-failed",
+      "exit": 1
+    },
+    {
+      "case": "stderr-limit",
+      "exit": 1
+    },
+    {
+      "case": "detail-budget",
+      "exit": 1
+    },
+    {
+      "case": "peer-timeout",
+      "exit": 1
+    },
+    {
+      "case": "stubborn-cancellation",
+      "exit": 143
+    }
+  ],
+  "installed_copy_outside_checkout": true,
+  "no_credentials_or_network": true,
+  "package_inputs_unchanged": true,
+  "passed": true,
+  "peer_compatibility": [
+    {
+      "case": "future-protocol",
+      "exit": 1,
+      "refused": true
+    },
+    {
+      "case": "array-hello",
+      "exit": 1,
+      "refused": true
+    },
+    {
+      "case": "future-operation",
+      "exit": 0,
+      "refused": true
+    }
+  ],
+  "peer_sha256": "2c10ab896d97f7c27303862ba24dd93bb609e8c3e010d9fe791c514b1b616107",
+  "reviewed_operator_execution_only": true,
+  "source_files": 1435,
+  "source_manifest_sha256": "9dc8bce4cd9fb67c2ba9c3e99252bc52d7be55e54b6f22f53091ed87f6dec9f8"
+}

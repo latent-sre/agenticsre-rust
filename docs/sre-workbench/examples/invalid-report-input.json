@@ -1,0 +1,19 @@
+{
+  "bundles": [
+    {
+      "id": "run-1-ab-1"
+    }
+  ],
+  "format": "json",
+  "proposals": [
+    {
+      "kind": "runbook",
+      "title": "Proposed change",
+      "content": "Review before use",
+      "evidence": [
+        "run-1-ab-1"
+      ],
+      "review_status": "approved"
+    }
+  ]
+}

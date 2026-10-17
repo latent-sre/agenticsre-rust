@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-changes.py", line 418, in <module>
+    main()
+    ~~~~^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-changes.py", line 274, in main
+    apply, planned = approve_case("concurrent", proposed)
+                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-changes.py", line 263, in approve_case
+    plan = change(name + "-plan", "plan", {"request_id": name, "target": "rules.fixture",
+                 "proposed_base64": base64.b64encode(proposed).decode(), "expires_in_seconds": 300})
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-changes.py", line 260, in change
+    return local(name, arguments(name, method, body, principal), expected)
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-changes.py", line 165, in local
+    return finish(name, completed, expected, args)
+  File "/home/hawkfire/rusty/agenticsre-rust-diagnostics/tools/verify-changes.py", line 141, in finish
+    assert expected is None or completed.returncode == expected, (name, completed.returncode, value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('concurrent-plan', 2, {'spec_version': '0.1', 'request_id': 'request-29-18de9cc101c1ab4b-0', 'run_id': 'run-29-18de9cc101c264eb-1', 'operation': 'request.invalid', 'operation_version': 1, 'target': {'kind': 'local', 'id': 'workstation'}, 'resolved_target': {}, 'started_at': '2026-10-15T05:27:34.512137986Z', 'finished_at': '2026-10-15T05:27:34.512137986Z', 'duration_ms': 0, 'execution': {'status': 'denied', 'child_exit_code': None, 'signal': None}, 'effect_outcome': 'not_attempted', 'assessment': 'not_assessed', 'coverage': {'state': 'not_applicable', 'scope': 'This local operation only; no service health assessment', 'limitations': []}, 'output': {'stdout': '', 'stderr': '', 'stdout_truncated': False, 'stderr_truncated': False, 'encoding': 'utf-8'}, 'data': {}, 'errors': [{'code': 'invalid_usage', 'message': "Invalid CLI usage; consult save --help and the selected command's --help.", 'retryable': False}], 'sources': [], 'artifacts': [], 'effective_limits': {'timeout_ms': 30000, 'max_output_bytes': 1048576}, 'record_mode': 'never'})

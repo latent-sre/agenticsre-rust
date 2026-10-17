@@ -1,0 +1,11 @@
+{
+  "workflow": "dashboard-review",
+  "cohort": "baseline",
+  "observed_at": "2026-10-11T01:02:03.123456789Z",
+  "measurement": "measured",
+  "outcome": "succeeded",
+  "effort_ms": 120000,
+  "elapsed_ms": 180000,
+  "retries": 0,
+  "manual_interventions": 1
+}

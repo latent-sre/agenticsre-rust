@@ -1,0 +1,2 @@
+FAIL: discovered output_schema rejects actual operation receipt
+Additional properties are not allowed ('artifacts', 'assessment', 'coverage', 'data', 'duration_ms', 'effect_outcome', 'effective_limits', 'errors', 'execution', 'finished_at', 'operation', 'operation_version', 'output', 'record_mode', 'request_id', 'resolved_target', 'run_id', 'sources', 'spec_version', 'started_at', 'target' were unexpected)

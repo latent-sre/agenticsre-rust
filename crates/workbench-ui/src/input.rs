@@ -46,6 +46,11 @@ mod tests {
                 read_policy: None,
                 diagnostics_config: Some(path.clone()),
                 targets: vec!["fixture-web".into(), "fixture-other".into()],
+                context_source: None,
+                context_max_age_days: None,
+                evidence_store: None,
+                config: None,
+                query_targets: vec![],
             })
             .unwrap_or_else(|error| panic!("grant: {error}"));
             Self { path, grants }
@@ -61,6 +66,111 @@ mod tests {
             "operation":"diagnostics.run","operation_version":1,"target_id":"fixture-web",
             "inputs":{"id":"connectivity","version":1,"input":{}},
             "limits":{"timeout_ms":30000,"max_output_bytes":1048576}})
+    }
+
+    fn query() -> Value {
+        json!({"submission_id":"12345678-1234-4234-8234-123456789abc", "operation":"query.run", "operation_version":1,
+            "target_id":"query-fixture", "inputs":{"id":"prometheus.up-by-job","version":1,"datasource":"metrics-1",
+            "parameters":{"job":"fixture"},"window":{"kind":"relative","lookback_seconds":60}},
+            "limits":{"timeout_ms":30000,"max_output_bytes":1048576}})
+    }
+
+    #[test]
+    fn queries_keep_target_authority_and_retry_identity_separate_from_diagnostics() {
+        let mut fixture = Fixture::new();
+        fixture.grants.operations.extend([
+            "queries.list".into(),
+            "queries.describe".into(),
+            "query.run".into(),
+        ]);
+        fixture.grants.query_targets.insert("query-fixture".into());
+        let original = normalized(query(), &fixture.grants);
+        assert_eq!(original.request.target.kind, "connection");
+        assert_eq!(original.request.target.id, "query-fixture");
+        assert_eq!(original.request.inputs["window"]["kind"], "relative");
+        assert_eq!(
+            original.identity,
+            normalized(query(), &fixture.grants).identity
+        );
+        let mut changed = query();
+        changed["inputs"]["parameters"]["job"] = json!("different");
+        assert_ne!(
+            original.identity,
+            normalized(changed, &fixture.grants).identity
+        );
+        let mut wrong_target = query();
+        wrong_target["target_id"] = json!("fixture-web");
+        assert_eq!(
+            normalize(wrong_target, &fixture.grants)
+                .err()
+                .unwrap()
+                .status,
+            403
+        );
+        for (field, value) in [
+            ("root_id", Value::Null),
+            ("target_id", Value::Null),
+            (
+                "limits",
+                json!({"timeout_ms":30000,"max_output_bytes":1048576,"concurrency":1}),
+            ),
+            (
+                "limits",
+                json!({"timeout_ms":30000,"max_output_bytes":1048576,"max_items":100}),
+            ),
+        ] {
+            let mut bad = query();
+            bad[field] = value;
+            assert_eq!(normalize(bad, &fixture.grants).err().unwrap().status, 422);
+        }
+        for (field, value) in [
+            ("expected_definition_sha256", Value::Null),
+            ("expected_definition_sha256", json!("invalid")),
+            ("expr", json!("up")),
+            ("parameters", json!({"job":"fixture", "expr":"up"})),
+            ("parameters", json!(["fixture"])),
+            ("window", json!({"kind":"relative","lookback_seconds":0})),
+            (
+                "window",
+                json!({"kind":"relative","lookback_seconds":86401}),
+            ),
+            (
+                "window",
+                json!({"kind":"relative","lookback_seconds":60,"from":"now"}),
+            ),
+            ("version", json!(2)),
+            ("id", json!("custom-query")),
+        ] {
+            let mut bad = query();
+            bad["inputs"][field] = value;
+            assert_eq!(
+                normalize(bad, &fixture.grants).err().unwrap().status,
+                422,
+                "{field}"
+            );
+        }
+        for operation in ["queries.list", "queries.describe"] {
+            let mut catalog = query();
+            catalog.as_object_mut().unwrap().remove("target_id");
+            catalog["operation"] = json!(operation);
+            catalog["inputs"] = if operation == "queries.list" {
+                json!({})
+            } else {
+                json!({"id":"loki.logs-by-job","version":1})
+            };
+            assert_eq!(
+                normalized(catalog.clone(), &fixture.grants)
+                    .request
+                    .target
+                    .kind,
+                "local"
+            );
+            catalog["target_id"] = Value::Null;
+            assert_eq!(
+                normalize(catalog, &fixture.grants).err().unwrap().status,
+                422
+            );
+        }
     }
     fn normalized(value: Value, grants: &Grants) -> Normalized {
         normalize(value, grants).unwrap_or_else(|error| panic!("HTTP status {}", error.status))
@@ -232,6 +342,8 @@ struct Limits {
     max_output_bytes: usize,
     #[serde(default)]
     concurrency: Option<u64>,
+    #[serde(default)]
+    max_items: Option<u64>,
 }
 
 #[derive(Deserialize)]
@@ -278,6 +390,13 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
     }
     let had_root = value.get("root_id").is_some();
     let had_target = value.get("target_id").is_some();
+    let had_max_items = value["limits"].get("max_items").is_some();
+    if value["limits"].get("max_items") == Some(&Value::Null) {
+        return Err(ApiError::invalid(
+            "limits.max_items",
+            "max_items must be omitted or an integer from 1 to 1000.",
+        ));
+    }
     let had_concurrency = value["limits"].get("concurrency").is_some();
     if value["limits"].get("concurrency") == Some(&Value::Null) {
         return Err(ApiError::invalid(
@@ -310,13 +429,83 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
         ));
     }
     let diagnostic = input.operation == "diagnostics.run";
-    if !diagnostic && (had_target || had_concurrency) {
+    let query = input.operation == "query.run";
+    let query_catalog = matches!(
+        input.operation.as_str(),
+        "queries.list" | "queries.describe"
+    );
+    if (!diagnostic && had_concurrency) || (!diagnostic && !query && had_target) {
         return Err(ApiError::invalid(
             "request",
-            "Commands and numerical tasks do not accept target_id or diagnostic concurrency controls.",
+            "Only diagnostics and saved queries accept target_id; only diagnostics accept concurrency.",
         ));
     }
-    let (inputs, label) = if diagnostic {
+    let investigation = grants
+        .investigation_grant
+        .as_ref()
+        .is_some_and(|grant| grant.allows(&input.operation));
+    if had_max_items
+        && !matches!(
+            input.operation.as_str(),
+            "evidence.open" | "evidence.compare"
+        )
+    {
+        return Err(ApiError::invalid(
+            "limits.max_items",
+            "Only evidence.open and evidence.compare accept max_items.",
+        ));
+    }
+    let (inputs, label) = if query || query_catalog {
+        if had_root {
+            return Err(ApiError::invalid(
+                "root_id",
+                "Saved queries do not accept a root selector, including null.",
+            ));
+        }
+        if query {
+            let target = input.target_id.as_deref().ok_or_else(|| {
+                ApiError::invalid("target_id", "Select one granted query target.")
+            })?;
+            if !grants.query_targets.contains(target) {
+                return Err(ApiError::forbidden(
+                    "target-not-granted",
+                    "Select a query target explicitly granted by the launcher.",
+                ));
+            }
+        }
+        let inputs = crate::queries::normalize(&input.operation, input.inputs)
+            .map_err(|_| ApiError::invalid("inputs", "Use the installed saved-query input schema without expression, endpoint or execution overrides."))?;
+        let label = match input.operation.as_str() {
+            "queries.list" => "Saved query catalog",
+            "queries.describe" => "Saved query definition",
+            _ => "Run saved query",
+        };
+        (inputs, label)
+    } else if investigation {
+        if had_root || had_target || had_concurrency {
+            return Err(ApiError::invalid(
+                "request",
+                "Offline investigations do not accept root_id, target_id or concurrency, including null.",
+            ));
+        }
+        let normalized =
+            workbench_core::normalize_investigation_input(&input.operation, &input.inputs)
+                .map_err(|_| {
+                    ApiError::invalid(
+                        "inputs",
+                        "Input does not satisfy the selected offline investigation schema.",
+                    )
+                })?;
+        let label = match input.operation.as_str() {
+            "context.resolve" => "Service context",
+            "evidence.list" => "Saved evidence",
+            "evidence.open" => "Inspect evidence",
+            "evidence.compare" => "Compare evidence",
+            "report.create" => "Evidence report",
+            _ => unreachable!("core investigation grant operation"),
+        };
+        (normalized, label)
+    } else if diagnostic {
         if had_root {
             return Err(ApiError::invalid(
                 "root_id",
@@ -430,15 +619,30 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
     request.operation_version = input.operation_version;
     request.limits.timeout_ms = input.limits.timeout_ms;
     request.limits.max_output_bytes = input.limits.max_output_bytes;
+    request.limits.max_items = if matches!(
+        input.operation.as_str(),
+        "evidence.open" | "evidence.compare"
+    ) {
+        Some(input.limits.max_items.unwrap_or(100))
+    } else {
+        None
+    };
     if diagnostic {
         request.target.kind = "connection".into();
         request.target.id = input.target_id.clone().expect("admitted diagnostic target");
         request.limits.concurrency = Some(input.limits.concurrency.unwrap_or(2));
     }
+    if query {
+        request.target.kind = "connection".into();
+        request.target.id = input
+            .target_id
+            .clone()
+            .expect("admitted saved-query target");
+    }
     request.validate().map_err(|_| {
         ApiError::invalid(
             "limits",
-            "Timeout must be 1–300000ms and output 1024–2097152 bytes.",
+            "Timeout must be 1–300000ms, output 1024–2097152 bytes and max_items 1–1000 when supported.",
         )
     })?;
     if diagnostic {

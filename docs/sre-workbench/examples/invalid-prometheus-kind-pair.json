@@ -1,0 +1,8 @@
+{
+  "kind": "prometheus-rules",
+  "validator": {
+    "id": "dashboard-hygiene",
+    "version": 1
+  },
+  "file": "/absolute/rules.yml"
+}

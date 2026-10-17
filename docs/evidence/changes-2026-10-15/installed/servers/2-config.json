@@ -1,0 +1,46 @@
+{
+  "ca_certificate": "/tmp/installed-changes-975p7xe4/pki/ca.der",
+  "certificate": "/tmp/installed-changes-975p7xe4/pki/server.der",
+  "changes": {
+    "state_dir": "/tmp/installed-changes-975p7xe4/changes",
+    "targets": [
+      {
+        "approvers": [
+          "approver.fixture"
+        ],
+        "id": "rules.fixture",
+        "path": "/tmp/installed-changes-975p7xe4/alerts.yml",
+        "requesters": [
+          "requester.fixture"
+        ],
+        "validator_binding_sha256": "sha256:660bb6d521fb0af2a58e6752adec42d228030d5b800e7e46562a71d2f70c917a"
+      }
+    ]
+  },
+  "config_version": 1,
+  "grants": [],
+  "listen": "127.0.0.1:0",
+  "principals": [
+    {
+      "certificate_sha256": "sha256:33cf59b7d900f577c053ca1b155c97e6d4a004fda5edc0d32fdf2d9936774f02",
+      "id": "requester.fixture"
+    },
+    {
+      "certificate_sha256": "sha256:f5f85975e4b46b358549c5cb1d9faba7762dcd2ea8a8b0d80265a18449ad91aa",
+      "id": "approver.fixture"
+    }
+  ],
+  "private_key": "/tmp/installed-changes-975p7xe4/pki/server.key.der",
+  "promtool_path": "/tmp/installed-changes-975p7xe4/prefix/bin/promtool",
+  "runner_id": "changes.acceptance",
+  "state_dir": "/tmp/installed-changes-975p7xe4/jobs",
+  "targets": [
+    {
+      "id": "fixture.target",
+      "snapshot": {
+        "environment": "isolated-sandbox",
+        "name": "Disposable rules"
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "format.json": {
+    "bytes": 51,
+    "sha256": "9db6273d05b56c5b95aed9a3ecfd4a34d937dceb112708c159ec126b32ffb297"
+  },
+  "lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "pending-29-18dda6f2e401c5bf-3": {
+    "bytes": 61440,
+    "sha256": "212284d4d0ecbb0e507cb78eaff82d9d55fc46e386ec1e6bb0bc58d5d009940b"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "branch": "codex/offline-evidence",
+  "scope": "Accepted implementation and evidence through WORKBENCH-028",
+  "rust": {
+    "passed": 560,
+    "failed": 0,
+    "ignored": 33
+  },
+  "frontend": {
+    "passed": 71,
+    "failed": 0
+  },
+  "clippy": "passed",
+  "formatting": "passed",
+  "specification": "passed",
+  "publication_authority": "Explicit owner request to commit and push on 2026-10-15",
+  "whitespace": {
+    "source": "standard staged diff check passed",
+    "retained_evidence": "checked with blank-at-eof disabled; two exact report artifacts intentionally retain their original final blank line"
+  }
+}

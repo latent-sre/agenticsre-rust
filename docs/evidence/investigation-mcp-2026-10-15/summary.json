@@ -1,0 +1,173 @@
+{
+  "status": "passed",
+  "binary_sha256": "0141935ea3105c2dd5591af968dfec283fb5852e45a49184edf642b5e2765c80",
+  "binary_bytes": 51428344,
+  "source_manifest_sha256": "aaf970270c0f2a3017b5c6e105e140d47cc05d2a68a11f9b975796207a22692a",
+  "checks": [
+    "Explicit discovery: five private offline tools, bounded self-contained schemas and read-only hints",
+    "Modern protocol: all five canonical receipts match installed CLI semantics",
+    "Legacy protocol: all five canonical receipts match installed CLI semantics",
+    "Discovery/runtime agree on unknown/null authority fields, limits and hidden tool refusals",
+    "Missing/pinned/bounded/incompatible evidence and JSON reports retain accurate error/coverage semantics",
+    "All observations preserve context and retained store bytes/modes",
+    "Consumed-byte source pin and descriptor-bound store identity reject replacement",
+    "Independent mixed grants preserve numerical tasks and cancellation suppresses the queued evidence result",
+    "Default empty discovery and direct hidden-tool denial remain unchanged",
+    "Corrupt retained evidence fails without repair or mutation",
+    "Installed binary and complete scoped source identities stay unchanged throughout acceptance"
+  ],
+  "receipts": [
+    {
+      "case": "modern-context.resolve",
+      "file": "modern-context.resolve.json",
+      "sha256": "4ea0522dfc1b4750e2454d70b1588aa1e3c25241d6fdb949c467700568729dae",
+      "operation": "context.resolve",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "modern-evidence.list",
+      "file": "modern-evidence.list.json",
+      "sha256": "18489fbc37b2150e2326f49c664ae043f2763cfaba38c72ed4a9a20db50b6686",
+      "operation": "evidence.list",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "modern-evidence.open",
+      "file": "modern-evidence.open.json",
+      "sha256": "b970927b76029aa4f124e212c8ec2f5955c4a890cdbfbda683d3a88dd4311e6d",
+      "operation": "evidence.open",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "modern-evidence.compare",
+      "file": "modern-evidence.compare.json",
+      "sha256": "2061db6b558b329e08cae59d12f6ae17ca8ef700a373e65f9a50545f7b8e6244",
+      "operation": "evidence.compare",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "modern-report.create",
+      "file": "modern-report.create.json",
+      "sha256": "71f4b056d72f756ab7a6f8405249fcc5f63b8a139401c241027a3e72257d5e2f",
+      "operation": "report.create",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "legacy-context.resolve",
+      "file": "legacy-context.resolve.json",
+      "sha256": "1b36490989d0be2b65e404fb65208dc83b52452c5b879cbbdd22a377e6493f63",
+      "operation": "context.resolve",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "legacy-evidence.list",
+      "file": "legacy-evidence.list.json",
+      "sha256": "7da379839c8957627114ce95ed9ba8cc7c127980d8d8885614f57c7ead699221",
+      "operation": "evidence.list",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "legacy-evidence.open",
+      "file": "legacy-evidence.open.json",
+      "sha256": "5b355322ebb490d0e74560ce608d06a6639d6d2d15dc712fe7715addb7dd6f2d",
+      "operation": "evidence.open",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "legacy-evidence.compare",
+      "file": "legacy-evidence.compare.json",
+      "sha256": "3a764cbe4e89756dd2b2521ffcb20199f010e7ba81d4f83383203a5eae7aa84e",
+      "operation": "evidence.compare",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "legacy-report.create",
+      "file": "legacy-report.create.json",
+      "sha256": "d0d4d741efbaef0ee9763af9ad08b22d7399da116792f7d4150c0a618849d819",
+      "operation": "report.create",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "bad-manifest-pin",
+      "file": "bad-manifest-pin.json",
+      "sha256": "212f3111fb6263c99ca07ae43dd29262b6b4c0439746762a1ac53cf9d601944a",
+      "operation": "evidence.open",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "missing-bundle",
+      "file": "missing-bundle.json",
+      "sha256": "11829f69e6683a93f8007164bdd518a135a15bde17f75922f8bfc0610dd962e0",
+      "operation": "evidence.open",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "bounded-open",
+      "file": "bounded-open.json",
+      "sha256": "49975464357ec5c2beda77abea06ba1555ddff5bb7dc3f1e20aca36262c41c3e",
+      "operation": "evidence.open",
+      "status": "partial",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "incompatible-windows",
+      "file": "incompatible-windows.json",
+      "sha256": "7390dbbf0081dcba55eb2f89c3d9c6b7f0f794cb3f9d12d3783c9d899b0cc66f",
+      "operation": "evidence.compare",
+      "status": "partial",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "json-report",
+      "file": "json-report.json",
+      "sha256": "61de5f028a6ad396da3ef771b3d0c282720be1eff674ebfa422598d8953c7f39",
+      "operation": "report.create",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "changed-source",
+      "file": "changed-source.json",
+      "sha256": "c7919f5faf8b6e818eefcd98eafb7ace4562f0380e6b966361b6078b7212fd12",
+      "operation": "context.resolve",
+      "status": "denied",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "replaced-store",
+      "file": "replaced-store.json",
+      "sha256": "de7955c00af251bc1abec0043a9d48f1bcbcf88adaf98dff234b57e17f280c89",
+      "operation": "evidence.list",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "mixed-list",
+      "file": "mixed-list.json",
+      "sha256": "dee69b2b885beb32baf10249d090c81341b4fbf20b8d99b14c367dcab3ee5a80",
+      "operation": "evidence.list",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "corrupt-bundle",
+      "file": "corrupt-bundle.json",
+      "sha256": "d4fe320712b0d594776005a3e8a969f441d4636f7fa02faad168c46dab09c44a",
+      "operation": "evidence.open",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "format_version": 1,
+  "action": "apply",
+  "runner": {
+    "id": "runner.fixture",
+    "server_certificate_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "policy_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "principal": {
+    "id": "requester.fixture",
+    "client_certificate_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "requester": "requester.fixture",
+  "request_id": "request.fixture",
+  "target": "rules.fixture",
+  "plan": {
+    "format_version": 1,
+    "kind": "prometheus-rules-file-replacement",
+    "requester": "requester.fixture",
+    "requester_certificate_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "request_id": "request.fixture",
+    "target": {
+      "id": "rules.fixture",
+      "path": "/var/lib/save/rules/alerts.yml"
+    },
+    "runner": {
+      "id": "runner.fixture",
+      "server_certificate_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "policy_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "ledger": {
+      "device": 1,
+      "inode": 3
+    },
+    "original_identity": {
+      "parent": {
+        "dev": 1,
+        "ino": 1,
+        "uid": 1000,
+        "gid": 1000,
+        "mode": 16832,
+        "nlink": 2,
+        "size": 4096,
+        "ctime_sec": 1792022400,
+        "ctime_nsec": 0,
+        "mtime_sec": 1792022400,
+        "mtime_nsec": 0
+      },
+      "file": {
+        "dev": 1,
+        "ino": 2,
+        "uid": 1000,
+        "gid": 1000,
+        "mode": 33152,
+        "nlink": 1,
+        "size": 353,
+        "ctime_sec": 1792022400,
+        "ctime_nsec": 0,
+        "mtime_sec": 1792022400,
+        "mtime_nsec": 0
+      },
+      "sha256": "sha256:5606574c679d20bf218bdf08581ab84bfa9337e14a46f43a54b6e711e12c3ed0"
+    },
+    "original_base64": "Z3JvdXBzOgogIC0gbmFtZTogc2VydmljZS5ydWxlcwogICAgaW50ZXJ2YWw6IDMwcwogICAgcnVsZXM6CiAgICAgIC0gYWxlcnQ6IEluc3RhbmNlRG93bgogICAgICAgIGV4cHI6IHVwID09IDAKICAgICAgICBmb3I6IDVtCiAgICAgICAgbGFiZWxzOgogICAgICAgICAgc2V2ZXJpdHk6IHdhcm5pbmcKICAgICAgICBhbm5vdGF0aW9uczoKICAgICAgICAgIHN1bW1hcnk6ICdJbnN0YW5jZSB7eyAkbGFiZWxzLmluc3RhbmNlIH19IGlzIGRvd24nCiAgICAgIC0gcmVjb3JkOiBqb2I6aHR0cF9yZXF1ZXN0czpyYXRlNW0KICAgICAgICBleHByOiBzdW0gYnkgKGpvYikgKHJhdGUoaHR0cF9yZXF1ZXN0c190b3RhbFs1bV0pKQo=",
+    "original_sha256": "sha256:5606574c679d20bf218bdf08581ab84bfa9337e14a46f43a54b6e711e12c3ed0",
+    "proposed_base64": "Z3JvdXBzOgogIC0gbmFtZTogc2VydmljZS5ydWxlcwogICAgaW50ZXJ2YWw6IDMwcwogICAgcnVsZXM6CiAgICAgIC0gYWxlcnQ6IEluc3RhbmNlRG93bgogICAgICAgIGV4cHI6IHVwID09IDAKICAgICAgICBmb3I6IDEwbQogICAgICAgIGxhYmVsczoKICAgICAgICAgIHNldmVyaXR5OiB3YXJuaW5nCiAgICAgICAgYW5ub3RhdGlvbnM6CiAgICAgICAgICBzdW1tYXJ5OiAnSW5zdGFuY2Uge3sgJGxhYmVscy5pbnN0YW5jZSB9fSBpcyBkb3duJwogICAgICAtIHJlY29yZDogam9iOmh0dHBfcmVxdWVzdHM6cmF0ZTVtCiAgICAgICAgZXhwcjogc3VtIGJ5IChqb2IpIChyYXRlKGh0dHBfcmVxdWVzdHNfdG90YWxbNW1dKSkK",
+    "proposed_sha256": "sha256:13718542d394bcbdf5e6305f38e4e419ff789d58db9dc37ed6c3418f16cabd92",
+    "validator_binding_sha256": "sha256:660bb6d521fb0af2a58e6752adec42d228030d5b800e7e46562a71d2f70c917a",
+    "implementation_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "validation": {
+      "spec_version": "0.1",
+      "request_id": "example-validation",
+      "run_id": "example-validation-run",
+      "operation": "config.check",
+      "operation_version": 1,
+      "target": {
+        "kind": "local",
+        "id": "workstation"
+      },
+      "resolved_target": {
+        "cwd": "/",
+        "effects": "observe",
+        "executable": "/opt/prometheus/promtool",
+        "executable_sha256": "sha256:c736d55d3ccd959fe48329965fb5cb671d45585a9483954766448035100ff75c",
+        "resolution": "private unlinked readonly executable snapshot verified by binary SHA-256",
+        "validator": "promtool"
+      },
+      "started_at": "2026-10-15T00:00:00Z",
+      "finished_at": "2026-10-15T00:00:00.100Z",
+      "duration_ms": 100,
+      "execution": {
+        "status": "succeeded",
+        "child_exit_code": 0,
+        "signal": null
+      },
+      "effect_outcome": "not_applicable",
+      "assessment": "not_assessed",
+      "coverage": {
+        "state": "complete",
+        "scope": "Offline syntax/schema and duplicate lint for the exact consumed Prometheus rule bytes; no live evaluation or deployment-health claim.",
+        "limitations": [
+          "The pinned native validator runs under the invoking account with the existing process supervisor; this is not a new filesystem or network sandbox.",
+          "Native diagnostics are untrusted model-derived text, not structured findings or current-state facts. Findings counts summarize adapter outcomes, not individual native errors.",
+          "Live evaluation, metric existence, routing, template execution and future rule formats are not validated.",
+          "Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check."
+        ]
+      },
+      "output": {
+        "stdout": "",
+        "stderr": "",
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "encoding": "utf-8"
+      },
+      "data": {
+        "cancellation_signal": null,
+        "checked_rules": 2,
+        "diagnostics": {
+          "stderr": "",
+          "stdout": "Synthetic successful validator fixture",
+          "truncated": false,
+          "untrusted": true
+        },
+        "findings": [],
+        "findings_total": 0,
+        "implemented_rules": [
+          "strict_yaml_known_fields",
+          "rule_schema",
+          "promql_syntax",
+          "template_syntax",
+          "duplicate_rules"
+        ],
+        "input": {
+          "file": "/var/lib/save/change-validation/rules.yml",
+          "bytes": 354,
+          "digest": "sha256:13718542d394bcbdf5e6305f38e4e419ff789d58db9dc37ed6c3418f16cabd92"
+        },
+        "kind": "prometheus-rules",
+        "runtime": {
+          "executable": "/opt/prometheus/promtool",
+          "executable_sha256": "sha256:c736d55d3ccd959fe48329965fb5cb671d45585a9483954766448035100ff75c",
+          "revision": "5241a27fe3c6983549fccc32f6e65917408c63cd",
+          "version": "3.15.0"
+        },
+        "supervisor": {
+          "cancellation_signal": null,
+          "cleanup": {
+            "confirmed": true,
+            "final_drain_ms": 500,
+            "grace_ms": 2000,
+            "group_absent": true,
+            "kill_sent": false,
+            "primary_reaped": true,
+            "scope": "Observed process group and inherited output pipes only; deliberately escaped processes are not contained.",
+            "stderr_closed": true,
+            "stdout_closed": true,
+            "term_sent": false,
+            "trigger": null
+          },
+          "process_group_id": 1,
+          "process_id": 1,
+          "stderr_bytes_observed": 0,
+          "stdout_bytes_observed": 51
+        },
+        "unsupported_sections": [
+          "live_rule_evaluation",
+          "metric_existence",
+          "alert_routing",
+          "template_execution",
+          "future_rule_formats"
+        ],
+        "validation_outcome": "valid",
+        "validation_state": "complete",
+        "validator": {
+          "binding_digest": "sha256:660bb6d521fb0af2a58e6752adec42d228030d5b800e7e46562a71d2f70c917a",
+          "checker_digest": "sha256:c736d55d3ccd959fe48329965fb5cb671d45585a9483954766448035100ff75c",
+          "id": "promtool",
+          "upstream_revision": "5241a27fe3c6983549fccc32f6e65917408c63cd",
+          "version": 1
+        }
+      },
+      "errors": [],
+      "sources": [],
+      "artifacts": [],
+      "effective_limits": {
+        "timeout_ms": 27928,
+        "max_output_bytes": 262144
+      },
+      "record_mode": "never"
+    },
+    "created_at": 1792022400,
+    "expires_at": 1792022700,
+    "expires_in_seconds": 300,
+    "readback": "prepared_inode_and_exact_bytes",
+    "recovery": "new_approved_plan_using_original_bytes"
+  },
+  "plan_sha256": "sha256:795857d012200bee80098fd4398f69a58791ca2c4afc531d510c90a6b9fcd734",
+  "approval_id": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "state": "verified",
+  "effect_outcome": "verified",
+  "remote_error": null
+}

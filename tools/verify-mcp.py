@@ -156,10 +156,15 @@ def local_references(schema: object, root: dict | None = None) -> None:
     if isinstance(schema, dict):
         if "$ref" in schema:
             ref = schema["$ref"]
-            assert ref.startswith("#/"), ref
+            assert ref == "#" or ref.startswith("#/"), ref
             node = root
-            for part in ref[2:].split("/"):
-                node = node[part.replace("~1", "/").replace("~0", "~")]
+            for part in ([] if ref == "#" else ref[2:].split("/")):
+                key = part.replace("~1", "/").replace("~0", "~")
+                if isinstance(node, list):
+                    assert key.isascii() and key.isdecimal() and str(int(key)) == key, ref
+                    node = node[int(key)]
+                else:
+                    node = node[key]
         for child in schema.values():
             local_references(child, root)
     elif isinstance(schema, list):

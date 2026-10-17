@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:toil-record-input:0.1",
+  "title": "toil record input",
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+      "not": {
+        "pattern": "[\\r\\n]"
+      }
+    },
+    "cohort": {
+      "enum": [
+        "baseline",
+        "candidate"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time",
+      "maxLength": 40,
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z$",
+      "not": {
+        "pattern": "[\\r\\n]"
+      }
+    },
+    "measurement": {
+      "enum": [
+        "measured",
+        "estimated"
+      ]
+    },
+    "outcome": {
+      "enum": [
+        "succeeded",
+        "failed",
+        "partial",
+        "cancelled",
+        "timed_out",
+        "denied",
+        "unsupported",
+        "unknown"
+      ]
+    },
+    "elapsed_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 31536000000
+    },
+    "effort_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 31536000000
+    },
+    "retries": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "manual_interventions": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    }
+  },
+  "required": [
+    "workflow",
+    "cohort",
+    "observed_at",
+    "measurement",
+    "outcome"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,34 @@
+config.check: succeeded
+Run: run-86-18dda5ef129055f9-1
+Assessment: not_assessed
+Effects: not_applicable
+Record: never
+Child exit: 3
+Working directory: /
+Executable: /tmp/installed-rules-s1pxd8f1/prefix/bin/promtool
+Configuration kind: prometheus-rules
+Validator: {"binding_digest":"sha256:660bb6d521fb0af2a58e6752adec42d228030d5b800e7e46562a71d2f70c917a","checker_digest":"sha256:c736d55d3ccd959fe48329965fb5cb671d45585a9483954766448035100ff75c","id":"promtool","upstream_revision":"5241a27fe3c6983549fccc32f6e65917408c63cd","version":1}
+Input: {"bytes":216,"digest":"sha256:689c81e5a483f93fb476ec5ad365a92660992a07e43f04d7931abac60487d86c","file":"/tmp/installed-rules-s1pxd8f1/rules.yml"}
+Validation: complete
+Unsupported sections: ["live_rule_evaluation","metric_existence","alert_routing","template_execution","future_rule_formats"]
+Checked rules: not established
+Outcome: lint_findings
+Findings: 1
+duplicate-rules: input
+  The configured duplicate-rule lint reported findings; native diagnostic counts are not interpreted as structured findings.
+Native stdout (untrusted):
+Checking /proc/self/fd/6
+
+
+Native stderr (untrusted):
+  FAILED:
+lint error 1 duplicate rule(s) found.
+Metric: job:requests:rate5m
+Label(s):
+Might cause inconsistency while recording expressions
+
+Coverage: complete — Offline syntax/schema and duplicate lint for the exact consumed Prometheus rule bytes; no live evaluation or deployment-health claim.
+Limit: The pinned native validator runs under the invoking account with the existing process supervisor; this is not a new filesystem or network sandbox.
+Limit: Native diagnostics are untrusted model-derived text, not structured findings or current-state facts. Findings counts summarize adapter outcomes, not individual native errors.
+Limit: Live evaluation, metric existence, routing, template execution and future rule formats are not validated.
+Limit: Process groups do not contain deliberately escaping programs; this is not an OS sandbox or a service health check.

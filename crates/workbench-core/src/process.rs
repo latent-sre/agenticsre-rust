@@ -10,7 +10,19 @@ mod linux;
 #[cfg(target_os = "linux")]
 pub(crate) use descriptor::DescriptorLaunch;
 #[cfg(target_os = "linux")]
-pub(crate) use linux::run;
+pub(crate) use linux::{run, run_dialogue};
+
+/// Private bounded protocol state machine. The shared supervisor owns every pipe and child.
+#[cfg(target_os = "linux")]
+pub(crate) trait Dialogue {
+    fn pending_write(&self) -> &[u8];
+    fn written(&mut self, count: usize);
+    fn receive(&mut self, bytes: &[u8]);
+    fn stdout_closed(&mut self);
+    fn input_closed(&mut self);
+    fn input_finished(&self) -> bool;
+    fn error(&self) -> Option<&'static str>;
+}
 
 pub const CHILD_ENV: [(&str, &str); 4] = [
     ("PATH", "/usr/bin:/bin"),

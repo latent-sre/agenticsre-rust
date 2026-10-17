@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:toil-capture-input:0.1",
+  "title": "toil capture input",
+  "type": "object",
+  "properties": {
+    "workflow": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+      "not": {
+        "pattern": "[\\r\\n]"
+      }
+    },
+    "cohort": {
+      "enum": [
+        "baseline",
+        "candidate"
+      ]
+    },
+    "task": {
+      "$ref": "urn:sre-workbench:spec:task-run-input:0.1"
+    }
+  },
+  "required": [
+    "workflow",
+    "cohort",
+    "task"
+  ],
+  "additionalProperties": false
+}

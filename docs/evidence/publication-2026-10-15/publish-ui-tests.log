@@ -1,0 +1,25 @@
+npm notice run agenticsre-workbench-ui@0.1.0 test
+npm notice run vitest run
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.3 [39m[90m/home/hawkfire/rusty/agenticsre-rust-diagnostics/web[39m
+
+ [32m✓[39m src/Result.test.tsx [2m([22m[2m15 tests[22m[2m)[22m[33m 546[2mms[22m[39m
+ [32m✓[39m src/CheckForm.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 448[2mms[22m[39m
+ [32m✓[39m src/App.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 237[2mms[22m[39m
+ [32m✓[39m src/model.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/investigation.test.tsx [2m([22m[2m20 tests[22m[2m)[22m[33m 2657[2mms[22m[39m
+   [32m✓[39m historical evidence presentation [2m(10)[22m
+     [33m[2m✓[22m[39m renders markdown reports as inert plain text and downloads content with a fixed filename[33m 1114[2mms[22m[39m
+     [33m[2m✓[22m[39m renders json reports as inert plain text and downloads content with a fixed filename[33m 1112[2mms[22m[39m
+ [32m✓[39m src/api.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/bootstrap.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m      Tests [22m [1m[32m71 passed[39m[22m[90m (71)[39m
+[2m   Start at [22m 13:49:51
+[2m   Duration [22m 3.55s[2m (tests 59%, environment 32%, import 5%, transform 3%)[22m
+
+[2mEnvironment [22m [33mjsdom was created 7 times[39m[2m · 2.12s total, 32% of tracked time[22m
+[2m            [22m [2mcreate it once per worker with [22m[33mpool: 'vmThreads'[39m[2m (keeps per-file isolation) or [22m[33misolate: false[39m[2m (shares it across files)[22m
+[2m            [22m [2mlearn more: https://vitest.dev/guide/improving-performance#test-environments[22m
+

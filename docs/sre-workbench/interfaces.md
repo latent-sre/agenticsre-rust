@@ -101,6 +101,9 @@ Discovery metadata is filtered to relevant permitted operations to avoid overwhe
 | workbench_context_resolve | context.resolve | P3 |
 | workbench_collect | evidence.collect | P3 |
 | workbench_compare | evidence.compare | P3 |
+| workbench_evidence_list | evidence.list | P3/P8 |
+| workbench_evidence_open | evidence.open | P4/P8 |
+| workbench_report_create | report.create | P4/P8 |
 | workbench_runbook_run | runbook.run | P4 |
 
 Each tool has a JSON input schema derived from its core operation and an output schema for the

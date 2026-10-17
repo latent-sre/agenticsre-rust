@@ -1,0 +1,1506 @@
+{
+  "binary_sha256": "f461f116855124ef9f12171d7b4560f153fea5ee15a26f9531357ac7206462c1",
+  "commands": [
+    {
+      "args": [
+        "capabilities",
+        "describe",
+        "job.submit"
+      ],
+      "exit_code": 0,
+      "name": "job-submit-description"
+    },
+    {
+      "args": [
+        "capabilities",
+        "describe",
+        "job.work"
+      ],
+      "exit_code": 0,
+      "name": "job-work-description"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/durable-once.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "2"
+      ],
+      "exit_code": 0,
+      "name": "submit"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/durable-once.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "2"
+      ],
+      "exit_code": 0,
+      "name": "duplicate-queued"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/conflict.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "2"
+      ],
+      "exit_code": 2,
+      "name": "conflicting-request"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-5-18ddab1a8a29b872-4"
+      ],
+      "exit_code": 0,
+      "name": "work"
+    },
+    {
+      "args": [
+        "job",
+        "status",
+        "job-5-18ddab1a8a29b872-4"
+      ],
+      "exit_code": 0,
+      "name": "terminal-status"
+    },
+    {
+      "exit_code": 0,
+      "name": "terminal-text"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/durable-once.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "2"
+      ],
+      "exit_code": 0,
+      "name": "duplicate-terminal"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-5-18ddab1a8a29b872-4"
+      ],
+      "exit_code": 0,
+      "name": "work-terminal"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "cancel",
+        "job-5-18ddab1a8a29b872-4"
+      ],
+      "exit_code": 0,
+      "name": "cancel-terminal"
+    },
+    {
+      "args": [
+        "job",
+        "status",
+        "job-5-18ddab1a8a29b872-4"
+      ],
+      "exit_code": 0,
+      "name": "terminal-immutable"
+    },
+    {
+      "args": [
+        "job",
+        "watch",
+        "job-5-18ddab1a8a29b872-4",
+        "--after-sequence",
+        "0"
+      ],
+      "exit_code": 0,
+      "name": "watch-gap"
+    },
+    {
+      "args": [
+        "job",
+        "watch",
+        "job-5-18ddab1a8a29b872-4",
+        "--after-sequence",
+        "4"
+      ],
+      "exit_code": 0,
+      "name": "watch-reconnect"
+    },
+    {
+      "args": [
+        "job",
+        "watch",
+        "job-5-18ddab1a8a29b872-4",
+        "--after-sequence",
+        "18446744073709551615"
+      ],
+      "exit_code": 2,
+      "name": "future-event-cursor"
+    },
+    {
+      "args": [
+        "call",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/generic-worker.json"
+      ],
+      "exit_code": 2,
+      "name": "generic-worker-refused"
+    },
+    {
+      "args": [
+        "call",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/generic-worker.json"
+      ],
+      "exit_code": 2,
+      "name": "nested-null-control-refused"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/long-runtime.json",
+        "--max-runtime-ms",
+        "3600000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "one-hour-admission"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-22-18ddab1a8da90935-2"
+      ],
+      "exit_code": 0,
+      "name": "one-hour-work"
+    },
+    {
+      "args": [
+        "--job-max-runtime-ms",
+        "1000",
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/ceiling.json",
+        "--max-runtime-ms",
+        "2000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 2,
+      "name": "host-runtime-ceiling"
+    },
+    {
+      "args": [
+        "call",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/invalid-foreground.json"
+      ],
+      "exit_code": 2,
+      "name": "foreground-runtime-refused"
+    },
+    {
+      "args": [
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/durable-once.json"
+      ],
+      "exit_code": 2,
+      "name": "recording-required"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/task-request.json",
+        "--max-runtime-ms",
+        "600000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "fixed-task-submit"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-29-18ddab1a8ec3e73b-3"
+      ],
+      "exit_code": 0,
+      "name": "fixed-task-work"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/published-result.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "published-result-submit"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-33-18ddab1a902e4108-2"
+      ],
+      "exit_code": 0,
+      "name": "published-result-work"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "cancel",
+        "job-33-18ddab1a902e4108-2"
+      ],
+      "exit_code": 0,
+      "name": "cancel-during-finalization"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-33-18ddab1a902e4108-2"
+      ],
+      "exit_code": 0,
+      "name": "adopt-published-result"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/queued-cancel.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "queued-cancel-submit"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "cancel",
+        "job-39-18ddab1a91475af2-2"
+      ],
+      "exit_code": 0,
+      "name": "queued-cancel"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-39-18ddab1a91475af2-2"
+      ],
+      "exit_code": 0,
+      "name": "queued-cancel-work"
+    },
+    {
+      "args": [
+        "job",
+        "status",
+        "job-39-18ddab1a91475af2-2"
+      ],
+      "exit_code": 0,
+      "name": "queued-cancel-status"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/running-cancel.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "running-cancel-submit"
+    },
+    {
+      "args": [
+        "job",
+        "status",
+        "job-43-18ddab1a924a1db0-2"
+      ],
+      "exit_code": 0,
+      "name": "running-status"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "cancel",
+        "job-43-18ddab1a924a1db0-2"
+      ],
+      "exit_code": 0,
+      "name": "running-cancel"
+    },
+    {
+      "exit_code": 0,
+      "name": "cancelled-worker"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/consumer.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "consumer-submit"
+    },
+    {
+      "args": [
+        "job",
+        "status",
+        "job-49-18ddab1a96930864-2"
+      ],
+      "exit_code": 0,
+      "name": "consumer-terminal"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/crash.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "crash-submit"
+    },
+    {
+      "args": [
+        "job",
+        "status",
+        "job-54-18ddab1ab70d080d-2"
+      ],
+      "exit_code": 0,
+      "name": "crash-observed"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-54-18ddab1ab70d080d-2"
+      ],
+      "exit_code": 1,
+      "name": "crash-reconcile"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-54-18ddab1ab70d080d-2"
+      ],
+      "exit_code": 1,
+      "name": "crash-no-replay"
+    },
+    {
+      "args": [
+        "extension",
+        "install",
+        "/tmp/installed-jobs-xtsx759c/capacity.save-package.json",
+        "--expected-package-sha256",
+        "sha256:187d01b33ce49448fd11f458f6ad3f489cc09c22d5ca68cb945883447b179903"
+      ],
+      "exit_code": 0,
+      "name": "extension-install"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/extension-request.json",
+        "--max-runtime-ms",
+        "3600000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "extension-submit"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-62-18ddab1afc4cc030-2"
+      ],
+      "exit_code": 0,
+      "name": "extension-work"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/extension-request.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "extension-policy-pinned"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "work",
+        "job-66-18ddab1b052def3f-2"
+      ],
+      "exit_code": 0,
+      "name": "extension-policy-changed"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-10.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-10"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-11.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-11"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-12.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-12"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-13.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-13"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-14.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-14"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-15.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-15"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-16.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-16"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-17.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-17"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-18.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-18"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-19.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-19"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-20.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-20"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-21.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-21"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-22.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-22"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-23.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-23"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-24.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-24"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-25.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-25"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-26.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-26"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-27.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-27"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-28.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-28"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-29.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-29"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-30.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-30"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-31.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-31"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-32.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-32"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-33.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-33"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-34.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-34"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-35.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-35"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-36.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-36"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-37.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-37"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-38.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-38"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-39.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-39"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-40.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-40"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-41.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-41"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-42.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-42"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-43.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-43"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-44.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-44"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-45.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-45"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-46.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-46"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-47.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-47"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-48.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-48"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-49.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-49"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-50.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-50"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-51.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-51"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-52.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-52"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-53.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-53"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-54.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-54"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-55.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-55"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-56.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-56"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-57.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-57"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-58.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-58"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-59.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-59"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-60.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-60"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-61.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-61"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-62.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-62"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-63.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 0,
+      "name": "quota-admit-63"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/quota-overflow.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 1,
+      "name": "quota-refused"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/durable-once.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "2"
+      ],
+      "exit_code": 0,
+      "name": "duplicate-at-capacity"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "job",
+        "submit",
+        "--request",
+        "/tmp/installed-jobs-xtsx759c/disk-full.json",
+        "--max-runtime-ms",
+        "30000",
+        "--retain-events",
+        "32"
+      ],
+      "exit_code": 1,
+      "name": "disk-full-submit"
+    },
+    {
+      "args": [
+        "job",
+        "status",
+        "job-5-18ddab1a8a29b872-4"
+      ],
+      "exit_code": 1,
+      "name": "disk-full-preserved"
+    }
+  ],
+  "fixture_sha256": "968d4cd8902d5a886c8db1696d818f1539bf2ea68972996cd338dc50d7366277",
+  "lifecycles": [
+    {
+      "cancel_during_finalizing": true,
+      "case": "published-result-crash-snapshot",
+      "prior_result_adopted": true,
+      "replayed": false
+    },
+    {
+      "case": "closed-worker-output",
+      "exit_code": 1,
+      "terminal_persisted": true
+    },
+    {
+      "case": "worker-sigkill",
+      "observed_state": "recovery_required",
+      "prior_child_completed": true,
+      "replayed": false
+    },
+    {
+      "case": "private-64kib-enospc",
+      "files": 5,
+      "partial_store_preserved": true
+    }
+  ],
+  "passed": true,
+  "peer_sha256": "28061a389b8f28bdd6906a551ae3698291f1195101781c7b28dedf5712f035e8",
+  "source_manifest_sha256": "4494d3f091296633024dc323a01eadd4f624311ed2a472eb1bb66f015140e969"
+}

@@ -3,7 +3,7 @@
 This implements the first CAP-08/AC-14/AC-15 pack under the existing core/CLI and Cally fixture
 boundaries. Status belongs in [the roadmap](roadmap.md). The fixed pack covers DNS, TCP, TLS,
 HTTP and an explicitly configured local process. It does not require a live team catalog, make
-a health assessment, persist evidence or expose a new browser/MCP grant.
+a health assessment or persist evidence. Browser and MCP grants are later explicit increments.
 
 ## Mission and public surface
 
@@ -32,7 +32,8 @@ file path, TLS override, credential, executable or grant. Recording remains `nev
 
 The dedicated startup option is distinct from the existing Grafana/context configuration.
 Discovery reports configuration requirements without opening files or making network/proc probes.
-UI/MCP servers reject this startup configuration until source/grant semantics are implemented.
+The [browser](diagnostics-ui.md) and [MCP](mcp.md) adapters accept this configuration only with
+their explicit diagnostic execution grants and selected target IDs.
 
 ## Trusted binding
 

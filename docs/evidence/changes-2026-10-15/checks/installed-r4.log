@@ -1,0 +1,1 @@
+PASS: 19 installed change commands; concurrent apply, real SIGKILL/restart and preserved failure evidence; 0 explicit gaps

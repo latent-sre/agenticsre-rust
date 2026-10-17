@@ -44,7 +44,7 @@ pub struct GrafanaConfigDescription {
 
 /// Opaque launcher-owned identity. It contains no credentials, provider values or paths, and
 /// cannot be created from wire data. Custom CA digests are keyed by configured target ID.
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct GrafanaConfigIdentity {
     config_digest: [u8; 32],
     ca_digests: BTreeMap<String, [u8; 32]>,

@@ -1,0 +1,3 @@
+{"protocol":1,"request_id":"compatibility","run_id":"run-compatibility","sequence":0,"kind":"hello"}
+{"protocol":1,"request_id":"compatibility","run_id":"run-compatibility","sequence":1,"kind":"progress","message":"Checking supplied capacity projection inputs."}
+{"protocol":1,"request_id":"compatibility","run_id":"run-compatibility","sequence":2,"kind":"result","status":"failed","data":null,"error":{"code":"unsupported_operation","message":"Only capacity projection operation version 1 is supported."}}

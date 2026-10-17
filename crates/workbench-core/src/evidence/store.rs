@@ -17,6 +17,7 @@ pub struct EvidenceStoreOptions {
     pub directory: PathBuf,
     pub max_bytes: u64,
     pub retention_days: u16,
+    identity: Option<(u64, u64, u32)>,
 }
 
 impl EvidenceStoreOptions {
@@ -25,6 +26,27 @@ impl EvidenceStoreOptions {
             directory,
             max_bytes: DEFAULT_MAX_BYTES,
             retention_days: DEFAULT_RETENTION_DAYS,
+            identity: None,
+        }
+    }
+
+    pub(crate) fn pinned(&self) -> Result<Self, StoreError> {
+        #[cfg(target_os = "linux")]
+        {
+            let store = Store::open_validated(
+                self,
+                false,
+                std::time::Instant::now() + std::time::Duration::from_secs(30),
+                super::validate_bundle,
+                None,
+            )?;
+            let mut pinned = self.clone();
+            pinned.identity = Some(store.identity()?);
+            Ok(pinned)
+        }
+        #[cfg(not(target_os = "linux"))]
+        {
+            Err(StoreError::new("store_unsupported_platform", false))
         }
     }
 

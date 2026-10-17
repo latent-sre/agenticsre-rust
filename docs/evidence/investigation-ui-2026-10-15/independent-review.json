@@ -1,0 +1,26 @@
+{
+  "mode": "independent static code review, then narrow finding closure",
+  "scope": [
+    "opaque core investigation grants",
+    "consumed context byte identity",
+    "actual opened store identity",
+    "CLI startup pairing",
+    "HTTP grants/input/dispatch",
+    "frontend forms and inert results",
+    "OpenAPI integration"
+  ],
+  "finding": {
+    "severity": "P2",
+    "file": "web/src/InvestigationResult.tsx",
+    "description": "Inherited __proto__ object-key lookup could throw during React rendering of retained telemetry.",
+    "fix": "Object.hasOwn guards the label lookup.",
+    "regression": "JSON-parsed __proto__, constructor and toString label names in open and compare views; both reproduced the failure before the fix.",
+    "status": "closed by independent static recheck"
+  },
+  "reviewed_sha256": {
+    "web/src/InvestigationResult.tsx": "6bc50a9ca95520d4158e6ceec136f8029835bd70a39f6b1c2b1a6c35f2100ebc",
+    "web/src/investigation.test.tsx": "829e204550d57fd487d6f4b4f8d7ca77049ced4d97a2cc5eae51ba66d37cca58"
+  },
+  "remaining_findings": [],
+  "limits": "Read-only review did not execute code. Tests were executed separately. No commit, merge or release approval is claimed."
+}

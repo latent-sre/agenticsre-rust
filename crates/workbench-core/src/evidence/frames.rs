@@ -88,6 +88,69 @@ pub(super) fn compare(
     }
 }
 
+/// Validate a historical frame without treating unrequested projected details as omissions.
+pub(super) fn inspect(
+    kind: &str,
+    response: &Value,
+    window: Window,
+    check: Check<'_>,
+) -> Result<Vec<&'static str>, &'static str> {
+    check()?;
+    let reasons = match kind {
+        "prometheus" => metrics(response, window, Normalization::ExactWindow, check)?.reasons,
+        "loki" => logs(response, window, Normalization::ExactWindow, check)?.reasons,
+        _ => return Err("unsupported_frame_kind"),
+    };
+    check()?;
+    Ok(reasons.into_iter().collect())
+}
+
+/// Deterministic projection of one historical response, without comparison or interpolation.
+pub(super) fn replay(
+    kind: &str,
+    response: &Value,
+    window: Window,
+    max_details: usize,
+    max_detail_bytes: usize,
+    check: Check<'_>,
+) -> Result<Comparison, &'static str> {
+    check()?;
+    let mut details = Details::new(max_details, max_detail_bytes);
+    match kind {
+        "prometheus" => {
+            let observed = metrics(response, window, Normalization::ExactWindow, check)?;
+            let mut summary = observed.counts();
+            summary["finite"] = json!(observed.samples - observed.missing - observed.nonfinite);
+            for (key, series) in &observed.series {
+                for sample in series.samples.values() {
+                    check()?;
+                    let nonfinite = match &sample.value {
+                        SampleValue::NonFinite(value) => Some(*value),
+                        _ => None,
+                    };
+                    details.push(json!({"type":"metric_sample","series":key.json(),
+                        "timestamp_ns":sample.original_ns.to_string(),"value":sample_json(Some(sample)),
+                        "state":sample_state(Some(sample)),"nonfinite":nonfinite}))?;
+                }
+            }
+            Ok(details.finish(summary, observed.reasons))
+        }
+        "loki" => {
+            let observed = logs(response, window, Normalization::ExactWindow, check)?;
+            let mut summary = observed.counts();
+            summary["unique_entries"] = json!(observed.entries.len());
+            summary["duplicate_entries"] = json!(observed.count - observed.entries.len());
+            for (key, entry) in &observed.entries {
+                check()?;
+                details.push(json!({"type":"log_entry","labels":key.labels,"label_types":key.label_types,
+                    "timestamp_ns":entry.original_ns.to_string(),"line":key.line,"count":entry.count}))?;
+            }
+            Ok(details.finish(summary, observed.reasons))
+        }
+        _ => Err("unsupported_frame_kind"),
+    }
+}
+
 struct Details {
     values: Vec<Value>,
     max_count: usize,
@@ -1180,6 +1243,129 @@ mod tests {
         legacy["data"]["values"].as_array_mut().unwrap().remove(3);
         legacy["data"]["nanos"].as_array_mut().unwrap().remove(3);
         legacy
+    }
+
+    #[test]
+    fn inspection_validates_frames_without_artificial_detail_omissions() {
+        let mut frame = metric(json!([1000, 2000]), json!([1, 0]), "a");
+        assert!(
+            inspect(
+                "prometheus",
+                &response(vec![frame.clone()]),
+                WINDOW,
+                &mut || Ok(())
+            )
+            .unwrap()
+            .is_empty()
+        );
+        frame["data"]["values"][1][1] = Value::Null;
+        assert_eq!(
+            inspect(
+                "prometheus",
+                &response(vec![frame.clone()]),
+                WINDOW,
+                &mut || Ok(())
+            )
+            .unwrap(),
+            vec!["missing_samples"]
+        );
+        frame["data"]["values"][1][0] = json!("[REDACTED]");
+        assert_eq!(
+            inspect("prometheus", &response(vec![frame]), WINDOW, &mut || Ok(())).err(),
+            Some("redacted_observation")
+        );
+        let mut logs = legacy_logs(vec![1000], vec![123], vec!["line"]);
+        logs["schema"]["meta"]["type"] = json!("unsupported-frame");
+        assert_eq!(
+            inspect("loki", &response(vec![logs]), WINDOW, &mut || Ok(())).err(),
+            Some("unsupported_frame_profile")
+        );
+    }
+
+    #[test]
+    fn replay_counts_finite_missing_and_nonfinite_with_original_nanoseconds() {
+        let mut frame = metric(
+            json!([1000, 2000, 3000]),
+            json!([9007199254740993_u64, null, null]),
+            "a",
+        );
+        frame["data"]["nanos"] = json!([[123, 0, 0], null]);
+        frame["data"]["entities"] = json!([null,{"NaN":[2]}]);
+        let result = replay(
+            "prometheus",
+            &response(vec![frame]),
+            WINDOW,
+            100,
+            10000,
+            &mut || Ok(()),
+        )
+        .unwrap();
+        assert_eq!(result.summary["samples"], 3);
+        assert_eq!(result.summary["finite"], 1);
+        assert_eq!(result.summary["missing"], 1);
+        assert_eq!(result.summary["nonfinite"], 1);
+        assert_eq!(result.details[0]["timestamp_ns"], "1000000123");
+        assert_eq!(result.details[0]["value"], json!(9007199254740993_u64));
+        assert_eq!(result.details[1]["state"], "null");
+        assert_eq!(result.details[2]["nonfinite"], "NaN");
+        assert!(result.partial);
+    }
+
+    #[test]
+    fn replay_duplicates_are_multiplicity_not_new_events_and_order_is_canonical() {
+        let a = legacy_logs(vec![1000, 1000], vec![123, 123], vec!["same", "same"]);
+        let b = legacy_logs(vec![2000], vec![456], vec!["later"]);
+        let result = replay(
+            "loki",
+            &response(vec![a.clone(), b.clone()]),
+            WINDOW,
+            100,
+            10000,
+            &mut || Ok(()),
+        )
+        .unwrap();
+        let reordered = replay(
+            "loki",
+            &response(vec![b, a]),
+            WINDOW,
+            100,
+            10000,
+            &mut || Ok(()),
+        )
+        .unwrap();
+        assert_eq!(result.summary, reordered.summary);
+        assert_eq!(result.details, reordered.details);
+        assert_eq!(result.summary["entries"], 3);
+        assert_eq!(result.summary["unique_entries"], 2);
+        assert_eq!(result.summary["duplicate_entries"], 1);
+        assert_eq!(result.details[0]["count"], 2);
+        assert_eq!(result.details[0]["timestamp_ns"], "1000000123");
+        assert!(!result.partial);
+    }
+
+    #[test]
+    fn replay_detail_bounds_preserve_full_counts_and_cancellation_is_checked() {
+        let data = response(vec![metric(
+            json!([1000, 2000, 3000]),
+            json!([1, 0, 1]),
+            "a",
+        )]);
+        let result = replay("prometheus", &data, WINDOW, 1, 10000, &mut || Ok(())).unwrap();
+        assert_eq!(result.summary["finite"], 3);
+        assert_eq!(result.details.len(), 1);
+        assert_eq!(result.omitted_details, 2);
+        let result = replay("prometheus", &data, WINDOW, 100, 2, &mut || Ok(())).unwrap();
+        assert_eq!(result.omitted_details, 3);
+        assert!(result.details.is_empty());
+        let mut calls = 0;
+        assert_eq!(
+            replay("prometheus", &data, WINDOW, 100, 10000, &mut || {
+                calls += 1;
+                if calls > 8 { Err("cancelled") } else { Ok(()) }
+            })
+            .err(),
+            Some("cancelled")
+        );
     }
 
     #[test]

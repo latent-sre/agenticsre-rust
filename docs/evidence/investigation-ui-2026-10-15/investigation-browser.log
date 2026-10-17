@@ -1,0 +1,15 @@
+PASS Context keyboard flow; pinned source, freshness, ownership and hostile text remain inert
+PASS Saved evidence list exposes historical storage state and IDs
+PASS Verified pinned inspection; canonical browser receipt download matches API bytes exactly
+PASS Comparable metric/log deltas and incompatible original windows remain distinct
+PASS Plain-text report preview and explicit Markdown download; dark mobile view has no horizontal overflow
+PASS Explicit JSON report download matches the retained report
+PASS Session history reopens the original invocation without recomputation
+PASS Real API authentication/origin, independent grants and request authority override refusals
+PASS Manifest pin mismatch, missing evidence and bounded partial inspection retain honest receipts; dedup/conflicts preserved
+PASS All browser/API observations leave source and retained store bytes/modes unchanged
+PASS Changed context bytes and same-content replacement store are refused by existing grants
+PASS Corrupt historical manifest is rejected without repair or store mutation
+PASS Stale context retains its provenance and cannot claim usable bindings
+PASS Ungranting all operations removes runnable browser controls and denies direct API requests
+PASS No browser script errors/remote requests; source and installed binary identities stable throughout acceptance

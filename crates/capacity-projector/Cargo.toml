@@ -1,0 +1,27 @@
+[package]
+name = "capacity-projector"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[features]
+test-fixtures = ["dep:libc"]
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+libc = { workspace = true, optional = true }
+
+[[bin]]
+name = "capacity-projector"
+path = "src/main.rs"
+
+[[bin]]
+name = "extension-peer-fixture"
+path = "src/bin/extension-peer-fixture.rs"
+required-features = ["test-fixtures"]
+
+[lints]
+workspace = true

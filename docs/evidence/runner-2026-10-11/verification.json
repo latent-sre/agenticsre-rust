@@ -1,0 +1,1034 @@
+{
+  "adversary_sha256": "40b2e8f091744d8002d162ed437b8ae922ea97f2c9362127188ff4152cf0ac5f",
+  "binary_sha256": "78f040b13a4998ac787e3876217437fab5165328cfe5c4e8a4e77b8ff4447c3a",
+  "commands": [
+    {
+      "args": [
+        "capabilities",
+        "describe",
+        "runner.submit"
+      ],
+      "exit_code": 0,
+      "name": "runner-submit-description"
+    },
+    {
+      "args": [
+        "task",
+        "describe",
+        "error-budget"
+      ],
+      "exit_code": 0,
+      "name": "task-description"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "handshake",
+        "fixture.runner"
+      ],
+      "exit_code": 0,
+      "name": "handshake-a"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 2,
+      "name": "submit-recording-required"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "cancel",
+        "fixture.runner",
+        "no-consent"
+      ],
+      "exit_code": 2,
+      "name": "cancel-recording-required"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "wrong.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 2,
+      "name": "runner-id-mismatch"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "submit-task"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "duplicate-task"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 2,
+      "name": "conflicting-task"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "task-once"
+      ],
+      "exit_code": 0,
+      "name": "principal-b-cannot-see-a"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "principal-b-same-id"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "task-once"
+      ],
+      "exit_code": 0,
+      "name": "task-terminal-0"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/text-controller.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "task-once"
+      ],
+      "exit_code": 0,
+      "name": "terminal-status-text"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/text-controller.json",
+        "call",
+        "--request",
+        "/tmp/installed-runner-o3z8clrb/limited-status.json"
+      ],
+      "exit_code": 1,
+      "name": "limited-status"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/text-controller.json",
+        "call",
+        "--request",
+        "/tmp/installed-runner-o3z8clrb/limited-watch.json"
+      ],
+      "exit_code": 1,
+      "name": "limited-watch"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "watch",
+        "fixture.runner",
+        "task-once",
+        "--after-sequence",
+        "4"
+      ],
+      "exit_code": 0,
+      "name": "limited-watch-reconnect"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "watch",
+        "fixture.runner",
+        "task-once",
+        "--after-sequence",
+        "0"
+      ],
+      "exit_code": 0,
+      "name": "watch-gap"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "watch",
+        "fixture.runner",
+        "task-once",
+        "--after-sequence",
+        "4"
+      ],
+      "exit_code": 0,
+      "name": "watch-reconnect"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 2,
+      "name": "runtime-grant-refused"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 2,
+      "name": "target-grant-refused"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 2,
+      "name": "operation-version-refused"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "handshake",
+        "fixture.runner"
+      ],
+      "exit_code": 2,
+      "name": "identity-server_name"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "handshake",
+        "fixture.runner"
+      ],
+      "exit_code": 2,
+      "name": "identity-server_certificate_sha256"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "handshake",
+        "fixture.runner"
+      ],
+      "exit_code": 2,
+      "name": "identity-ca_certificate"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "handshake",
+        "fixture.runner"
+      ],
+      "exit_code": 2,
+      "name": "unknown-principal"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "lost-ack"
+      ],
+      "exit_code": 0,
+      "name": "lost-ack-status-0"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "bad-protocol"
+      ],
+      "exit_code": 0,
+      "name": "bad-protocol-not-admitted"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "task-once"
+      ],
+      "exit_code": 0,
+      "name": "principal-b-terminal-0"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "task-once"
+      ],
+      "exit_code": 0,
+      "name": "revoked-historical-status"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 2,
+      "name": "revoked-new-submit"
+    },
+    {
+      "args": [
+        "--extension-state-dir",
+        "/tmp/installed-runner-o3z8clrb/extensions",
+        "extension",
+        "install",
+        "/tmp/installed-runner-o3z8clrb/package-1.json",
+        "--expected-package-sha256",
+        "sha256:b4392fc7c56f498d0759395d770743584a20f231f65928ad9deee3443dd836ce"
+      ],
+      "exit_code": 0,
+      "name": "install-capacity"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "capacity-submit"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "capacity-real"
+      ],
+      "exit_code": 0,
+      "name": "capacity-terminal-0"
+    },
+    {
+      "args": [
+        "--extension-state-dir",
+        "/tmp/installed-runner-o3z8clrb/extensions",
+        "extension",
+        "install",
+        "/tmp/installed-runner-o3z8clrb/package-2.json",
+        "--expected-package-sha256",
+        "sha256:70a3d770c689d101d0a2294992c3b6eba77e12c3808859180ddbdef30640624c"
+      ],
+      "exit_code": 0,
+      "name": "install-adversary"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-submit"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "cancel",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-intent"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-0"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-1"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-2"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-3"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-4"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-5"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-6"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-7"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-8"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-9"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-10"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-11"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-12"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-13"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-stubborn"
+      ],
+      "exit_code": 0,
+      "name": "remote-cancel-observed-14"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-0"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-1"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-2"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-3"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-4"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-5"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-6"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-7"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-8"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-9"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-10"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-11"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-12"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-13"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-14"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-disconnected-runtime-15"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "remote-crash-submit"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "runner",
+        "status",
+        "fixture.runner",
+        "fixture-timeout"
+      ],
+      "exit_code": 0,
+      "name": "remote-crash-reconciliation-0"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "remote-crash-duplicate"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "small-store-submit-0"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "small-store-submit-1"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "small-store-submit-2"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 0,
+      "name": "small-store-submit-3"
+    },
+    {
+      "args": [
+        "--runner-config",
+        "/tmp/installed-runner-o3z8clrb/client.json",
+        "--record",
+        "always",
+        "runner",
+        "submit",
+        "fixture.runner",
+        "--input",
+        "/tmp/installed-runner-o3z8clrb/body.json"
+      ],
+      "exit_code": 2,
+      "name": "small-store-submit-4"
+    },
+    {
+      "args": [
+        "--record",
+        "always",
+        "runner",
+        "serve",
+        "--server-config",
+        "/tmp/installed-runner-o3z8clrb/server.json"
+      ],
+      "exit_code": 1,
+      "name": "disk-full-restart-refused"
+    }
+  ],
+  "lifecycles": [
+    {
+      "case": "lost-ack",
+      "job_id": "job-24-18ddad2655a7a2b9-3e",
+      "status_only_reconciliation": true
+    },
+    {
+      "case": "server-stopped",
+      "elapsed_ms": 21,
+      "exit_code": 143,
+      "generation": 1
+    },
+    {
+      "case": "server-stopped",
+      "elapsed_ms": 13,
+      "exit_code": 143,
+      "generation": 2
+    },
+    {
+      "case": "server-stopped",
+      "elapsed_ms": 6,
+      "exit_code": 143,
+      "generation": 3
+    },
+    {
+      "case": "remote-cancellation",
+      "child_pid": 104,
+      "intent_separate_from_terminal": true
+    },
+    {
+      "case": "disconnected-finite-runtime",
+      "cleanup_confirmed": true,
+      "principal": "principal.b",
+      "runtime_ms": 2000,
+      "terminal": "timed_out"
+    },
+    {
+      "case": "server-killed",
+      "elapsed_ms": 1,
+      "exit_code": -9,
+      "generation": 4
+    },
+    {
+      "case": "server-sigkill-restart",
+      "no_automatic_replay": true,
+      "original_fixture_left_alive": true,
+      "state": "recovery_required"
+    },
+    {
+      "case": "server-stopped",
+      "elapsed_ms": 8,
+      "exit_code": 143,
+      "generation": 5
+    },
+    {
+      "case": "remote-private-64kib-enospc",
+      "files": 24,
+      "partial_store_preserved": true,
+      "uncertainty_disclosed": true
+    }
+  ],
+  "passed": true,
+  "peer_sha256": "28061a389b8f28bdd6906a551ae3698291f1195101781c7b28dedf5712f035e8",
+  "source_manifest_sha256": "5342752de2cf2a321ac4bd11ac45e9ed97b86ab4fb178977a1eefdaf6f7804f1"
+}

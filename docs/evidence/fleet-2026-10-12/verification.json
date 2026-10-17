@@ -1,0 +1,505 @@
+{
+  "binary_sha256": "cebf539b6fe67492666afab255987d75db7f73be8e6f4c8d4b3c1d513f2c684e",
+  "commands": [
+    {
+      "args": [
+        "task",
+        "describe",
+        "error-budget"
+      ],
+      "exit_code": 0,
+      "name": "task-description"
+    },
+    {
+      "args": [
+        "capabilities",
+        "describe",
+        "fleet.collect"
+      ],
+      "exit_code": 0,
+      "name": "fleet-description"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "complete"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "duplicate"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 2,
+      "name": "conflict"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "fleet",
+        "status",
+        "frozen-once",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "immutable-selection"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "fleet",
+        "status",
+        "frozen-once",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1024"
+      ],
+      "exit_code": 1,
+      "name": "limited-status"
+    },
+    {
+      "exit_code": 0,
+      "name": "text-status"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 2,
+      "name": "empty"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 2,
+      "name": "duplicate-target"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 2,
+      "name": "unknown-target"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 2,
+      "name": "recording-required"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "mixed-timeout"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "unreachable"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "threshold-round-0"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "threshold-round-1"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "fleet",
+        "status",
+        "controller-crash",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "orphan-status"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "resume",
+        "controller-crash",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "profile-drift-resume"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "resume",
+        "controller-crash",
+        "--timeout-ms",
+        "1000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "principal-remap-resume"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "resume",
+        "controller-crash",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "crash-resume"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "cancel",
+        "controller-cancel",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 0,
+      "name": "cancel-intent"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "cancel-observed"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "300",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "global-deadline"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/installed-fleet-4rtoeo71/fleet-store",
+        "fleet",
+        "status",
+        "frozen-once",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "partial-store-refused"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/evidence-small-disk/fleet",
+        "--record",
+        "always",
+        "fleet",
+        "collect",
+        "--input",
+        "/tmp/installed-fleet-4rtoeo71/collection.json",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "disk-full-0"
+    },
+    {
+      "args": [
+        "--fleet-inventory",
+        "/tmp/installed-fleet-4rtoeo71/inventory.json",
+        "--fleet-state-dir",
+        "/tmp/evidence-small-disk/fleet",
+        "fleet",
+        "status",
+        "disk-full-0",
+        "--timeout-ms",
+        "30000",
+        "--max-output-bytes",
+        "1048576"
+      ],
+      "exit_code": 1,
+      "name": "disk-full-preserved"
+    }
+  ],
+  "lifecycles": [
+    {
+      "case": "persistent-rotation",
+      "concurrency": 1,
+      "failure_threshold": 1,
+      "first_admissions": [
+        "target.1",
+        "target.0"
+      ]
+    },
+    {
+      "case": "controller-sigkill-after-admission",
+      "original_request_ids_preserved": true,
+      "principal_remap_refused": true,
+      "profile_drift_refused": true,
+      "remote_job_sets_unchanged": true
+    },
+    {
+      "all_targets_accounted_for": true,
+      "case": "active-cancellation"
+    },
+    {
+      "all_targets_accounted_for": true,
+      "case": "global-deadline",
+      "deadline_ms": 300
+    },
+    {
+      "bytes_preserved": true,
+      "case": "unknown-partial-store",
+      "fixture_injected": true
+    },
+    {
+      "bytes_preserved": true,
+      "case": "private-64kib-enospc",
+      "uncertainty_disclosed": true
+    }
+  ],
+  "passed": true,
+  "source_manifest_sha256": "59feef6e4b5b8d31cf5854e5deeafd48aa3536cdf8fa63adaf004d5994822903"
+}

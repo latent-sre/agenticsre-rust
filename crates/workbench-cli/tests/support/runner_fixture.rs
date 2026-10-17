@@ -45,6 +45,23 @@ fn main() {
             std::fs::write(args.next().expect("ready path"), b"ready").expect("ready file");
             std::thread::sleep(Duration::from_secs(60));
         }
+        Some("ready-delay-mark") => {
+            let ready = args.next().expect("ready path");
+            let marker = args.next().expect("final marker path");
+            let delay_ms: u64 = args
+                .next()
+                .expect("delay milliseconds")
+                .parse()
+                .expect("integer delay");
+            assert!(
+                delay_ms <= 10_000,
+                "fixture delay is bounded to ten seconds"
+            );
+            assert!(args.next().is_none(), "unexpected fixture arguments");
+            std::fs::write(ready, std::process::id().to_string()).expect("ready PID marker");
+            std::thread::sleep(Duration::from_millis(delay_ms));
+            std::fs::write(marker, b"executed").expect("final marker");
+        }
         Some("ignore-term") => {
             #[cfg(unix)]
             {

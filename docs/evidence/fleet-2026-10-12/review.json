@@ -1,0 +1,27 @@
+{
+  "scope": "WORKBENCH-024 fleet controller, prepared runner authority, durable child recovery and installed-discovered dispatch defects",
+  "mode": "independent read-only source review; parent owns executable gates",
+  "verdict": "no remaining material finding in scoped working-tree review",
+  "p0_p1": 0,
+  "closed_p2": [
+    "atomic cancellation check before child intent/RPC",
+    "retained receipt digest must be recomputed on load"
+  ],
+  "prerequisite_corrections": [
+    "pure controller task validation without local Python dependency",
+    "reported RPC timeout equals remaining budget",
+    "prepared TLS bytes and server-enforced principal/policy preconditions"
+  ],
+  "installed_discovered_and_independently_closed": [
+    "dispatch preflight deadline/cancellation preserves status and not_attempted effects instead of claiming binding drift",
+    "authority precondition refusal ends polling for current call without erasing durable diagnostic or claiming old child resolved"
+  ],
+  "reviewed_source_sha256": {
+    "crates/workbench-core/src/fleet/controller.rs": "103bdd1e0abc7d4cb5255d50559a77471874eab2db3316884bb40ae393caa1d9",
+    "crates/workbench-core/src/fleet/model.rs": "e2560aecb06e2da962a5c04888d8365979bfc9952f13b14d7d82077090fb25c2",
+    "crates/workbench-core/src/fleet/store.rs": "2706842ed278665bbc5753ae6ad1e7d20d175ef06fac5da4979c2850d9490dbb",
+    "crates/workbench-core/src/jobs/dispatch.rs": "fabf390da3e5afe0512fcdbabb390eeb543bdc006956a59e0f4643f889c90634"
+  },
+  "post_review_changes": "Equivalent let-chain lint normalization preceded final controller review. No product change after final installed acceptance. Documentation/evidence edits only afterward.",
+  "limits": "No live/native Windows/load-soak conformance established. Parent workspace and installed logs supply runtime evidence; reviewer executed no tests."
+}

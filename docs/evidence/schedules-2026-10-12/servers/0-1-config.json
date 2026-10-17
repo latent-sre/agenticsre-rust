@@ -1,0 +1,38 @@
+{
+  "ca_certificate": "/tmp/installed-schedules-5exynlvk/pki/ca.der",
+  "certificate": "/tmp/installed-schedules-5exynlvk/pki/server-0.der",
+  "config_version": 1,
+  "grants": [
+    {
+      "max_runtime_ms": 30000,
+      "operation": "task.run",
+      "operation_version": 1,
+      "principal": "fleet.operator",
+      "target": "observed.target",
+      "task": {
+        "binding_sha256": "sha256:1f74493ffdb4d992e2bd8dcf1bb5eeeea5242e90480746cde5c35ec03ab81fe4",
+        "id": "error-budget",
+        "version": 1
+      }
+    }
+  ],
+  "listen": "127.0.0.1:0",
+  "principals": [
+    {
+      "certificate_sha256": "sha256:bc5ad21e30be5bf8eef2b7c1f216c803f80f14ec9e9fde31a6f64cff87766928",
+      "id": "fleet.operator"
+    }
+  ],
+  "private_key": "/tmp/installed-schedules-5exynlvk/pki/server-0.key.der",
+  "runner_id": "runner.0",
+  "state_dir": "/tmp/installed-schedules-5exynlvk/runner-0/state",
+  "targets": [
+    {
+      "id": "observed.target",
+      "snapshot": {
+        "environment": "isolated-sandbox",
+        "name": "Target 0"
+      }
+    }
+  ]
+}

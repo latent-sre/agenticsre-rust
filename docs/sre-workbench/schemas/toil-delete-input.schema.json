@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:toil-delete-input:0.1",
+  "title": "toil delete input",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^sample-[0-9]+-[a-f0-9]+-[a-f0-9]+$",
+      "not": {
+        "pattern": "[\\r\\n]"
+      }
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "additionalProperties": false
+}

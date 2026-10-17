@@ -1,0 +1,30 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+   Compiling workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-ui)
+   Compiling workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-mcp)
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 4.01s
+     Running tests/extension_runtime.rs (target/debug/deps/extension_runtime-260b8d8e7dbc7e71)
+
+running 4 tests
+test direct_external_request_requires_independent_policy_before_store_or_child ... ok
+test native_admission_refuses_missing_grants_bad_pins_inputs_versions_and_policy_permissions ... ok
+test native_capacity_calculations_and_discovery_require_exact_package_grants ... FAILED
+test native_bad_peers_cannot_turn_protocol_or_process_failure_into_success ... ok
+
+failures:
+
+---- native_capacity_calculations_and_discovery_require_exact_package_grants stdout ----
+
+thread 'native_capacity_calculations_and_discovery_require_exact_package_grants' (126) panicked at crates/workbench-cli/tests/extension_runtime.rs:145:5:
+assertion `left == right` failed
+  left: String("not_applicable")
+ right: "not_attempted"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    native_capacity_calculations_and_discovery_require_exact_package_grants
+
+test result: FAILED. 3 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+
+error: test failed, to rerun pass `-p workbench-cli --test extension_runtime`

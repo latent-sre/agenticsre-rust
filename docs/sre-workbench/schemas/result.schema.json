@@ -213,7 +213,7 @@
       "maxItems": 100
     },
     "effective_limits": {
-      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/limits"
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/effective_limits"
     },
     "record_mode": {
       "enum": [
@@ -296,6 +296,35 @@
         "properties": {
           "errors": {
             "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "enum": [
+              "change.plan",
+              "change.status",
+              "change.reconcile",
+              "change.approve",
+              "change.apply"
+            ]
+          },
+          "execution": {
+            "properties": {
+              "status": {
+                "const": "succeeded"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "urn:sre-workbench:spec:change-data:0.1"
           }
         }
       }

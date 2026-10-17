@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:schedule-list-input:0.1",
+  "title": "schedule.list input",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

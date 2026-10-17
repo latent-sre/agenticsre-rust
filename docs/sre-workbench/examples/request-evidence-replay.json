@@ -1,0 +1,19 @@
+{
+  "spec_version": "0.1",
+  "request_id": "offline-example",
+  "operation": "evidence.replay",
+  "operation_version": 1,
+  "target": {
+    "kind": "local",
+    "id": "workstation"
+  },
+  "inputs": {
+    "id": "run-1-ab-1"
+  },
+  "limits": {
+    "timeout_ms": 30000,
+    "max_output_bytes": 1048576,
+    "max_items": 100
+  },
+  "record": "never"
+}

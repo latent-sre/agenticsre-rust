@@ -15,8 +15,11 @@ dispatch follows resolution. Mapping metadata never grants execution or credenti
 
 Use the existing core/CLI result envelope and literal input normalization. Only a trusted startup
 option may select the source file; structured request fields cannot select a path, source adapter,
-permission, credential or runtime. UI/MCP context tools remain deferred until effective source/grant
-semantics exist. Existing command, task, Grafana, UI and MCP behavior must remain unchanged.
+permission, credential or runtime. The [browser investigation extension](investigation-ui.md)
+admits `context.resolve` only through an explicit launcher grant that pins its trusted source and
+freshness policy. The [MCP investigation extension](investigation-mcp.md) uses the same explicit
+core grant for `workbench_context_resolve`. Existing command, task and Grafana
+operations retain their authority boundaries.
 
 ## Initial shape and resolution rules
 
@@ -71,7 +74,8 @@ limited to 64 KiB before result finalization. Missing optional fields remain dis
 source-declared empty list, including each dependency direction.
 
 The CLI accepts `context resolve --service ID --env ID [--team ID] [--deployment ID]`.
-Both startup options are paired and are rejected for `ui serve` and `mcp serve`. Structured calls
+Both startup options are paired. `ui serve` and `mcp serve` accept them only with
+`--allow context.resolve`. Structured calls
 use operation `context.resolve` with selectors in `inputs`; the envelope target remains
 `local/workstation`. Discovery reports `requires_configuration` without opening the source.
 Only a unique active, fresh record with all declared required bindings may report usable resolution;

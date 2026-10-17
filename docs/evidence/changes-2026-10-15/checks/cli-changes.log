@@ -1,0 +1,14 @@
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 0.84s
+     Running tests/changes.rs (target/debug/deps/changes-43f3c3cdef1c3836)
+
+running 6 tests
+test every_change_operation_is_discoverable_offline ... ok
+test change_writes_require_explicit_durable_recording ... ok
+test mtls_changed_original_refuses_approved_dispatch ... ok
+test public_change_commands_require_explicit_runner_authority ... ok
+test wire_authority_labels_and_noncanonical_proposals_are_refused ... ok
+test mtls_exact_approval_replacement_readback_and_replay_preserve_original_attempt ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.52s
+

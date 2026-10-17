@@ -1,0 +1,9 @@
+{
+  "format_version": 1,
+  "configuration": {
+    "enabled": false,
+    "retention_days": 30
+  },
+  "samples_retained": 0,
+  "cancellation_signal": 15
+}

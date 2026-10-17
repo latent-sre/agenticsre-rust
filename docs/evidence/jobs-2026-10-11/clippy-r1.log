@@ -1,0 +1,26 @@
+    Checking workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Checking capacity-projector v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/capacity-projector)
+error: this `if` has identical blocks
+  --> crates/workbench-core/src/discovery.rs:85:31
+   |
+85 |       let input_schema = if job {
+   |  _______________________________^
+86 | |         json!({"$ref":format!("urn:sre-workbench:spec:{}-input:0.1",operation.replace('.',"-"))})
+87 | |     } else if matches!(operation, "extension.inspect" | "extension.install") {
+   | |_____^
+   |
+note: same as this
+  --> crates/workbench-core/src/discovery.rs:87:78
+   |
+87 |       } else if matches!(operation, "extension.inspect" | "extension.install") {
+   |  ______________________________________________________________________________^
+88 | |         json!({"$ref":format!("urn:sre-workbench:spec:{}-input:0.1",operation.replace('.',"-"))})
+89 | |     } else if operation == "toil.prune" {
+   | |_____^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#if_same_then_else
+   = note: `-D clippy::if-same-then-else` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::if_same_then_else)]`
+
+error: could not compile `workbench-core` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `workbench-core` (lib test) due to 1 previous error

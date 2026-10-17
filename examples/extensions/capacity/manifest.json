@@ -1,0 +1,99 @@
+{
+  "id": "example.capacity",
+  "version": 1,
+  "protocol": {
+    "name": "save-extension",
+    "version": 1
+  },
+  "compatibility": {
+    "min_spec": "0.1",
+    "max_spec": "0.1"
+  },
+  "executable": {
+    "platform": "linux-x86_64",
+    "format": "elf",
+    "sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "bytes": 64
+  },
+  "capabilities": [
+    {
+      "operation": "ext.example.capacity.project",
+      "version": 1,
+      "effects": "observe",
+      "requested_access": [],
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "capacity_bytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "used_bytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "growth_bytes_per_day": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "capacity_bytes",
+          "used_bytes",
+          "growth_bytes_per_day"
+        ]
+      },
+      "output_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "headroom_bytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "days_remaining_floor": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "exhausted": {
+            "type": "boolean"
+          },
+          "has_finite_horizon": {
+            "type": "boolean"
+          },
+          "projection_state": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "assumption": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "headroom_bytes",
+          "days_remaining_floor",
+          "exhausted",
+          "has_finite_horizon",
+          "projection_state",
+          "assumption"
+        ]
+      }
+    }
+  ],
+  "provenance": {
+    "source": "local:crates/capacity-projector",
+    "revision": "development-v1",
+    "license": "MIT"
+  }
+}

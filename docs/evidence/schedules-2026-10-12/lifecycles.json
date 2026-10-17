@@ -1,0 +1,49 @@
+[
+  {
+    "case": "revision-generation-manual-dedup",
+    "history_preserved": true,
+    "paused_manual_explicit": true
+  },
+  {
+    "case": "retention-across-generations",
+    "new_admission_refused": true,
+    "retired_identity_preserved": true
+  },
+  {
+    "case": "scheduler-sigkill-after-fleet-admission",
+    "original_fleet_request_preserved": true,
+    "remote_jobs_unchanged": true,
+    "wrong_store_refused": true
+  },
+  {
+    "case": "live-schedule-cancellation",
+    "undispatched_target_skipped": true,
+    "worker_observed_fleet_cancel": true
+  },
+  {
+    "case": "scheduler-sigterm",
+    "original_fleet_request_preserved": true,
+    "remote_cancel_not_requested": true,
+    "remote_jobs_unchanged": true
+  },
+  {
+    "case": "profile-drift-before-admission",
+    "explicit_new_occurrence_progressed": true,
+    "refusal_admitted_no_jobs": true,
+    "restoration_does_not_replay": true
+  },
+  {
+    "case": "credential-drift-before-admission",
+    "explicit_new_occurrence_progressed": true,
+    "refusal_admitted_no_jobs": true,
+    "restoration_does_not_replay": true
+  },
+  {
+    "bytes_preserved": true,
+    "case": "unknown-partial-store"
+  },
+  {
+    "bytes_preserved": true,
+    "case": "private-64kib-enospc"
+  }
+]

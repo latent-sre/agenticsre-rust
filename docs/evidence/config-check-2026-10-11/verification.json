@@ -1,0 +1,92 @@
+{
+  "binary_sha256": "db87eebf88fa473d9ac7ea12c82efc3ef0b5d437a5a528bbcbe22c57e04822cf",
+  "commands": [
+    {
+      "case": "clean",
+      "exit": 0
+    },
+    {
+      "case": "supported-envelope",
+      "exit": 0
+    },
+    {
+      "case": "unsupported-schema",
+      "exit": 1
+    },
+    {
+      "case": "pinned",
+      "exit": 0
+    },
+    {
+      "case": "input-pin-mismatch",
+      "exit": 1
+    },
+    {
+      "case": "validator-pin-mismatch",
+      "exit": 2
+    },
+    {
+      "case": "findings",
+      "exit": 0
+    },
+    {
+      "case": "findings-exit",
+      "exit": 1
+    },
+    {
+      "case": "findings-text",
+      "exit": 0
+    },
+    {
+      "case": "invalid-json",
+      "exit": 1
+    },
+    {
+      "case": "duplicate-key",
+      "exit": 1
+    },
+    {
+      "case": "empty",
+      "exit": 1
+    },
+    {
+      "case": "unsupported-v2",
+      "exit": 1
+    },
+    {
+      "case": "invalid-utf8",
+      "exit": 1
+    },
+    {
+      "case": "oversized",
+      "exit": 1
+    },
+    {
+      "case": "partial-fields",
+      "exit": 1
+    },
+    {
+      "case": "capture-limited",
+      "exit": 1
+    },
+    {
+      "case": "fifo-refused",
+      "exit": 1
+    },
+    {
+      "case": "structured",
+      "exit": 0
+    },
+    {
+      "case": "discover",
+      "exit": 0
+    }
+  ],
+  "hostile_module_not_imported": true,
+  "input_files_unchanged": true,
+  "installed_copy_outside_checkout": true,
+  "no_credentials_or_network": true,
+  "passed": true,
+  "source_files": 1192,
+  "source_manifest_sha256": "9ecf0472349fd296a6a09c5141b1e8b618cc17b7e43c91e8ad6fc3a7c2bcdf92"
+}

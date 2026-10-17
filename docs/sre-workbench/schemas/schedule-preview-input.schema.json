@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sre-workbench:spec:schedule-preview-input:0.1",
+  "title": "schedule.preview input",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "urn:sre-workbench:spec:common:0.1#/$defs/operation",
+      "maxLength": 64
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 32
+    }
+  },
+  "required": [
+    "id",
+    "count"
+  ],
+  "additionalProperties": false
+}
