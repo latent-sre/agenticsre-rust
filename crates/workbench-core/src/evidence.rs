@@ -194,6 +194,17 @@ pub(crate) fn manage(
             let bundle = match store.load_verified(id) {
                 Ok(bundle) => bundle,
                 Err(error)
+                    if error.code == "store_unreferenced_artifact"
+                        && request.operation == "evidence.delete" =>
+                {
+                    let reference = store.deletion_candidate(id)?;
+                    if expected.is_some_and(|expected| expected != reference.digest) {
+                        return Err(StoreError::new("manifest_digest_mismatch", false));
+                    }
+                    store.delete(id)?;
+                    return Ok(json!({"bundle":reference,"deleted":true}));
+                }
+                Err(error)
                     if error.code == "store_deleting" && request.operation == "evidence.delete" =>
                 {
                     let reference = store.deletion_reference(id)?;
@@ -243,7 +254,10 @@ pub(crate) fn manage(
                     )?;
                     Ok(json!({"expired":expired}))
                 }
-                "evidence.recover" => Ok(json!({"recovered":store.recover()?})),
+                "evidence.recover" => {
+                    let recovered = store.recover()?;
+                    Ok(json!({"recovered":recovered,"deleted":store.progress().deleted}))
+                }
                 _ => unreachable!("fixed store management operations"),
             }
         }

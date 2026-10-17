@@ -61,6 +61,9 @@ impl Store {
     pub(crate) fn deletion_reference(&self, _: &str) -> Result<BundleRef, StoreError> {
         unsupported()
     }
+    pub(crate) fn deletion_candidate(&self, _: &str) -> Result<BundleRef, StoreError> {
+        unsupported()
+    }
     pub(crate) fn prune(&mut self, _: u64) -> Result<Vec<String>, StoreError> {
         unsupported()
     }

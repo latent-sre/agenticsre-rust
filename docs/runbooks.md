@@ -80,6 +80,12 @@ silently repeated: explicit fresh attempt is required. Status exposes `in_flight
 uncertainty remains visible. Failed persistence never claims a durable
 successful checkpoint, and an unacknowledged checkpoint never advances.
 
+The current execution step must be pending, except for its explicit waiting checkpoint state;
+a retained completed receipt at the current cursor is corruption. Show receipts must identify
+the pinned bundle and manifest digest. Comparison receipts that contain source metadata must
+match both pinned references and the selected normalization, including interrupted comparisons.
+Early failure receipts may omit observations, but cannot substitute another evidence identity.
+
 All child execution uses one monotonic deadline. Human waiting time is excluded from active work;
 remaining active milliseconds are captured immediately before each durable publication. A resumed
 invocation can narrow, not expand, that saved budget. The final publication overhead after the
@@ -87,6 +93,9 @@ snapshot is not debited from the next invocation; this is not an exact cumulativ
 Each invocation still includes its own filesystem, validation and child work in its deadline. Signals and result-consumer closure stop further dispatch. Finalizing
 already observed bytes may use one bounded 2.5-second allowance, without admitting another child.
 Synchronous filesystem I/O cannot forcibly preempt a blocked kernel operation.
+Journal opening, scanning, validation, status and new-state admission use the invocation deadline.
+Only persistence of already-observed work may use finalization time; early cancellation narrows
+that single allowance, and subsequent persistence cannot renew it.
 
 ## Journal format and limits
 
@@ -100,6 +109,8 @@ files, atomic replacement and file/directory synchronization. Unknown formats/la
 files are refused; there is no automatic migration or cleanup. Bounds are 64 runs, four MiB per
 state, 128 MiB total including temporary publication bytes, and 16 staging files. No silent eviction
 or deletion occurs. State is restricted evidence; existing telemetry redaction limitations apply.
+Each scan validates the identity, revision and format of every committed run file, so a newer
+format anywhere in the journal blocks opening and further writes without modifying retained bytes.
 
 ## Acceptance
 

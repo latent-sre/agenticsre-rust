@@ -573,3 +573,81 @@ fn stored_definition_drift_is_refused_before_checkpoint_mutation() {
     assert_eq!(mission.snapshot("journal"), journal);
     assert_eq!(mission.https.requests().len(), 12);
 }
+
+#[test]
+fn rewound_cursor_cannot_replay_a_completed_observation() {
+    let (mission, inputs) = Mission::pair(metric("a", 0, json!([1, 1])));
+    let waiting = mission.run(&mut mission.start(&inputs), 1);
+    let id = waiting["data"]["journal"]["id"].as_str().unwrap();
+    let path = mission
+        .https
+        .directory
+        .join("journal")
+        .join(format!("{id}.json"));
+    let original: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    let evidence = mission.snapshot("state");
+    for n in 0..3 {
+        let mut state = original.clone();
+        state["state"] = json!("running");
+        state["next"] = json!(n);
+        for step in &mut state["steps"].as_array_mut().unwrap()[n + 1..] {
+            step["state"] = json!("pending");
+            step["receipt"] = Value::Null;
+            step["condition"] = Value::Null;
+            step["acknowledged_at"] = Value::Null;
+        }
+        fs::write(&path, serde_json::to_vec(&state).unwrap()).unwrap();
+        let journal = mission.snapshot("journal");
+        let refused = mission.run(&mut mission.resume(&waiting, &inputs, None), 2);
+        error(&refused, "runbook_corrupt_state");
+        assert_eq!(mission.snapshot("journal"), journal);
+        assert_eq!(mission.snapshot("state"), evidence);
+    }
+    assert_eq!(mission.https.requests().len(), 12);
+}
+
+#[test]
+fn foreign_valid_receipts_cannot_drive_checkpoint_resume() {
+    let (mission, inputs) = Mission::pair(metric("a", 0, json!([1, 0])));
+    let waiting = mission.run(&mut mission.start(&inputs), 1);
+    let id = waiting["data"]["journal"]["id"].as_str().unwrap();
+    let path = mission
+        .https
+        .directory
+        .join("journal")
+        .join(format!("{id}.json"));
+    let original: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    let mut swapped = inputs.clone();
+    swapped["before"] = inputs["after"].clone();
+    swapped["after"] = inputs["before"].clone();
+    let mut normalized = inputs.clone();
+    normalized["normalization"] = json!("window-offset-v1");
+    for foreign_input in [swapped, normalized] {
+        let foreign = mission.run(&mut mission.start(&foreign_input), 1);
+        let foreign_path = mission.https.directory.join("journal").join(format!(
+            "{}.json",
+            foreign["data"]["journal"]["id"].as_str().unwrap()
+        ));
+        let foreign_state: Value =
+            serde_json::from_slice(&fs::read(foreign_path).unwrap()).unwrap();
+        let steps: &[usize] = if foreign_input["normalization"] == inputs["normalization"] {
+            &[0, 1, 2]
+        } else {
+            &[2]
+        };
+        for &n in steps {
+            let mut state = original.clone();
+            state["steps"][n]["receipt"] = foreign_state["steps"][n]["receipt"].clone();
+            fs::write(&path, serde_json::to_vec(&state).unwrap()).unwrap();
+            let journal = mission.snapshot("journal");
+            let refused = mission.run(
+                &mut mission.resume(&waiting, &inputs, Some("review-complete")),
+                2,
+            );
+            error(&refused, "runbook_corrupt_state");
+            assert_eq!(mission.snapshot("journal"), journal);
+        }
+        fs::write(&path, serde_json::to_vec(&original).unwrap()).unwrap();
+    }
+    assert_eq!(mission.https.requests().len(), 12);
+}

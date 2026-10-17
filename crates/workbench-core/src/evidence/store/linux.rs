@@ -1021,6 +1021,16 @@ impl Store {
     }
 
     pub(crate) fn load_verified(&self, id: &str) -> Result<VerifiedBundle, StoreError> {
+        self.load_manifest(id, false)
+    }
+
+    // Explicit deletion may discard additional *verified* receipts, but readers and retention
+    // must never treat those uncommitted observations as a valid sealed bundle.
+    pub(crate) fn deletion_candidate(&self, id: &str) -> Result<BundleRef, StoreError> {
+        Ok(self.load_manifest(id, true)?.reference)
+    }
+
+    fn load_manifest(&self, id: &str, deleting: bool) -> Result<VerifiedBundle, StoreError> {
         let layout = self.layout(id)?;
         if let Some(code) = layout.version_error {
             return Err(StoreError::new(code, false));
@@ -1048,6 +1058,24 @@ impl Store {
         payload(&manifest.payload).map_err(|_| StoreError::new("store_corrupt", false))?;
         validate_refs(&manifest.artifacts)?;
         let objects = run.open_at("artifacts", true)?;
+        for name in &layout.artifact_names {
+            self.check()?;
+            if temporary_name(name)
+                || manifest.artifacts.values().any(|reference| {
+                    reference.path.strip_prefix("artifacts/") == Some(name.as_str())
+                })
+            {
+                continue;
+            }
+            if !deleting {
+                return Err(StoreError::new("store_unreferenced_artifact", false));
+            }
+            let bytes = fs::read(&objects, name, MAX_RESULT_BYTES)?;
+            validate_receipt(&bytes)?;
+            if artifact_ref(&bytes).path != format!("artifacts/{name}") {
+                return Err(StoreError::new("store_corrupt", false));
+            }
+        }
         let mut artifacts = BTreeMap::new();
         for (step, reference) in &manifest.artifacts {
             self.check()?;
@@ -1107,6 +1135,25 @@ impl Store {
                 bytes: layout.bytes,
                 error: None,
             };
+            match self.pre_intent(&id, &layout) {
+                Ok(true) => {
+                    summary.state = "incomplete";
+                    summary.error = Some("store_incomplete");
+                    summaries.push(summary);
+                    continue;
+                }
+                Err(error)
+                    if matches!(error.code, "store_cancelled" | "store_deadline_exceeded") =>
+                {
+                    return Err(error);
+                }
+                Err(error) => {
+                    summary.error = Some(error.code);
+                    summaries.push(summary);
+                    continue;
+                }
+                Ok(false) => {}
+            }
             match self.load_verified(&id) {
                 Ok(bundle) => {
                     summary.state = if bundle.manifest.state == "sealed" {
@@ -1194,6 +1241,79 @@ impl Store {
         Ok(bundle)
     }
 
+    fn pre_intent(&self, id: &str, layout: &RunLayout) -> Result<bool, StoreError> {
+        // begin_collection cannot publish receipts/checkpoints before its intent. Accept only
+        // prefixes of that initial construction, including a partial first temporary write.
+        if layout.version_error.is_some()
+            || layout
+                .names
+                .iter()
+                .any(|name| name != "artifacts" && !temporary_name(name))
+            || !layout.artifact_names.is_empty()
+            || layout
+                .names
+                .iter()
+                .filter(|name| temporary_name(name))
+                .count()
+                > 1
+        {
+            return Ok(false);
+        }
+        let run = self.runs.open_at(id, true)?;
+        for name in layout.names.iter().filter(|name| temporary_name(name)) {
+            self.check()?;
+            let bytes = fs::read(&run, name, MAX_METADATA_BYTES)?;
+            // Interrupted writes can be truncated. A complete future-format object is not
+            // our interrupted intent and must survive explicit recovery unchanged.
+            if !layout.has("artifacts") {
+                return Ok(false);
+            }
+            if parse_bounded_json(&bytes, 40).is_ok() {
+                let intent: Intent = decode(&bytes)?;
+                if intent.id != id || !(1..=MAX_COLLECTION_BYTES).contains(&intent.reservation) {
+                    return Err(StoreError::new("store_corrupt", false));
+                }
+                payload(&intent.payload).map_err(|_| StoreError::new("store_corrupt", false))?;
+            }
+        }
+        Ok(true)
+    }
+
+    fn delete_pre_intent(&mut self, id: &str, layout: &RunLayout) -> Result<(), StoreError> {
+        let run = self.runs.open_at(id, true)?;
+        // No committed identity or observation exists to journal. Each removal prefix remains
+        // a recognizable pre-intent layout, so cancellation/restart can resume safely.
+        for name in layout.names.iter().filter(|name| temporary_name(name)) {
+            self.check()?;
+            run.open_file(name, false)?;
+            run.unlink(name, false)?;
+            self.management_effects = true;
+        }
+        self.check()?;
+        #[cfg(test)]
+        fail_at(FailurePoint::DirectorySync)?;
+        run.sync()?;
+        if layout.has("artifacts") {
+            self.check()?;
+            run.unlink("artifacts", true)?;
+            self.management_effects = true;
+            self.check()?;
+            #[cfg(test)]
+            fail_at(FailurePoint::DirectorySync)?;
+            run.sync()?;
+        }
+        self.check()?;
+        self.runs.unlink(id, true)?;
+        self.management_effects = true;
+        self.check()?;
+        self.runs.sync()?;
+        self.used_bytes = self.used_bytes.saturating_sub(layout.bytes);
+        self.progress.deleted.push(id.into());
+        #[cfg(test)]
+        self.cancel_after_progress();
+        self.check()
+    }
+
     pub(crate) fn protect(&mut self, id: &str, protected: bool) -> Result<(), StoreError> {
         self.rescan()?;
         self.writable()?;
@@ -1258,6 +1378,7 @@ impl Store {
         self.writable()?;
         // Validate all candidates before touching the first one. Failed preparations retain bytes.
         let mut candidates = Vec::new();
+        let mut abandoned = Vec::new();
         for id in ids {
             let layout = self.layout(&id)?;
             if let Some(code) = layout.version_error {
@@ -1270,10 +1391,17 @@ impl Store {
                 self.load_verified(&id)?;
                 continue;
             }
+            if self.pre_intent(&id, &layout)? {
+                abandoned.push((id, layout));
+                continue;
+            }
             let preview = self.preview_recovery(&id, &layout)?;
             candidates.push((preview.manifest, layout.has("checkpoint.json")));
         }
         let mut recovered = Vec::new();
+        for (id, layout) in abandoned {
+            self.delete_pre_intent(&id, &layout)?;
+        }
         for (manifest, checkpoint_exists) in candidates {
             self.check()?;
             let id = manifest.id.clone();
@@ -1326,6 +1454,9 @@ impl Store {
         if let Some(code) = layout.version_error {
             return Err(StoreError::new(code, false));
         }
+        if self.pre_intent(id, &layout)? {
+            return self.delete_pre_intent(id, &layout);
+        }
         let existing_journal = self.root_journal(id)?;
         let run = match self.runs.open_at(id, true) {
             Ok(run) => Some(run),
@@ -1367,7 +1498,7 @@ impl Store {
                 payload(&intent.payload).map_err(|_| StoreError::new("store_corrupt", false))?;
             }
         } else if layout.has("manifest.json") {
-            self.load_verified(id)?;
+            self.deletion_candidate(id)?;
         } else {
             self.preview_recovery(id, &layout)?;
             let run = run

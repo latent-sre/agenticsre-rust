@@ -82,6 +82,383 @@ fn code<T>(result: Result<T, StoreError>) -> &'static str {
 }
 
 #[test]
+fn relative_store_options_are_rejected_before_access() {
+    for directory in ["store", ".", "../store"] {
+        let options = EvidenceStoreOptions::new(directory.into());
+        assert_eq!(code(options.validate()), "store_invalid_options");
+    }
+}
+
+#[test]
+fn pre_intent_failures_can_be_explicitly_recovered_after_restart() {
+    for point in [
+        FailurePoint::Write,
+        FailurePoint::FileSync,
+        FailurePoint::Publish,
+    ] {
+        let fixture = Fixture::new();
+        let id = crate::result::new_id("run");
+        let mut store = fixture.open(true).unwrap();
+        FAILURE.with(|failure| failure.set(Some((point, 0))));
+        assert_eq!(
+            code(store.begin_collection(&id, json!({}), 128 * 1024)),
+            "store_injected_failure"
+        );
+        drop(store);
+        let mut store = fixture.open(false).unwrap();
+        assert!(fixture.run(&id).exists());
+        assert_eq!(store.list().unwrap()[0].state, "incomplete");
+        assert!(store.recover().unwrap().is_empty());
+        assert!(!fixture.run(&id).exists());
+        assert_eq!(store.progress().deleted, vec![id.clone()]);
+        drop(store.begin_collection(&id, json!({}), 128 * 1024).unwrap());
+    }
+}
+
+#[test]
+fn empty_pre_intent_directories_are_removed_only_by_explicit_recovery() {
+    for artifacts in [false, true] {
+        let fixture = Fixture::new();
+        let mut store = fixture.open(true).unwrap();
+        let id = crate::result::new_id("run");
+        let run = store.runs.create_dir(&id).unwrap();
+        if artifacts {
+            run.create_dir("artifacts").unwrap();
+        }
+        assert_eq!(store.list().unwrap()[0].state, "incomplete");
+        assert!(store.prune(u64::MAX).unwrap().is_empty());
+        assert!(fixture.run(&id).exists());
+        assert!(store.recover().unwrap().is_empty());
+        assert!(!fixture.run(&id).exists());
+    }
+}
+
+#[test]
+fn pre_intent_cleanup_sync_failures_remain_restartable() {
+    for countdown in [0, 1] {
+        let fixture = Fixture::new();
+        let mut store = fixture.open(true).unwrap();
+        let id = crate::result::new_id("run");
+        FAILURE.with(|failure| failure.set(Some((FailurePoint::Write, 0))));
+        assert_eq!(
+            code(store.begin_collection(&id, json!({}), 128 * 1024)),
+            "store_injected_failure"
+        );
+        drop(store);
+        let mut store = fixture.open(false).unwrap();
+        FAILURE.with(|failure| failure.set(Some((FailurePoint::DirectorySync, countdown))));
+        let error = store.recover().unwrap_err();
+        assert_eq!(error.code, "store_injected_failure");
+        assert!(error.effects);
+        drop(store);
+        let mut store = fixture.open(false).unwrap();
+        assert!(store.recover().unwrap().is_empty());
+        assert_eq!(store.progress().deleted, vec![id.clone()]);
+        assert!(!fixture.run(&id).exists());
+    }
+}
+
+#[test]
+fn sealed_unreferenced_artifacts_are_refused_by_reads_and_bulk_management() {
+    let fixture = Fixture::new();
+    let mut store = fixture.open(true).unwrap();
+    let (id, _, _) = sealed(&mut store, &receipt(json!({"retained":true})));
+    let extra = receipt(json!({"unreferenced":true}));
+    let run = store.runs.open_at(&id, true).unwrap();
+    let objects = run.open_at("artifacts", true).unwrap();
+    objects
+        .create_file(&format!("{}.json", sha256(&extra)))
+        .unwrap()
+        .write_all(&extra)
+        .unwrap();
+    assert_eq!(
+        code(store.load_verified(&id)),
+        "store_unreferenced_artifact"
+    );
+    assert_eq!(store.list().unwrap()[0].state, "corrupt");
+    let before = snapshot_tree(&fixture.options.directory);
+    assert_eq!(code(store.recover()), "store_unreferenced_artifact");
+    assert_eq!(code(store.prune(u64::MAX)), "store_unreferenced_artifact");
+    assert_eq!(snapshot_tree(&fixture.options.directory), before);
+    store.delete(&id).unwrap();
+    assert!(!fixture.run(&id).exists());
+}
+
+#[test]
+fn pre_intent_recovery_preflights_unknown_formats_and_noninitial_layouts() {
+    for kind in [
+        "future",
+        "checkpoint",
+        "artifact",
+        "mismatched",
+        "protected",
+    ] {
+        let fixture = Fixture::new();
+        let mut store = fixture.open(true).unwrap();
+        let clean = crate::result::new_id("run");
+        store.runs.create_dir(&clean).unwrap();
+        let id = crate::result::new_id("run");
+        let run = store.runs.create_dir(&id).unwrap();
+        let objects = run.create_dir("artifacts").unwrap();
+        match kind {
+            "future" => run
+                .create_file(".tmp-1-2-3")
+                .unwrap()
+                .write_all(b"{\"format_version\":987}")
+                .unwrap(),
+            "checkpoint" => run
+                .create_file("checkpoint.json")
+                .unwrap()
+                .write_all(
+                    &json_bytes(&Checkpoint {
+                        format_version: 1,
+                        id: id.clone(),
+                        artifacts: BTreeMap::new(),
+                        payload: json!({}),
+                    })
+                    .unwrap(),
+                )
+                .unwrap(),
+            "artifact" => {
+                let bytes = receipt(json!({}));
+                objects
+                    .create_file(&format!("{}.json", sha256(&bytes)))
+                    .unwrap()
+                    .write_all(&bytes)
+                    .unwrap();
+            }
+            "mismatched" => run
+                .create_file(".tmp-1-2-3")
+                .unwrap()
+                .write_all(
+                    &json_bytes(&Intent {
+                        format_version: 1,
+                        id: clean.clone(),
+                        created_at_unix_ms: 0,
+                        reservation: 1024,
+                        payload: json!({}),
+                    })
+                    .unwrap(),
+                )
+                .unwrap(),
+            "protected" => run
+                .create_file("protection.json")
+                .unwrap()
+                .write_all(
+                    &json_bytes(&Protection {
+                        format_version: 1,
+                        id: id.clone(),
+                        protected: true,
+                    })
+                    .unwrap(),
+                )
+                .unwrap(),
+            _ => unreachable!(),
+        }
+        let before = snapshot_tree(&fixture.options.directory);
+        assert!(store.recover().is_err(), "{kind}");
+        assert!(store.delete(&id).is_err(), "{kind}");
+        assert!(fixture.run(&clean).exists());
+        assert!(fixture.run(&id).exists());
+        assert_eq!(snapshot_tree(&fixture.options.directory), before);
+    }
+}
+
+#[test]
+fn invalid_pre_intent_staging_is_listed_without_hiding_valid_neighbors() {
+    for (format_version, expected) in [(987, "store_unsupported_format"), (1, "store_corrupt")] {
+        let fixture = Fixture::new();
+        let mut store = fixture.open(true).unwrap();
+        let (valid, _, _) = sealed(&mut store, &receipt(json!({})));
+        let id = crate::result::new_id("run");
+        let run = store.runs.create_dir(&id).unwrap();
+        run.create_dir("artifacts").unwrap();
+        run.create_file(".tmp-1-2-3")
+            .unwrap()
+            .write_all(
+                &json_bytes(&Intent {
+                    format_version,
+                    id: valid.clone(),
+                    created_at_unix_ms: 0,
+                    reservation: 1024,
+                    payload: json!({}),
+                })
+                .unwrap(),
+            )
+            .unwrap();
+        let before = snapshot_tree(&fixture.options.directory);
+        let summaries = store.list().unwrap();
+        assert_eq!(summaries.len(), 2);
+        let valid_summary = summaries
+            .iter()
+            .find(|summary| summary.id == valid)
+            .unwrap();
+        assert_eq!(valid_summary.state, "sealed");
+        assert_eq!(valid_summary.error, None);
+        let corrupt = summaries.iter().find(|summary| summary.id == id).unwrap();
+        assert_eq!(corrupt.state, "corrupt");
+        assert_eq!(corrupt.error, Some(expected));
+        assert_eq!(snapshot_tree(&fixture.options.directory), before);
+    }
+}
+
+#[test]
+fn explicit_deletion_still_refuses_corrupt_or_protected_extra_artifacts() {
+    for protected in [false, true] {
+        let fixture = Fixture::new();
+        let mut store = fixture.open(true).unwrap();
+        let (id, _, _) = sealed(&mut store, &receipt(json!({})));
+        if protected {
+            store.protect(&id, true).unwrap();
+        }
+        let objects = store
+            .runs
+            .open_at(&id, true)
+            .unwrap()
+            .open_at("artifacts", true)
+            .unwrap();
+        let bytes = receipt(json!({"extra":true}));
+        let name = if protected {
+            sha256(&bytes)
+        } else {
+            "0".repeat(64)
+        };
+        objects
+            .create_file(&format!("{name}.json"))
+            .unwrap()
+            .write_all(&bytes)
+            .unwrap();
+        let before = snapshot_tree(&fixture.options.directory);
+        assert_eq!(
+            code(store.delete(&id)),
+            if protected {
+                "store_protected"
+            } else {
+                "store_corrupt"
+            }
+        );
+        assert_eq!(snapshot_tree(&fixture.options.directory), before);
+    }
+}
+
+#[test]
+fn public_recovery_discloses_removed_pre_intent_runs_without_fabricated_bundles() {
+    let fixture = Fixture::new();
+    let store = fixture.open(true).unwrap();
+    let id = crate::result::new_id("run");
+    store.runs.create_dir(&id).unwrap();
+    drop(store);
+    let context = crate::OperatorContext {
+        evidence_store: Some(fixture.options.clone()),
+        ..Default::default()
+    };
+    let result = crate::execute_with_context(
+        Request::new("evidence.recover", json!({})),
+        &crate::RunControl::default(),
+        &context,
+    );
+    assert_eq!(
+        result.execution.status,
+        crate::result::Status::Succeeded,
+        "{result:?}"
+    );
+    assert_eq!(result.data, json!({"recovered":[], "deleted":[id]}));
+    assert!(!fixture.run(&id).exists());
+}
+
+#[test]
+fn cancelled_public_pre_intent_recovery_reports_only_completed_deletions() {
+    let fixture = Fixture::new();
+    let store = fixture.open(true).unwrap();
+    let mut ids = [crate::result::new_id("run"), crate::result::new_id("run")];
+    ids.sort();
+    for id in &ids {
+        store.runs.create_dir(id).unwrap();
+    }
+    drop(store);
+    CANCEL_AFTER_PROGRESS.with(|limit| limit.set(Some(1)));
+    let context = crate::OperatorContext {
+        evidence_store: Some(fixture.options.clone()),
+        ..Default::default()
+    };
+    let result = crate::execute_with_context(
+        Request::new("evidence.recover", json!({})),
+        &crate::RunControl::default(),
+        &context,
+    );
+    assert_eq!(result.execution.status, crate::result::Status::Cancelled);
+    assert_eq!(
+        result.data["completed"],
+        json!({"recovered":[], "deleted":[ids[0]]})
+    );
+    assert!(!fixture.run(&ids[0]).exists());
+    assert!(fixture.run(&ids[1]).exists());
+}
+
+#[test]
+fn public_delete_of_unreferenced_artifacts_preserves_manifest_pins() {
+    let fixture = Fixture::new();
+    let mut store = fixture.open(true).unwrap();
+    let mut manifest: Value = serde_json::from_str(include_str!(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../docs/sre-workbench/examples/evidence-interrupted-manifest.json"
+    )))
+    .unwrap();
+    let id = crate::result::new_id("run");
+    manifest["payload"]["run_id"] = json!(id);
+    manifest["payload"]["finalized_at"] = json!("2026-10-10T12:00:01Z");
+    let payload = manifest["payload"].clone();
+    let reference = store
+        .begin_collection(&id, payload.clone(), 128 * 1024)
+        .unwrap()
+        .seal(payload)
+        .unwrap();
+    crate::evidence::validate_bundle(&store.load_verified(&id).unwrap()).unwrap();
+    let objects = store
+        .runs
+        .open_at(&id, true)
+        .unwrap()
+        .open_at("artifacts", true)
+        .unwrap();
+    let extra = receipt(json!({"extra":true}));
+    objects
+        .create_file(&format!("{}.json", sha256(&extra)))
+        .unwrap()
+        .write_all(&extra)
+        .unwrap();
+    drop(store);
+    let context = crate::OperatorContext {
+        evidence_store: Some(fixture.options.clone()),
+        ..Default::default()
+    };
+    let wrong = crate::execute_with_context(
+        Request::new(
+            "evidence.delete",
+            json!({"id":id, "expected_manifest_sha256":format!("sha256:{}", "0".repeat(64))}),
+        ),
+        &crate::RunControl::default(),
+        &context,
+    );
+    assert_eq!(wrong.errors[0].code, "manifest_digest_mismatch");
+    assert!(fixture.run(&id).exists());
+    let deleted = crate::execute_with_context(
+        Request::new(
+            "evidence.delete",
+            json!({"id":id, "expected_manifest_sha256":reference.digest}),
+        ),
+        &crate::RunControl::default(),
+        &context,
+    );
+    assert_eq!(
+        deleted.execution.status,
+        crate::result::Status::Succeeded,
+        "{deleted:?}"
+    );
+    assert_eq!(deleted.data["bundle"]["digest"], reference.digest);
+    assert!(!fixture.run(&id).exists());
+}
+
+#[test]
 fn sealed_receipts_survive_restart_with_private_run_relative_references() {
     let fixture = Fixture::new();
     let bytes = receipt(json!({"sample":17}));
