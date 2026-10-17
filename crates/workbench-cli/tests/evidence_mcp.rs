@@ -62,7 +62,11 @@ impl Setup {
             json!({"target":"fixture","environment":"dev","organization":"7"});
         fs::write(&source, context.to_string()).unwrap();
         let installed = fixture.directory.join("installed-save");
-        fs::copy(https::SAVE, &installed).unwrap();
+        let staged = fixture
+            .directory
+            .join(workbench_core::result::new_id("staged-save"));
+        fs::copy(https::SAVE, &staged).unwrap();
+        fs::rename(staged, &installed).unwrap();
         Self {
             fixture,
             store,
