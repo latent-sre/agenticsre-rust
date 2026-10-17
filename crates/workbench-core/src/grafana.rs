@@ -238,16 +238,27 @@ impl CollectionBinding {
 pub(crate) fn prepare_collection_binding(
     context: &OperatorContext,
     alias: &str,
+    expected: Option<&GrafanaConfigIdentity>,
 ) -> Result<CollectionBinding, Problem> {
     let path = context
         .config_path
         .as_deref()
         .ok_or_else(|| collection_problem(Error::admission("configuration_required")))?;
     let (description, identity) = grafana_config_description(path)?;
+    if expected.is_some_and(|expected| expected != &identity) {
+        return Err(collection_problem(Error::admission(
+            "grafana_configuration_changed",
+        )));
+    }
     // A changed file between description and admission is refused on the exact bytes
     // used by the existing provider; the same identity is then supplied to every child.
-    let prepared = config::load(Some(path), alias, "grafana.query", Some(&identity))
-        .map_err(collection_problem)?;
+    let prepared = config::load(
+        Some(path),
+        alias,
+        "grafana.query",
+        Some(expected.unwrap_or(&identity)),
+    )
+    .map_err(collection_problem)?;
     let mut redactor = redactor(&prepared.secrets, true).map_err(collection_problem)?;
     let connection = json!({"id":alias,"origin":redactor.metadata(json!(prepared.origin)),
         "organization_id":redactor.metadata(json!(prepared.organization))});

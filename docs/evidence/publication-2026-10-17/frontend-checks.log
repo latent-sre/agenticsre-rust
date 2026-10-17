@@ -1,0 +1,9 @@
+npm notice run agenticsre-workbench-ui@0.1.0 check-generated
+npm notice run node scripts/check-generated.mjs
+✨ openapi-typescript 7.13.0
+🚀 ../docs/ui/openapi.json → /home/hawkfire/rusty/agenticsre-rust-diagnostics/target/ui/openapi-check.ts [113.8ms]
+Generated API types match the canonical OpenAPI contract.
+npm notice run agenticsre-workbench-ui@0.1.0 typecheck
+npm notice run tsc --noEmit
+npm notice run agenticsre-workbench-ui@0.1.0 lint
+npm notice run eslint .

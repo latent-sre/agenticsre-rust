@@ -2,6 +2,7 @@
 pub(crate) mod collect;
 pub(crate) mod compare;
 mod frames;
+pub(crate) mod grant;
 pub(crate) mod offline;
 pub(crate) mod pack;
 pub(crate) mod report;

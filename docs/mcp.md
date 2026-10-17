@@ -24,6 +24,12 @@ Grafana's `--target` IDs. The adapter reuses the core's opaque diagnostic grant,
 configuration and CA byte checks at each run. Wire arguments cannot choose endpoints, process
 identities, resolvers, trust files or another target. See [the diagnostic contract](diagnostics.md).
 
+[Evidence collection](evidence-mcp.md) adds independent `evidence.packs.list`,
+`evidence.packs.describe` and `evidence.collect` grants. Catalog discovery uses embedded metadata
+only. Collection requires the configured target, a pinned context source and freshness policy,
+and an existing private evidence store. Its explicit grant authorizes recording with
+`record=always`; offline investigation grants do not authorize collection or store management.
+
 ## Mission
 
 A controlled MCP client discovers only its launcher-granted operations, runs a permitted command,
@@ -53,7 +59,8 @@ Grafana calls are limited to explicitly granted configured target IDs and operat
 the credential provider's independent origin/org/operation binding and all existing limits.
 
 Use local stdio only. Do not add an HTTP listener, host registration, sampling, elicitation,
-arbitrary resource/file reads, task installation, evidence persistence or a live model campaign.
+arbitrary resource/file reads, task installation or a live model campaign. Evidence persistence
+is limited to the separately granted fixed collection pack described above.
 A process under the same OS account does not establish a separate protected identity. Host
 installation and actual Claude/Copilot compatibility need their own later acceptance.
 

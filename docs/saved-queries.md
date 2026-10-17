@@ -3,8 +3,8 @@
 This increment implements CAP-11 / REQ-08 and the query portions of AC-08 / AC-16 through the
 shared core and CLI. It builds on the accepted [Grafana exchange profile](grafana.md).
 Implementation status belongs only in [the roadmap](roadmap.md), with source-bound evidence in
-[the acceptance record](saved-queries-verification.md). Browser query grants remain a separate
-increment; the later explicit MCP grants are described in [the MCP contract](mcp.md).
+[the acceptance record](saved-queries-verification.md). Explicit browser grants are described in
+[the browser query contract](query-ui.md); MCP grants are described in [the MCP contract](mcp.md).
 
 ## Mission and installed definitions
 

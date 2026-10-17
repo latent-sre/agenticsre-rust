@@ -1,0 +1,777 @@
+{
+  "status": "passed",
+  "binary_sha256": "7c6d4d22d386cc00c5ea714c630688cad19a5d5ac681608967afdcffcabab5c6",
+  "installed_copy_sha256": "7c6d4d22d386cc00c5ea714c630688cad19a5d5ac681608967afdcffcabab5c6",
+  "sources_sha256": {
+    "web/src/App.test.tsx": "768b8dcbdf69c22b03223f40c7e09f92df2e668fc88097aa6183c39285130eb5",
+    "web/src/App.tsx": "27947f2a47dc9e5bf384abc6cfd98fed27adb1f0e8a687ee976b79169a0228cf",
+    "web/src/CheckForm.test.tsx": "f7764dff7fb3f94eb5f02cbd5d65d9aaa5b4de2954f559e271bacc34c1eff539",
+    "web/src/CheckForm.tsx": "5a066a8051ff3877ab576bbd1d2da25e357c79985e47abbb25e0bd12f98ccad6",
+    "web/src/DiagnosticResult.tsx": "f54880de1829f461c1a209ab9fcb2b7f14778e4f2103762ff5b8ea1567e96ab6",
+    "web/src/InvestigationResult.tsx": "6bc50a9ca95520d4158e6ceec136f8029835bd70a39f6b1c2b1a6c35f2100ebc",
+    "web/src/QueryResult.tsx": "affc6f384c3d8412fc949a25a4b6b7439881fe04aab761a32577eb143d31f8f9",
+    "web/src/Result.test.tsx": "f801af02e6e2589b2a4cc37e900385fcfea1a7d7a4b70eb16f4dcd6dd62607e5",
+    "web/src/Result.tsx": "33867164341cc6855f9755c9b27b6f5e8427ca11d3ac09a27ef93d01f7383c01",
+    "web/src/api.test.ts": "ae86d8e1909faacf651a731bbc0389453b57265845f5057289e927d6b0c99504",
+    "web/src/api.ts": "bee60923b488d15c592b5915f9b0cc9b3954dc5e6a2a7c8a29b86e5af25758d3",
+    "web/src/bootstrap.test.ts": "c3bdf9f53235f31c8dfd00731c9b93b8df9397dff27a319d292f9508cae59269",
+    "web/src/components.tsx": "df7cade8839f3425ff65264320dd2d3997d670edfb6f1f8ade3eb432ebadb5f3",
+    "web/src/generated/api.ts": "3ab9918659bdef81d991d4bfc663dee94b8d8f7433dfc4e969d9f0e9db109985",
+    "web/src/investigation.test.tsx": "829e204550d57fd487d6f4b4f8d7ca77049ced4d97a2cc5eae51ba66d37cca58",
+    "web/src/main.tsx": "032349edb93fe055652a3da23c52ec12557c8770bed5204bc551a062c2ac608c",
+    "web/src/model.test.ts": "73e024d1bc1fb046c82f7414fc6aa35ac7bb5ac25ac9c59f7af6116943d73e55",
+    "web/src/model.ts": "85a5cd0e09179abfcfda15d20f6cd22ac4aba0776e7b4f3fa9c95152aa1fb46b",
+    "web/src/query.test.tsx": "2d6e23961703cc8e06d7083b0294e399b5ed1c1feb8bbf05a1367edd0b823908",
+    "web/src/router.tsx": "c48365925a0c09a909050569930801698ffb718b90e9ef262a3c09da2474da97",
+    "web/src/styles.css": "e64504bbe7fc89f9a620b8b83483395421897ddc6ac09cf8dbf964392dab8dd3",
+    "web/dist/assets/index-Ceka6JB8.css": "377145015c5face9c033a047a0bb996b94f93535b184aa1627d2ed4d8a638d76",
+    "web/dist/assets/index-MTdG7qyf.js": "5bef354aa30f4c0f570ce8380fc6526f83fd870983c735efff00c668eb8ca38e",
+    "web/dist/bootstrap.js": "b442fa5823785babf1d0e1e72482b08021cf4f8de7284c108e746531f0c623a1",
+    "web/dist/index.html": "6e9a8ee47839a49af292c45b7ebaa7cecf433c103c20adf6d57bc07b8c98afc5",
+    "web/tests/query-browser.mjs": "db2c20e6d6cb9823116f2d4edc9817c2b5cd5c5b6425eddf75e7e02d46988a37",
+    "tools/verify-query-ui.py": "a2fa85eb393291b54589d71915b52d20ca87ce35735df971f7e817e312ad96d2",
+    "docs/ui/openapi.json": "480732ed576c9e5d86d0d93611ee1dcee7d9b190985dd5584d0a233a2d84a715"
+  },
+  "records": [
+    {
+      "name": "catalog",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18df63401fdb2f96-8",
+        "run_id": "run-10-18df63401fdd9ef4-a",
+        "operation": "queries.list",
+        "operation_version": 1,
+        "target": {
+          "kind": "local",
+          "id": "workstation"
+        },
+        "resolved_target": {},
+        "started_at": "2026-10-17T18:05:03.780408871Z",
+        "finished_at": "2026-10-17T18:05:03.780671319Z",
+        "duration_ms": 0,
+        "execution": {
+          "status": "succeeded",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "not_applicable",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_applicable",
+          "scope": "This local operation only; no service health assessment",
+          "limitations": []
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "queries": [
+            {
+              "definition_sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+              "dialect": "promql",
+              "expected_shape": "time_series_frames",
+              "expression_structure": {
+                "kind": "metric_selector",
+                "matchers": [
+                  {
+                    "label": "job",
+                    "operator": "=",
+                    "parameter": "job"
+                  }
+                ],
+                "metric": "up"
+              },
+              "id": "prometheus.up-by-job",
+              "limitations": [
+                "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+                "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+                "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+              ],
+              "limits": {
+                "max_data_points": 1000,
+                "max_lines": null,
+                "max_range_seconds": 86400
+              },
+              "parameter_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "job": {
+                    "description": "One literal job label value, limited to 1-128 UTF-8 bytes with no control characters.",
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "not": {
+                      "pattern": "[\\u0000-\\u001f\\u007f-\\u009f]"
+                    },
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "job"
+                ],
+                "type": "object"
+              },
+              "purpose": "Observe the datasource's scrape samples for the selected job.",
+              "units": "dimensionless",
+              "version": 1
+            },
+            {
+              "definition_sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+              "dialect": "logql",
+              "expected_shape": "log_frames",
+              "expression_structure": {
+                "kind": "stream_selector",
+                "matchers": [
+                  {
+                    "label": "job",
+                    "operator": "=",
+                    "parameter": "job"
+                  }
+                ]
+              },
+              "id": "loki.logs-by-job",
+              "limitations": [
+                "Returned log entries do not establish service health or complete event coverage.",
+                "Log retention, sampling, job-label reuse and incomplete returned data can limit the observation.",
+                "Requested lines do not prove returned coverage; empty results are not zero or an all-clear."
+              ],
+              "limits": {
+                "max_data_points": 1000,
+                "max_lines": 500,
+                "max_range_seconds": 86400
+              },
+              "parameter_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "job": {
+                    "description": "One literal job label value, limited to 1-128 UTF-8 bytes with no control characters.",
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "not": {
+                      "pattern": "[\\u0000-\\u001f\\u007f-\\u009f]"
+                    },
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "job"
+                ],
+                "type": "object"
+              },
+              "purpose": "Observe the selected job's returned log entries.",
+              "units": "entries",
+              "version": 1
+            }
+          ]
+        },
+        "errors": [],
+        "sources": [],
+        "artifacts": [],
+        "effective_limits": {
+          "timeout_ms": 30000,
+          "max_output_bytes": 16384
+        },
+        "record_mode": "never"
+      }
+    },
+    {
+      "name": "describe",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18df63402b9e808e-f",
+        "run_id": "run-10-18df63402ba05e38-11",
+        "operation": "queries.describe",
+        "operation_version": 1,
+        "target": {
+          "kind": "local",
+          "id": "workstation"
+        },
+        "resolved_target": {},
+        "started_at": "2026-10-17T18:05:03.977721935Z",
+        "finished_at": "2026-10-17T18:05:03.977931794Z",
+        "duration_ms": 0,
+        "execution": {
+          "status": "succeeded",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "not_applicable",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_applicable",
+          "scope": "This local operation only; no service health assessment",
+          "limitations": []
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "query": {
+            "definition_sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+            "dialect": "promql",
+            "expected_shape": "time_series_frames",
+            "expression_structure": {
+              "kind": "metric_selector",
+              "matchers": [
+                {
+                  "label": "job",
+                  "operator": "=",
+                  "parameter": "job"
+                }
+              ],
+              "metric": "up"
+            },
+            "id": "prometheus.up-by-job",
+            "limitations": [
+              "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+              "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+              "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+            ],
+            "limits": {
+              "max_data_points": 1000,
+              "max_lines": null,
+              "max_range_seconds": 86400
+            },
+            "parameter_schema": {
+              "additionalProperties": false,
+              "properties": {
+                "job": {
+                  "description": "One literal job label value, limited to 1-128 UTF-8 bytes with no control characters.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "not": {
+                    "pattern": "[\\u0000-\\u001f\\u007f-\\u009f]"
+                  },
+                  "type": "string"
+                }
+              },
+              "required": [
+                "job"
+              ],
+              "type": "object"
+            },
+            "purpose": "Observe the datasource's scrape samples for the selected job.",
+            "units": "dimensionless",
+            "version": 1
+          }
+        },
+        "errors": [],
+        "sources": [],
+        "artifacts": [],
+        "effective_limits": {
+          "timeout_ms": 30000,
+          "max_output_bytes": 16384
+        },
+        "record_mode": "never"
+      }
+    },
+    {
+      "name": "prometheus-absolute",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18df6340339550c0-16",
+        "run_id": "run-10-18df63403398284d-18",
+        "operation": "query.run",
+        "operation_version": 1,
+        "target": {
+          "kind": "connection",
+          "id": "fixture"
+        },
+        "resolved_target": {
+          "api_profile": "grafana-legacy-v1",
+          "connection": "fixture",
+          "effects": "observe",
+          "profile": "operator-local"
+        },
+        "started_at": "2026-10-17T18:05:04.111382978Z",
+        "finished_at": "2026-10-17T18:05:04.259779089Z",
+        "duration_ms": 148,
+        "execution": {
+          "status": "succeeded",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "not_applicable",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_established",
+          "scope": "Bounded query response from the configured Grafana connection and datasource",
+          "limitations": [
+            "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+            "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+            "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+            "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+            "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+            "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+            "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+          ]
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "adapter": {
+            "api_profile": "grafana-legacy-v1",
+            "compatibility_evidence": "fixture_only",
+            "id": "grafana",
+            "upstream_digest": "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7",
+            "upstream_revision": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7",
+            "version": 1
+          },
+          "binding": {
+            "organization_id": 7,
+            "organization_verified": true,
+            "origin": "https://127.0.0.1:35795/grafana"
+          },
+          "cancellation_signal": null,
+          "definition": {
+            "dialect": "promql",
+            "id": "prometheus.up-by-job",
+            "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+            "version": 1
+          },
+          "parameters": {
+            "job": "caf\u00e9\\worker\"},other=\"value\"} or vector(1) #"
+          },
+          "redaction": {
+            "applied": false,
+            "replacements": 0
+          },
+          "request": {
+            "datasource": "metrics-1",
+            "expr": "up{job=\"caf\u00e9\\\\worker\\\"},other=\\\"value\\\"} or vector(1) #\"}",
+            "from": "2026-10-02T00:00:00.123Z",
+            "interval_ms": 1000,
+            "kind": "prometheus",
+            "max_data_points": 1000,
+            "max_lines": null,
+            "to": "2026-10-02T00:01:00.123Z"
+          },
+          "response": {
+            "results": {
+              "A": {
+                "frames": [
+                  {
+                    "data": {
+                      "values": [
+                        [
+                          1790899200000,
+                          1790899260000
+                        ],
+                        [
+                          1,
+                          1
+                        ]
+                      ]
+                    },
+                    "schema": {
+                      "fields": [
+                        {
+                          "name": "Time",
+                          "type": "time"
+                        },
+                        {
+                          "name": "up",
+                          "type": "number"
+                        }
+                      ],
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "status": 200
+              }
+            }
+          },
+          "transport": {
+            "request_timeout_ms": 20000,
+            "requests_started": 3,
+            "response_limit_bytes": 16384,
+            "responses_received": 3,
+            "stage": "complete"
+          },
+          "window": {
+            "from": "2026-10-02T00:00:00.123Z",
+            "to": "2026-10-02T00:01:00.123Z"
+          }
+        },
+        "errors": [],
+        "sources": [
+          {
+            "evidence_state": "sourced",
+            "observed_at": "2026-10-17T18:05:04.259746287Z",
+            "reference": "grafana:selected-connection",
+            "untrusted": true
+          }
+        ],
+        "artifacts": [],
+        "effective_limits": {
+          "timeout_ms": 30000,
+          "max_output_bytes": 16384
+        },
+        "record_mode": "never"
+      }
+    },
+    {
+      "name": "definition-pin-mismatch",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18df6340653cf4ac-1f",
+        "run_id": "run-10-18df634065401703-21",
+        "operation": "query.run",
+        "operation_version": 1,
+        "target": {
+          "kind": "connection",
+          "id": "fixture"
+        },
+        "resolved_target": {},
+        "started_at": "2026-10-17T18:05:04.944469188Z",
+        "finished_at": "2026-10-17T18:05:04.944760911Z",
+        "duration_ms": 0,
+        "execution": {
+          "status": "denied",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "not_attempted",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_established",
+          "scope": "Bounded query response from the configured Grafana connection and datasource",
+          "limitations": [
+            "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+            "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+            "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+            "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account."
+          ]
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "adapter": {
+            "api_profile": "grafana-legacy-v1",
+            "compatibility_evidence": "fixture_only",
+            "id": "grafana",
+            "upstream_digest": "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7",
+            "upstream_revision": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7",
+            "version": 1
+          },
+          "binding": null,
+          "cancellation_signal": null,
+          "definition": null,
+          "parameters": null,
+          "redaction": {
+            "applied": false,
+            "replacements": 0
+          },
+          "request": null,
+          "response": null,
+          "transport": {
+            "request_timeout_ms": 20000,
+            "requests_started": 0,
+            "response_limit_bytes": 16384,
+            "responses_received": 0,
+            "stage": "admission"
+          },
+          "window": null
+        },
+        "errors": [
+          {
+            "code": "definition_digest_mismatch",
+            "message": "The Grafana observation could not complete. Check the named configuration, supplied input, connection and operation limits; private response and transport details are withheld.",
+            "retryable": false
+          }
+        ],
+        "sources": [],
+        "artifacts": [],
+        "effective_limits": {
+          "timeout_ms": 30000,
+          "max_output_bytes": 16384
+        },
+        "record_mode": "never"
+      }
+    },
+    {
+      "name": "loki-relative-hostile",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18df634069306985-26",
+        "run_id": "run-10-18df63406932f178-28",
+        "operation": "query.run",
+        "operation_version": 1,
+        "target": {
+          "kind": "connection",
+          "id": "fixture"
+        },
+        "resolved_target": {
+          "api_profile": "grafana-legacy-v1",
+          "connection": "fixture",
+          "effects": "observe",
+          "profile": "operator-local"
+        },
+        "started_at": "2026-10-17T18:05:05.010722625Z",
+        "finished_at": "2026-10-17T18:05:05.140126001Z",
+        "duration_ms": 129,
+        "execution": {
+          "status": "succeeded",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "not_applicable",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_established",
+          "scope": "Bounded query response from the configured Grafana connection and datasource",
+          "limitations": [
+            "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+            "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+            "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+            "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+            "Returned log entries do not establish service health or complete event coverage.",
+            "Log retention, sampling, job-label reuse and incomplete returned data can limit the observation.",
+            "Requested lines do not prove returned coverage; empty results are not zero or an all-clear."
+          ]
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "adapter": {
+            "api_profile": "grafana-legacy-v1",
+            "compatibility_evidence": "fixture_only",
+            "id": "grafana",
+            "upstream_digest": "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7",
+            "upstream_revision": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7",
+            "version": 1
+          },
+          "binding": {
+            "organization_id": 7,
+            "organization_verified": true,
+            "origin": "https://127.0.0.1:35795/grafana"
+          },
+          "cancellation_signal": null,
+          "definition": {
+            "dialect": "logql",
+            "id": "loki.logs-by-job",
+            "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+            "version": 1
+          },
+          "parameters": {
+            "job": "caf\u00e9\\worker\"},other=\"value\"} or vector(1) #"
+          },
+          "redaction": {
+            "applied": false,
+            "replacements": 0
+          },
+          "request": {
+            "datasource": "metrics-1",
+            "expr": "{job=\"caf\u00e9\\\\worker\\\"},other=\\\"value\\\"} or vector(1) #\"}",
+            "from": "2026-10-17T18:00:05.01Z",
+            "interval_ms": 1000,
+            "kind": "loki",
+            "max_data_points": 1000,
+            "max_lines": 500,
+            "to": "2026-10-17T18:05:05.01Z"
+          },
+          "response": {
+            "results": {
+              "A": {
+                "frames": [
+                  {
+                    "data": {
+                      "values": [
+                        [
+                          1790899200000
+                        ],
+                        [
+                          "<img src=\"https://untrusted.invalid/pixel\" onerror=\"window.__query_output_executed=1\">"
+                        ]
+                      ]
+                    },
+                    "schema": {
+                      "fields": [
+                        {
+                          "name": "Time",
+                          "type": "time"
+                        },
+                        {
+                          "name": "Line",
+                          "type": "string"
+                        }
+                      ],
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "status": 200
+              }
+            }
+          },
+          "transport": {
+            "request_timeout_ms": 20000,
+            "requests_started": 3,
+            "response_limit_bytes": 16384,
+            "responses_received": 3,
+            "stage": "complete"
+          },
+          "window": {
+            "from": "2026-10-17T18:00:05.01Z",
+            "to": "2026-10-17T18:05:05.01Z"
+          }
+        },
+        "errors": [],
+        "sources": [
+          {
+            "evidence_state": "sourced",
+            "observed_at": "2026-10-17T18:05:05.140090374Z",
+            "reference": "grafana:selected-connection",
+            "untrusted": true
+          }
+        ],
+        "artifacts": [],
+        "effective_limits": {
+          "timeout_ms": 30000,
+          "max_output_bytes": 16384
+        },
+        "record_mode": "never"
+      }
+    },
+    {
+      "name": "query-cancelled",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18df634097ed22d5-2e",
+        "run_id": "run-10-18df634097efebf1-30",
+        "operation": "query.run",
+        "operation_version": 1,
+        "target": {
+          "kind": "connection",
+          "id": "fixture"
+        },
+        "resolved_target": {
+          "api_profile": "grafana-legacy-v1",
+          "connection": "fixture",
+          "effects": "observe",
+          "profile": "operator-local"
+        },
+        "started_at": "2026-10-17T18:05:05.794852927Z",
+        "finished_at": "2026-10-17T18:05:05.915063136Z",
+        "duration_ms": 120,
+        "execution": {
+          "status": "cancelled",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "not_applicable",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_established",
+          "scope": "Bounded query response from the configured Grafana connection and datasource",
+          "limitations": [
+            "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+            "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+            "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+            "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+            "Returned log entries do not establish service health or complete event coverage.",
+            "Log retention, sampling, job-label reuse and incomplete returned data can limit the observation.",
+            "Requested lines do not prove returned coverage; empty results are not zero or an all-clear."
+          ]
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "adapter": {
+            "api_profile": "grafana-legacy-v1",
+            "compatibility_evidence": "fixture_only",
+            "id": "grafana",
+            "upstream_digest": "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7",
+            "upstream_revision": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7",
+            "version": 1
+          },
+          "binding": {
+            "organization_id": 7,
+            "organization_verified": true,
+            "origin": "https://127.0.0.1:35795/grafana"
+          },
+          "cancellation_signal": 2,
+          "definition": {
+            "dialect": "logql",
+            "id": "loki.logs-by-job",
+            "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+            "version": 1
+          },
+          "parameters": {
+            "job": "caf\u00e9\\worker\"},other=\"value\"} or vector(1) #"
+          },
+          "redaction": {
+            "applied": false,
+            "replacements": 0
+          },
+          "request": {
+            "datasource": "metrics-1",
+            "expr": "{job=\"caf\u00e9\\\\worker\\\"},other=\\\"value\\\"} or vector(1) #\"}",
+            "from": "2026-10-17T18:00:05.794Z",
+            "interval_ms": 1000,
+            "kind": "loki",
+            "max_data_points": 1000,
+            "max_lines": 500,
+            "to": "2026-10-17T18:05:05.794Z"
+          },
+          "response": null,
+          "transport": {
+            "request_timeout_ms": 20000,
+            "requests_started": 3,
+            "response_limit_bytes": 16384,
+            "responses_received": 2,
+            "stage": "query"
+          },
+          "window": {
+            "from": "2026-10-17T18:00:05.794Z",
+            "to": "2026-10-17T18:05:05.794Z"
+          }
+        },
+        "errors": [
+          {
+            "code": "cancelled",
+            "message": "The Grafana observation could not complete. Check the named configuration, supplied input, connection and operation limits; private response and transport details are withheld.",
+            "retryable": false
+          }
+        ],
+        "sources": [],
+        "artifacts": [],
+        "effective_limits": {
+          "timeout_ms": 30000,
+          "max_output_bytes": 16384
+        },
+        "record_mode": "never"
+      }
+    }
+  ],
+  "validation": "All canonical result schemas and query-data schemas for returned definition data passed",
+  "cleanup": "UI process, browser driver and fixture threads joined"
+}

@@ -1,0 +1,106 @@
+// Private installed-binary browser mission; Python owns the real HTTPS fixture.
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import { createInterface } from 'node:readline';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+
+const require = createRequire(path.join(process.env.WORKBENCH_BROWSER_NODE_MODULES, 'package.json'));
+const { chromium } = require('playwright');
+const lines = createInterface({ input: process.stdin })[Symbol.asyncIterator]();
+const read = async () => JSON.parse((await lines.next()).value);
+const rpc = async request => { process.stdout.write(JSON.stringify(request) + '\n'); return read(); };
+const config = await read();
+const browser = await chromium.launch({ executablePath: process.env.WORKBENCH_BROWSER_EXECUTABLE, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
+const context = await browser.newContext({ viewport: { width: 1440, height: 1100 }, colorScheme: 'light' });
+const page = await context.newPage();
+const errors = []; const external = []; const submissions = [];
+page.on('pageerror', error => errors.push(error.name));
+page.on('request', request => {
+  if (!request.url().startsWith(new URL(config.launch).origin)) external.push(request.url());
+  if (request.method() === 'POST' && request.url().endsWith('/api/v1/runs')) submissions.push(request.postDataJSON());
+});
+const screenshot = async name => { await page.evaluate(() => window.scrollTo(0, 0)); await page.screenshot({ path: path.join(config.output, name + '.png'), fullPage: true }); };
+const finished = async (name, action) => {
+  const responsePromise = page.waitForResponse(response => response.request().method() === 'GET' && response.url().endsWith('/receipt'));
+  await action(); const response = await responsePromise; assert.equal(response.status(), 200);
+  const raw = await response.text(); const receipt = JSON.parse(raw);
+  await page.getByLabel('Check result').locator('header').getByText(receipt.execution.status.replaceAll('_', ' '), { exact: true }).waitFor();
+  await rpc({ action: 'record', name, receipt });
+  return { raw, receipt };
+};
+const download = async expected => {
+  const event = page.waitForEvent('download'); await page.getByRole('button', { name: 'Download result', exact: true }).click();
+  assert.equal(await readFile(await (await event).path(), 'utf8'), expected);
+};
+try {
+  await page.goto(config.launch, { waitUntil: 'networkidle' });
+  assert.equal(new URL(page.url()).hash, '');
+  await page.getByRole('heading', { name: 'Workspace checks', exact: true }).waitFor();
+  assert.deepEqual(await page.getByLabel('Check', { exact: true }).locator('option').evaluateAll(items => items.map(item => item.value)), ['queries-list', 'queries-describe', 'query-run']);
+  const catalog = await finished('catalog', () => page.getByRole('button', { name: 'Inspect catalog', exact: true }).click());
+  assert.equal(catalog.receipt.data.queries.length, 2); assert.deepEqual(await rpc({ action: 'ledger' }), []);
+  await page.getByLabel('Saved query catalog result').getByText(catalog.receipt.data.queries[0].definition_sha256, { exact: true }).waitFor();
+  await screenshot('catalog-light');
+  await page.getByLabel('Check', { exact: true }).selectOption('queries-describe');
+  const description = await finished('describe', () => page.getByRole('button', { name: 'Inspect catalog', exact: true }).click());
+  const pin = description.receipt.data.query.definition_sha256;
+  assert.deepEqual(await rpc({ action: 'ledger' }), []);
+  await page.getByLabel('Check', { exact: true }).selectOption('query-run');
+  assert.equal(await page.getByLabel('Query target').inputValue(), 'fixture');
+  assert.equal(await page.getByLabel('Workspace', { exact: true }).count(), 0);
+  const before = submissions.length;
+  await page.getByRole('button', { name: 'Run query', exact: true }).click();
+  assert.equal(await page.getByLabel('Datasource UID').evaluate(element => document.activeElement === element), true);
+  assert.equal(submissions.length, before);
+  const job = 'café\\worker"},other="value"} or vector(1) #';
+  await page.getByLabel('Datasource UID').fill('metrics-1'); await page.getByLabel('Literal job').fill(job);
+  await page.getByLabel('Observation window', { exact: true }).selectOption('absolute');
+  await page.getByLabel('Window start', { exact: true }).fill('2026-10-02T00:00:00.123Z');
+  await page.getByLabel('Window end', { exact: true }).fill('2026-10-02T00:01:00.123Z');
+  await page.getByLabel('Definition SHA-256 (optional)', { exact: true }).fill(pin);
+  const prometheus = await finished('prometheus-absolute', () => page.getByRole('button', { name: 'Run query', exact: true }).click());
+  assert.equal(prometheus.receipt.execution.status, 'succeeded'); assert.equal(prometheus.receipt.data.parameters.job, job);
+  const ledger = await rpc({ action: 'ledger' }); assert.equal(ledger.length, 3);
+  assert.equal(ledger[2].body.queries[0].expr, 'up{job=' + JSON.stringify(job) + '}');
+  assert.deepEqual(prometheus.receipt.data.window, { from: '2026-10-02T00:00:00.123Z', to: '2026-10-02T00:01:00.123Z' });
+  await download(prometheus.raw); await screenshot('prometheus-light');
+  await page.getByRole('link', { name: 'Run history' }).filter({ visible: true }).click();
+  await page.getByLabel('Session history').getByRole('button').filter({ hasText: 'Run saved query' }).click();
+  await page.getByRole('heading', { name: 'Resolved observation window' }).waitFor();
+  await download(prometheus.raw);
+  // Form drafts intentionally leave memory when navigating to history.
+  await page.getByLabel('Datasource UID').fill('metrics-1'); await page.getByLabel('Literal job').fill(job);
+  await page.getByLabel('Definition SHA-256 (optional)', { exact: true }).fill('0'.repeat(64));
+  const mismatch = await finished('definition-pin-mismatch', () => page.getByRole('button', { name: 'Run query', exact: true }).click());
+  assert.notEqual(mismatch.receipt.execution.status, 'succeeded'); assert.equal((await rpc({ action: 'ledger' })).length, 3);
+  await rpc({ action: 'fixture', kind: 'loki', hostile: true });
+  await page.getByLabel('Saved query definition').selectOption('loki.logs-by-job');
+  await page.getByLabel('Definition SHA-256 (optional)', { exact: true }).fill('');
+  await page.getByLabel('Observation window', { exact: true }).selectOption('relative');
+  await page.getByLabel('Lookback (seconds)', { exact: true }).fill('300');
+  const loki = await finished('loki-relative-hostile', () => page.getByRole('button', { name: 'Run query', exact: true }).click());
+  assert.equal(loki.receipt.execution.status, 'succeeded');
+  assert.equal(Date.parse(loki.receipt.data.window.to) - Date.parse(loki.receipt.data.window.from), 300000);
+  assert.equal(Date.parse(loki.receipt.data.window.to), Date.parse(loki.receipt.started_at));
+  assert.equal((await rpc({ action: 'ledger' }))[2].body.queries[0].expr, '{job=' + JSON.stringify(job) + '}');
+  assert.equal(await page.getByLabel('Saved query result').locator('img, a, script, iframe').count(), 0);
+  assert.equal(await page.evaluate(() => window.__query_output_executed === undefined), true); assert.deepEqual(external, []);
+  await page.getByRole('button', { name: 'Dark', exact: true }).filter({ visible: true }).click();
+  await screenshot('loki-dark');
+  await page.setViewportSize({ width: 390, height: 844 }); await screenshot('loki-mobile-dark');
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await rpc({ action: 'fixture', kind: 'loki', delay: true });
+  await page.getByRole('button', { name: 'Run query', exact: true }).click();
+  await page.getByRole('button', { name: 'Cancel check', exact: true }).waitFor();
+  assert.equal(await page.getByRole('button', { name: 'Run query', exact: true }).isDisabled(), true);
+  const limit = Date.now() + 5000;
+  while ((await rpc({ action: 'ledger' })).length !== 3) { assert.ok(Date.now() < limit); await page.waitForTimeout(20); }
+  const cancelled = await finished('query-cancelled', () => page.getByRole('button', { name: 'Cancel check', exact: true }).click());
+  assert.equal(cancelled.receipt.execution.status, 'cancelled'); assert.equal((await rpc({ action: 'ledger' })).length, 3);
+  assert.deepEqual(errors, []);
+  assert.deepEqual(await page.evaluate(() => ({ local: { ...localStorage }, session: { ...sessionStorage } })), { local: { 'agenticsre.theme': 'dark' }, session: {} });
+  assert.deepEqual(await context.cookies(), []);
+  await rpc({ action: 'done' });
+} finally { await browser.close(); await lines.return(); }

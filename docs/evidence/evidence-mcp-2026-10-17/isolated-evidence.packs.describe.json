@@ -1,0 +1,102 @@
+{
+  "resultType": "complete",
+  "content": [
+    {
+      "text": "Workbench execution succeeded; assessment not_assessed. Inspect structuredContent for the complete receipt.",
+      "type": "text"
+    }
+  ],
+  "structuredContent": {
+    "spec_version": "0.1",
+    "request_id": "request-46-18df63210d1c9117-0",
+    "run_id": "run-46-18df63210d2122c5-1",
+    "operation": "evidence.packs.describe",
+    "operation_version": 1,
+    "target": {
+      "kind": "local",
+      "id": "workstation"
+    },
+    "resolved_target": {},
+    "started_at": "2026-10-17T18:02:50.32206621Z",
+    "finished_at": "2026-10-17T18:02:50.322306717Z",
+    "duration_ms": 0,
+    "execution": {
+      "status": "succeeded",
+      "child_exit_code": null,
+      "signal": null
+    },
+    "effect_outcome": "not_applicable",
+    "assessment": "not_assessed",
+    "coverage": {
+      "state": "not_applicable",
+      "scope": "This local operation only; no service health assessment",
+      "limitations": []
+    },
+    "output": {
+      "stdout": "",
+      "stderr": "",
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "encoding": "utf-8"
+    },
+    "data": {
+      "pack": {
+        "classification": "restricted",
+        "id": "service-queries",
+        "input_schema": {
+          "$ref": "urn:sre-workbench:spec:evidence-collect-input:0.1"
+        },
+        "limitations": [
+          "The source context is an offline declaration and grants no execution or credential authority.",
+          "Complete receipt retention does not establish source-data coverage, service health or causation.",
+          "Known credentials are redacted; arbitrary sensitive telemetry is not automatically detected.",
+          "This pack has fixture evidence only; no live Grafana version or hosted grant is established."
+        ],
+        "limits": {
+          "finalization_allowance_ms": 2500,
+          "max_concurrency": 1,
+          "max_timeout_ms": 60000
+        },
+        "output_schema": {
+          "$ref": "urn:sre-workbench:spec:evidence-collection-data:0.1"
+        },
+        "purpose": "Retain bounded metrics and log observations for one explicitly bound service and common time window.",
+        "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236",
+        "steps": [
+          {
+            "id": "metrics",
+            "operation": "query.run",
+            "operation_version": 1,
+            "query": {
+              "dialect": "promql",
+              "id": "prometheus.up-by-job",
+              "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+              "version": 1
+            }
+          },
+          {
+            "id": "logs",
+            "operation": "query.run",
+            "operation_version": 1,
+            "query": {
+              "dialect": "logql",
+              "id": "loki.logs-by-job",
+              "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+              "version": 1
+            }
+          }
+        ],
+        "version": 1
+      }
+    },
+    "errors": [],
+    "sources": [],
+    "artifacts": [],
+    "effective_limits": {
+      "timeout_ms": 30000,
+      "max_output_bytes": 1048576
+    },
+    "record_mode": "never"
+  },
+  "isError": false
+}

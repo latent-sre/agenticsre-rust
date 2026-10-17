@@ -15,6 +15,10 @@ The [Linux development bundle](docs/packaging-verification.md) includes offline 
 and is verified for versioned installation, upgrade and rollback in the tested Cally environment.
 The current source also includes [verified installed saved queries](docs/saved-queries-verification.md)
 for the Linux core/CLI fixture scope; the retained bundle predates these commands.
+The source exposes those installed queries through [browser grants](docs/query-ui.md) and
+[MCP grants](docs/query-mcp-verification.md). Explicit [MCP collection grants](docs/evidence-mcp.md)
+retain the fixed service-query pack in an existing private store; offline investigation grants
+remain separate.
 The `save` CLI executes literal arguments
 with bounded output, deadlines and cancellation, or inspects commands without running them.
 It provides text/JSON receipts, structured requests, discovery and offline diagnostics. The
@@ -33,6 +37,7 @@ target/debug/save task run dashboard-hygiene --input tests/fixtures/dashboard-hy
 target/debug/save task run error-budget --input tests/fixtures/error-budget/time-input.json
 target/debug/save --json queries list
 target/debug/save ui serve --allow task.run
+target/debug/save ui serve --allow queries.list --allow queries.describe
 ```
 
 Rust 1.98.0 is pinned in `rust-toolchain.toml`. See [development](docs/development.md) for sandboxed

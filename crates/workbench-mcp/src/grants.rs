@@ -3,8 +3,8 @@ use std::{
     path::PathBuf,
 };
 use workbench_core::{
-    DiagnosticsGrant, EvidenceStoreOptions, GrafanaConfigIdentity, InvestigationGrant,
-    OperatorContext,
+    DiagnosticsGrant, EvidenceCollectionGrant, EvidenceStoreOptions, GrafanaConfigIdentity,
+    InvestigationGrant, OperatorContext,
 };
 
 pub(crate) const INVESTIGATION_OPERATIONS: [&str; 5] = [
@@ -38,6 +38,7 @@ pub(crate) struct Grants {
     pub grafana_identity: Option<GrafanaConfigIdentity>,
     pub diagnostic_grant: Option<DiagnosticsGrant>,
     pub investigation_grant: Option<InvestigationGrant>,
+    pub collection_grant: Option<EvidenceCollectionGrant>,
 }
 
 impl Grants {
@@ -57,6 +58,9 @@ impl Grants {
                     | "diagnostics.list"
                     | "diagnostics.describe"
                     | "diagnostics.run"
+                    | "evidence.packs.list"
+                    | "evidence.packs.describe"
+                    | "evidence.collect"
             ) && !INVESTIGATION_OPERATIONS.contains(&operation.as_str())
                 || !operations.insert(operation.clone())
             {
@@ -65,7 +69,9 @@ impl Grants {
         }
         let commands =
             operations.contains("process.exec") || operations.contains("command.inspect");
-        let grafana = operations.contains("grafana.dashboard.get")
+        let collection = operations.contains("evidence.collect");
+        let grafana = collection
+            || operations.contains("grafana.dashboard.get")
             || operations.contains("grafana.query")
             || operations.contains("query.run");
         if commands && (options.read_policy.is_none() || options.roots.is_empty()) {
@@ -98,26 +104,29 @@ impl Grants {
             );
         }
         let context_resolution = operations.contains("context.resolve");
-        if context_resolution
+        let context_required = context_resolution || collection;
+        if context_required
             && (options.context_source.is_none() || options.context_max_age_days.is_none())
         {
-            return Err("context.resolve requires --context-source and --context-max-age-days");
+            return Err(
+                "context.resolve or evidence.collect requires --context-source and --context-max-age-days",
+            );
         }
-        if !context_resolution
+        if !context_required
             && (options.context_source.is_some() || options.context_max_age_days.is_some())
         {
             return Err(
-                "--context-source and --context-max-age-days require a context.resolve grant",
+                "--context-source and --context-max-age-days require context.resolve or evidence.collect",
             );
         }
         let evidence = operations
             .iter()
             .any(|operation| INVESTIGATION_OPERATIONS[1..].contains(&operation.as_str()));
-        if evidence && options.evidence_store.is_none() {
+        if (evidence || collection) && options.evidence_store.is_none() {
             return Err("evidence and report grants require an existing explicit --state-dir");
         }
-        if !evidence && options.evidence_store.is_some() {
-            return Err("--state-dir requires an offline evidence or report grant");
+        if !evidence && !collection && options.evidence_store.is_some() {
+            return Err("--state-dir requires an evidence or report grant");
         }
         if let Some(store) = &options.evidence_store {
             let defaults = EvidenceStoreOptions::new(store.directory.clone());
@@ -210,6 +219,19 @@ impl Grants {
         {
             return Err("the numerical task runtime is unavailable");
         }
+        let collection_grant = if collection {
+            let collection_context = OperatorContext {
+                config_path: options.config.clone(),
+                context_source_path: options.context_source.clone(),
+                context_max_age_days: options.context_max_age_days,
+                evidence_store: options.evidence_store.clone(),
+                ..OperatorContext::default()
+            };
+            Some(workbench_core::evidence_collection_grant(&collection_context, &options.targets)
+                .map_err(|_| "the collection configuration, context source or existing store could not be admitted")?)
+        } else {
+            None
+        };
         Ok(Self {
             operations,
             roots,
@@ -219,6 +241,7 @@ impl Grants {
             grafana_identity,
             diagnostic_grant,
             investigation_grant,
+            collection_grant,
         })
     }
 }

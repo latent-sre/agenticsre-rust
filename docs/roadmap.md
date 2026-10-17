@@ -1960,6 +1960,59 @@ pre-commit diff; it did not rerun tests. Work is committed locally and has not b
 registration, live compatibility, native Windows and the positive system-resolver fixture gap
 remain open.
 
+## 2026-10-17 continuation
+
+The owner requested finishing the remaining work and committing/pushing completed milestones.
+Commits `c0e10b0` and `ffcef97` were pushed to `codex/offline-evidence`; the remote was read back
+before publication. The configured `agentic-sre-dev` account was refused write access, so the
+push used the already authenticated `latent-sre` account for that invocation only. Earlier
+milestone statements that these commits were unpublished describe their acceptance-time state.
+No merge, live deployment, agent registration or target configuration is implied by this push.
+
+## WORKBENCH-031 — browser installed saved queries
+
+**Status:** Accepted for the local Linux fixture scope under [the browser query contract](query-ui.md)
+and [installed browser verification](query-ui-verification.md). Independent catalog and execution
+grants use the existing HTTP/session lifecycle and canonical core receipts. Query targets use
+`--query-target` and remain distinct from diagnostic aliases.
+
+The ordinary installed executable passed real PromQL/LogQL browser interactions, six schema-valid
+receipts, exact downloads/history, cancellation, hostile-text rendering and light/dark/mobile
+inspection. Catalog and pin refusals caused no HTTP. Twelve UI unit tests and three installed-copy
+HTTP tests passed; the schema mission passed 26 validations. The frontend passed 79 tests, types,
+lint and its production build. Independent authority review found no actionable issue. Live target
+compatibility, native Windows, additional definitions and remote/team surfaces remain open.
+
+## WORKBENCH-032 — MCP fixed evidence collection
+
+**Status:** Accepted for the local Linux fixture scope under [the MCP collection contract](evidence-mcp.md)
+and [installed verification](evidence-mcp-verification.md). Independent pack catalog and collection
+grants pin exact configuration/CA/source/store identities and authorize a fixed recording policy.
+Existing offline investigation grants remain read-only.
+
+The ordinary installed executable passed six acceptance groups across modern and legacy protocols:
+real two-query collection, durable receipt/manifest verification, independent evidence inspection,
+strict input/grant refusals and identity drift before HTTP or retention. Focused checks passed 35
+MCP units, three installed-copy integration tests and one core grant-scope test. Independent
+authority review found no actionable issue. Live compatibility, host registration, native Windows,
+additional packs and other recording policies remain open.
+
+## Integrated publication checkpoint — 2026-10-17
+
+The [verification packet](evidence/publication-2026-10-17/summary.json) records 577 passing Rust
+tests, zero failures and 33 existing scoped ignores, 79 frontend tests, strict workspace lint,
+formatting, schema synchronization and specification checks. Both new installed missions passed
+against binary `7c6d4d22d386cc00c5ea714c630688cad19a5d5ac681608967afdcffcabab5c6`.
+Their independent source-bound evidence is retained above.
+
+After those missions, a `cfg(test)` module was moved to the end of the UI grants file to satisfy
+strict lint. Production logic and browser assets were unchanged. Final lint, 12 UI unit tests,
+ordinary build, 26 live HTTP contract validations and catalog smoke checks passed. The final build
+SHA-256 is `0a5c9256bbc5891755e363f66185803e2118f6eef76b7537768664e107f55325`.
+The full suite and installed missions retain their earlier identities and are not represented as
+rerun against the final binary. Commit/push of this verified checkpoint is authorized by the owner;
+live installation, host registration, target selection and release readiness remain separate.
+
 ## Remaining product queue
 
 The following ledger preserves the complete requested scope. Accepted slices are evidence for
@@ -1977,9 +2030,9 @@ and [verification](sre-workbench/verification.md).
 | CAP-06 MCP | [Bounded stdio tasks, restricted commands and Grafana](mcp-verification.md), plus [offline investigations](investigation-mcp-verification.md), [saved-query grants](query-mcp-verification.md) and [local diagnostic grants](diagnostics-mcp-verification.md) | Actual selected agent-host registration and future operation grants |
 | CAP-07 context | [Offline core/CLI source resolver](context-verification.md), [pinned browser context](investigation-ui-verification.md) and [MCP context](investigation-mcp-verification.md) | Approved real team source and live target selection |
 | CAP-08 diagnostics | WORKBENCH-010 core/CLI and [WORKBENCH-011 browser](diagnostics-ui-verification.md) qualified native acceptance with frozen correctness/security reviews; [local MCP grants](diagnostics-mcp-verification.md) | Positive system-resolver fixture gap and later live/platform bindings |
-| CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery | Other operation recording policies, collection/MCP grants and live/platform acceptance |
+| CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery; [explicit MCP collection](evidence-mcp-verification.md) | Other operation recording policies, browser collection grants and live/platform acceptance |
 | CAP-10 comparison | [Typed Linux fixture comparison](evidence-comparison-verification.md), [browser](investigation-ui-verification.md) and [MCP](investigation-mcp-verification.md), compatibility, normalization and explicit missing/partial outcomes | Live datasource/plugin compatibility, other supported evidence kinds and native-platform acceptance |
-| CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted; [local MCP grants](query-mcp-verification.md) | Dependent browser grants and live/platform acceptance |
+| CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted; [local MCP grants](query-mcp-verification.md) and [browser grants](query-ui-verification.md) | Additional reviewed definitions and live/platform acceptance |
 | CAP-12 runbooks | [Installed evidence-review workflow](runbooks-verification.md), typed checkpoints, durable revision-bound resume and fresh attempts | Additional reviewed runbooks, hosted/platform acceptance; live observation workflows remain separate |
 | CAP-13 configuration checks | [Dashboard acceptance](config-check-verification.md) and [Prometheus rules](alert-rules-verification.md), kind/validator/digest pins, supported rules, refusals and unchanged originals | Hosted/platform acceptance, live semantics and broader validator coverage |
 | CAP-14 offline investigation | [Offline inspection/replay acceptance](offline-evidence-verification.md), [browser](investigation-ui-verification.md) and [MCP inspection](investigation-mcp-verification.md), integrity, immutable history and no-network/no-command profile | Additional bundle kinds, hosted replay and native-platform profiles |
@@ -2011,8 +2064,9 @@ multiple-target collection and persistent observational schedules are accepted f
 Linux scopes. The named local configuration-change consumer under WORKBENCH-026 is also accepted,
 including exact-plan approval, target preconditions, readback and reconciliation without replay.
 The local context and evidence/compare/report browser increment under CAP-23 and corresponding
-MCP investigation grants are also accepted. Local saved-query and diagnostic MCP grants have
-fixture evidence. Remaining browser/catalog surfaces, additional controlled-change consumers and connector
+MCP investigation grants are also accepted. Local saved-query and diagnostic MCP grants,
+browser saved queries and explicit MCP collection have fixture evidence. Remaining browser/catalog
+surfaces, additional controlled-change consumers and connector
 families retain their own scopes. Continue in the delivery plan's dependency order. Connector work
 and native/live acceptance keep their own prerequisites; an unavailable live source does not block
 authorized offline implementation.

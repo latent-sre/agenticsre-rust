@@ -1,0 +1,70 @@
+{
+  "status": "passed",
+  "binary_sha256": "7c6d4d22d386cc00c5ea714c630688cad19a5d5ac681608967afdcffcabab5c6",
+  "checks": [
+    "Collection startup refuses a missing store without initialization or HTTP",
+    "Discovery exposes only granted tools with local schemas and truthful storage-write annotations",
+    "Modern and legacy protocols collect two real HTTPS queries and independently open verified durable bundles",
+    "Wire overrides, invalid packs, null pins, targets and limits fail without HTTP or store mutation",
+    "Consumed config, CA and source bytes plus store descriptor identity reject drift before HTTP or mutation",
+    "Catalog, offline-reader and empty grants never acquire collection authority"
+  ],
+  "receipts": [
+    {
+      "case": "list-modern",
+      "sha256": "add3ce151f5d7d1f8c413f9ddf722472335dd4c3336ea031d7aa62a4ba572e4b"
+    },
+    {
+      "case": "describe-modern",
+      "sha256": "4b2f72311c309fcb331aa9e07c4d21e228e4d21aaf7436e0eb89d04b97319a18"
+    },
+    {
+      "case": "collect-modern",
+      "sha256": "1d63b33d90807b34d27fb88dfde910deaf8a87647ef1393c9ea47545e3a63974"
+    },
+    {
+      "case": "open-modern",
+      "sha256": "611f561c40ad0e8f3fe35bc5c03de9ec537a3790032b6bdcd7e33bf725deaab5"
+    },
+    {
+      "case": "list-legacy",
+      "sha256": "6b4fbc2e993ec9852ae065da708fc84d2a15205f3907cc37d3b7f52c981b5cc6"
+    },
+    {
+      "case": "describe-legacy",
+      "sha256": "6239e1a0684efe1de8ff2417013bf6bc305312b98f3dc1cb24cdf5ff669313f7"
+    },
+    {
+      "case": "collect-legacy",
+      "sha256": "2070bf33b19fd5b6461b78ffca2b759b5cff856f19340eaa01d4d3fd17d6ba27"
+    },
+    {
+      "case": "open-legacy",
+      "sha256": "d86b534e67c133c31734dd369ba74f4000fb6dc204f3f52be00e4d6b605a57dc"
+    },
+    {
+      "case": "changed-config",
+      "sha256": "12d41bfd655109dca508a1af37a3c98a076bcdbb68c840c90cf6d8169584d179"
+    },
+    {
+      "case": "changed-source",
+      "sha256": "8abc5adbba33e91879a97c00838f87f8b65598b9056a3aecfb979a70e76b048d"
+    },
+    {
+      "case": "changed-ca",
+      "sha256": "92f8c2a2ae7c842345c0fe5992dd554fdef0615dd4cfc3067f3f58d35c2a1e5a"
+    },
+    {
+      "case": "replaced-store",
+      "sha256": "6c745193496d847e2eab6bdd3574de4e27213f4725051d142d6b207c70ced413"
+    },
+    {
+      "case": "isolated-evidence.packs.list",
+      "sha256": "df5de72f38fddf5d13ab4d318ee1128f1f82530009ea12910b5f03e11606ed9f"
+    },
+    {
+      "case": "isolated-evidence.packs.describe",
+      "sha256": "948f0b5216d130656e430eb8c06e6d3de0752cd1d7507d87307a35f6a10c560d"
+    }
+  ]
+}

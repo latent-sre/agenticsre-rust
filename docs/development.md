@@ -166,6 +166,17 @@ accepts no store size/retention overrides. The [investigation contract](investig
 describes source/store identity pinning, direct typed inputs and unchanged receipt/history routes.
 This flow inspects historical evidence and previews reports; it grants no collection or publication.
 
+For the installed Prometheus and Loki saved queries, explicitly select a configured Grafana target:
+
+```bash
+target/debug/save --config /absolute/path/grafana.json ui serve \
+  --allow queries.list --allow queries.describe --allow query.run --query-target reviewed-grafana
+```
+
+Catalog-only sessions need neither `--config` nor `--query-target`. Query execution asks for the
+datasource, literal job parameter and time window; it never accepts an arbitrary expression.
+Diagnostic targets still use their separate `--target` flag. See [browser saved queries](query-ui.md).
+
 Only granted checks/roots appear. The browser cannot select an arbitrary executable, directory,
 policy or shell command. Required Linux isolation must be available; there is no unrestricted
 fallback. This PoC permits one active check, 50 completed receipts and 16 MiB of result history

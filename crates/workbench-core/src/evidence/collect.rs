@@ -125,6 +125,16 @@ fn prepare(inputs: &Value, started_at: &str) -> Result<Prepared, Problem> {
     })
 }
 
+pub(crate) fn normalize_input(inputs: &Value) -> Result<Value, Problem> {
+    prepare(inputs, &timestamp())?;
+    Ok(inputs.clone())
+}
+
+pub(crate) struct CollectionIdentities<'a> {
+    pub grafana: &'a crate::GrafanaConfigIdentity,
+    pub source: &'a crate::context::ContextSourceIdentity,
+}
+
 fn check(control: &RunControl, deadline: Instant) -> Result<(), Problem> {
     if control.signal.load(Ordering::Relaxed) != 0 {
         return Err(problem("cancelled"));
@@ -370,6 +380,17 @@ pub(crate) fn run(
     start: Instant,
     result: &mut OperationResult,
 ) {
+    run_pinned(request, control, context, start, result, None);
+}
+
+pub(crate) fn run_pinned(
+    request: &Request,
+    control: &RunControl,
+    context: &OperatorContext,
+    start: Instant,
+    result: &mut OperationResult,
+    identities: Option<CollectionIdentities<'_>>,
+) {
     result.effective_limits.timeout_ms = request.limits.timeout_ms.min(60_000);
     let deadline = start + Duration::from_millis(result.effective_limits.timeout_ms);
     result.coverage.state = "not_established".into();
@@ -414,7 +435,11 @@ pub(crate) fn run(
         reject_interruption(result, control, problem);
         return;
     }
-    let mut binding = match grafana::prepare_collection_binding(context, &request.target.id) {
+    let mut binding = match grafana::prepare_collection_binding(
+        context,
+        &request.target.id,
+        identities.as_ref().map(|identity| identity.grafana),
+    ) {
         Ok(binding) => binding,
         Err(problem) => {
             result.reject(problem);
@@ -427,7 +452,21 @@ pub(crate) fn run(
     }
     let mut context_request = Request::new("context.resolve", selectors(&prepared.input));
     context_request.limits = request.limits.clone();
-    let resolved = execute_collection_child(context_request, control, context, None, deadline);
+    let resolved = if let Some(identity) = &identities {
+        let mut resolved = OperationResult::new(&context_request);
+        crate::context::run_pinned(
+            &context_request,
+            control,
+            context,
+            Some(identity.source),
+            start,
+            &mut resolved,
+        );
+        resolved.finish(start);
+        resolved
+    } else {
+        execute_collection_child(context_request, control, context, None, deadline)
+    };
     if resolved.execution.status != Status::Succeeded
         || resolved.data["resolution"]["usable"] != true
     {
@@ -461,7 +500,7 @@ pub(crate) fn run(
         result.reject(problem);
         return;
     }
-    result.resolved_target = json!({"connection":request.target.id,"profile":"operator-local","effects":"local_store_write"});
+    result.resolved_target = json!({"connection":request.target.id,"profile":if identities.is_some() {"hosted-collection"} else {"operator-local"},"effects":"local_store_write"});
     if let Err(problem) = check(control, deadline) {
         stop(&mut payload, result, control, problem.code, 0);
         publish_summary(payload, result, Value::Null);
@@ -469,7 +508,7 @@ pub(crate) fn run(
     }
     let mut store = match Store::open_validated(
         options,
-        true,
+        identities.is_none(),
         deadline,
         crate::evidence::validate_bundle,
         None,

@@ -1,6 +1,6 @@
 # Local browser workbench — interface contract
 
-- **Version:** 0.1.3 (wire `api_version` remains `0.1`), 2026-10-15.
+- **Version:** 0.1.4 (wire `api_version` remains `0.1`), 2026-10-17.
 - **Owner:** GUI backend builder owns this contract and `docs/ui/openapi.json` during implementation;
   changes go through the coordinator and must reach the frontend builder before use.
 - **Status:** The owner selected a local browser app with direct checks and results/history, ahead
@@ -21,11 +21,16 @@ execution path. Preserve the current-image internal launcher before ordinary CLI
 
 Initial forms cover Git status, diff and bounded log; ripgrep listing and literal text search;
 and a numerical time-budget calculation. The API permits only the existing numerical error-budget
-input schema for `task.run`. Dashboard file tasks, browser filesystem browsing/uploads, Grafana
-forms, arbitrary shell input, AI chat, MCP, persistent history and remote/team access are later
+input schema for `task.run`. Dashboard file tasks, browser filesystem browsing/uploads, arbitrary
+Grafana expression forms, shell input, AI chat, persistent history and remote/team access are later
 increments. [Browser diagnostics](diagnostics-ui.md) and [offline investigations](investigation-ui.md)
 extend these initial forms through the same checks, receipts and history. Existing CLI capabilities
 retain their current behavior.
+
+[Saved queries](query-ui.md) add installed catalog listing, definition inspection and execution
+through independently granted operations. Execution uses explicit `--config` and `--query-target`
+IDs; diagnostic `--target` aliases remain separate. The browser supplies literal parameters and
+an explicit window, with no arbitrary expression or endpoint input.
 
 ## Packaging and execution
 

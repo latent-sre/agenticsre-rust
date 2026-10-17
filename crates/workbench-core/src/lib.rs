@@ -13,6 +13,10 @@ mod jobs;
 mod runner;
 mod schedule;
 pub use evidence::EvidenceStoreOptions;
+pub use evidence::grant::{
+    EvidenceCollectionGrant, evidence_collection_grant, execute_evidence_catalog,
+    execute_with_evidence_collection_grant, normalize_evidence_collection_input,
+};
 pub use runner::{RunnerError, serve_runner};
 mod diagnostics;
 pub use diagnostics::{

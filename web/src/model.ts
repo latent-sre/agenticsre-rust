@@ -14,13 +14,14 @@ export const diagnosticStepNames: Record<DiagnosticStep['id'], string> = {
   dns: 'DNS lookup', tcp: 'TCP connection', tls: 'TLS validation',
   http: 'HTTP response', process: 'Local process',
 };
-export type Check = 'status' | 'diff' | 'log' | 'files' | 'search' | 'budget' | 'diagnostics' | 'context' | 'evidence-list' | 'evidence-open' | 'evidence-compare' | 'evidence-report';
+export type Check = 'status' | 'diff' | 'log' | 'files' | 'search' | 'budget' | 'diagnostics' | 'context' | 'evidence-list' | 'evidence-open' | 'evidence-compare' | 'evidence-report' | 'queries-list' | 'queries-describe' | 'query-run';
 export type Theme = 'light' | 'dark' | 'system';
 export const checkNames: Record<Check, string> = {
   status: 'Working tree status', diff: 'Working tree diff', log: 'Recent commits',
   files: 'List files', search: 'Find literal text', budget: 'Error budget', diagnostics: 'Diagnostics',
   context: 'Service context', 'evidence-list': 'Saved evidence', 'evidence-open': 'Inspect evidence',
   'evidence-compare': 'Compare evidence', 'evidence-report': 'Evidence report',
+  'queries-list': 'Saved query catalog', 'queries-describe': 'Inspect saved query', 'query-run': 'Run saved query',
 };
 export const checkOptions = Object.keys(checkNames) as Check[];
 export const isCheck = (value: unknown): value is Check =>
@@ -29,17 +30,22 @@ export const isCheck = (value: unknown): value is Check =>
 export const investigationOperations = { context: 'context.resolve', 'evidence-list': 'evidence.list',
   'evidence-open': 'evidence.open', 'evidence-compare': 'evidence.compare', 'evidence-report': 'report.create' } as const;
 export const isInvestigation = (check: Check): check is keyof typeof investigationOperations => Object.hasOwn(investigationOperations, check);
+export const queryOperations = { 'queries-list': 'queries.list', 'queries-describe': 'queries.describe', 'query-run': 'query.run' } as const;
+export const isQuery = (check: Check): check is keyof typeof queryOperations => Object.hasOwn(queryOperations, check);
+export const queryDefinitions = { 'prometheus.up-by-job': 'PromQL · scrape samples by job · version 1', 'loki.logs-by-job': 'LogQL · log entries by job · version 1' } as const;
 export const isBundleId = (value: unknown): value is string => typeof value === 'string' && value.length <= 96 && /^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$/u.test(value);
 export function availableChecks(session: Session): Check[] {
   const commands = session.roots.length > 0 && session.operations.some(op =>
     op.id === 'process.exec' || op.id === 'command.inspect');
-  return checkOptions.filter(check => isInvestigation(check) ? session.operations.some(op => op.id === investigationOperations[check]) : check === 'budget'
+  return checkOptions.filter(check => isQuery(check) ? session.operations.some(op => op.id === queryOperations[check]) && (check !== 'query-run' || (session.query_targets?.length ?? 0) > 0) : isInvestigation(check) ? session.operations.some(op => op.id === investigationOperations[check]) : check === 'budget'
     ? session.operations.some(op => op.id === 'task.run')
     : check === 'diagnostics' ? session.targets.length > 0 && diagnosticPack(session) !== undefined : commands);
 }
 export const diagnosticPack = (session: Session) => session.operations.find(op => op.id === 'diagnostics.run')?.packs[0];
 export const runScope = (run: Run, session: Session) => run.operation === 'diagnostics.run'
   ? plainText(session.targets.find(target => target.id === run.target_id)?.label ?? run.target_id ?? 'Diagnostic target unavailable')
+  : run.operation === 'query.run' ? plainText(session.query_targets?.find(target => target.id === run.target_id)?.label ?? run.target_id ?? 'Query target unavailable')
+  : run.operation === 'queries.list' || run.operation === 'queries.describe' ? 'Installed query catalog'
   : Object.values(investigationOperations).some(operation => operation === run.operation) ? 'Historical / offline evidence' : run.root_id ? plainText(session.roots.find(root => root.id === run.root_id)?.label ?? run.root_id) : 'Numerical input';
 
 export type FormValues = {
@@ -53,6 +59,8 @@ export type FormValues = {
   normalization: 'exact-window-v1' | 'window-offset-v1'; maxItems: string;
   reportId1: string; reportPin1: string; reportId2: string; reportPin2: string; reportId3: string; reportPin3: string; reportId4: string; reportPin4: string;
   reportFormat: 'markdown' | 'json'; reportTitle: string;
+  queryId: keyof typeof queryDefinitions; datasource: string; job: string; definitionPin: string;
+  windowKind: 'relative' | 'absolute'; lookback: string; windowFrom: string; windowTo: string;
 };
 export const initialValues: FormValues = {
   check: 'status', root: '', path: '', pattern: '', count: '20', cached: false,
@@ -62,21 +70,50 @@ export const initialValues: FormValues = {
   service: '', environment: '', team: '', deployment: '', bundleId: '', bundlePin: '',
   beforeId: '', beforePin: '', afterId: '', afterPin: '', normalization: 'exact-window-v1', maxItems: '100',
   reportId1: '', reportPin1: '', reportId2: '', reportPin2: '', reportId3: '', reportPin3: '', reportId4: '', reportPin4: '', reportFormat: 'markdown', reportTitle: '',
+  queryId: 'prometheus.up-by-job', datasource: '', job: '', definitionPin: '', windowKind: 'relative', lookback: '300', windowFrom: '', windowTo: '',
 };
 export type FieldErrors = Partial<Record<keyof FormValues, string>>;
 const hasControl = (value: string) => Array.from(value).some(character => character.charCodeAt(0) <= 31 || character.charCodeAt(0) === 127);
 const utf8Length = (value: string) => new TextEncoder().encode(value).length;
+// Calendar validation avoids Date.parse silently normalizing an impossible day.
+function exactTimestamp(value: string): number | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?(Z|[+-]\d{2}:\d{2})$/u.exec(value);
+  if (!match) return null;
+  const [, year, month, day, hour, minute, second, , offset] = match;
+  const calendar = new Date(`${year}-${month}-${day}T00:00:00Z`);
+  const stamp = Date.parse(value);
+  if (!Number.isFinite(stamp) || !Number.isFinite(calendar.getTime()) || calendar.toISOString().slice(0, 10) !== `${year}-${month}-${day}`
+    || Number(hour) > 23 || Number(minute) > 59 || Number(second) > 59
+    || (offset !== 'Z' && (Number(offset?.slice(1, 3)) > 23 || Number(offset?.slice(4)) > 59))) return null;
+  return stamp;
+}
 
 export function validateForm(values: FormValues): FieldErrors {
   const errors: FieldErrors = {};
-  const number = (field: 'slo' | 'days' | 'minutes' | 'timeout' | 'count' | 'outputLimit' | 'maxItems', valid: (v: number) => boolean, message: string) => {
+  const number = (field: 'slo' | 'days' | 'minutes' | 'timeout' | 'count' | 'outputLimit' | 'maxItems' | 'lookback', valid: (v: number) => boolean, message: string) => {
     const raw = values[field].trim();
     const value = Number(raw);
     if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/u.test(raw) || !Number.isFinite(value) || !valid(value)) errors[field] = message;
   };
   const timeoutCeiling = values.check === 'diagnostics' ? 60 : 300;
   number('timeout', v => v >= 0.001 && v <= timeoutCeiling && /^\d+(?:\.\d{1,3})?$/u.test(values.timeout.trim()), `Use 0.001–${timeoutCeiling} seconds, to the nearest millisecond.`);
-  if (isInvestigation(values.check)) {
+  if (isQuery(values.check)) {
+    number('outputLimit', v => Number.isInteger(v) && v >= 1024 && v <= 1_048_576 && /^\d+$/u.test(values.outputLimit), 'Use a whole number from 1,024 to 1,048,576 bytes.');
+    if (values.check !== 'queries-list' && !Object.hasOwn(queryDefinitions, values.queryId)) errors.queryId = 'Select an installed query definition.';
+    if (values.check === 'query-run') {
+      if (!values.target) errors.target = 'Select a granted query target.';
+      if (!/^[A-Za-z0-9_-]{1,40}$/u.test(values.datasource)) errors.datasource = 'Use a datasource UID of 1–40 letters, digits, underscores or hyphens.';
+      if (!values.job || utf8Length(values.job) > 128 || Array.from(values.job).some(character => character.charCodeAt(0) < 32 || (character.charCodeAt(0) >= 127 && character.charCodeAt(0) <= 159)) || /\$(?:[A-Za-z_]|\{)|\[\[[A-Za-z_][^\]]*\]\]/u.test(values.job)) errors.job = 'Use 1–128 UTF-8 bytes without control characters or query macros.';
+      if (values.definitionPin && !/^[a-f0-9]{64}$/u.test(values.definitionPin)) errors.definitionPin = 'Use 64 lowercase hexadecimal characters, without a sha256: prefix, or leave blank.';
+      if (values.windowKind === 'relative') number('lookback', v => Number.isInteger(v) && v >= 1 && v <= 86400 && /^\d+$/u.test(values.lookback), 'Use a whole number from 1 to 86,400 seconds.');
+      else {
+        const from = exactTimestamp(values.windowFrom); const to = exactTimestamp(values.windowTo);
+        if (from === null) errors.windowFrom = 'Use an RFC3339 timestamp with timezone and at most millisecond precision.';
+        if (to === null) errors.windowTo = 'Use an RFC3339 timestamp with timezone and at most millisecond precision.';
+        else if (from !== null && (to <= from || to - from > 86_400_000)) errors.windowTo = 'The end must follow the start by at most 24 hours.';
+      }
+    }
+  } else if (isInvestigation(values.check)) {
     number('outputLimit', v => Number.isInteger(v) && v >= 1024 && v <= 1_048_576 && /^\d+$/u.test(values.outputLimit), 'Use a whole number from 1,024 to 1,048,576 bytes.');
     const reference = (id: 'bundleId' | 'beforeId' | 'afterId' | 'reportId1' | 'reportId2' | 'reportId3' | 'reportId4', pin: 'bundlePin' | 'beforePin' | 'afterPin' | 'reportPin1' | 'reportPin2' | 'reportPin3' | 'reportPin4', required = true) => {
       if ((required || values[id] || values[pin]) && !isBundleId(values[id])) errors[id] = 'Enter a saved evidence ID, such as run-1-ab-c. Paths are not accepted.';
@@ -132,6 +169,7 @@ export function commandInput(values: FormValues): components['schemas']['Command
     case 'budget': throw new Error('A calculation has no command arguments.');
     case 'context': case 'evidence-list': case 'evidence-open': case 'evidence-compare': case 'evidence-report': throw new Error('Offline investigation has no command arguments.');
     case 'diagnostics': throw new Error('Diagnostics have no command arguments.');
+    case 'queries-list': case 'queries-describe': case 'query-run': throw new Error('Saved queries have no command arguments.');
   }
   if (values.path) args.push('--', values.path);
   return { program: values.check === 'files' || values.check === 'search' ? 'rg' : 'git', args };
@@ -140,6 +178,16 @@ export function commandInput(values: FormValues): components['schemas']['Command
 export function makeSubmission(values: FormValues, operation: Submission['operation'], id: string): Submission {
   const shared = { submission_id: id, operation_version: 1 as const,
     limits: { timeout_ms: Math.round(Number(values.timeout) * 1000), max_output_bytes: 1_048_576 } };
+  if (isQuery(values.check)) {
+    const query = { ...shared, limits: { ...shared.limits, max_output_bytes: Number(values.outputLimit) } };
+    if (values.check === 'queries-list') return { ...query, operation: 'queries.list', inputs: {} };
+    if (values.check === 'queries-describe') return { ...query, operation: 'queries.describe', inputs: { id: values.queryId, version: 1 } };
+    return { ...query, operation: 'query.run', target_id: values.target, inputs: {
+      id: values.queryId, version: 1, datasource: values.datasource, parameters: { job: values.job },
+      window: values.windowKind === 'relative' ? { kind: 'relative', lookback_seconds: Number(values.lookback) } : { kind: 'absolute', from: values.windowFrom, to: values.windowTo },
+      ...(values.definitionPin ? { expected_definition_sha256: values.definitionPin } : {}),
+    } };
+  }
   if (isInvestigation(values.check)) {
     const reference = (id: string, pin: string) => ({ id, ...(pin ? { expected_manifest_sha256: pin } : {}) });
     const limits = { ...shared.limits, max_output_bytes: Number(values.outputLimit) };

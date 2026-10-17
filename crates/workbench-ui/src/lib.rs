@@ -2,6 +2,7 @@
 mod grants;
 mod http;
 mod input;
+mod queries;
 mod state;
 mod assets {
     include!(concat!(env!("OUT_DIR"), "/assets.rs"));
@@ -136,6 +137,17 @@ async fn run(
         .name("workbench-ui-core".into())
         .spawn(move || {
             run_worker(receiver, worker_state, |request, control| {
+                if request.operation == "query.run" {
+                    return workbench_core::execute_with_saved_query_grant(
+                        request,
+                        control,
+                        &worker_grants.context,
+                        worker_grants
+                            .grafana_identity
+                            .as_ref()
+                            .expect("admitted saved-query identity"),
+                    );
+                }
                 if let Some(grant) = &worker_grants.investigation_grant
                     && grant.allows(&request.operation)
                 {

@@ -513,7 +513,18 @@ impl Server {
                     .name("workbench-mcp-core".into())
                     .spawn(move || {
                         std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                            let result = if request.operation == "diagnostics.run" {
+                            let result = if request.operation == "evidence.collect" {
+                                workbench_core::execute_with_evidence_collection_grant(
+                                    request,
+                                    &worker_control,
+                                    grants.collection_grant.as_ref().ok_or(())?,
+                                )
+                            } else if matches!(
+                                request.operation.as_str(),
+                                "evidence.packs.list" | "evidence.packs.describe"
+                            ) {
+                                workbench_core::execute_evidence_catalog(request, &worker_control)
+                            } else if request.operation == "diagnostics.run" {
                                 workbench_core::execute_with_diagnostic_grant(
                                     request,
                                     &worker_control,

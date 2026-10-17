@@ -230,6 +230,63 @@ export interface components {
             version: 1;
             tasks: "error-budget"[];
         };
+        /** @description Launcher-granted Grafana alias only, separate from diagnostic targets. */
+        QueryTarget: {
+            id: string;
+            label: string;
+        };
+        QueryCatalogOperation: {
+            /** @enum {unknown} */
+            id: "queries.list" | "queries.describe";
+            /** @constant */
+            version: 1;
+            /** @constant */
+            profile: "installed-query-catalog-v1";
+        };
+        QueryRunOperation: {
+            /** @constant */
+            id: "query.run";
+            /** @constant */
+            version: 1;
+            /** @constant */
+            profile: "saved-query-v1";
+        };
+        QueryListSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation: "queries.list";
+            /** @constant */
+            operation_version: 1;
+            inputs: Record<string, never>;
+            limits: components["schemas"]["Limits"];
+        };
+        QueryDescribeSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation: "queries.describe";
+            /** @constant */
+            operation_version: 1;
+            inputs: {
+                /** @enum {unknown} */
+                id: "prometheus.up-by-job" | "loki.logs-by-job";
+                /** @constant */
+                version: 1;
+            };
+            limits: components["schemas"]["Limits"];
+        };
+        QueryRunSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation: "query.run";
+            /** @constant */
+            operation_version: 1;
+            target_id: components["schemas"]["QueryTarget"]["id"];
+            inputs: components["schemas"]["CoreQueryRunInput"];
+            limits: components["schemas"]["Limits"];
+        };
         /**
          * @example {
          *       "api_version": "0.1",
@@ -325,7 +382,7 @@ export interface components {
             api_version: "0.1";
             session_id: string;
             roots: components["schemas"]["Root"][];
-            operations: (components["schemas"]["CommandOperation"] | components["schemas"]["TaskOperation"] | components["schemas"]["DiagnosticOperation"] | components["schemas"]["ContextOperation"] | components["schemas"]["EvidenceOperation"])[];
+            operations: (components["schemas"]["CommandOperation"] | components["schemas"]["TaskOperation"] | components["schemas"]["DiagnosticOperation"] | components["schemas"]["ContextOperation"] | components["schemas"]["EvidenceOperation"] | components["schemas"]["QueryCatalogOperation"] | components["schemas"]["QueryRunOperation"])[];
             limits: {
                 /** @constant */
                 active_runs: 1;
@@ -338,6 +395,7 @@ export interface components {
                 /** @constant */
                 max_submissions: 1024;
             };
+            query_targets?: components["schemas"]["QueryTarget"][];
             targets: components["schemas"]["DiagnosticTarget"][];
         };
         Limits: {
@@ -377,7 +435,7 @@ export interface components {
             operation: "task.run";
             inputs: components["schemas"]["TaskInputs"];
         };
-        RunSubmission: components["schemas"]["CommandSubmission"] | components["schemas"]["TaskSubmission"] | components["schemas"]["DiagnosticSubmission"] | components["schemas"]["ContextSubmission"] | components["schemas"]["EvidenceListSubmission"] | components["schemas"]["EvidenceOpenSubmission"] | components["schemas"]["EvidenceCompareSubmission"] | components["schemas"]["ReportSubmission"];
+        RunSubmission: components["schemas"]["CommandSubmission"] | components["schemas"]["TaskSubmission"] | components["schemas"]["DiagnosticSubmission"] | components["schemas"]["ContextSubmission"] | components["schemas"]["EvidenceListSubmission"] | components["schemas"]["EvidenceOpenSubmission"] | components["schemas"]["EvidenceCompareSubmission"] | components["schemas"]["ReportSubmission"] | components["schemas"]["QueryListSubmission"] | components["schemas"]["QueryDescribeSubmission"] | components["schemas"]["QueryRunSubmission"];
         /**
          * @example {
          *       "id": "inv-example",
@@ -405,7 +463,7 @@ export interface components {
         RunSummary: {
             id: string;
             /** @enum {unknown} */
-            operation: "process.exec" | "command.inspect" | "task.run" | "diagnostics.run" | "context.resolve" | "evidence.list" | "evidence.open" | "evidence.compare" | "report.create";
+            operation: "process.exec" | "command.inspect" | "task.run" | "diagnostics.run" | "context.resolve" | "evidence.list" | "evidence.open" | "evidence.compare" | "report.create" | "queries.list" | "queries.describe" | "query.run";
             check_label: string;
             root_id: string | null;
             /** @enum {unknown} */
@@ -414,8 +472,8 @@ export interface components {
             submitted_at: string;
             execution_status: string | null;
             receipt_url: string | null;
-            /** @description The selected diagnostic alias; null for every other operation. Never substituted for root_id. */
-            target_id: components["schemas"]["DiagnosticTarget"]["id"] | null;
+            /** @description The selected diagnostic or saved-query alias; null for other operations. Never substituted for root_id. */
+            target_id: string | null;
         } & (unknown & unknown);
         RunList: {
             runs: components["schemas"]["RunSummary"][];
@@ -1836,6 +1894,149 @@ export interface components {
             version: 1;
             dialect: "logql";
             sha256: "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019";
+        };
+        /** Installed saved query invocation */
+        CoreQueryRunInput: {
+            /** @enum {unknown} */
+            id: "prometheus.up-by-job" | "loki.logs-by-job";
+            /** @constant */
+            version: 1;
+            datasource: string;
+            parameters: {
+                /** @description Literal job label value; runtime additionally enforces 128 UTF-8 bytes and the legacy macro guard. */
+                job: string;
+            };
+            window: {
+                /** @constant */
+                kind: "absolute";
+                /** Format: date-time */
+                from: string;
+                /** Format: date-time */
+                to: string;
+            } | {
+                /** @constant */
+                kind: "relative";
+                lookback_seconds: number;
+            };
+            expected_definition_sha256?: string;
+        };
+        /** Native Grafana query observation data */
+        CoreGrafanaQueryData: {
+            adapter: {
+                /** @constant */
+                id: "grafana";
+                /** @constant */
+                version: 1;
+                /** @constant */
+                api_profile: "grafana-legacy-v1";
+                /** @constant */
+                compatibility_evidence: "fixture_only";
+                /** @constant */
+                upstream_revision: "7d900fb999abee3b3712e1da881dcc7e80b1f6e7";
+                /** @constant */
+                upstream_digest: "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7";
+            };
+            binding: null | {
+                origin: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                organization_id: number | {
+                    /** @constant */
+                    redacted: true;
+                };
+                organization_verified: boolean;
+            };
+            request: null | {
+                datasource: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                kind: ("prometheus" | "loki") | {
+                    /** @constant */
+                    redacted: true;
+                };
+                from: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                to: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                expr: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                /** @constant */
+                max_data_points: 1000;
+                interval_ms: number;
+                /** @enum {unknown} */
+                max_lines: null | 500;
+            };
+            response: null | {
+                results: {
+                    A: Record<string, never>;
+                };
+            };
+            redaction: {
+                applied: boolean;
+                replacements: number;
+            };
+            transport: {
+                /** @enum {unknown} */
+                stage: "admission" | "organization" | "dashboard" | "datasource" | "query" | "complete";
+                requests_started: number;
+                responses_received: number;
+                /** @constant */
+                request_timeout_ms: 20000;
+                response_limit_bytes: number;
+            };
+            /** @enum {unknown} */
+            cancellation_signal: null | 2 | 15;
+        };
+        /** Installed saved query identity and bounded Grafana observation */
+        CoreQueryRunData: {
+            adapter: components["schemas"]["CoreGrafanaQueryData"]["adapter"];
+            binding: components["schemas"]["CoreGrafanaQueryData"]["binding"];
+            request: components["schemas"]["CoreGrafanaQueryData"]["request"];
+            response: components["schemas"]["CoreGrafanaQueryData"]["response"];
+            redaction: components["schemas"]["CoreGrafanaQueryData"]["redaction"];
+            transport: components["schemas"]["CoreGrafanaQueryData"]["transport"];
+            cancellation_signal: components["schemas"]["CoreGrafanaQueryData"]["cancellation_signal"];
+            definition: null | ({
+                /** @constant */
+                id: "prometheus.up-by-job";
+                /** @constant */
+                version: 1;
+                /** @constant */
+                dialect: "promql";
+                sha256: string;
+            } | {
+                /** @constant */
+                id: "loki.logs-by-job";
+                /** @constant */
+                version: 1;
+                /** @constant */
+                dialect: "logql";
+                sha256: string;
+            });
+            parameters: null | {
+                job: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+            };
+            window: null | {
+                from: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                to: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+            };
         };
     };
     responses: never;

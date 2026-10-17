@@ -998,7 +998,7 @@ enum McpCommands {
         #[arg(
             long,
             value_name = "OPERATION",
-            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get, grafana.query, queries.list, queries.describe, query.run, diagnostics.list, diagnostics.describe, diagnostics.run, context.resolve, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no tools"
+            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get, grafana.query, queries.list, queries.describe, query.run, diagnostics.list, diagnostics.describe, diagnostics.run, context.resolve, evidence.packs.list, evidence.packs.describe, evidence.collect, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no tools"
         )]
         allow: Vec<String>,
         #[arg(
@@ -1035,7 +1035,7 @@ enum UiCommands {
         #[arg(
             long,
             value_name = "OPERATION",
-            help = "Repeat process.exec, command.inspect, task.run or diagnostics.run; empty grants expose no checks"
+            help = "Repeat process.exec, command.inspect, task.run, diagnostics.run, queries.list, queries.describe, query.run, context.resolve, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no checks"
         )]
         allow: Vec<String>,
         #[arg(
@@ -1050,6 +1050,12 @@ enum UiCommands {
             help = "Repeat unique trusted diagnostic aliases; requires diagnostics.run and --diagnostics-config"
         )]
         target: Vec<String>,
+        #[arg(
+            long,
+            value_name = "TARGET_ID",
+            help = "Repeat trusted --config target IDs for query.run; independent of diagnostic --target IDs"
+        )]
+        query_target: Vec<String>,
     },
 }
 
@@ -1672,12 +1678,18 @@ fn run() -> u8 {
             || cli.store_max_bytes.is_some()
             || cli.retention_days.is_some()
             || ((cli.context_source.is_some() || cli.context_max_age_days.is_some())
-                && !allow.iter().any(|operation| operation == "context.resolve"))
+                && !allow.iter().any(|operation| {
+                    matches!(operation.as_str(), "context.resolve" | "evidence.collect")
+                }))
             || (cli.state_dir.is_some()
                 && !allow.iter().any(|operation| {
                     matches!(
                         operation.as_str(),
-                        "evidence.list" | "evidence.open" | "evidence.compare" | "report.create"
+                        "evidence.list"
+                            | "evidence.open"
+                            | "evidence.compare"
+                            | "report.create"
+                            | "evidence.collect"
                     )
                 }))
             || (cli.diagnostics_config.is_some()
@@ -1707,6 +1719,7 @@ fn run() -> u8 {
                 allow,
                 root,
                 target,
+                query_target,
             },
     } = &cli.command
     {
@@ -1723,7 +1736,7 @@ fn run() -> u8 {
             || cli.schedule_state_dir.is_some()
             || cli.store_max_bytes.is_some()
             || cli.retention_days.is_some()
-            || cli.config.is_some()
+            || (cli.config.is_some() && !allow.iter().any(|operation| operation == "query.run"))
             || cli.promtool.is_some()
             || ((cli.context_source.is_some() || cli.context_max_age_days.is_some())
                 && !allow.iter().any(|operation| operation == "context.resolve"))
@@ -1738,7 +1751,7 @@ fn run() -> u8 {
                 && !allow.iter().any(|operation| operation == "diagnostics.run"))
         {
             eprintln!(
-                "ui serve does not accept --json, --config, --promtool, runbook/toil/extension store options, extension policy, ungranted source/store/diagnostic configuration or recording modes other than never"
+                "ui serve does not accept --json, --promtool, runbook/toil/extension store options, extension policy, ungranted source/store/diagnostic/query configuration or recording modes other than never"
             );
             return 2;
         }
@@ -1749,6 +1762,8 @@ fn run() -> u8 {
             read_policy: cli.read_policy.clone(),
             diagnostics_config: cli.diagnostics_config.clone(),
             targets: target.clone(),
+            config: cli.config.clone(),
+            query_targets: query_target.clone(),
             context_source: cli.context_source.clone(),
             context_max_age_days: cli.context_max_age_days,
             evidence_store: cli.state_dir.clone().map(EvidenceStoreOptions::new),

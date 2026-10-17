@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "AgenticSRE local workbench",
-    "version": "0.1.3",
-    "description": "Local bearer-authenticated browser adapter. Normative semantics: docs/ui.md, docs/diagnostics-ui.md and docs/investigation-ui.md. Embedded core schemas preserve authoritative validation semantics with local schema references; metadata literal references remain unchanged."
+    "version": "0.1.4",
+    "description": "Local bearer-authenticated browser adapter. Normative semantics: docs/ui.md, docs/diagnostics-ui.md, docs/investigation-ui.md and docs/query-ui.md. Embedded core schemas preserve authoritative validation semantics with local schema references; metadata literal references remain unchanged."
   },
   "paths": {
     "/api/v1/session": {
@@ -1199,6 +1199,178 @@
         ],
         "additionalProperties": false
       },
+      "QueryTarget": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "id",
+          "label"
+        ],
+        "additionalProperties": false,
+        "description": "Launcher-granted Grafana alias only, separate from diagnostic targets."
+      },
+      "QueryCatalogOperation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "queries.list",
+              "queries.describe"
+            ]
+          },
+          "version": {
+            "const": 1
+          },
+          "profile": {
+            "const": "installed-query-catalog-v1"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "profile"
+        ],
+        "additionalProperties": false
+      },
+      "QueryRunOperation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "const": "query.run"
+          },
+          "version": {
+            "const": 1
+          },
+          "profile": {
+            "const": "saved-query-v1"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "profile"
+        ],
+        "additionalProperties": false
+      },
+      "QueryListSubmission": {
+        "type": "object",
+        "properties": {
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation": {
+            "const": "queries.list"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "inputs": {
+            "type": "object",
+            "additionalProperties": false
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          }
+        },
+        "required": [
+          "submission_id",
+          "operation",
+          "operation_version",
+          "inputs",
+          "limits"
+        ],
+        "additionalProperties": false
+      },
+      "QueryDescribeSubmission": {
+        "type": "object",
+        "properties": {
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation": {
+            "const": "queries.describe"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "inputs": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "enum": [
+                  "prometheus.up-by-job",
+                  "loki.logs-by-job"
+                ]
+              },
+              "version": {
+                "const": 1
+              }
+            },
+            "required": [
+              "id",
+              "version"
+            ],
+            "additionalProperties": false
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          }
+        },
+        "required": [
+          "submission_id",
+          "operation",
+          "operation_version",
+          "inputs",
+          "limits"
+        ],
+        "additionalProperties": false
+      },
+      "QueryRunSubmission": {
+        "type": "object",
+        "properties": {
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation": {
+            "const": "query.run"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "target_id": {
+            "$ref": "#/components/schemas/QueryTarget/properties/id"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/CoreQueryRunInput"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          }
+        },
+        "required": [
+          "submission_id",
+          "operation",
+          "operation_version",
+          "target_id",
+          "inputs",
+          "limits"
+        ],
+        "additionalProperties": false
+      },
       "Session": {
         "type": "object",
         "properties": {
@@ -1235,10 +1407,16 @@
                 },
                 {
                   "$ref": "#/components/schemas/EvidenceOperation"
+                },
+                {
+                  "$ref": "#/components/schemas/QueryCatalogOperation"
+                },
+                {
+                  "$ref": "#/components/schemas/QueryRunOperation"
                 }
               ]
             },
-            "maxItems": 9
+            "maxItems": 12
           },
           "limits": {
             "type": "object",
@@ -1267,6 +1445,13 @@
               "max_submissions"
             ],
             "additionalProperties": false
+          },
+          "query_targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QueryTarget"
+            },
+            "maxItems": 16
           },
           "targets": {
             "type": "array",
@@ -1533,6 +1718,15 @@
           },
           {
             "$ref": "#/components/schemas/ReportSubmission"
+          },
+          {
+            "$ref": "#/components/schemas/QueryListSubmission"
+          },
+          {
+            "$ref": "#/components/schemas/QueryDescribeSubmission"
+          },
+          {
+            "$ref": "#/components/schemas/QueryRunSubmission"
           }
         ]
       },
@@ -1554,7 +1748,10 @@
               "evidence.list",
               "evidence.open",
               "evidence.compare",
-              "report.create"
+              "report.create",
+              "queries.list",
+              "queries.describe",
+              "query.run"
             ]
           },
           "check_label": {
@@ -1612,13 +1809,15 @@
           "target_id": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/DiagnosticTarget/properties/id"
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
               },
               {
                 "type": "null"
               }
             ],
-            "description": "The selected diagnostic alias; null for every other operation. Never substituted for root_id."
+            "description": "The selected diagnostic or saved-query alias; null for other operations. Never substituted for root_id."
           }
         },
         "required": [
@@ -1659,9 +1858,34 @@
               }
             },
             "else": {
-              "properties": {
-                "target_id": {
-                  "type": "null"
+              "if": {
+                "properties": {
+                  "operation": {
+                    "const": "query.run"
+                  }
+                },
+                "required": [
+                  "operation"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "root_id": {
+                    "type": "null"
+                  },
+                  "target_id": {
+                    "$ref": "#/components/schemas/QueryTarget/properties/id"
+                  },
+                  "check_label": {
+                    "const": "Run saved query"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "target_id": {
+                    "type": "null"
+                  }
                 }
               }
             }
@@ -10291,6 +10515,653 @@
           "dialect": "logql",
           "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019"
         }
+      },
+      "CoreQueryRunInput": {
+        "title": "Installed saved query invocation",
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "prometheus.up-by-job",
+              "loki.logs-by-job"
+            ]
+          },
+          "version": {
+            "const": 1
+          },
+          "datasource": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "not": {
+              "pattern": "[^A-Za-z0-9_-]"
+            }
+          },
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "job": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "description": "Literal job label value; runtime additionally enforces 128 UTF-8 bytes and the legacy macro guard.",
+                "not": {
+                  "pattern": "[\\u0000-\\u001f\\u007f-\\u009f]"
+                }
+              }
+            },
+            "required": [
+              "job"
+            ],
+            "additionalProperties": false
+          },
+          "window": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "absolute"
+                  },
+                  "from": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "relative"
+                  },
+                  "lookback_seconds": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400
+                  }
+                },
+                "required": [
+                  "kind",
+                  "lookback_seconds"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "expected_definition_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "minLength": 64,
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "datasource",
+          "parameters",
+          "window"
+        ],
+        "additionalProperties": false
+      },
+      "CoreGrafanaQueryData": {
+        "title": "Native Grafana query observation data",
+        "type": "object",
+        "properties": {
+          "adapter": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "const": "grafana"
+              },
+              "version": {
+                "const": 1
+              },
+              "api_profile": {
+                "const": "grafana-legacy-v1"
+              },
+              "compatibility_evidence": {
+                "const": "fixture_only"
+              },
+              "upstream_revision": {
+                "const": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7"
+              },
+              "upstream_digest": {
+                "const": "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "api_profile",
+              "compatibility_evidence",
+              "upstream_revision",
+              "upstream_digest"
+            ],
+            "additionalProperties": false
+          },
+          "binding": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "origin": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^https://",
+                        "maxLength": 2048
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "organization_id": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 9223372036854775807
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "organization_verified": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "origin",
+                  "organization_id",
+                  "organization_verified"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "request": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "datasource": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,40}$"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "enum": [
+                          "prometheus",
+                          "loki"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "from": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "to": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "expr": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 16000
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "max_data_points": {
+                    "const": 1000
+                  },
+                  "interval_ms": {
+                    "type": "integer",
+                    "minimum": 1000,
+                    "maximum": 86400
+                  },
+                  "max_lines": {
+                    "enum": [
+                      null,
+                      500
+                    ]
+                  }
+                },
+                "required": [
+                  "datasource",
+                  "kind",
+                  "from",
+                  "to",
+                  "expr",
+                  "max_data_points",
+                  "interval_ms",
+                  "max_lines"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "response": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "results": {
+                    "type": "object",
+                    "properties": {
+                      "A": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "A"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "results"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "redaction": {
+            "type": "object",
+            "properties": {
+              "applied": {
+                "type": "boolean"
+              },
+              "replacements": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2097152
+              }
+            },
+            "required": [
+              "applied",
+              "replacements"
+            ],
+            "additionalProperties": false
+          },
+          "transport": {
+            "type": "object",
+            "properties": {
+              "stage": {
+                "enum": [
+                  "admission",
+                  "organization",
+                  "dashboard",
+                  "datasource",
+                  "query",
+                  "complete"
+                ]
+              },
+              "requests_started": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "responses_received": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "request_timeout_ms": {
+                "const": 20000
+              },
+              "response_limit_bytes": {
+                "type": "integer",
+                "minimum": 1024,
+                "maximum": 2097152
+              }
+            },
+            "required": [
+              "stage",
+              "requests_started",
+              "responses_received",
+              "request_timeout_ms",
+              "response_limit_bytes"
+            ],
+            "additionalProperties": false
+          },
+          "cancellation_signal": {
+            "enum": [
+              null,
+              2,
+              15
+            ]
+          }
+        },
+        "required": [
+          "adapter",
+          "binding",
+          "request",
+          "response",
+          "redaction",
+          "transport",
+          "cancellation_signal"
+        ],
+        "additionalProperties": false
+      },
+      "CoreQueryRunData": {
+        "title": "Installed saved query identity and bounded Grafana observation",
+        "type": "object",
+        "properties": {
+          "adapter": {
+            "$ref": "#/components/schemas/CoreGrafanaQueryData/properties/adapter"
+          },
+          "binding": {
+            "$ref": "#/components/schemas/CoreGrafanaQueryData/properties/binding"
+          },
+          "request": {
+            "$ref": "#/components/schemas/CoreGrafanaQueryData/properties/request"
+          },
+          "response": {
+            "$ref": "#/components/schemas/CoreGrafanaQueryData/properties/response"
+          },
+          "redaction": {
+            "$ref": "#/components/schemas/CoreGrafanaQueryData/properties/redaction"
+          },
+          "transport": {
+            "$ref": "#/components/schemas/CoreGrafanaQueryData/properties/transport"
+          },
+          "cancellation_signal": {
+            "$ref": "#/components/schemas/CoreGrafanaQueryData/properties/cancellation_signal"
+          },
+          "definition": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "const": "prometheus.up-by-job"
+                      },
+                      "version": {
+                        "const": 1
+                      },
+                      "dialect": {
+                        "const": "promql"
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$",
+                        "minLength": 64,
+                        "maxLength": 64
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version",
+                      "dialect",
+                      "sha256"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "const": "loki.logs-by-job"
+                      },
+                      "version": {
+                        "const": 1
+                      },
+                      "dialect": {
+                        "const": "logql"
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$",
+                        "minLength": 64,
+                        "maxLength": 64
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version",
+                      "dialect",
+                      "sha256"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            ]
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "job": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128,
+                        "description": "Literal job label value; runtime additionally enforces 128 UTF-8 bytes and the legacy macro guard.",
+                        "not": {
+                          "pattern": "[\\u0000-\\u001f\\u007f-\\u009f]"
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "job"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "window": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "to": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "required": [
+          "adapter",
+          "binding",
+          "request",
+          "response",
+          "redaction",
+          "transport",
+          "cancellation_signal",
+          "definition",
+          "parameters",
+          "window"
+        ],
+        "additionalProperties": false
       }
     }
   },

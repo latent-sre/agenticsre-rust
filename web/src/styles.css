@@ -206,3 +206,4 @@
 .investigation-values > li { margin-block: .3rem; overflow-wrap: anywhere; }
 .investigation-result dd, .investigation-result h3 { overflow-wrap: anywhere; white-space: pre-wrap; }
 .report-preview { max-height: 32rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem; border: 1px solid var(--line); border-radius: .5rem; font-size: .8rem; }
+.query-json { max-width: 100%; max-height: 28rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .8rem; line-height: 1.6; }
