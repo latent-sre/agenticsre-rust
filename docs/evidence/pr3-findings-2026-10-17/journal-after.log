@@ -1,0 +1,16 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Finished `test` profile [unoptimized] target(s) in 6.13s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-3566ffb7bd3d67a7)
+
+running 8 tests
+test runbooks::store::platform::tests::interrupted_staging_is_preserved_counted_and_bounded ... ok
+test runbooks::store::platform::tests::foreign_unknown_format_blocks_open_create_and_replace_without_effects ... ok
+test runbooks::store::platform::tests::lock_and_deadline_refuse_without_mutation ... ok
+test runbooks::store::platform::tests::restart_exact_bytes_digest_and_revision_cas ... ok
+test runbooks::store::platform::tests::unrelated_and_unsupported_roots_remain_untouched ... ok
+test runbooks::store::platform::tests::unsafe_files_and_directory_permissions_are_refused ... ok
+test runbooks::store::platform::tests::unsupported_state_identity_and_revision_overflow_refuse ... ok
+test runbooks::store::platform::tests::run_count_state_size_and_temporary_peak_quota_are_bounded ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 250 filtered out; finished in 3.56s
+

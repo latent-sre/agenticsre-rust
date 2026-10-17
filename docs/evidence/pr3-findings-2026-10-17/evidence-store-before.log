@@ -1,0 +1,65 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.99s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-a0406fe796bef434)
+
+running 31 tests
+test evidence::store::linux::tests::deadline_refusal_is_effect_free_and_finalization_allowance_is_explicit ... ok
+
+thread 'evidence::store::linux::tests::empty_pre_intent_directories_are_removed_only_by_explicit_recovery' (1638908) panicked at crates/workbench-core/src/evidence/store/tests.rs:124:9:
+assertion `left == right` failed
+  left: "corrupt"
+ right: "incomplete"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test evidence::store::linux::tests::generated_ids_and_bound_policies_are_checked_before_writes ... ok
+
+thread 'evidence::store::linux::tests::pre_intent_failures_can_be_explicitly_recovered_after_restart' (1638915) panicked at crates/workbench-core/src/evidence/store/tests.rs:106:9:
+assertion `left == right` failed
+  left: "corrupt"
+ right: "incomplete"
+test evidence::store::linux::tests::empty_pre_intent_directories_are_removed_only_by_explicit_recovery ... FAILED
+test evidence::store::linux::tests::locking_is_nonblocking_and_reads_never_initialize_a_store ... ok
+test evidence::store::linux::tests::a_refused_receipt_reservation_can_still_seal_an_honest_partial_bundle ... ok
+test evidence::store::linux::tests::cancellation_before_management_access_or_mutation_preserves_every_byte ... ok
+test evidence::store::linux::tests::pre_intent_failures_can_be_explicitly_recovered_after_restart ... FAILED
+
+thread 'evidence::store::linux::tests::relative_store_options_are_rejected_before_access' (1638919) panicked at crates/workbench-core/src/evidence/store/tests.rs:80:18:
+expected a refusal
+test evidence::store::linux::tests::malformed_canonical_orphan_receipt_is_preserved_and_refused_by_recovery ... ok
+test evidence::store::linux::tests::relative_store_options_are_rejected_before_access ... FAILED
+test evidence::store::linux::tests::checkpoint_failure_exposes_the_confirmed_object_and_recovery_preserves_it ... ok
+test evidence::store::linux::tests::partial_deletion_retries_use_the_original_manifest_digest ... ok
+test evidence::store::linux::tests::altered_receipt_bytes_and_cross_run_paths_are_detected_on_restart ... ok
+
+thread 'evidence::store::linux::tests::sealed_unreferenced_artifacts_are_refused_by_reads_and_bulk_management' (1638924) panicked at crates/workbench-core/src/evidence/store/tests.rs:80:18:
+expected a refusal
+test evidence::store::linux::tests::artifact_symlink_hardlink_fifo_and_unsafe_mode_are_refused ... ok
+test evidence::store::linux::tests::sealed_unreferenced_artifacts_are_refused_by_reads_and_bulk_management ... FAILED
+test evidence::store::linux::tests::store_and_ancestor_symlinks_and_unsafe_modes_are_refused ... ok
+test evidence::store::linux::tests::domain_hook_checks_deletion_journal_payload_without_requiring_removed_receipts ... ok
+test evidence::store::linux::tests::unknown_format_with_no_lock_is_untouched_and_initialized_locks_are_not_recreated ... ok
+test evidence::store::linux::tests::duplicate_bytes_are_independent_across_runs_and_count_toward_quota ... ok
+test evidence::store::linux::tests::receipt_nested_shapes_and_bounds_are_checked_before_publication ... ok
+test evidence::store::linux::tests::injected_write_sync_and_publish_failures_preserve_staging_and_withhold_references ... ok
+test evidence::store::linux::tests::unsupported_formats_are_never_rewritten_or_removed ... ok
+test evidence::store::linux::tests::protection_is_mutable_without_changing_manifest_identity_and_blocks_removal ... ok
+test evidence::store::linux::tests::shared_receipt_depth_covers_response_and_envelope_without_unbounded_json ... ok
+test evidence::store::linux::tests::recovery_marks_interrupted_without_replaying_or_claiming_checkpoint_completion ... ok
+test evidence::store::linux::tests::sealed_receipts_survive_restart_with_private_run_relative_references ... ok
+test evidence::store::linux::tests::malformed_duplicate_and_oversized_metadata_are_refused ... ok
+test evidence::store::linux::tests::cancellation_after_completed_bulk_action_retains_exact_progress_and_stops_next_run ... ok
+test evidence::store::linux::tests::seal_failure_never_returns_a_bundle_reference ... ok
+test evidence::store::linux::tests::root_deletion_journal_preserves_digest_before_and_after_run_directory_removal ... ok
+test evidence::store::linux::tests::retention_only_removes_old_unprotected_resolved_sealed_runs ... ok
+test evidence::store::linux::tests::domain_hook_classifies_and_preflights_all_runs_before_prune_or_recovery ... ok
+
+failures:
+
+failures:
+    evidence::store::linux::tests::empty_pre_intent_directories_are_removed_only_by_explicit_recovery
+    evidence::store::linux::tests::pre_intent_failures_can_be_explicitly_recovered_after_restart
+    evidence::store::linux::tests::relative_store_options_are_rejected_before_access
+    evidence::store::linux::tests::sealed_unreferenced_artifacts_are_refused_by_reads_and_bulk_management
+
+test result: FAILED. 27 passed; 4 failed; 0 ignored; 0 measured; 225 filtered out; finished in 0.03s
+
+error: test failed, to rerun pass `-p workbench-core --lib`
