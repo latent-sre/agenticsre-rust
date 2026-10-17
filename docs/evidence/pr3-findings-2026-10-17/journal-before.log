@@ -1,0 +1,22 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Finished `test` profile [unoptimized] target(s) in 8.30s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-3566ffb7bd3d67a7)
+
+running 1 test
+test runbooks::store::platform::tests::foreign_unknown_format_blocks_open_create_and_replace_without_effects ... FAILED
+
+failures:
+
+---- runbooks::store::platform::tests::foreign_unknown_format_blocks_open_create_and_replace_without_effects stdout ----
+
+thread 'runbooks::store::platform::tests::foreign_unknown_format_blocks_open_create_and_replace_without_effects' (57) panicked at crates/workbench-core/src/runbooks/store.rs:603:42:
+called `Result::unwrap_err()` on an `Ok` value: Store { root: Directory(File { fd: 3, path: "/tmp/guided-store-56-1", read: true, write: false }), _lock: File { fd: 4, path: "/tmp/guided-store-56-1/lock", read: true, write: true }, deadline: Instant { tv_sec: 85404, tv_nsec: 513221320 }, effects: false }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    runbooks::store::platform::tests::foreign_unknown_format_blocks_open_create_and_replace_without_effects
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 255 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p workbench-core --lib`

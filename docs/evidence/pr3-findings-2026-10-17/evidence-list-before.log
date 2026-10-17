@@ -1,0 +1,19 @@
+   Compiling workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust-diagnostics/crates/workbench-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.07s
+     Running unittests src/lib.rs (target/debug/deps/workbench_core-a0406fe796bef434)
+
+running 1 test
+
+thread 'evidence::store::linux::tests::invalid_pre_intent_staging_is_listed_without_hiding_valid_neighbors' (1645175) panicked at crates/workbench-core/src/evidence/store/tests.rs:281:38:
+called `Result::unwrap()` on an `Err` value: StoreError { code: "store_unsupported_format", effects: false }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test evidence::store::linux::tests::invalid_pre_intent_staging_is_listed_without_hiding_valid_neighbors ... FAILED
+
+failures:
+
+failures:
+    evidence::store::linux::tests::invalid_pre_intent_staging_is_listed_without_hiding_valid_neighbors
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 263 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p workbench-core --lib`

@@ -1,5 +1,22 @@
 # Product roadmap
 
+## PR #3 review corrections — 2026-10-17
+
+All seven reported P2 findings were reproduced and fixed on both affected branches. See the
+[finding-by-finding verification](pr3-findings-verification.md) and retained regression logs.
+The shared correction is `1fae8fd` on `codex/offline-evidence`; its backport is `f12e4c9` on
+`codex/service-diagnostics`. The newer branch passed 595 workspace tests with 33 existing scoped
+ignores; the older branch passed 335 with 19 existing scoped ignores. Both had zero failures and
+passed strict workspace lint, formatting, specification checks and ordinary builds.
+
+The fixes cover pre-intent evidence recovery, absolute store paths, unknown journal formats,
+runbook cursor and receipt bindings, bounded work/finalization deadlines, and unreferenced sealed
+artifacts. New regressions exercise public CLI refusal without replay or journal mutation,
+cancelled/restartable cleanup, protected/unknown-format preservation, and validated explicit
+deletion. A separate test-only staged-executable fix resolves an observed MCP fixture launch race
+on the newer branch. No live store, service, credential or deployment was changed. Prior milestone
+evidence below retains its original source identity and does not supersede this correction record.
+
 **Status:** Live product work queue, established 2026-10-02. The owner selected
 latent-sre/agenticsre-rust as the working repository. Scope and dependencies live in the
 [planning package](sre-workbench/README.md); this file owns current execution status.
