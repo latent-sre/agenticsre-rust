@@ -1,6 +1,6 @@
 # Local browser workbench — interface contract
 
-- **Version:** 0.1.4 (wire `api_version` remains `0.1`), 2026-10-17.
+- **Version:** 0.1.5 (wire `api_version` remains `0.1`), 2026-10-19.
 - **Owner:** GUI backend builder owns this contract and `docs/ui/openapi.json` during implementation;
   changes go through the coordinator and must reach the frontend builder before use.
 - **Status:** The owner selected a local browser app with direct checks and results/history, ahead
@@ -31,6 +31,10 @@ retain their current behavior.
 through independently granted operations. Execution uses explicit `--config` and `--query-target`
 IDs; diagnostic `--target` aliases remain separate. The browser supplies literal parameters and
 an explicit window, with no arbitrary expression or endpoint input.
+
+[Evidence collection](evidence-ui.md) adds independent installed-pack catalog and collection
+grants. Collection uses explicit `--collection-target` aliases, pinned context and an initialized
+private store, and saves receipts under its fixed recording policy. Offline read grants stay separate.
 
 ## Packaging and execution
 

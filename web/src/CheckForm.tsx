@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
+import { CollectionFields } from './CollectionFields';
 import { Field, Icon } from './components';
-import { availableChecks, checkNames, commandInput, diagnosticPack, initialValues, investigationOperations, isInvestigation, isCheck, isQuery, queryDefinitions, queryOperations, makeSubmission, plainText, validateForm } from './model';
+import { availableChecks, checkNames, commandInput, diagnosticPack, initialValues, collectionOperations, isCollection, investigationOperations, isInvestigation, isCheck, isQuery, queryDefinitions, queryOperations, makeSubmission, plainText, validateForm } from './model';
 import type { Check, FieldErrors, FormValues, Problem, Session, Submission } from './model';
 
 type Props = {
@@ -13,21 +14,24 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
   const options = availableChecks(session);
   const selectedCheck = check && options.includes(check) ? check : options[0] ?? 'budget';
   const selectedRoot = session.roots.some(item => item.id === root) ? root ?? '' : session.roots[0]?.id ?? '';
-  const targets = selectedCheck === 'query-run' ? session.query_targets ?? [] : session.targets;
+  const targets = selectedCheck === 'evidence-collect' ? session.collection_targets ?? [] : selectedCheck === 'query-run' ? session.query_targets ?? [] : session.targets;
   const selectedTarget = targets.some(item => item.id === target) ? target ?? '' : targets[0]?.id ?? '';
   const pack = diagnosticPack(session);
   const [draft, setDraft] = useState(initialValues);
+  const [collectionLimits, setCollectionLimits] = useState({ timeout: '60', outputLimit: '2097152' });
   const [errors, setErrors] = useState<FieldErrors>({});
   const form = useRef<HTMLFormElement>(null);
-  const values: FormValues = { ...draft, check: selectedCheck, root: selectedRoot, target: selectedTarget };
+  const values: FormValues = { ...draft, ...(selectedCheck === 'evidence-collect' ? collectionLimits : {}), check: selectedCheck, root: selectedRoot, target: selectedTarget };
   const diagnostics = selectedCheck === 'diagnostics';
   const investigation = isInvestigation(selectedCheck);
   const query = isQuery(selectedCheck);
+  const collection = isCollection(selectedCheck);
   const hasExec = session.operations.some(operation => operation.id === 'process.exec');
   const hasInspect = session.operations.some(operation => operation.id === 'command.inspect');
   const canSubmit = options.length > 0 && !busy && !submitting;
   const setValue = <K extends keyof FormValues>(key: K, value: FormValues[K]) => {
-    setDraft(current => ({ ...current, [key]: value }));
+    if (selectedCheck === 'evidence-collect' && (key === 'timeout' || key === 'outputLimit')) setCollectionLimits(current => ({ ...current, [key]: value }));
+    else setDraft(current => ({ ...current, [key]: value }));
     if (errors[key]) setErrors(current => ({ ...current, [key]: undefined }));
   };
   const fieldError = (key: keyof FormValues) => {
@@ -47,11 +51,11 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
     const first = Object.keys(nextErrors)[0];
     if (first) { const field = form.current?.querySelector<HTMLElement>(`#${first}`); const details = field?.closest('details'); if (details) details.open = true; field?.focus(); return; }
     const submitter = (event.nativeEvent as SubmitEvent).submitter;
-    const operation = isQuery(values.check) ? queryOperations[values.check] : isInvestigation(values.check) ? investigationOperations[values.check] : diagnostics ? 'diagnostics.run' : values.check === 'budget' ? 'task.run'
+    const operation = isCollection(values.check) ? collectionOperations[values.check] : isQuery(values.check) ? queryOperations[values.check] : isInvestigation(values.check) ? investigationOperations[values.check] : diagnostics ? 'diagnostics.run' : values.check === 'budget' ? 'task.run'
       : submitter instanceof HTMLButtonElement && submitter.value === 'inspect' || !hasExec ? 'command.inspect' : 'process.exec';
     onSubmit(makeSubmission(values, operation, crypto.randomUUID()));
   };
-  const preview = query ? selectedCheck === 'query-run' ? `${values.queryId} v1 · ${selectedTarget} · ${values.windowKind === 'relative' ? `${values.lookback} second lookback` : 'absolute window'}` : `${checkNames[selectedCheck]} · installed definitions · offline` : investigation ? `${checkNames[selectedCheck]} · offline · historical sources` : diagnostics ? `connectivity v1 · ${selectedTarget} · body capture ${values.captureBody ? 'on' : 'off'}` : values.check === 'budget'
+  const preview = collection ? selectedCheck === 'evidence-collect' ? `service-queries v1 · ${selectedTarget} · collect and save` : `${checkNames[selectedCheck]} · installed definitions · offline` : query ? selectedCheck === 'query-run' ? `${values.queryId} v1 · ${selectedTarget} · ${values.windowKind === 'relative' ? `${values.lookback} second lookback` : 'absolute window'}` : `${checkNames[selectedCheck]} · installed definitions · offline` : investigation ? `${checkNames[selectedCheck]} · offline · historical sources` : diagnostics ? `connectivity v1 · ${selectedTarget} · body capture ${values.captureBody ? 'on' : 'off'}` : values.check === 'budget'
     ? `${values.slo || '—'}% SLO · ${values.days || '—'} days · ${values.minutes || '—'} bad minutes`
     : (() => { const command = commandInput(values); return `${command.program} ${command.args.map(arg => /^[A-Za-z0-9_./=-]+$/u.test(arg) ? arg : JSON.stringify(arg)).join(' ')}`; })();
   return <form className="card check-form" ref={form} onSubmit={submit} noValidate aria-label="Run a check">
@@ -63,18 +67,21 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
             {options.map(option => <option key={option} value={option}>{checkNames[option]}</option>)}
           </select>
         </Field>
-        {diagnostics || selectedCheck === 'query-run' ? <Field id="target" label={diagnostics ? 'Diagnostic target' : 'Query target'} error={fieldError('target')} hint="Only aliases explicitly granted to this session.">
+        {diagnostics || selectedCheck === 'query-run' || selectedCheck === 'evidence-collect' ? <Field id="target" label={diagnostics ? 'Diagnostic target' : selectedCheck === 'evidence-collect' ? 'Collection target' : 'Query target'} error={fieldError('target')} hint="Only aliases explicitly granted to this session.">
           <select {...inputProps('target')} value={selectedTarget} onChange={event => onSelection(selectedCheck, selectedRoot, event.target.value)}>
             {targets.map(item => <option key={item.id} value={item.id}>{plainText(item.label)}</option>)}
           </select>
-        </Field> : selectedCheck !== 'budget' && !investigation && !query && <Field id="root" label="Workspace" error={fieldError('root')}>
+        </Field> : selectedCheck !== 'budget' && !investigation && !query && !collection && <Field id="root" label="Workspace" error={fieldError('root')}>
           <select {...inputProps('root')} value={selectedRoot} onChange={event => onSelection(selectedCheck, event.target.value, selectedTarget)}>
             {session.roots.map(item => <option key={item.id} value={item.id}>{plainText(item.label)}</option>)}
           </select>
         </Field>}
       </div>
       {!options.includes('diagnostics') && <p className="field-hint">Diagnostics require a new session with explicitly granted targets.</p>}
-      {query ? <>
+      {collection ? selectedCheck === 'evidence-collect'
+        ? <CollectionFields values={values} setValue={setValue} error={fieldError} inputProps={inputProps} />
+        : <p className="form-description">Inspect the installed service-queries version 1 pack. Catalog inspection needs no connection or evidence store and performs no collection.</p>
+        : query ? <>
         <p className="form-description">Installed, versioned queries use one literal job label. Observations do not assess service health. Catalog inspection is offline.</p>
         {selectedCheck === 'queries-list' ? <p className="field-hint">Read the installed definitions, their digests, parameters, limits and blind spots. Select Inspect saved query for one definition or Run saved query to collect observations.</p> : <Field id="queryId" label="Saved query definition" error={fieldError('queryId')} hint="Only these installed definitions are supported. Inspect saved query shows the authoritative definition and digest.">
           <select {...inputProps('queryId')} value={values.queryId} onChange={event => { const id = event.target.value; if (id === 'prometheus.up-by-job' || id === 'loki.logs-by-job') setValue('queryId', id); }}>
@@ -177,19 +184,19 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
         </div>
       </>}
       <details className="advanced"><summary>Run limits</summary><div className="advanced-fields">
-        <Field id="timeout" label="Timeout (seconds)" error={fieldError('timeout')} hint={diagnostics ? 'Up to 60 seconds for the whole pack; each check is bounded to 10 seconds.' : investigation ? 'Up to 300 seconds for the offline operation. Set its output allowance below.' : 'Up to 300 seconds. Captured output is limited to 1 MiB.'}>
+        <Field id="timeout" label="Timeout (seconds)" error={fieldError('timeout')} hint={selectedCheck === 'evidence-collect' ? 'Up to 60 seconds for both observations and saving their receipts.' : diagnostics ? 'Up to 60 seconds for the whole pack; each check is bounded to 10 seconds.' : investigation ? 'Up to 300 seconds for the offline operation. Set its output allowance below.' : 'Up to 300 seconds. Captured output is limited to 1 MiB.'}>
           <input {...inputProps('timeout')} inputMode="decimal" value={values.timeout} onChange={event => setValue('timeout', event.target.value)} />
         </Field>
-        {(diagnostics || investigation || query) && <Field id="outputLimit" label="Output allowance (bytes)" error={fieldError('outputLimit')} hint={diagnostics ? "1,024–16,384 bytes. Body capture uses this allowance and the 16 KiB diagnostic ceiling." : "1,024–1,048,576 bytes. Large results may be partial; canonical receipt retains the disclosed bounds."}>
+        {(diagnostics || investigation || query || collection) && <Field id="outputLimit" label="Output allowance (bytes)" error={fieldError('outputLimit')} hint={collection ? "1,024–2,097,152 bytes. Large results may be partial." : diagnostics ? "1,024–16,384 bytes. Body capture uses this allowance and the 16 KiB diagnostic ceiling." : "1,024–1,048,576 bytes. Large results may be partial; canonical receipt retains the disclosed bounds."}>
           <input {...inputProps('outputLimit')} inputMode="numeric" value={values.outputLimit} onChange={event => setValue('outputLimit', event.target.value)} />
         </Field>}
       {(selectedCheck === 'evidence-open' || selectedCheck === 'evidence-compare') && <Field id="maxItems" label="Maximum detail items" error={fieldError('maxItems')} hint="1–1,000. Omitted details are disclosed in the result."><input {...inputProps('maxItems')} inputMode="numeric" value={values.maxItems} onChange={event => setValue('maxItems', event.target.value)} /></Field>}
       </div></details>
     </div>
     <div className="form-footer"><code className="command-preview" aria-label="Check preview">{plainText(preview)}</code><div className="actions">
-      {selectedCheck !== 'budget' && !diagnostics && !investigation && !query && hasExec && hasInspect && <button className="button secondary" type="submit" value="inspect" disabled={!canSubmit}>Inspect</button>}
+      {selectedCheck !== 'budget' && !diagnostics && !investigation && !query && !collection && hasExec && hasInspect && <button className="button secondary" type="submit" value="inspect" disabled={!canSubmit}>Inspect</button>}
       <button className="button primary" type="submit" disabled={!canSubmit}>
-        {submitting ? 'Starting…' : query ? selectedCheck === 'query-run' ? 'Run query' : 'Inspect catalog' : diagnostics ? 'Run diagnostics' : selectedCheck === 'budget' ? 'Calculate budget' : investigation ? 'Run check' : !hasExec ? 'Inspect check' : 'Run check'}<Icon name="arrow" size={16} />
+        {submitting ? 'Starting…' : collection ? selectedCheck === 'evidence-collect' ? 'Collect and save' : 'Inspect catalog' : query ? selectedCheck === 'query-run' ? 'Run query' : 'Inspect catalog' : diagnostics ? 'Run diagnostics' : selectedCheck === 'budget' ? 'Calculate budget' : investigation ? 'Run check' : !hasExec ? 'Inspect check' : 'Run check'}<Icon name="arrow" size={16} />
       </button>
     </div></div>
   </form>;

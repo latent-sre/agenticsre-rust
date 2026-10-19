@@ -1035,7 +1035,7 @@ enum UiCommands {
         #[arg(
             long,
             value_name = "OPERATION",
-            help = "Repeat process.exec, command.inspect, task.run, diagnostics.run, queries.list, queries.describe, query.run, context.resolve, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no checks"
+            help = "Repeat process.exec, command.inspect, task.run, diagnostics.run, queries.list, queries.describe, query.run, context.resolve, evidence.packs.list, evidence.packs.describe, evidence.collect, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no checks"
         )]
         allow: Vec<String>,
         #[arg(
@@ -1056,6 +1056,12 @@ enum UiCommands {
             help = "Repeat trusted --config target IDs for query.run; independent of diagnostic --target IDs"
         )]
         query_target: Vec<String>,
+        #[arg(
+            long,
+            value_name = "TARGET_ID",
+            help = "Repeat trusted --config aliases for evidence.collect; independent of query and diagnostic targets"
+        )]
+        collection_target: Vec<String>,
     },
 }
 
@@ -1720,6 +1726,7 @@ fn run() -> u8 {
                 root,
                 target,
                 query_target,
+                collection_target,
             },
     } = &cli.command
     {
@@ -1736,15 +1743,24 @@ fn run() -> u8 {
             || cli.schedule_state_dir.is_some()
             || cli.store_max_bytes.is_some()
             || cli.retention_days.is_some()
-            || (cli.config.is_some() && !allow.iter().any(|operation| operation == "query.run"))
+            || (cli.config.is_some()
+                && !allow.iter().any(|operation| {
+                    matches!(operation.as_str(), "query.run" | "evidence.collect")
+                }))
             || cli.promtool.is_some()
             || ((cli.context_source.is_some() || cli.context_max_age_days.is_some())
-                && !allow.iter().any(|operation| operation == "context.resolve"))
+                && !allow.iter().any(|operation| {
+                    matches!(operation.as_str(), "context.resolve" | "evidence.collect")
+                }))
             || (cli.state_dir.is_some()
                 && !allow.iter().any(|operation| {
                     matches!(
                         operation.as_str(),
-                        "evidence.list" | "evidence.open" | "evidence.compare" | "report.create"
+                        "evidence.collect"
+                            | "evidence.list"
+                            | "evidence.open"
+                            | "evidence.compare"
+                            | "report.create"
                     )
                 }))
             || (cli.diagnostics_config.is_some()
@@ -1764,6 +1780,7 @@ fn run() -> u8 {
             targets: target.clone(),
             config: cli.config.clone(),
             query_targets: query_target.clone(),
+            collection_targets: collection_target.clone(),
             context_source: cli.context_source.clone(),
             context_max_age_days: cli.context_max_age_days,
             evidence_store: cli.state_dir.clone().map(EvidenceStoreOptions::new),

@@ -51,6 +51,7 @@ mod tests {
                 evidence_store: None,
                 config: None,
                 query_targets: vec![],
+                collection_targets: vec![],
             })
             .unwrap_or_else(|error| panic!("grant: {error}"));
             Self { path, grants }
@@ -430,14 +431,19 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
     }
     let diagnostic = input.operation == "diagnostics.run";
     let query = input.operation == "query.run";
+    let collection = input.operation == "evidence.collect";
+    let collection_catalog = matches!(
+        input.operation.as_str(),
+        "evidence.packs.list" | "evidence.packs.describe"
+    );
     let query_catalog = matches!(
         input.operation.as_str(),
         "queries.list" | "queries.describe"
     );
-    if (!diagnostic && had_concurrency) || (!diagnostic && !query && had_target) {
+    if (!diagnostic && had_concurrency) || (!diagnostic && !query && !collection && had_target) {
         return Err(ApiError::invalid(
             "request",
-            "Only diagnostics and saved queries accept target_id; only diagnostics accept concurrency.",
+            "Only diagnostics, saved queries and collection accept target_id; only diagnostics accept concurrency.",
         ));
     }
     let investigation = grants
@@ -455,7 +461,45 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
             "Only evidence.open and evidence.compare accept max_items.",
         ));
     }
-    let (inputs, label) = if query || query_catalog {
+    let (inputs, label) = if collection || collection_catalog {
+        if had_root {
+            return Err(ApiError::invalid(
+                "root_id",
+                "Evidence collection does not accept a root selector.",
+            ));
+        }
+        if collection {
+            let target = input.target_id.as_deref().ok_or_else(|| {
+                ApiError::invalid("target_id", "Select one granted collection target.")
+            })?;
+            if !grants.collection_targets.contains(target) {
+                return Err(ApiError::forbidden(
+                    "target-not-granted",
+                    "Select a collection target explicitly granted by the launcher.",
+                ));
+            }
+            if !(1..=60_000).contains(&input.limits.timeout_ms) {
+                return Err(ApiError::invalid(
+                    "limits.timeout_ms",
+                    "Collection timeout must be 1–60000ms.",
+                ));
+            }
+            let normalized = workbench_core::normalize_evidence_collection_input(&input.inputs)
+                .map_err(|_| ApiError::invalid("inputs", "Use the installed service-queries pack schema without paths, expressions or policy overrides."))?;
+            (normalized, "Collect evidence")
+        } else if input.operation == "evidence.packs.list" && input.inputs == json!({}) {
+            (input.inputs, "Evidence pack catalog")
+        } else if input.operation == "evidence.packs.describe"
+            && input.inputs == json!({"id":"service-queries","version":1})
+        {
+            (input.inputs, "Evidence pack definition")
+        } else {
+            return Err(ApiError::invalid(
+                "inputs",
+                "Select the installed service-queries pack version 1; listing takes empty inputs.",
+            ));
+        }
+    } else if query || query_catalog {
         if had_root {
             return Err(ApiError::invalid(
                 "root_id",
@@ -632,12 +676,15 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
         request.target.id = input.target_id.clone().expect("admitted diagnostic target");
         request.limits.concurrency = Some(input.limits.concurrency.unwrap_or(2));
     }
-    if query {
+    if query || collection {
         request.target.kind = "connection".into();
         request.target.id = input
             .target_id
             .clone()
-            .expect("admitted saved-query target");
+            .expect("admitted observation target");
+    }
+    if collection {
+        request.record = "always".into();
     }
     request.validate().map_err(|_| {
         ApiError::invalid(

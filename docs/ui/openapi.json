@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "AgenticSRE local workbench",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Local bearer-authenticated browser adapter. Normative semantics: docs/ui.md, docs/diagnostics-ui.md, docs/investigation-ui.md and docs/query-ui.md. Embedded core schemas preserve authoritative validation semantics with local schema references; metadata literal references remain unchanged."
   },
   "paths": {
@@ -1413,10 +1413,16 @@
                 },
                 {
                   "$ref": "#/components/schemas/QueryRunOperation"
+                },
+                {
+                  "$ref": "#/components/schemas/CollectionCatalogOperation"
+                },
+                {
+                  "$ref": "#/components/schemas/CollectionRunOperation"
                 }
               ]
             },
-            "maxItems": 12
+            "maxItems": 15
           },
           "limits": {
             "type": "object",
@@ -1457,6 +1463,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DiagnosticTarget"
+            },
+            "maxItems": 16
+          },
+          "collection_targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CollectionTarget"
             },
             "maxItems": 16
           }
@@ -1727,6 +1740,15 @@
           },
           {
             "$ref": "#/components/schemas/QueryRunSubmission"
+          },
+          {
+            "$ref": "#/components/schemas/CollectionListSubmission"
+          },
+          {
+            "$ref": "#/components/schemas/CollectionDescribeSubmission"
+          },
+          {
+            "$ref": "#/components/schemas/CollectionRunSubmission"
           }
         ]
       },
@@ -1751,7 +1773,10 @@
               "report.create",
               "queries.list",
               "queries.describe",
-              "query.run"
+              "query.run",
+              "evidence.packs.list",
+              "evidence.packs.describe",
+              "evidence.collect"
             ]
           },
           "check_label": {
@@ -1817,7 +1842,7 @@
                 "type": "null"
               }
             ],
-            "description": "The selected diagnostic or saved-query alias; null for other operations. Never substituted for root_id."
+            "description": "The selected diagnostic, saved-query or collection alias; null for other operations. Never substituted for root_id."
           }
         },
         "required": [
@@ -1882,9 +1907,34 @@
                 }
               },
               "else": {
-                "properties": {
-                  "target_id": {
-                    "type": "null"
+                "if": {
+                  "properties": {
+                    "operation": {
+                      "const": "evidence.collect"
+                    }
+                  },
+                  "required": [
+                    "operation"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "root_id": {
+                      "type": "null"
+                    },
+                    "target_id": {
+                      "$ref": "#/components/schemas/CollectionTarget/properties/id"
+                    },
+                    "check_label": {
+                      "const": "Collect evidence"
+                    }
+                  }
+                },
+                "else": {
+                  "properties": {
+                    "target_id": {
+                      "type": "null"
+                    }
                   }
                 }
               }
@@ -11160,6 +11210,1865 @@
           "definition",
           "parameters",
           "window"
+        ],
+        "additionalProperties": false
+      },
+      "CollectionTarget": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "id",
+          "label"
+        ],
+        "additionalProperties": false,
+        "description": "Launcher-granted collection alias only, independent of saved-query and diagnostic targets."
+      },
+      "CollectionCatalogOperation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "evidence.packs.list",
+              "evidence.packs.describe"
+            ]
+          },
+          "version": {
+            "const": 1
+          },
+          "profile": {
+            "const": "installed-evidence-catalog-v1"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "profile"
+        ],
+        "additionalProperties": false
+      },
+      "CollectionRunOperation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "const": "evidence.collect"
+          },
+          "version": {
+            "const": 1
+          },
+          "profile": {
+            "const": "evidence-collection-v1"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "profile"
+        ],
+        "additionalProperties": false
+      },
+      "CollectionListSubmission": {
+        "type": "object",
+        "properties": {
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation": {
+            "const": "evidence.packs.list"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "inputs": {
+            "type": "object",
+            "additionalProperties": false
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          }
+        },
+        "required": [
+          "submission_id",
+          "operation",
+          "operation_version",
+          "inputs",
+          "limits"
+        ],
+        "additionalProperties": false
+      },
+      "CollectionDescribeSubmission": {
+        "type": "object",
+        "properties": {
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation": {
+            "const": "evidence.packs.describe"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "inputs": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "const": "service-queries"
+              },
+              "version": {
+                "const": 1
+              }
+            },
+            "required": [
+              "id",
+              "version"
+            ],
+            "additionalProperties": false
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          }
+        },
+        "required": [
+          "submission_id",
+          "operation",
+          "operation_version",
+          "inputs",
+          "limits"
+        ],
+        "additionalProperties": false
+      },
+      "CollectionRunSubmission": {
+        "type": "object",
+        "properties": {
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation": {
+            "const": "evidence.collect"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "target_id": {
+            "$ref": "#/components/schemas/CollectionTarget/properties/id"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/CoreEvidenceCollectInput"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/CollectionLimits"
+          }
+        },
+        "required": [
+          "submission_id",
+          "operation",
+          "operation_version",
+          "target_id",
+          "inputs",
+          "limits"
+        ],
+        "additionalProperties": false
+      },
+      "CollectionLimits": {
+        "type": "object",
+        "properties": {
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60000
+          },
+          "max_output_bytes": {
+            "type": "integer",
+            "minimum": 1024,
+            "maximum": 2097152
+          }
+        },
+        "required": [
+          "timeout_ms",
+          "max_output_bytes"
+        ],
+        "additionalProperties": false
+      },
+      "CoreEvidenceCollectInput": {
+        "title": "Fixed service-query evidence collection",
+        "type": "object",
+        "properties": {
+          "service": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "environment": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "team": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "deployment": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "pack": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "const": "service-queries"
+              },
+              "version": {
+                "const": 1
+              }
+            },
+            "required": [
+              "id",
+              "version"
+            ],
+            "additionalProperties": false
+          },
+          "window": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "absolute"
+                  },
+                  "from": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "relative"
+                  },
+                  "lookback_seconds": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400
+                  }
+                },
+                "required": [
+                  "kind",
+                  "lookback_seconds"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "datasource": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "not": {
+                  "pattern": "[^A-Za-z0-9_-]"
+                }
+              },
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "job": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "description": "Literal job label value; runtime additionally enforces 128 UTF-8 bytes and the legacy macro guard.",
+                    "not": {
+                      "pattern": "[\\u0000-\\u001f\\u007f-\\u009f]"
+                    }
+                  }
+                },
+                "required": [
+                  "job"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "datasource",
+              "parameters"
+            ],
+            "additionalProperties": false
+          },
+          "logs": {
+            "type": "object",
+            "properties": {
+              "datasource": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "not": {
+                  "pattern": "[^A-Za-z0-9_-]"
+                }
+              },
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "job": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "description": "Literal job label value; runtime additionally enforces 128 UTF-8 bytes and the legacy macro guard.",
+                    "not": {
+                      "pattern": "[\\u0000-\\u001f\\u007f-\\u009f]"
+                    }
+                  }
+                },
+                "required": [
+                  "job"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "datasource",
+              "parameters"
+            ],
+            "additionalProperties": false
+          },
+          "on_failure": {
+            "enum": [
+              "continue",
+              "stop"
+            ]
+          },
+          "expected_pack_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "minLength": 64,
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "service",
+          "environment",
+          "pack",
+          "window",
+          "metrics",
+          "logs",
+          "on_failure"
+        ],
+        "additionalProperties": false
+      },
+      "CoreEvidenceCollectionData": {
+        "title": "Terminal collection data and optional durable bundle reference",
+        "type": "object",
+        "properties": {
+          "format_version": {
+            "const": 1
+          },
+          "producer": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "const": "save"
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "spec_version": {
+                "const": "0.1"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "spec_version"
+            ],
+            "additionalProperties": false
+          },
+          "run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 96,
+            "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "started_at": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "format": "date-time"
+          },
+          "finalized_at": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "format": "date-time"
+          },
+          "selection": {
+            "type": "object",
+            "properties": {
+              "service": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "redacted": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "redacted"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "environment": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "redacted": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "redacted"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "team": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "deployment": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "redacted": {
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "redacted"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "service",
+              "environment",
+              "team",
+              "deployment"
+            ],
+            "additionalProperties": false
+          },
+          "connection": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[a-z0-9][a-z0-9._-]*$"
+              },
+              "origin": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2048
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "redacted": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "redacted"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "organization_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "redacted": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "redacted"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "origin",
+              "organization_id"
+            ],
+            "additionalProperties": false
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "grafana_config_sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$",
+                    "minLength": 71,
+                    "maxLength": 71
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "redacted": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "redacted"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "grafana_ca": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "const": "custom"
+                      },
+                      "sha256": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^sha256:[a-f0-9]{64}$",
+                            "minLength": 71,
+                            "maxLength": 71
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "redacted": {
+                                "const": true
+                              }
+                            },
+                            "required": [
+                              "redacted"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "sha256"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "const": "builtin"
+                      },
+                      "sha256": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "sha256"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "context": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "const": "fixture-export"
+                      },
+                      "id": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "redacted": {
+                                "const": true
+                              }
+                            },
+                            "required": [
+                              "redacted"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "revision": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "redacted": {
+                                "const": true
+                              }
+                            },
+                            "required": [
+                              "redacted"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "sha256": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^sha256:[a-f0-9]{64}$",
+                            "minLength": 71,
+                            "maxLength": 71
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "redacted": {
+                                "const": true
+                              }
+                            },
+                            "required": [
+                              "redacted"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "observed_at": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64,
+                            "format": "date-time"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "redacted": {
+                                "const": true
+                              }
+                            },
+                            "required": [
+                              "redacted"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "evidence_state": {
+                        "const": "sourced"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "id",
+                      "revision",
+                      "sha256",
+                      "observed_at",
+                      "evidence_state"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "record": {
+                    "type": "object",
+                    "properties": {
+                      "service": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "redacted": {
+                                "const": true
+                              }
+                            },
+                            "required": [
+                              "redacted"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "team": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "redacted": {
+                                "const": true
+                              }
+                            },
+                            "required": [
+                              "redacted"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "environment": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "redacted": {
+                                "const": true
+                              }
+                            },
+                            "required": [
+                              "redacted"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "deployment": {
+                        "anyOf": [
+                          {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "redacted": {
+                                    "const": true
+                                  }
+                                },
+                                "required": [
+                                  "redacted"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "state": {
+                        "const": "active"
+                      },
+                      "last_reviewed": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64,
+                            "format": "date-time"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "redacted": {
+                                "const": true
+                              }
+                            },
+                            "required": [
+                              "redacted"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "bindings": {
+                        "type": "object",
+                        "properties": {
+                          "target": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "redacted": {
+                                    "const": true
+                                  }
+                                },
+                                "required": [
+                                  "redacted"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "environment": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "redacted": {
+                                    "const": true
+                                  }
+                                },
+                                "required": [
+                                  "redacted"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "organization": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "redacted": {
+                                    "const": true
+                                  }
+                                },
+                                "required": [
+                                  "redacted"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "target",
+                          "environment",
+                          "organization"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "service",
+                      "team",
+                      "environment",
+                      "deployment",
+                      "state",
+                      "last_reviewed",
+                      "bindings"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "resolution": {
+                    "type": "object",
+                    "properties": {
+                      "state": {
+                        "const": "resolved"
+                      },
+                      "usable": {
+                        "const": true
+                      },
+                      "max_age_days": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 365
+                      },
+                      "age_seconds": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "state",
+                      "usable",
+                      "max_age_days",
+                      "age_seconds"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "source",
+                  "record",
+                  "resolution"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "grafana_config_sha256",
+              "grafana_ca",
+              "context"
+            ],
+            "additionalProperties": false
+          },
+          "pack": {
+            "const": {
+              "id": "service-queries",
+              "version": 1,
+              "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236"
+            }
+          },
+          "window": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "redacted": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "redacted"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "redacted": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "redacted"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "required": [
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          },
+          "on_failure": {
+            "enum": [
+              "continue",
+              "stop"
+            ]
+          },
+          "capture": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "none",
+                  "partial",
+                  "complete"
+                ]
+              },
+              "expected_steps": {
+                "const": 2
+              },
+              "retained_receipts": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2
+              }
+            },
+            "required": [
+              "state",
+              "expected_steps",
+              "retained_receipts"
+            ],
+            "additionalProperties": false
+          },
+          "steps": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "prefixItems": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "const": "metrics"
+                  },
+                  "operation": {
+                    "const": "query.run"
+                  },
+                  "definition": {
+                    "const": {
+                      "id": "prometheus.up-by-job",
+                      "version": 1,
+                      "dialect": "promql",
+                      "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f"
+                    }
+                  },
+                  "status": {
+                    "enum": [
+                      "omitted",
+                      "succeeded",
+                      "failed",
+                      "partial",
+                      "denied",
+                      "unsupported",
+                      "cancelled",
+                      "timed_out",
+                      "unknown"
+                    ]
+                  },
+                  "run_id": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 96,
+                        "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "started_at": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64,
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "finished_at": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64,
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "duration_ms": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "errors": {
+                    "type": "array",
+                    "maxItems": 16,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128,
+                      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+                    }
+                  },
+                  "coverage": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64
+                          },
+                          "scope": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2048
+                          },
+                          "limitations": {
+                            "type": "array",
+                            "maxItems": 16,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2048
+                            }
+                          }
+                        },
+                        "required": [
+                          "state",
+                          "scope",
+                          "limitations"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "redaction": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "applied": {
+                            "type": "boolean"
+                          },
+                          "replacements": {
+                            "type": "integer",
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "applied",
+                          "replacements"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "truncation": {
+                    "type": "object",
+                    "properties": {
+                      "stdout": {
+                        "type": "boolean"
+                      },
+                      "stderr": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "stdout",
+                      "stderr"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "artifact": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 79,
+                            "pattern": "^artifacts/[a-f0-9]{64}\\.json$"
+                          },
+                          "media_type": {
+                            "const": "application/json"
+                          },
+                          "bytes": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2097152
+                          },
+                          "digest": {
+                            "type": "string",
+                            "pattern": "^sha256:[a-f0-9]{64}$",
+                            "minLength": 71,
+                            "maxLength": 71
+                          },
+                          "classification": {
+                            "const": "restricted"
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "media_type",
+                          "bytes",
+                          "digest",
+                          "classification"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "omission": {
+                    "enum": [
+                      null,
+                      "not_dispatched",
+                      "after_failure",
+                      "cancelled",
+                      "deadline_exceeded",
+                      "result_consumer_closed",
+                      "store_unavailable",
+                      "receipt_not_retained"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "operation",
+                  "definition",
+                  "status",
+                  "run_id",
+                  "started_at",
+                  "finished_at",
+                  "duration_ms",
+                  "errors",
+                  "coverage",
+                  "redaction",
+                  "truncation",
+                  "artifact",
+                  "omission"
+                ],
+                "additionalProperties": false,
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "status": {
+                          "const": "omitted"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "run_id": {
+                          "type": "null"
+                        },
+                        "started_at": {
+                          "type": "null"
+                        },
+                        "finished_at": {
+                          "type": "null"
+                        },
+                        "duration_ms": {
+                          "type": "null"
+                        },
+                        "coverage": {
+                          "type": "null"
+                        },
+                        "redaction": {
+                          "type": "null"
+                        },
+                        "artifact": {
+                          "type": "null"
+                        },
+                        "omission": {
+                          "type": "string"
+                        },
+                        "errors": {
+                          "maxItems": 0
+                        },
+                        "truncation": {
+                          "const": {
+                            "stdout": false,
+                            "stderr": false
+                          }
+                        }
+                      }
+                    },
+                    "else": {
+                      "properties": {
+                        "run_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 96,
+                          "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+                        },
+                        "started_at": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "format": "date-time"
+                        },
+                        "finished_at": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "format": "date-time"
+                        },
+                        "duration_ms": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "const": "logs"
+                  },
+                  "operation": {
+                    "const": "query.run"
+                  },
+                  "definition": {
+                    "const": {
+                      "id": "loki.logs-by-job",
+                      "version": 1,
+                      "dialect": "logql",
+                      "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019"
+                    }
+                  },
+                  "status": {
+                    "enum": [
+                      "omitted",
+                      "succeeded",
+                      "failed",
+                      "partial",
+                      "denied",
+                      "unsupported",
+                      "cancelled",
+                      "timed_out",
+                      "unknown"
+                    ]
+                  },
+                  "run_id": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 96,
+                        "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "started_at": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64,
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "finished_at": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64,
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "duration_ms": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "errors": {
+                    "type": "array",
+                    "maxItems": 16,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128,
+                      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+                    }
+                  },
+                  "coverage": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64
+                          },
+                          "scope": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2048
+                          },
+                          "limitations": {
+                            "type": "array",
+                            "maxItems": 16,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2048
+                            }
+                          }
+                        },
+                        "required": [
+                          "state",
+                          "scope",
+                          "limitations"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "redaction": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "applied": {
+                            "type": "boolean"
+                          },
+                          "replacements": {
+                            "type": "integer",
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "applied",
+                          "replacements"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "truncation": {
+                    "type": "object",
+                    "properties": {
+                      "stdout": {
+                        "type": "boolean"
+                      },
+                      "stderr": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "stdout",
+                      "stderr"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "artifact": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 79,
+                            "pattern": "^artifacts/[a-f0-9]{64}\\.json$"
+                          },
+                          "media_type": {
+                            "const": "application/json"
+                          },
+                          "bytes": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2097152
+                          },
+                          "digest": {
+                            "type": "string",
+                            "pattern": "^sha256:[a-f0-9]{64}$",
+                            "minLength": 71,
+                            "maxLength": 71
+                          },
+                          "classification": {
+                            "const": "restricted"
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "media_type",
+                          "bytes",
+                          "digest",
+                          "classification"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "omission": {
+                    "enum": [
+                      null,
+                      "not_dispatched",
+                      "after_failure",
+                      "cancelled",
+                      "deadline_exceeded",
+                      "result_consumer_closed",
+                      "store_unavailable",
+                      "receipt_not_retained"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "operation",
+                  "definition",
+                  "status",
+                  "run_id",
+                  "started_at",
+                  "finished_at",
+                  "duration_ms",
+                  "errors",
+                  "coverage",
+                  "redaction",
+                  "truncation",
+                  "artifact",
+                  "omission"
+                ],
+                "additionalProperties": false,
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "status": {
+                          "const": "omitted"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "run_id": {
+                          "type": "null"
+                        },
+                        "started_at": {
+                          "type": "null"
+                        },
+                        "finished_at": {
+                          "type": "null"
+                        },
+                        "duration_ms": {
+                          "type": "null"
+                        },
+                        "coverage": {
+                          "type": "null"
+                        },
+                        "redaction": {
+                          "type": "null"
+                        },
+                        "artifact": {
+                          "type": "null"
+                        },
+                        "omission": {
+                          "type": "string"
+                        },
+                        "errors": {
+                          "maxItems": 0
+                        },
+                        "truncation": {
+                          "const": {
+                            "stdout": false,
+                            "stderr": false
+                          }
+                        }
+                      }
+                    },
+                    "else": {
+                      "properties": {
+                        "run_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 96,
+                          "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+                        },
+                        "started_at": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "format": "date-time"
+                        },
+                        "finished_at": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "format": "date-time"
+                        },
+                        "duration_ms": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "items": false
+          },
+          "errors": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[a-z0-9][a-z0-9._-]*$"
+            }
+          },
+          "redaction": {
+            "type": "object",
+            "properties": {
+              "applied": {
+                "type": "boolean"
+              },
+              "replacements": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "applied",
+              "replacements"
+            ],
+            "additionalProperties": false
+          },
+          "cancellation_signal": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bundle": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 96,
+                    "pattern": "^run-[0-9]+-[a-f0-9]+-[a-f0-9]+$"
+                  },
+                  "digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$",
+                    "minLength": 71,
+                    "maxLength": 71
+                  }
+                },
+                "required": [
+                  "id",
+                  "digest"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "delivery_cancellation_signal": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "format_version",
+          "producer",
+          "run_id",
+          "request_id",
+          "started_at",
+          "finalized_at",
+          "selection",
+          "connection",
+          "provenance",
+          "pack",
+          "window",
+          "on_failure",
+          "capture",
+          "steps",
+          "errors",
+          "redaction",
+          "cancellation_signal",
+          "bundle",
+          "delivery_cancellation_signal"
         ],
         "additionalProperties": false
       }

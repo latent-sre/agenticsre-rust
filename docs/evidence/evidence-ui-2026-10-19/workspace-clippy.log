@@ -1,0 +1,6 @@
+    Checking workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-cli)
+    Checking workbench-mcp v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-mcp)
+    Checking workbench-ui v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-ui)
+    Checking workbench-core v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-core)
+    Checking capacity-projector v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/capacity-projector)
+    Finished `dev` profile [unoptimized] target(s) in 0.88s

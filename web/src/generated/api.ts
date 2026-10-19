@@ -382,7 +382,7 @@ export interface components {
             api_version: "0.1";
             session_id: string;
             roots: components["schemas"]["Root"][];
-            operations: (components["schemas"]["CommandOperation"] | components["schemas"]["TaskOperation"] | components["schemas"]["DiagnosticOperation"] | components["schemas"]["ContextOperation"] | components["schemas"]["EvidenceOperation"] | components["schemas"]["QueryCatalogOperation"] | components["schemas"]["QueryRunOperation"])[];
+            operations: (components["schemas"]["CommandOperation"] | components["schemas"]["TaskOperation"] | components["schemas"]["DiagnosticOperation"] | components["schemas"]["ContextOperation"] | components["schemas"]["EvidenceOperation"] | components["schemas"]["QueryCatalogOperation"] | components["schemas"]["QueryRunOperation"] | components["schemas"]["CollectionCatalogOperation"] | components["schemas"]["CollectionRunOperation"])[];
             limits: {
                 /** @constant */
                 active_runs: 1;
@@ -397,6 +397,7 @@ export interface components {
             };
             query_targets?: components["schemas"]["QueryTarget"][];
             targets: components["schemas"]["DiagnosticTarget"][];
+            collection_targets?: components["schemas"]["CollectionTarget"][];
         };
         Limits: {
             timeout_ms: number;
@@ -435,7 +436,7 @@ export interface components {
             operation: "task.run";
             inputs: components["schemas"]["TaskInputs"];
         };
-        RunSubmission: components["schemas"]["CommandSubmission"] | components["schemas"]["TaskSubmission"] | components["schemas"]["DiagnosticSubmission"] | components["schemas"]["ContextSubmission"] | components["schemas"]["EvidenceListSubmission"] | components["schemas"]["EvidenceOpenSubmission"] | components["schemas"]["EvidenceCompareSubmission"] | components["schemas"]["ReportSubmission"] | components["schemas"]["QueryListSubmission"] | components["schemas"]["QueryDescribeSubmission"] | components["schemas"]["QueryRunSubmission"];
+        RunSubmission: components["schemas"]["CommandSubmission"] | components["schemas"]["TaskSubmission"] | components["schemas"]["DiagnosticSubmission"] | components["schemas"]["ContextSubmission"] | components["schemas"]["EvidenceListSubmission"] | components["schemas"]["EvidenceOpenSubmission"] | components["schemas"]["EvidenceCompareSubmission"] | components["schemas"]["ReportSubmission"] | components["schemas"]["QueryListSubmission"] | components["schemas"]["QueryDescribeSubmission"] | components["schemas"]["QueryRunSubmission"] | components["schemas"]["CollectionListSubmission"] | components["schemas"]["CollectionDescribeSubmission"] | components["schemas"]["CollectionRunSubmission"];
         /**
          * @example {
          *       "id": "inv-example",
@@ -463,7 +464,7 @@ export interface components {
         RunSummary: {
             id: string;
             /** @enum {unknown} */
-            operation: "process.exec" | "command.inspect" | "task.run" | "diagnostics.run" | "context.resolve" | "evidence.list" | "evidence.open" | "evidence.compare" | "report.create" | "queries.list" | "queries.describe" | "query.run";
+            operation: "process.exec" | "command.inspect" | "task.run" | "diagnostics.run" | "context.resolve" | "evidence.list" | "evidence.open" | "evidence.compare" | "report.create" | "queries.list" | "queries.describe" | "query.run" | "evidence.packs.list" | "evidence.packs.describe" | "evidence.collect";
             check_label: string;
             root_id: string | null;
             /** @enum {unknown} */
@@ -472,7 +473,7 @@ export interface components {
             submitted_at: string;
             execution_status: string | null;
             receipt_url: string | null;
-            /** @description The selected diagnostic or saved-query alias; null for other operations. Never substituted for root_id. */
+            /** @description The selected diagnostic, saved-query or collection alias; null for other operations. Never substituted for root_id. */
             target_id: string | null;
         } & (unknown & unknown);
         RunList: {
@@ -2037,6 +2038,370 @@ export interface components {
                     redacted: true;
                 };
             };
+        };
+        /** @description Launcher-granted collection alias only, independent of saved-query and diagnostic targets. */
+        CollectionTarget: {
+            id: string;
+            label: string;
+        };
+        CollectionCatalogOperation: {
+            /** @enum {unknown} */
+            id: "evidence.packs.list" | "evidence.packs.describe";
+            /** @constant */
+            version: 1;
+            /** @constant */
+            profile: "installed-evidence-catalog-v1";
+        };
+        CollectionRunOperation: {
+            /** @constant */
+            id: "evidence.collect";
+            /** @constant */
+            version: 1;
+            /** @constant */
+            profile: "evidence-collection-v1";
+        };
+        CollectionListSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation: "evidence.packs.list";
+            /** @constant */
+            operation_version: 1;
+            inputs: Record<string, never>;
+            limits: components["schemas"]["Limits"];
+        };
+        CollectionDescribeSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation: "evidence.packs.describe";
+            /** @constant */
+            operation_version: 1;
+            inputs: {
+                /** @constant */
+                id: "service-queries";
+                /** @constant */
+                version: 1;
+            };
+            limits: components["schemas"]["Limits"];
+        };
+        CollectionRunSubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation: "evidence.collect";
+            /** @constant */
+            operation_version: 1;
+            target_id: components["schemas"]["CollectionTarget"]["id"];
+            inputs: components["schemas"]["CoreEvidenceCollectInput"];
+            limits: components["schemas"]["CollectionLimits"];
+        };
+        CollectionLimits: {
+            timeout_ms: number;
+            max_output_bytes: number;
+        };
+        /** Fixed service-query evidence collection */
+        CoreEvidenceCollectInput: {
+            service: string;
+            environment: string;
+            team?: string;
+            deployment?: string;
+            pack: {
+                /** @constant */
+                id: "service-queries";
+                /** @constant */
+                version: 1;
+            };
+            window: {
+                /** @constant */
+                kind: "absolute";
+                /** Format: date-time */
+                from: string;
+                /** Format: date-time */
+                to: string;
+            } | {
+                /** @constant */
+                kind: "relative";
+                lookback_seconds: number;
+            };
+            metrics: {
+                datasource: string;
+                parameters: {
+                    /** @description Literal job label value; runtime additionally enforces 128 UTF-8 bytes and the legacy macro guard. */
+                    job: string;
+                };
+            };
+            logs: {
+                datasource: string;
+                parameters: {
+                    /** @description Literal job label value; runtime additionally enforces 128 UTF-8 bytes and the legacy macro guard. */
+                    job: string;
+                };
+            };
+            /** @enum {unknown} */
+            on_failure: "continue" | "stop";
+            expected_pack_sha256?: string;
+        };
+        /** Terminal collection data and optional durable bundle reference */
+        CoreEvidenceCollectionData: {
+            /** @constant */
+            format_version: 1;
+            producer: {
+                /** @constant */
+                id: "save";
+                version: string;
+                /** @constant */
+                spec_version: "0.1";
+            };
+            run_id: string;
+            request_id: string;
+            /** Format: date-time */
+            started_at: string;
+            /** Format: date-time */
+            finalized_at: string;
+            selection: {
+                service: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                environment: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                team: (string | {
+                    /** @constant */
+                    redacted: true;
+                }) | null;
+                deployment: (string | {
+                    /** @constant */
+                    redacted: true;
+                }) | null;
+            };
+            connection: {
+                id: string;
+                origin: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                organization_id: number | {
+                    /** @constant */
+                    redacted: true;
+                };
+            };
+            provenance: {
+                grafana_config_sha256: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                grafana_ca: {
+                    /** @constant */
+                    kind: "custom";
+                    sha256: string | {
+                        /** @constant */
+                        redacted: true;
+                    };
+                } | {
+                    /** @constant */
+                    kind: "builtin";
+                    sha256: null;
+                };
+                context: {
+                    source: {
+                        /** @constant */
+                        kind: "fixture-export";
+                        id: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        revision: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        sha256: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        observed_at: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        /** @constant */
+                        evidence_state: "sourced";
+                    };
+                    record: {
+                        service: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        team: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        environment: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        deployment: (string | {
+                            /** @constant */
+                            redacted: true;
+                        }) | null;
+                        /** @constant */
+                        state: "active";
+                        last_reviewed: string | {
+                            /** @constant */
+                            redacted: true;
+                        };
+                        bindings: {
+                            target: string | {
+                                /** @constant */
+                                redacted: true;
+                            };
+                            environment: string | {
+                                /** @constant */
+                                redacted: true;
+                            };
+                            organization: string | {
+                                /** @constant */
+                                redacted: true;
+                            };
+                        };
+                    };
+                    resolution: {
+                        /** @constant */
+                        state: "resolved";
+                        /** @constant */
+                        usable: true;
+                        max_age_days: number;
+                        age_seconds: number;
+                    };
+                };
+            };
+            /** @constant */
+            pack: {
+                id: "service-queries";
+                version: 1;
+                sha256: "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236";
+            };
+            window: {
+                from: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+                to: string | {
+                    /** @constant */
+                    redacted: true;
+                };
+            };
+            /** @enum {unknown} */
+            on_failure: "continue" | "stop";
+            capture: {
+                /** @enum {unknown} */
+                state: "none" | "partial" | "complete";
+                /** @constant */
+                expected_steps: 2;
+                retained_receipts: number;
+            };
+            steps: [
+                {
+                    /** @constant */
+                    id: "metrics";
+                    /** @constant */
+                    operation: "query.run";
+                    /** @constant */
+                    definition: {
+                        id: "prometheus.up-by-job";
+                        version: 1;
+                        dialect: "promql";
+                        sha256: "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f";
+                    };
+                    /** @enum {unknown} */
+                    status: "omitted" | "succeeded" | "failed" | "partial" | "denied" | "unsupported" | "cancelled" | "timed_out" | "unknown";
+                    run_id: string | null;
+                    started_at: string | null;
+                    finished_at: string | null;
+                    duration_ms: number | null;
+                    errors: string[];
+                    coverage: {
+                        state: string;
+                        scope: string;
+                        limitations: string[];
+                    } | null;
+                    redaction: {
+                        applied: boolean;
+                        replacements: number;
+                    } | null;
+                    truncation: {
+                        stdout: boolean;
+                        stderr: boolean;
+                    };
+                    artifact: {
+                        path: string;
+                        /** @constant */
+                        media_type: "application/json";
+                        bytes: number;
+                        digest: string;
+                        /** @constant */
+                        classification: "restricted";
+                    } | null;
+                    /** @enum {unknown} */
+                    omission: null | "not_dispatched" | "after_failure" | "cancelled" | "deadline_exceeded" | "result_consumer_closed" | "store_unavailable" | "receipt_not_retained";
+                } & unknown,
+                {
+                    /** @constant */
+                    id: "logs";
+                    /** @constant */
+                    operation: "query.run";
+                    /** @constant */
+                    definition: {
+                        id: "loki.logs-by-job";
+                        version: 1;
+                        dialect: "logql";
+                        sha256: "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019";
+                    };
+                    /** @enum {unknown} */
+                    status: "omitted" | "succeeded" | "failed" | "partial" | "denied" | "unsupported" | "cancelled" | "timed_out" | "unknown";
+                    run_id: string | null;
+                    started_at: string | null;
+                    finished_at: string | null;
+                    duration_ms: number | null;
+                    errors: string[];
+                    coverage: {
+                        state: string;
+                        scope: string;
+                        limitations: string[];
+                    } | null;
+                    redaction: {
+                        applied: boolean;
+                        replacements: number;
+                    } | null;
+                    truncation: {
+                        stdout: boolean;
+                        stderr: boolean;
+                    };
+                    artifact: {
+                        path: string;
+                        /** @constant */
+                        media_type: "application/json";
+                        bytes: number;
+                        digest: string;
+                        /** @constant */
+                        classification: "restricted";
+                    } | null;
+                    /** @enum {unknown} */
+                    omission: null | "not_dispatched" | "after_failure" | "cancelled" | "deadline_exceeded" | "result_consumer_closed" | "store_unavailable" | "receipt_not_retained";
+                } & unknown
+            ];
+            errors: string[];
+            redaction: {
+                applied: boolean;
+                replacements: number;
+            };
+            cancellation_signal: number | null;
+            bundle: {
+                id: string;
+                digest: string;
+            } | null;
+            delivery_cancellation_signal: number | null;
         };
     };
     responses: never;

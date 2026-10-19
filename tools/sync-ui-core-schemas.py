@@ -9,7 +9,7 @@ ROOTS = {
     "result", "common", "context-resolve-input", "context-data",
     "evidence-reference-input", "evidence-compare-input", "report-create-input",
     "evidence-offline-data", "evidence-comparison-data", "report-data",
-    "query-run-input", "query-run-data",
+    "query-run-input", "query-run-data", "evidence-collect-input", "evidence-collection-data",
 }
 
 

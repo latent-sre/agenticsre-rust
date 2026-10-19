@@ -2062,6 +2062,26 @@ The full suite and installed missions retain their earlier identities and are no
 rerun against the final binary. Commit/push of this verified checkpoint is authorized by the owner;
 live installation, host registration, target selection and release readiness remain separate.
 
+## WORKBENCH-033 — browser evidence collection (2026-10-19)
+
+The owner selected resuming the local product roadmap after review/merge cleanup. The bounded
+browser increment now provides independently granted pack catalog/description and collection,
+using the existing opaque core grant, separate collection aliases, pinned config/CA/context/store
+identities and fixed recording. Reading saved bundles still needs its own grant. The form and
+results expose store effects, durable bundle identities, partial capture, omissions and cancellation.
+
+[Installed browser acceptance](evidence-ui-verification.md) passed six receipts and 19 live HTTP
+contract validations, including sealed collection, independent offline opening, exact downloads
+and history, partial stop, witnessed cancellation and inert content. Four installed API groups and
+five new frontend tests pass; the full frontend suite passed 84 tests. Independent static review
+found no actionable issue. Source, browser evidence and the [interface contract](evidence-ui.md)
+are complete on `codex/browser-evidence-collection`. The owner authorized committing and opening
+its PR on 2026-10-19, with main integration requested separately from live setup, release or
+integration registration. The [final verification packet](evidence/evidence-ui-2026-10-19/summary.json)
+records 599 passing Rust tests, zero failures, 33 existing scoped ignores, strict workspace lint,
+formatting, schema synchronization and specification checks. A final test-only lint adjustment
+passed the four affected API tests; product source and assets remain identical to browser acceptance.
+
 ## Remaining product queue
 
 The following ledger preserves the complete requested scope. Accepted slices are evidence for
@@ -2079,7 +2099,7 @@ and [verification](sre-workbench/verification.md).
 | CAP-06 MCP | [Bounded stdio tasks, restricted commands and Grafana](mcp-verification.md), plus [offline investigations](investigation-mcp-verification.md), [saved-query grants](query-mcp-verification.md) and [local diagnostic grants](diagnostics-mcp-verification.md) | Actual selected agent-host registration and future operation grants |
 | CAP-07 context | [Offline core/CLI source resolver](context-verification.md), [pinned browser context](investigation-ui-verification.md) and [MCP context](investigation-mcp-verification.md) | Approved real team source and live target selection |
 | CAP-08 diagnostics | WORKBENCH-010 core/CLI and [WORKBENCH-011 browser](diagnostics-ui-verification.md) qualified native acceptance with frozen correctness/security reviews; [local MCP grants](diagnostics-mcp-verification.md) | Positive system-resolver fixture gap and later live/platform bindings |
-| CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery; [explicit MCP collection](evidence-mcp-verification.md) | Other operation recording policies, browser collection grants and live/platform acceptance |
+| CAP-09 evidence collection | [Real two-query collection and private durable store](evidence-collection-verification.md), quotas, retention and partial recovery; [explicit MCP collection](evidence-mcp-verification.md) and [browser collection](evidence-ui-verification.md) | Other operation recording policies and live/platform acceptance |
 | CAP-10 comparison | [Typed Linux fixture comparison](evidence-comparison-verification.md), [browser](investigation-ui-verification.md) and [MCP](investigation-mcp-verification.md), compatibility, normalization and explicit missing/partial outcomes | Live datasource/plugin compatibility, other supported evidence kinds and native-platform acceptance |
 | CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted; [local MCP grants](query-mcp-verification.md) and [browser grants](query-ui-verification.md) | Additional reviewed definitions and live/platform acceptance |
 | CAP-12 runbooks | [Installed evidence-review workflow](runbooks-verification.md), typed checkpoints, durable revision-bound resume and fresh attempts | Additional reviewed runbooks, hosted/platform acceptance; live observation workflows remain separate |
@@ -2093,7 +2113,7 @@ and [verification](sre-workbench/verification.md).
 | CAP-20 multiple targets | [Bounded Linux fleet controller](fleet-verification.md), immutable selection, per-target outcomes, fair admission and crash/identity recovery | Additional observational consumers, live inventory, hosted/native-platform support and broader load/soak coverage |
 | CAP-21 scheduling | [Owned Linux observational schedules](schedules-verification.md), pinned timezone rules, explicit workers, overlap/misfire/restart, cancellation and quota evidence | Automated retention/migration, timezone-rule upgrades, additional consumers/notifications, live/hosted/native-platform support and longer operational trials |
 | CAP-22 controlled changes | [Approved private rule-file replacement](changes-verification.md), exact plans, distinct mTLS principals, durable intent, inode readback and separately approved recovery | Human approval custody, additional consumers, live deployment/reload, cross-host/native-platform acceptance and automatic retention |
-| CAP-23 browser UI | [Local browser commands/task/results/history](ui-verification.md), [diagnostics](diagnostics-ui-verification.md) and [context/evidence/compare/report views](investigation-ui-verification.md) | Additional permitted workflow/catalog surfaces and remote/team surfaces |
+| CAP-23 browser UI | [Local browser commands/task/results/history](ui-verification.md), [diagnostics](diagnostics-ui-verification.md) and [context/evidence/compare/report views](investigation-ui-verification.md), [saved queries](query-ui-verification.md) and [evidence collection](evidence-ui-verification.md) | Additional permitted workflow/catalog surfaces and remote/team surfaces |
 | CAP-24 integrations/visual evidence | Diagnostic network/process and Grafana API fixture slices exist | Every planned connector family retains its separate API/identity/limit/acceptance increment; requested operational visual capture remains separate |
 | CAP-25 installation/diagnostics | [Linux development archives, doctor and private install/rollback](packaging-verification.md) | Release/dependency clearance, platform artifacts, online doctor, store migration/uninstall and human/agent pilot |
 
@@ -2114,7 +2134,7 @@ Linux scopes. The named local configuration-change consumer under WORKBENCH-026 
 including exact-plan approval, target preconditions, readback and reconciliation without replay.
 The local context and evidence/compare/report browser increment under CAP-23 and corresponding
 MCP investigation grants are also accepted. Local saved-query and diagnostic MCP grants,
-browser saved queries and explicit MCP collection have fixture evidence. Remaining browser/catalog
+browser saved queries and explicit MCP/browser collection have fixture evidence. Remaining browser/catalog
 surfaces, additional controlled-change consumers and connector
 families retain their own scopes. Continue in the delivery plan's dependency order. Connector work
 and native/live acceptance keep their own prerequisites; an unavailable live source does not block

@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "base_commit": "e49103b3f8dbca2eb9ba827ee06b6cff1b99af3d",
+  "branch": "codex/browser-evidence-collection",
+  "scope": "WORKBENCH-033 local Linux browser evidence collection; uncommitted working tree",
+  "rust": {
+    "passed": 599,
+    "failed": 0,
+    "ignored": 33
+  },
+  "frontend": {
+    "suite_passed": 84,
+    "affected_tests_after_final_display_change": 5
+  },
+  "browser": {
+    "receipts": 6,
+    "http_contract_validations": 19,
+    "binary_sha256": "6830d57b2387f47283ddec42fb9f018f3297b59f39418f11feb6f1f3c4969635"
+  },
+  "checks": [
+    "strict workspace clippy",
+    "cargo fmt",
+    "git diff --check",
+    "TypeScript",
+    "ESLint",
+    "generated OpenAPI parity",
+    "schema synchronization",
+    "specification verifier",
+    "production frontend build"
+  ],
+  "review": "Independent static review found no actionable correctness/security issue; local source review, not immutable merge approval.",
+  "sequence_note": "After full Rust and installed browser acceptance, only the new API test nested-if style changed for Clippy. All four API tests and strict lint passed afterward. Production Rust, frontend assets, schemas and browser harness remain identical to installed acceptance hashes.",
+  "final_test_source_sha256": "11829b370727d27b5eaa487237b79e2bce490e176045651fb2f1957196a122a3",
+  "evidence_sha256": {
+    "browser-collection-results.json": "985d3caf2fc5c1e2638b2dd20e2716d3c2c95cbbb5b4df18fed67026b99a965d",
+    "catalog-light.png": "3a6133a37e31e5d7e59fe500e2c1a3dacbce47bb3dffcf7aa69f4843c4039ae0",
+    "collection-light.png": "0872eff8455f4a100e3b5d81c1416612e08b4f2e7f3d107610a12ecc77b3d8f5",
+    "evidence-ui-tests.log": "d46ff270109fa565a3fc49d10632bf90802fcaa1b637a3f8fd1853827716742c",
+    "partial-dark.png": "2824a690be4c260fd0cdf9f18600c346a3f0eb1a106fb5452965654f14c85b15",
+    "partial-mobile-dark.png": "d335b148315fcffbe986d8129a021f3504583f4e8ac91503ce2e51e072be55f5",
+    "workspace-clippy.log": "93872ed4ce7aa502075a23ecc63f4979a54eee2f79125267f798115e17e1c7b5",
+    "workspace-tests.log": "5ce05ed245c42d3466fdcfb969c20548254cb5bf6e011288fd86c660c85a5352"
+  },
+  "remaining": [
+    "live target compatibility",
+    "native Windows",
+    "additional packs and recording policies",
+    "release and integration registration"
+  ]
+}

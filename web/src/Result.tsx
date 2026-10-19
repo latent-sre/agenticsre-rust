@@ -5,9 +5,10 @@ import type { Api } from './api';
 import { ApiError, errorMessage, requestSignal, responseData } from './api';
 import { Badge, Icon, Notice } from './components';
 import { InvestigationResult } from './InvestigationResult';
+import { CollectionResult } from './CollectionResult';
 import { QueryResult } from './QueryResult';
 import { DiagnosticOutcomes, DiagnosticProvenance } from './DiagnosticResult';
-import { budgetStatus, diagnosticData, formatBytes, formatNumber, humanize, isRecord, investigationOperations, queryOperations, plainText, runScope } from './model';
+import { budgetStatus, diagnosticData, formatBytes, formatNumber, humanize, isRecord, collectionOperations, investigationOperations, queryOperations, plainText, runScope } from './model';
 import type { Receipt, Run, Session } from './model';
 
 function download(originalText: string, id: string) {
@@ -42,6 +43,7 @@ export function Result({ api, run, session, tab, onCancel, cancelling }: {
   const investigation = receipt && Object.values(investigationOperations).some(operation => receipt.operation === operation) && isRecord(receipt.data) ? receipt.data : null;
   const diagnostics = receipt ? diagnosticData(receipt) : null;
   const savedQuery = receipt && Object.values(queryOperations).some(operation => receipt.operation === operation) && isRecord(receipt.data) ? receipt.data : null;
+  const collection = receipt && Object.values(collectionOperations).some(operation => receipt.operation === operation) && isRecord(receipt.data) ? receipt.data : null;
   return <div className="result-layout">
     <span className="sr-only" role="status" aria-live="polite">{plainText(run.check_label)}: {humanize(status)}</span>
     <div className="result-column">
@@ -66,6 +68,7 @@ export function Result({ api, run, session, tab, onCancel, cancelling }: {
                 {receipt.errors.length > 0 && <div className="result-errors">{receipt.errors.map((error, index) => <Notice key={index} title={humanize(error.code)} danger><p>{plainText(error.message)}</p>{error.next_step && <p>{plainText(error.next_step)}</p>}</Notice>)}</div>}
                 {tab === 'details' ? <ReceiptDetails receipt={receipt} originalText={originalText} /> : <>
                   {investigation && <InvestigationResult operation={receipt.operation} data={investigation} />}
+                  {collection && <CollectionResult operation={receipt.operation} data={collection} />}
                   {savedQuery && <QueryResult operation={receipt.operation} data={savedQuery} />}
                   {diagnostics && <DiagnosticOutcomes data={diagnostics} />}
                   {budget && <div className="budget-result"><div className="budget-verdict"><span className="eyebrow">TIME BUDGET</span><h3>{budget.state === 'ok' ? 'Budget remaining' : budget.state === 'exhausted' ? 'Budget exhausted' : 'Over budget'}</h3><p>This is an arithmetic result from the values you supplied.</p></div>
@@ -74,7 +77,7 @@ export function Result({ api, run, session, tab, onCancel, cancelling }: {
                   {receipt.operation === 'command.inspect' && <p className="inspection-note">Inspection only. The tool was not executed. Open Details for the admitted command and requested isolation controls.</p>}
                   {receipt.output.stdout && <div className="output-block"><h3>Standard output</h3><pre tabIndex={0}>{plainText(receipt.output.stdout)}</pre></div>}
                   {receipt.output.stderr && <div className="output-block stderr"><h3>Standard error</h3><pre tabIndex={0}>{plainText(receipt.output.stderr)}</pre></div>}
-                  {!receipt.output.stdout && !receipt.output.stderr && !budget && !diagnostics && !investigation && !savedQuery && <p className="empty-output">{receipt.operation === 'diagnostics.run' ? 'No diagnostic observations returned. The errors and coverage describe what was established.' : 'No captured output. The execution status and coverage below describe what was established.'}</p>}
+                  {!receipt.output.stdout && !receipt.output.stderr && !budget && !diagnostics && !investigation && !savedQuery && !collection && <p className="empty-output">{receipt.operation === 'diagnostics.run' ? 'No diagnostic observations returned. The errors and coverage describe what was established.' : 'No captured output. The execution status and coverage below describe what was established.'}</p>}
                   {(receipt.output.stdout_truncated || receipt.output.stderr_truncated) && <Notice title="Output was truncated" danger><p>The displayed output is incomplete because a capture or result limit was reached.</p></Notice>}
                 </>}
               </div>
@@ -83,12 +86,12 @@ export function Result({ api, run, session, tab, onCancel, cancelling }: {
       </section>
     </div>
     <aside className="card run-details" aria-label="Run details"><span className="eyebrow">RUN DETAILS</span>
-      <dl><div><dt>Result</dt><dd>{humanize(status)}</dd></div><div><dt>{run.operation === 'diagnostics.run' ? 'Diagnostic target' : run.operation === 'query.run' ? 'Query target' : run.operation === 'queries.list' || run.operation === 'queries.describe' ? 'Catalog scope' : Object.values(investigationOperations).some(operation => run.operation === operation) ? 'Evidence scope' : 'Workspace'}</dt><dd>{runScope(run, session)}</dd></div>
+      <dl><div><dt>Result</dt><dd>{humanize(status)}</dd></div><div><dt>{run.operation === 'diagnostics.run' ? 'Diagnostic target' : run.operation === 'evidence.collect' ? 'Collection target' : run.operation.startsWith('evidence.packs.') ? 'Catalog scope' : run.operation === 'query.run' ? 'Query target' : run.operation === 'queries.list' || run.operation === 'queries.describe' ? 'Catalog scope' : Object.values(investigationOperations).some(operation => run.operation === operation) ? 'Evidence scope' : 'Workspace'}</dt><dd>{runScope(run, session)}</dd></div>
         {receipt && <><div><dt>Duration</dt><dd>{formatNumber(receipt.duration_ms)} ms</dd></div><div><dt>Exit code</dt><dd>{receipt.execution.child_exit_code ?? '—'}</dd></div><div><dt>Captured output</dt><dd>{formatBytes(new TextEncoder().encode(receipt.output.stdout + receipt.output.stderr).length)}</dd></div><div><dt>Assessment</dt><dd>{humanize(receipt.assessment)}</dd></div></>}
       </dl>
       {receipt && originalText !== undefined && <><div className="coverage-note"><h3>Coverage</h3><p>{plainText(receipt.coverage.scope)}</p><p>State: {humanize(receipt.coverage.state)}. A completed check is not a service health assessment.</p></div>
         <button className="button secondary full-width" onClick={() => download(originalText, run.id)}><Icon name="download" size={16} />Download result</button></>}
-      <p className="small-note">Stored in this server session only.</p>
+      <p className="small-note">{run.operation === 'evidence.collect' ? 'This result is held in the session. Any saved bundle remains in the private evidence store.' : 'Stored in this server session only.'}</p>
     </aside>
   </div>;
 }
