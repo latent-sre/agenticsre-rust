@@ -12,11 +12,14 @@ The follow-up requires strict finite JSON without duplicate keys, digest pins fo
 capabilities, approved packaged or fragment-local embedded schema references, separate planning
 definition/catalog/traceability coverage, and exact expected validation errors for all 63 negative
 fixtures. Embedded schema traversal stays on Draft 2020-12; an independent review's dialect-switch
-bypass was reproduced and corrected. Notice copying and Cargo metadata parsing now consume the
+bypass was reproduced and corrected. PR #6's review additionally exposed local pointers that turn
+literal example data into schemas; resolved targets are now validated and traversed with scope-aware
+cycle detection. Regressions cover forbidden references, changed dialects and non-schema targets
+behind such pointers, plus recursive schemas. Notice copying and Cargo metadata parsing consume the
 same bounded snapshot that passed checksum validation. The specification CI runs both regression
 suites on Linux and Windows; native Windows execution remains a hosted check.
 
-Fresh Linux checks passed 11 specification-gate regressions, six notice regressions, 31 existing
+Fresh Linux checks passed 13 specification-gate regressions, six notice regressions, 31 existing
 package tests, all 108 schemas and 135 fixtures, formatting and strict workspace Clippy. The full
 workspace run reproduced PR #5's existing MCP `ETXTBSY` fixture race. A separate copier process
 now prevents parallel parent forks from inheriting the executable's writable descriptor. The

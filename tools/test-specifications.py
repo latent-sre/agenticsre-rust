@@ -79,6 +79,27 @@ class SpecificationTests(unittest.TestCase):
                 status, output = self.run_gate({path: json.dumps(instance)})
                 self.assertEqual(status, 1, output)
 
+    def test_referenced_literal_data_is_checked_as_a_schema(self):
+        path = PACKAGE / "examples/capability-command.json"
+        for target in ({"$ref": "https://example.invalid/schema"},
+                       {"$schema": "http://json-schema.org/draft-07/schema#"},
+                       "not a schema"):
+            with self.subTest(target=target):
+                instance = verify.read_json(path)
+                instance["output_schema"] = {"examples": [target], "$ref": "#/examples/0"}
+                status, output = self.run_gate({path: json.dumps(instance)})
+                self.assertEqual(status, 1, output)
+
+    def test_recursive_schema_references_terminate_and_preserve_checks(self):
+        path = PACKAGE / "examples/capability-command.json"
+        instance = verify.read_json(path)
+        instance["output_schema"] = {"type": "object", "properties": {"next": {"$ref": "#"}}}
+        status, output = self.run_gate({path: json.dumps(instance)})
+        self.assertEqual(status, 0, output)
+        instance["output_schema"]["properties"]["bad"] = {"$ref": "https://example.invalid/schema"}
+        status, output = self.run_gate({path: json.dumps(instance)})
+        self.assertEqual(status, 1, output)
+
     def test_external_capabilities_require_digest(self):
         path = PACKAGE / "examples/capability-command.json"
         for kind in ("script", "executable"):

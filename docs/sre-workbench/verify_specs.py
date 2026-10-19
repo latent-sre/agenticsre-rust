@@ -10,6 +10,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 from jsonschema import Draft202012Validator, FormatChecker
+from jsonschema.exceptions import SchemaError
 from referencing import Registry, Resource
 from referencing.exceptions import Unresolvable
 from referencing.jsonschema import DRAFT202012
@@ -52,10 +53,19 @@ def check_embedded_schema(schema, registry):
     Draft202012Validator.check_schema(schema)
     root = Resource(contents=schema, specification=DRAFT202012)
     local = registry.with_resource("", root)
+    visited = set()
 
-    def visit(resource, resolver):
-        resolver = resolver.in_subresource(resource)
+    def visit(resource, resolver, *, enter=True):
+        if enter:
+            resolver = resolver.in_subresource(resource)
         contents = resource.contents
+        # The pinned referencing API exposes the effective base only on the resolver.
+        # Include it because the same pointed-to object may be reached in two scopes;
+        # exclude dynamic-scope history, which grows while following reference cycles.
+        identity = (id(contents), resolver._base_uri)
+        if identity in visited:
+            return
+        visited.add(identity)
         if isinstance(contents, dict):
             if contents.get("$schema", Draft202012Validator.META_SCHEMA["$id"]) != Draft202012Validator.META_SCHEMA["$id"]:
                 raise ValueError("Embedded schemas must use JSON Schema Draft 2020-12")
@@ -65,9 +75,17 @@ def check_embedded_schema(schema, registry):
                     if uri and uri not in registry:
                         raise ValueError(f"Unapproved schema reference: {contents[keyword]}")
                     try:
-                        resolver.lookup(contents[keyword])
+                        resolved = resolver.lookup(contents[keyword])
                     except Unresolvable as error:
                         raise ValueError(f"Unapproved or unresolved schema reference: {contents[keyword]}") from error
+                    try:
+                        Draft202012Validator.check_schema(resolved.contents)
+                    except SchemaError as error:
+                        raise ValueError("Reference target must be a valid Draft 2020-12 schema") from error
+                    # lookup already entered the target's resource scope. Do not apply
+                    # its $id a second time when following a pointer into literal data.
+                    visit(Resource(contents=resolved.contents, specification=DRAFT202012),
+                          resolved.resolver, enter=False)
         for child in DRAFT202012.subresources_of(contents):
             visit(Resource(contents=child, specification=DRAFT202012), resolver)
 
