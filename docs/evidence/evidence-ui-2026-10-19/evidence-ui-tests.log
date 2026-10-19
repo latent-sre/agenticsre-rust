@@ -1,0 +1,12 @@
+   Compiling workbench-cli v0.1.0 (/home/hawkfire/rusty/agenticsre-rust/crates/workbench-cli)
+    Finished `test` profile [unoptimized] target(s) in 0.38s
+     Running tests/evidence_ui.rs (target/debug/deps/evidence_ui-2eb00d97b2a3af3d)
+
+running 4 tests
+test collection_seals_evidence_preserves_retry_identity_and_needs_separate_read_grant ... ok
+test collection_startup_requires_all_prerequisites_and_its_own_target_scope ... ok
+test pack_catalog_grants_are_independent_offline_and_cannot_collect ... ok
+test pinned_collection_resources_refuse_drift_before_network_or_store_creation ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s
+

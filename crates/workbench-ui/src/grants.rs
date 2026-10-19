@@ -4,8 +4,8 @@ use std::{
     path::PathBuf,
 };
 use workbench_core::{
-    DiagnosticsGrant, EvidenceStoreOptions, GrafanaConfigIdentity, InvestigationGrant,
-    OperatorContext, RunControl, request::Request, result::Status,
+    DiagnosticsGrant, EvidenceCollectionGrant, EvidenceStoreOptions, GrafanaConfigIdentity,
+    InvestigationGrant, OperatorContext, RunControl, request::Request, result::Status,
 };
 
 #[derive(Default)]
@@ -18,6 +18,7 @@ pub struct Options {
     pub targets: Vec<String>,
     pub config: Option<PathBuf>,
     pub query_targets: Vec<String>,
+    pub collection_targets: Vec<String>,
     pub context_source: Option<PathBuf>,
     pub context_max_age_days: Option<u16>,
     pub evidence_store: Option<EvidenceStoreOptions>,
@@ -37,6 +38,8 @@ pub(crate) struct Grants {
     pub investigation_grant: Option<InvestigationGrant>,
     pub query_targets: BTreeSet<String>,
     pub grafana_identity: Option<GrafanaConfigIdentity>,
+    pub collection_targets: BTreeSet<String>,
+    pub collection_grant: Option<EvidenceCollectionGrant>,
 }
 
 impl Grants {
@@ -57,6 +60,9 @@ impl Grants {
                     | "queries.list"
                     | "queries.describe"
                     | "query.run"
+                    | "evidence.packs.list"
+                    | "evidence.packs.describe"
+                    | "evidence.collect"
             ) || !operations.insert(operation.clone())
             {
                 return Err("--allow requires unique supported operation IDs");
@@ -83,27 +89,47 @@ impl Grants {
             return Err("--diagnostics-config and --target require a diagnostics.run grant");
         }
         let query = operations.contains("query.run");
+        let collection = operations.contains("evidence.collect");
         if query && (options.config.is_none() || options.query_targets.is_empty()) {
             return Err("query.run requires --config and at least one explicit --query-target ID");
         }
-        if !query && (options.config.is_some() || !options.query_targets.is_empty()) {
-            return Err("--config and --query-target require a query.run grant");
+        if (!query && !options.query_targets.is_empty())
+            || (!query && !collection && options.config.is_some())
+        {
+            return Err(
+                "--query-target requires query.run; --config requires query.run or evidence.collect",
+            );
+        }
+        if collection && (options.config.is_none() || options.collection_targets.is_empty()) {
+            return Err(
+                "evidence.collect requires --config and at least one explicit --collection-target ID",
+            );
+        }
+        if !collection && !options.collection_targets.is_empty() {
+            return Err("--collection-target requires an evidence.collect grant");
+        }
+        let collection_targets: BTreeSet<_> = options.collection_targets.iter().cloned().collect();
+        if collection_targets.len() != options.collection_targets.len() {
+            return Err("--collection-target IDs must be unique");
         }
         let query_targets: BTreeSet<_> = options.query_targets.iter().cloned().collect();
         if query_targets.len() != options.query_targets.len() {
             return Err("--query-target IDs must be unique");
         }
         let context_resolution = operations.contains("context.resolve");
-        if context_resolution
+        if (context_resolution || collection)
             && (options.context_source.is_none() || options.context_max_age_days.is_none())
         {
-            return Err("context.resolve requires --context-source and --context-max-age-days");
+            return Err(
+                "context.resolve and evidence.collect require --context-source and --context-max-age-days",
+            );
         }
         if !context_resolution
+            && !collection
             && (options.context_source.is_some() || options.context_max_age_days.is_some())
         {
             return Err(
-                "--context-source and --context-max-age-days require a context.resolve grant",
+                "--context-source and --context-max-age-days require context.resolve or evidence.collect",
             );
         }
         let evidence = operations.iter().any(|op| {
@@ -112,13 +138,19 @@ impl Grants {
                 "evidence.list" | "evidence.open" | "evidence.compare" | "report.create"
             )
         });
-        if evidence && options.evidence_store.is_none() {
+        if (evidence || collection) && options.evidence_store.is_none() {
             return Err("evidence and report grants require an existing explicit --state-dir");
         }
-        if !evidence && options.evidence_store.is_some() {
-            return Err(
-                "--state-dir requires an evidence.list, evidence.open, evidence.compare or report.create grant",
-            );
+        if !evidence && !collection && options.evidence_store.is_some() {
+            return Err("--state-dir requires an evidence or report grant");
+        }
+        if let Some(store) = &options.evidence_store {
+            let defaults = EvidenceStoreOptions::new(store.directory.clone());
+            if store.max_bytes != defaults.max_bytes
+                || store.retention_days != defaults.retention_days
+            {
+                return Err("browser grants do not accept store policy overrides");
+            }
         }
         let mut context = OperatorContext {
             context_source_path: options.context_source.clone(),
@@ -239,6 +271,12 @@ impl Grants {
         {
             operations.remove("task.run");
         }
+        let collection_grant = if collection {
+            Some(workbench_core::evidence_collection_grant(&context, &options.collection_targets)
+                .map_err(|_| "the collection configuration, context source or existing store could not be admitted")?)
+        } else {
+            None
+        };
         Ok(Self {
             operations,
             roots,
@@ -248,6 +286,8 @@ impl Grants {
             investigation_grant,
             query_targets,
             grafana_identity,
+            collection_targets,
+            collection_grant,
         })
     }
 
@@ -256,6 +296,7 @@ impl Grants {
             "roots":self.roots.iter().map(|(id, root)| json!({"id":id,"label":root.label})).collect::<Vec<_>>(),
             "targets":self.diagnostic_grant.iter().flat_map(|grant| grant.target_ids()).map(|id|json!({"id":id,"label":id})).collect::<Vec<_>>(),
             "query_targets":self.query_targets.iter().map(|id|json!({"id":id,"label":id})).collect::<Vec<_>>(),
+            "collection_targets":self.collection_targets.iter().map(|id|json!({"id":id,"label":id})).collect::<Vec<_>>(),
             "operations":self.operations.iter().map(|operation| if operation == "task.run" {
                 json!({"id":operation,"version":1,"tasks":["error-budget"]})
             } else if operation == "diagnostics.run" {
@@ -266,6 +307,10 @@ impl Grants {
                 json!({"id":operation,"version":1,"profile":"installed-query-catalog-v1"})
             } else if operation == "query.run" {
                 json!({"id":operation,"version":1,"profile":"saved-query-v1"})
+            } else if matches!(operation.as_str(), "evidence.packs.list" | "evidence.packs.describe") {
+                json!({"id":operation,"version":1,"profile":"installed-evidence-catalog-v1"})
+            } else if operation == "evidence.collect" {
+                json!({"id":operation,"version":1,"profile":"evidence-collection-v1"})
             } else if self.investigation_grant.as_ref().is_some_and(|grant| grant.allows(operation)) {
                 json!({"id":operation,"version":1,"profile":"verified-evidence-v1"})
             } else { json!({"id":operation,"version":1,"profile":"linux-read-v1"}) }).collect::<Vec<_>>(),

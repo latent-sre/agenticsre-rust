@@ -137,6 +137,22 @@ async fn run(
         .name("workbench-ui-core".into())
         .spawn(move || {
             run_worker(receiver, worker_state, |request, control| {
+                if request.operation == "evidence.collect" {
+                    return workbench_core::execute_with_evidence_collection_grant(
+                        request,
+                        control,
+                        worker_grants
+                            .collection_grant
+                            .as_ref()
+                            .expect("admitted evidence collection grant"),
+                    );
+                }
+                if matches!(
+                    request.operation.as_str(),
+                    "evidence.packs.list" | "evidence.packs.describe"
+                ) {
+                    return workbench_core::execute_evidence_catalog(request, control);
+                }
                 if request.operation == "query.run" {
                     return workbench_core::execute_with_saved_query_grant(
                         request,
