@@ -1,5 +1,30 @@
 # Product roadmap
 
+## PR review and merge cleanup — 2026-10-19
+
+GitHub showed no open PRs and `main` at `37c3b48` when this cleanup began. The owner
+selected review and merge cleanup only; the remaining product queue below stays open.
+Five unresolved findings from merged PR #1 and the notice-copy finding from merged PR #2
+still applied. PR #5's compiler-contract finding was already addressed by `5fee02b`,
+which raises the declared minimum Rust version to 1.99 alongside the 1.99.1 CI pin.
+
+The follow-up requires strict finite JSON without duplicate keys, digest pins for external
+capabilities, approved packaged or fragment-local embedded schema references, separate planning
+definition/catalog/traceability coverage, and exact expected validation errors for all 63 negative
+fixtures. Embedded schema traversal stays on Draft 2020-12; an independent review's dialect-switch
+bypass was reproduced and corrected. Notice copying and Cargo metadata parsing now consume the
+same bounded snapshot that passed checksum validation. The specification CI runs both regression
+suites on Linux and Windows; native Windows execution remains a hosted check.
+
+Fresh Linux checks passed 11 specification-gate regressions, six notice regressions, 31 existing
+package tests, all 108 schemas and 135 fixtures, formatting and strict workspace Clippy. The full
+workspace run reproduced PR #5's existing MCP `ETXTBSY` fixture race. A separate copier process
+now prevents parallel parent forks from inheriting the executable's writable descriptor. The
+corrected workspace passed **595 tests, zero failures, 33 existing scoped ignores**. The existing
+local namespace-refusal test passed in this run. No Rust product logic changed, and earlier
+installed/live/platform evidence keeps its original identities and limits. The Cally image-ID,
+tasks-lane dependency and missing browser-cache problems recorded in PR #5 remain separate work.
+
 ## PR #3 review corrections — 2026-10-17
 
 All seven reported P2 findings were reproduced and fixed on both affected branches. See the

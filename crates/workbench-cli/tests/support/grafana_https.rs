@@ -9,7 +9,7 @@ use std::{
     fs,
     io::{Read, Write},
     net::{TcpListener, TcpStream},
-    path::PathBuf,
+    path::{Path, PathBuf},
     process::{Command, Output},
     sync::{
         Arc, Mutex,
@@ -21,6 +21,26 @@ use std::{
 
 pub const SAVE: &str = env!("CARGO_BIN_EXE_save");
 pub const TOKEN: &str = "synthetic-private-token";
+
+#[allow(dead_code)] // This shared fixture is also compiled by tests using SAVE directly.
+pub fn install_save(destination: &Path) {
+    // A parallel Command::spawn can fork while fs::copy holds the destination open
+    // for writing, inheriting that descriptor until exec. Renaming does not change
+    // the inode, so immediate execution can still fail with ETXTBSY. Keep the write
+    // descriptor in a separate copier process and wait for it to exit before use.
+    let output = Command::new("/usr/bin/cp")
+        .env_clear()
+        .arg("--")
+        .arg(SAVE)
+        .arg(destination)
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "install fixture: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+}
 
 pub struct Reply {
     pub status: u16,

@@ -83,37 +83,103 @@
     "file": "invalid-request-role.json",
     "schema": "request",
     "valid": false,
-    "reason": "Caller cannot supply a role field"
+    "reason": "Caller cannot supply a role field",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-request-version.json",
     "schema": "request",
     "valid": false,
-    "reason": "Unknown envelope version"
+    "reason": "Unknown envelope version",
+    "expected_error": {
+      "keyword": "const",
+      "path": [
+        "spec_version"
+      ],
+      "schema_path": [
+        "properties",
+        "spec_version",
+        "const"
+      ]
+    }
   },
   {
     "file": "invalid-result-denied-effect.json",
     "schema": "result",
     "valid": false,
-    "reason": "Denied cannot claim successful effect"
+    "reason": "Denied cannot claim successful effect",
+    "expected_error": {
+      "keyword": "const",
+      "path": [
+        "effect_outcome"
+      ],
+      "schema_path": [
+        "allOf",
+        0,
+        "then",
+        "properties",
+        "effect_outcome",
+        "const"
+      ]
+    }
   },
   {
     "file": "invalid-config-secret.json",
     "schema": "config",
     "valid": false,
-    "reason": "Unexpected secret-bearing top-level field"
+    "reason": "Unexpected secret-bearing top-level field",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-bundle-path.json",
     "schema": "bundle",
     "valid": false,
-    "reason": "Parent traversal in an artifact path"
+    "reason": "Parent traversal in an artifact path",
+    "expected_error": {
+      "keyword": "pattern",
+      "path": [
+        "artifacts",
+        0,
+        "path"
+      ],
+      "schema_path": [
+        "properties",
+        "artifacts",
+        "items",
+        "properties",
+        "path",
+        "pattern"
+      ]
+    }
   },
   {
     "file": "invalid-workflow-limit.json",
     "schema": "workflow",
     "valid": false,
-    "reason": "Zero step budget"
+    "reason": "Zero step budget",
+    "expected_error": {
+      "keyword": "minimum",
+      "path": [
+        "max_steps"
+      ],
+      "schema_path": [
+        "properties",
+        "max_steps",
+        "minimum"
+      ]
+    }
   },
   {
     "file": "input-command.json",
@@ -137,19 +203,52 @@
     "file": "invalid-input-query-kind.json",
     "schema": "grafana-query-input",
     "valid": false,
-    "reason": "Initial native Grafana queries support only Prometheus/Loki"
+    "reason": "Initial native Grafana queries support only Prometheus/Loki",
+    "expected_error": {
+      "keyword": "enum",
+      "path": [
+        "kind"
+      ],
+      "schema_path": [
+        "properties",
+        "kind",
+        "enum"
+      ]
+    }
   },
   {
     "file": "invalid-input-relative-cwd.json",
     "schema": "process-input",
     "valid": false,
-    "reason": "Normalized agent process input requires absolute cwd"
+    "reason": "Normalized agent process input requires absolute cwd",
+    "expected_error": {
+      "keyword": "pattern",
+      "path": [
+        "cwd"
+      ],
+      "schema_path": [
+        "properties",
+        "cwd",
+        "pattern"
+      ]
+    }
   },
   {
     "file": "invalid-result-timestamp.json",
     "schema": "result",
     "valid": false,
-    "reason": "Malformed timestamp must be rejected by the required RFC3339 format checker"
+    "reason": "Malformed timestamp must be rejected by the required RFC3339 format checker",
+    "expected_error": {
+      "keyword": "format",
+      "path": [
+        "finished_at"
+      ],
+      "schema_path": [
+        "properties",
+        "finished_at",
+        "format"
+      ]
+    }
   },
   {
     "file": "input-dashboard-hygiene.json",
@@ -205,13 +304,31 @@
     "file": "invalid-input-context-null.json",
     "reason": "Offline context fixture shape; source authenticity and resolution are separately tested",
     "schema": "context-resolve-input",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "type",
+      "path": [
+        "team"
+      ],
+      "schema_path": [
+        "properties",
+        "team",
+        "type"
+      ]
+    }
   },
   {
     "file": "invalid-input-context-source.json",
     "reason": "Offline context fixture shape; source authenticity and resolution are separately tested",
     "schema": "context-resolve-input",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "diagnostics-config.json",
@@ -230,7 +347,18 @@
     "file": "invalid-diagnostics-input.json",
     "schema": "diagnostics-run-input",
     "valid": false,
-    "reason": "Wire input cannot substitute a host or other trusted binding"
+    "reason": "Wire input cannot substitute a host or other trusted binding",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [
+        "input"
+      ],
+      "schema_path": [
+        "properties",
+        "input",
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "diagnostics-data.json",
@@ -249,13 +377,43 @@
     "file": "invalid-saved-query-input.json",
     "schema": "query-run-input",
     "valid": false,
-    "reason": "An explicit null is not a bounded relative lookback."
+    "reason": "An explicit null is not a bounded relative lookback.",
+    "expected_error": {
+      "keyword": "type",
+      "path": [
+        "window",
+        "lookback_seconds"
+      ],
+      "schema_path": [
+        "properties",
+        "window",
+        "oneOf",
+        1,
+        "properties",
+        "lookback_seconds",
+        "type"
+      ]
+    }
   },
   {
     "file": "invalid-saved-query-parameter.json",
     "schema": "query-run-input",
     "valid": false,
-    "reason": "Trailing newline is a control character even where regex end anchors can match before it."
+    "reason": "Trailing newline is a control character even where regex end anchors can match before it.",
+    "expected_error": {
+      "keyword": "not",
+      "path": [
+        "parameters",
+        "job"
+      ],
+      "schema_path": [
+        "properties",
+        "parameters",
+        "properties",
+        "job",
+        "not"
+      ]
+    }
   },
   {
     "file": "request-evidence.json",
@@ -268,13 +426,31 @@
     "file": "invalid-evidence-input.json",
     "schema": "evidence-collect-input",
     "valid": false,
-    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence.",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-evidence-reference.json",
     "schema": "evidence-reference-input",
     "valid": false,
-    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence."
+    "reason": "Illustrative collection/store contract; synthetic timestamps and provenance do not establish observed evidence.",
+    "expected_error": {
+      "keyword": "pattern",
+      "path": [
+        "id"
+      ],
+      "schema_path": [
+        "properties",
+        "id",
+        "pattern"
+      ]
+    }
   },
   {
     "file": "evidence-interrupted-manifest.json",
@@ -299,7 +475,18 @@
     "file": "invalid-evidence-comparison.json",
     "schema": "evidence-compare-input",
     "valid": false,
-    "reason": "Implicit or unknown normalization cannot establish aligned observations"
+    "reason": "Implicit or unknown normalization cannot establish aligned observations",
+    "expected_error": {
+      "keyword": "enum",
+      "path": [
+        "normalization"
+      ],
+      "schema_path": [
+        "properties",
+        "normalization",
+        "enum"
+      ]
+    }
   },
   {
     "file": "request-runbook.json",
@@ -312,7 +499,14 @@
     "file": "invalid-runbook-input.json",
     "schema": "runbook-run-input",
     "valid": false,
-    "reason": "Caller-defined steps cannot override an installed observation-only runbook"
+    "reason": "Caller-defined steps cannot override an installed observation-only runbook",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "request-evidence-replay.json",
@@ -325,7 +519,14 @@
     "file": "invalid-evidence-replay.json",
     "schema": "evidence-reference-input",
     "valid": false,
-    "reason": "Evidence cannot supply a command or change the installed analysis algorithm"
+    "reason": "Evidence cannot supply a command or change the installed analysis algorithm",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "request-report.json",
@@ -338,7 +539,20 @@
     "file": "invalid-report-input.json",
     "schema": "report-create-input",
     "valid": false,
-    "reason": "Input cannot mark a knowledge proposal approved"
+    "reason": "Input cannot mark a knowledge proposal approved",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [
+        "proposals",
+        0
+      ],
+      "schema_path": [
+        "properties",
+        "proposals",
+        "items",
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "input-toil-configure.json",
@@ -368,25 +582,61 @@
     "file": "invalid-toil-null.json",
     "schema": "toil-record-input",
     "valid": false,
-    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation.",
+    "expected_error": {
+      "keyword": "type",
+      "path": [
+        "effort_ms"
+      ],
+      "schema_path": [
+        "properties",
+        "effort_ms",
+        "type"
+      ]
+    }
   },
   {
     "file": "invalid-toil-raw-content.json",
     "schema": "toil-record-input",
     "valid": false,
-    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation.",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-toil-consent.json",
     "schema": "toil-configure-input",
     "valid": false,
-    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation.",
+    "expected_error": {
+      "keyword": "required",
+      "path": [],
+      "schema_path": [
+        "required"
+      ]
+    }
   },
   {
     "file": "invalid-toil-workflow-newline.json",
     "schema": "toil-summary-input",
     "valid": false,
-    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation."
+    "reason": "Explicit opt-in metadata contract; consent, chronology, task semantics and arithmetic require runtime validation.",
+    "expected_error": {
+      "keyword": "not",
+      "path": [
+        "workflow"
+      ],
+      "schema_path": [
+        "properties",
+        "workflow",
+        "not"
+      ]
+    }
   },
   {
     "file": "toil-interrupted-data.json",
@@ -404,13 +654,35 @@
     "file": "invalid-config-check-null.json",
     "schema": "config-check-input",
     "valid": false,
-    "reason": "Declared installed validator and exact input path; actual digest matching and validation require runtime checks."
+    "reason": "Declared installed validator and exact input path; actual digest matching and validation require runtime checks.",
+    "expected_error": {
+      "keyword": "type",
+      "path": [
+        "expected_input_sha256"
+      ],
+      "schema_path": [
+        "properties",
+        "expected_input_sha256",
+        "type"
+      ]
+    }
   },
   {
     "file": "invalid-config-check-validator.json",
     "schema": "config-check-input",
     "valid": false,
-    "reason": "Declared installed validator and exact input path; actual digest matching and validation require runtime checks."
+    "reason": "Declared installed validator and exact input path; actual digest matching and validation require runtime checks.",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [
+        "validator"
+      ],
+      "schema_path": [
+        "properties",
+        "validator",
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "input-prometheus-config.json",
@@ -422,13 +694,41 @@
     "file": "invalid-prometheus-binding.json",
     "schema": "config-check-input",
     "valid": false,
-    "reason": "Declared fixed Prometheus rule checker; executable binding is trusted startup configuration, never wire input."
+    "reason": "Declared fixed Prometheus rule checker; executable binding is trusted startup configuration, never wire input.",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [
+        "validator"
+      ],
+      "schema_path": [
+        "properties",
+        "validator",
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-prometheus-kind-pair.json",
     "schema": "config-check-input",
     "valid": false,
-    "reason": "Declared fixed Prometheus rule checker; executable binding is trusted startup configuration, never wire input."
+    "reason": "Declared fixed Prometheus rule checker; executable binding is trusted startup configuration, never wire input.",
+    "expected_error": {
+      "keyword": "const",
+      "path": [
+        "validator",
+        "id"
+      ],
+      "schema_path": [
+        "allOf",
+        0,
+        "else",
+        "properties",
+        "validator",
+        "properties",
+        "id",
+        "const"
+      ]
+    }
   },
   {
     "file": "input-extension-install.json",
@@ -440,19 +740,44 @@
     "file": "invalid-extension-no-pin.json",
     "schema": "extension-install-input",
     "valid": false,
-    "reason": "Install requires a package digest"
+    "reason": "Install requires a package digest",
+    "expected_error": {
+      "keyword": "required",
+      "path": [],
+      "schema_path": [
+        "required"
+      ]
+    }
   },
   {
     "file": "invalid-extension-wire-grant.json",
     "schema": "extension-install-input",
     "valid": false,
-    "reason": "Package admission cannot enable execution"
+    "reason": "Package admission cannot enable execution",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-extension-path.json",
     "schema": "extension-inspect-input",
     "valid": false,
-    "reason": "Package path must be absolute"
+    "reason": "Package path must be absolute",
+    "expected_error": {
+      "keyword": "pattern",
+      "path": [
+        "package"
+      ],
+      "schema_path": [
+        "properties",
+        "package",
+        "pattern"
+      ]
+    }
   },
   {
     "file": "extension-package.json",
@@ -464,13 +789,43 @@
     "file": "invalid-extension-protocol.json",
     "schema": "extension-manifest",
     "valid": false,
-    "reason": "Only explicit protocol version 1 metadata is supported"
+    "reason": "Only explicit protocol version 1 metadata is supported",
+    "expected_error": {
+      "keyword": "const",
+      "path": [
+        "protocol",
+        "version"
+      ],
+      "schema_path": [
+        "properties",
+        "protocol",
+        "properties",
+        "version",
+        "const"
+      ]
+    }
   },
   {
     "file": "invalid-extension-access.json",
     "schema": "extension-manifest",
     "valid": false,
-    "reason": "Metadata cannot request access in the initial package format"
+    "reason": "Metadata cannot request access in the initial package format",
+    "expected_error": {
+      "keyword": "maxItems",
+      "path": [
+        "capabilities",
+        0,
+        "requested_access"
+      ],
+      "schema_path": [
+        "properties",
+        "capabilities",
+        "items",
+        "properties",
+        "requested_access",
+        "maxItems"
+      ]
+    }
   },
   {
     "file": "extension-policy.json",
@@ -488,13 +843,33 @@
     "file": "invalid-extension-hello-version.json",
     "schema": "extension-protocol-frame",
     "valid": false,
-    "reason": "Unsupported peer versions cannot establish a handshake"
+    "reason": "Unsupported peer versions cannot establish a handshake",
+    "expected_error": {
+      "keyword": "const",
+      "path": [
+        "protocol"
+      ],
+      "schema_path": [
+        "oneOf",
+        0,
+        "properties",
+        "protocol",
+        "const"
+      ]
+    }
   },
   {
     "file": "invalid-extension-policy-hook.json",
     "schema": "extension-policy",
     "valid": false,
-    "reason": "Startup policy does not select arbitrary argv or commands"
+    "reason": "Startup policy does not select arbitrary argv or commands",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "result-job-runtime.json",
@@ -506,7 +881,21 @@
     "file": "invalid-request-job-runtime.json",
     "schema": "request",
     "valid": false,
-    "reason": "Foreground request admission still refuses a one-hour timeout"
+    "reason": "Foreground request admission still refuses a one-hour timeout",
+    "expected_error": {
+      "keyword": "maximum",
+      "path": [
+        "limits",
+        "timeout_ms"
+      ],
+      "schema_path": [
+        "properties",
+        "limits",
+        "properties",
+        "timeout_ms",
+        "maximum"
+      ]
+    }
   },
   {
     "file": "input-job-submit.json",
@@ -524,25 +913,71 @@
     "file": "invalid-job-runtime.json",
     "schema": "job-submit-input",
     "valid": false,
-    "reason": "Jobs cannot exceed the one-hour host ceiling"
+    "reason": "Jobs cannot exceed the one-hour host ceiling",
+    "expected_error": {
+      "keyword": "maximum",
+      "path": [
+        "max_runtime_ms"
+      ],
+      "schema_path": [
+        "properties",
+        "max_runtime_ms",
+        "maximum"
+      ]
+    }
   },
   {
     "file": "invalid-job-owner.json",
     "schema": "job-submit-input",
     "valid": false,
-    "reason": "Wire input cannot supply an owner or grant"
+    "reason": "Wire input cannot supply an owner or grant",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-job-watch-cursor.json",
     "schema": "job-watch-input",
     "valid": false,
-    "reason": "Negative event cursors are invalid"
+    "reason": "Negative event cursors are invalid",
+    "expected_error": {
+      "keyword": "minimum",
+      "path": [
+        "after_sequence"
+      ],
+      "schema_path": [
+        "properties",
+        "after_sequence",
+        "minimum"
+      ]
+    }
   },
   {
     "file": "invalid-job-nested-null.json",
     "schema": "job-submit-input",
     "valid": false,
-    "reason": "An embedded ordinary request must preserve rejection of explicit null controls"
+    "reason": "An embedded ordinary request must preserve rejection of explicit null controls",
+    "expected_error": {
+      "keyword": "type",
+      "path": [
+        "request",
+        "target",
+        "environment"
+      ],
+      "schema_path": [
+        "properties",
+        "request",
+        "properties",
+        "target",
+        "properties",
+        "environment",
+        "type"
+      ]
+    }
   },
   {
     "file": "input-runner-submit.json",
@@ -560,19 +995,50 @@
     "file": "invalid-runner-principal.json",
     "schema": "runner-submit-input",
     "valid": false,
-    "reason": "Remote input cannot choose its authenticated identity"
+    "reason": "Remote input cannot choose its authenticated identity",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-runner-command.json",
     "schema": "runner-submit-input",
     "valid": false,
-    "reason": "Generic commands are outside the initial remote grants"
+    "reason": "Generic commands are outside the initial remote grants",
+    "expected_error": {
+      "keyword": "oneOf",
+      "path": [
+        "operation"
+      ],
+      "schema_path": [
+        "properties",
+        "operation",
+        "oneOf"
+      ]
+    }
   },
   {
     "file": "invalid-runner-wire-version.json",
     "schema": "runner-wire-request",
     "valid": false,
-    "reason": "Unknown transport protocol is refused"
+    "reason": "Unknown transport protocol is refused",
+    "expected_error": {
+      "keyword": "const",
+      "path": [
+        "protocol"
+      ],
+      "schema_path": [
+        "oneOf",
+        0,
+        "properties",
+        "protocol",
+        "const"
+      ]
+    }
   },
   {
     "file": "runner-uncertain-data.json",
@@ -582,7 +1048,18 @@
   {
     "file": "invalid-runner-effect.json",
     "schema": "runner-data",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "enum",
+      "path": [
+        "management_effect_outcome"
+      ],
+      "schema_path": [
+        "properties",
+        "management_effect_outcome",
+        "enum"
+      ]
+    }
   },
   {
     "file": "input-fleet-collect.json",
@@ -602,17 +1079,58 @@
   {
     "file": "invalid-runner-expected-null.json",
     "schema": "runner-wire-request",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "type",
+      "path": [
+        "expected",
+        "policy_sha256"
+      ],
+      "schema_path": [
+        "oneOf",
+        0,
+        "properties",
+        "expected",
+        "properties",
+        "policy_sha256",
+        "type"
+      ]
+    }
   },
   {
     "file": "invalid-fleet-duplicate-target.json",
     "schema": "fleet-collect-input",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "uniqueItems",
+      "path": [
+        "targets"
+      ],
+      "schema_path": [
+        "properties",
+        "targets",
+        "uniqueItems"
+      ]
+    }
   },
   {
     "file": "invalid-fleet-task.json",
     "schema": "fleet-collect-input",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "const",
+      "path": [
+        "task",
+        "id"
+      ],
+      "schema_path": [
+        "properties",
+        "task",
+        "properties",
+        "id",
+        "const"
+      ]
+    }
   },
   {
     "file": "fleet-unadmitted-data.json",
@@ -622,7 +1140,18 @@
   {
     "file": "invalid-fleet-health.json",
     "schema": "fleet-data",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "enum",
+      "path": [
+        "aggregate"
+      ],
+      "schema_path": [
+        "properties",
+        "aggregate",
+        "enum"
+      ]
+    }
   },
   {
     "file": "input-schedule-create.json",
@@ -642,17 +1171,64 @@
   {
     "file": "invalid-schedule-anchor.json",
     "schema": "schedule-create-input",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "pattern",
+      "path": [
+        "definition",
+        "cadence",
+        "anchor"
+      ],
+      "schema_path": [
+        "properties",
+        "definition",
+        "properties",
+        "cadence",
+        "oneOf",
+        1,
+        "properties",
+        "anchor",
+        "pattern"
+      ]
+    }
   },
   {
     "file": "invalid-schedule-notification.json",
     "schema": "schedule-create-input",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [
+        "definition"
+      ],
+      "schema_path": [
+        "properties",
+        "definition",
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-schedule-empty-targets.json",
     "schema": "schedule-create-input",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "minItems",
+      "path": [
+        "definition",
+        "collection",
+        "targets"
+      ],
+      "schema_path": [
+        "properties",
+        "definition",
+        "properties",
+        "collection",
+        "properties",
+        "targets",
+        "minItems"
+      ]
+    }
   },
   {
     "file": "schedule-unadmitted-data.json",
@@ -662,7 +1238,14 @@
   {
     "file": "invalid-schedule-health.json",
     "schema": "schedule-data",
-    "valid": false
+    "valid": false,
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "input-change-plan.json",
@@ -704,31 +1287,78 @@
     "file": "invalid-change-authority.json",
     "schema": "change-plan-input",
     "valid": false,
-    "reason": "Strict change plan inputs reject caller authority and malformed proposals"
+    "reason": "Strict change plan inputs reject caller authority and malformed proposals",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-change-expiry.json",
     "schema": "change-plan-input",
     "valid": false,
-    "reason": "Strict change plan inputs reject caller authority and malformed proposals"
+    "reason": "Strict change plan inputs reject caller authority and malformed proposals",
+    "expected_error": {
+      "keyword": "maximum",
+      "path": [
+        "expires_in_seconds"
+      ],
+      "schema_path": [
+        "properties",
+        "expires_in_seconds",
+        "maximum"
+      ]
+    }
   },
   {
     "file": "invalid-change-base64.json",
     "schema": "change-plan-input",
     "valid": false,
-    "reason": "Strict change plan inputs reject caller authority and malformed proposals"
+    "reason": "Strict change plan inputs reject caller authority and malformed proposals",
+    "expected_error": {
+      "keyword": "pattern",
+      "path": [
+        "proposed_base64"
+      ],
+      "schema_path": [
+        "properties",
+        "proposed_base64",
+        "pattern"
+      ]
+    }
   },
   {
     "file": "invalid-change-null.json",
     "schema": "change-plan-input",
     "valid": false,
-    "reason": "Strict change plan inputs reject caller authority and malformed proposals"
+    "reason": "Strict change plan inputs reject caller authority and malformed proposals",
+    "expected_error": {
+      "keyword": "type",
+      "path": [
+        "expires_in_seconds"
+      ],
+      "schema_path": [
+        "properties",
+        "expires_in_seconds",
+        "type"
+      ]
+    }
   },
   {
     "file": "invalid-change-approval-label.json",
     "schema": "change-approve-input",
     "valid": false,
-    "reason": "A caller approval label is not authority"
+    "reason": "A caller approval label is not authority",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [],
+      "schema_path": [
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "change-not-found-data.json",
@@ -740,13 +1370,37 @@
     "file": "invalid-change-effect.json",
     "schema": "change-data",
     "valid": false,
-    "reason": "Verified readback and uncertainty are explicit change-domain outcomes"
+    "reason": "Verified readback and uncertainty are explicit change-domain outcomes",
+    "expected_error": {
+      "keyword": "enum",
+      "path": [
+        "effect_outcome"
+      ],
+      "schema_path": [
+        "properties",
+        "effect_outcome",
+        "enum"
+      ]
+    }
   },
   {
     "file": "invalid-change-nested-plan.json",
     "schema": "change-data",
     "valid": false,
-    "reason": "A retained canonical plan is fully typed"
+    "reason": "A retained canonical plan is fully typed",
+    "expected_error": {
+      "keyword": "required",
+      "path": [
+        "plan"
+      ],
+      "schema_path": [
+        "properties",
+        "plan",
+        "oneOf",
+        0,
+        "required"
+      ]
+    }
   },
   {
     "file": "change-plan.json",
@@ -770,13 +1424,53 @@
     "file": "invalid-change-file-identity.json",
     "schema": "change-data",
     "valid": false,
-    "reason": "Unknown nested filesystem identity fields are rejected"
+    "reason": "Unknown nested filesystem identity fields are rejected",
+    "expected_error": {
+      "keyword": "additionalProperties",
+      "path": [
+        "plan",
+        "original_identity",
+        "file"
+      ],
+      "schema_path": [
+        "properties",
+        "plan",
+        "oneOf",
+        0,
+        "properties",
+        "original_identity",
+        "properties",
+        "file",
+        "additionalProperties"
+      ]
+    }
   },
   {
     "file": "invalid-change-unchecked-plan.json",
     "schema": "change-plan",
     "valid": false,
-    "reason": "A canonical plan requires a positive validated rule count"
+    "reason": "A canonical plan requires a positive validated rule count",
+    "expected_error": {
+      "keyword": "minimum",
+      "path": [
+        "validation",
+        "data",
+        "checked_rules"
+      ],
+      "schema_path": [
+        "properties",
+        "validation",
+        "allOf",
+        1,
+        "properties",
+        "data",
+        "allOf",
+        1,
+        "properties",
+        "checked_rules",
+        "minimum"
+      ]
+    }
   },
   {
     "file": "change-runner-server-config.json",
@@ -788,13 +1482,38 @@
     "file": "invalid-change-relative-ledger.json",
     "schema": "runner-server-config",
     "valid": false,
-    "reason": "Private change ledger path must be absolute"
+    "reason": "Private change ledger path must be absolute",
+    "expected_error": {
+      "keyword": "pattern",
+      "path": [
+        "changes",
+        "state_dir"
+      ],
+      "schema_path": [
+        "properties",
+        "changes",
+        "properties",
+        "state_dir",
+        "pattern"
+      ]
+    }
   },
   {
     "file": "invalid-change-base64-padbits.json",
     "schema": "change-plan-input",
     "valid": false,
-    "reason": "Nonzero pad bits violate canonical base64 even when a permissive decoder returns bytes"
+    "reason": "Nonzero pad bits violate canonical base64 even when a permissive decoder returns bytes",
+    "expected_error": {
+      "keyword": "pattern",
+      "path": [
+        "proposed_base64"
+      ],
+      "schema_path": [
+        "properties",
+        "proposed_base64",
+        "pattern"
+      ]
+    }
   },
   {
     "file": "change-unconfirmed-data.json",

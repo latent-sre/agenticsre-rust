@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 import json
+import math
 import re
+from collections import Counter
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
+from referencing.exceptions import Unresolvable
+from referencing.jsonschema import DRAFT202012
 
 
 PACKAGE = Path(__file__).resolve().parent
@@ -18,7 +22,56 @@ FENCE = re.compile(r"(?ms)^([\x60~]{3})[^\n]*\n.*?^\1[^\n]*$")
 
 
 def read_json(path: Path):
-    return json.loads(path.read_text(encoding="utf-8"))
+    def reject_constant(value):
+        raise ValueError(f"Non-JSON constant: {value}")
+
+    def finite_float(value):
+        result = float(value)
+        if not math.isfinite(result):
+            raise ValueError("JSON number exceeds finite float range")
+        return result
+
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError(f"Duplicate JSON key: {key}")
+            result[key] = value
+        return result
+
+    return json.loads(path.read_text(encoding="utf-8"), parse_constant=reject_constant,
+                      parse_float=finite_float, object_pairs_hook=unique_object)
+
+
+def check_embedded_schema(schema, registry):
+    """Check every schema position, including unused branches, without retrieval.
+
+    Resource traversal knows which keywords contain schemas, so literal example/default
+    data is not mistaken for a schema. The anonymous root permits local pointers/anchors.
+    """
+    Draft202012Validator.check_schema(schema)
+    root = Resource(contents=schema, specification=DRAFT202012)
+    local = registry.with_resource("", root)
+
+    def visit(resource, resolver):
+        resolver = resolver.in_subresource(resource)
+        contents = resource.contents
+        if isinstance(contents, dict):
+            if contents.get("$schema", Draft202012Validator.META_SCHEMA["$id"]) != Draft202012Validator.META_SCHEMA["$id"]:
+                raise ValueError("Embedded schemas must use JSON Schema Draft 2020-12")
+            for keyword in ("$ref", "$dynamicRef"):
+                if keyword in contents:
+                    uri = contents[keyword].partition("#")[0]
+                    if uri and uri not in registry:
+                        raise ValueError(f"Unapproved schema reference: {contents[keyword]}")
+                    try:
+                        resolver.lookup(contents[keyword])
+                    except Unresolvable as error:
+                        raise ValueError(f"Unapproved or unresolved schema reference: {contents[keyword]}") from error
+        for child in DRAFT202012.subresources_of(contents):
+            visit(Resource(contents=child, specification=DRAFT202012), resolver)
+
+    visit(root, local.resolver())
 
 
 def contained(path: Path, root: Path) -> Path:
@@ -38,6 +91,12 @@ def anchors(text: str) -> set[str]:
         found.add(slug if count == 0 else f"{slug}-{count}")
         counts[slug] = count + 1
     return found
+
+
+def all_errors(errors):
+    for error in errors:
+        yield error
+        yield from all_errors(error.context)
 
 
 def main() -> int:
@@ -66,6 +125,13 @@ def main() -> int:
         if bool(errors) == case["valid"]:
             detail = errors[0].message if errors else "unexpectedly accepted"
             failures.append(f"{case['file']}: {detail}")
+        if not case["valid"]:
+            expected = case.get("expected_error")
+            observed = ({"keyword": error.validator, "path": list(error.absolute_path),
+                         "schema_path": list(error.absolute_schema_path)}
+                        for error in all_errors(errors))
+            if expected is None or expected not in observed:
+                failures.append(f"{case['file']}: missing expected validation error {expected}")
         if case["valid"] and "input_schema" in case:
             input_validator = Draft202012Validator(
                 schemas[case["input_schema"]], registry=registry, format_checker=checker
@@ -74,13 +140,14 @@ def main() -> int:
                 failures.append(f"{case['file']} operation inputs: {error.message}")
         if case["valid"] and "input_manifest" in case:
             manifest = read_json(contained(PACKAGE / "examples" / case["input_manifest"], PACKAGE / "examples"))
+            check_embedded_schema(manifest["input_schema"], registry)
             input_validator = Draft202012Validator(manifest["input_schema"], registry=registry, format_checker=checker)
             for error in input_validator.iter_errors(instance["inputs"]):
                 failures.append(f"{case['file']} operation inputs: {error.message}")
         if case["valid"] and isinstance(instance, dict):
             for key in ("input_schema", "output_schema"):
                 if key in instance:
-                    Draft202012Validator.check_schema(instance[key])
+                    check_embedded_schema(instance[key], registry)
 
     markdown = sorted(PACKAGE.rglob("*.md"))
     repository_docs = [
@@ -166,10 +233,27 @@ def main() -> int:
     for prefix, (owner, count) in owners.items():
         expected = {f"{prefix}-{number:02}" for number in range(1, count + 1)}
         pattern = rf"\b{prefix}-\d{{2}}\b"
-        owned = set(re.findall(pattern, (PACKAGE / owner).read_text(encoding="utf-8")))
+        owner_text = FENCE.sub("", (PACKAGE / owner).read_text(encoding="utf-8"))
+        owned = set(re.findall(pattern, owner_text))
         referenced = set(re.findall(pattern, package_text))
         if owned != expected or not referenced.issubset(expected):
             failures.append(f"{prefix} coverage: missing={sorted(expected-owned)}, unknown={sorted(referenced-expected)}")
+        rows = re.findall(rf"(?m)^\|\s*({prefix}-\d{{2}})\s*\|", owner_text)
+        if Counter(rows) != Counter(expected):
+            failures.append(f"{prefix} defining table must contain each ID exactly once")
+        if prefix == "CAP":
+            definitions = re.findall(r"(?m)^\*\*(CAP-\d{2})\.\*\*", owner_text)
+            if Counter(definitions) != Counter(expected):
+                failures.append("CAP detailed definitions must contain each ID exactly once")
+
+    traceability = FENCE.sub("", (PACKAGE / "verification.md").read_text(encoding="utf-8"))
+    traceability_rows = re.findall(r"(?m)^\|\s*(REQ-\d{2})\s*\|([^\n]+)", traceability)
+    expected_requirements = {f"REQ-{number:02}" for number in range(1, 18)}
+    if Counter(row[0] for row in traceability_rows) != Counter(expected_requirements):
+        failures.append("Requirement traceability must contain each REQ exactly once")
+    traced_cases = set(re.findall(r"\bAC-\d{2}\b", "\n".join(row[1] for row in traceability_rows)))
+    if traced_cases != {f"AC-{number:02}" for number in range(1, 37)}:
+        failures.append("Requirement traceability must cover every acceptance case")
 
     if failures:
         print("\n".join(failures))

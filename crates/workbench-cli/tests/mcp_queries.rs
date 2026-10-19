@@ -6,7 +6,6 @@ mod https;
 use https::{Fixture, Reply};
 use serde_json::{Value, json};
 use std::{
-    fs,
     io::{BufRead, BufReader, Write},
     os::fd::AsRawFd,
     process::{Child, ChildStdin, ChildStdout, Command, Stdio},
@@ -25,9 +24,7 @@ impl Client {
             "installed-save-{}",
             workbench_core::result::new_id("query-mcp")
         ));
-        let staging = installed.with_extension("staging");
-        fs::copy(https::SAVE, &staging).unwrap();
-        fs::rename(staging, &installed).unwrap();
+        https::install_save(&installed);
         let mut command = Command::new(installed);
         command.env_clear();
         command.current_dir(&fixture.directory);
