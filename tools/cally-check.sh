@@ -7,10 +7,10 @@ repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
 lane=${1:-tasks}
 case "$lane" in
     tasks)
-        image_ref=docker.io/library/rust@sha256:4e4a7e7939c17991ab35f2b8c2e67593980f771d28f6b1254b1850f860fd0c7f
+        image_ref=docker.io/library/rust@sha256:5f29c3b4cb8ad8c6f10df979595582dd67dd146ffebc70718e24ff2e5b4a194d
         ;;
     minimal)
-        image_ref=docker.io/library/rust@sha256:af0579d28b9a7ec5251aaafcb0c0a23dcde5c97065112aae0cc3abeda42d5394
+        image_ref=docker.io/library/rust@sha256:1c70e0c7ca1c563c5ac89b820d7724a2194e5fe2dbf5294e43c10cbec625b764
         ;;
     *) printf '%s\n' 'Usage: tools/cally-check.sh [tasks|minimal]' >&2; exit 2 ;;
 esac
@@ -65,7 +65,7 @@ sha256sum "$evidence_dir/build.tar" > "$evidence_dir/build.sha256"
 ssh "${ssh_args[@]}" "sudo -n /usr/local/libexec/forgejo-runner-engine pull $image_ref"
 # shellcheck disable=SC2029
 ssh "${ssh_args[@]}" "sudo -n /usr/local/libexec/forgejo-runner-engine run --rm -i \
-    --name $run_name --timeout=900 --env RUSTUP_TOOLCHAIN=1.98.0 --env WORKBENCH_TEST_LANE=$lane \
+    --name $run_name --timeout=900 --env RUSTUP_TOOLCHAIN=1.99.1 --env WORKBENCH_TEST_LANE=$lane \
     --env CARGO_BUILD_JOBS=2 --env RUST_TEST_THREADS=2 --env CARGO_INCREMENTAL=0 \
     --env CARGO_PROFILE_DEV_DEBUG=0 --env CARGO_PROFILE_TEST_DEBUG=0 \
     --network=none --http-proxy=false --cpus=2.5 --memory=4g --pids-limit=512 \

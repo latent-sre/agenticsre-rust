@@ -7,7 +7,7 @@ target; this document resolves the subset needed to build and test now.
 
 ## Decisions for this increment
 
-- Use Rust 1.98.0, already installed on the development host, edition 2024, and a locked dependency
+- Use Rust 1.99.1 (1.98.0 until 2026-10-18), edition 2024, and a locked dependency
   set. Start with a core library and CLI in one Cargo workspace, implemented by one owner.
 - Keep `save` as the experimental CLI name. Naming/distribution checks do not block local builds.
 - Prove Linux x86-64 process execution first. Windows x86-64 remains required for P1, with native
