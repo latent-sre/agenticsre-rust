@@ -18,7 +18,7 @@ test boundary is distinct from the local sandbox that refuses nested namespace c
 ## Development environment
 
 - Repository: `latent-sre/agenticsre-rust`; local root `/home/hawkfire/rusty/agenticsre-rust`.
-- Rust: pin the available 1.98.0 toolchain, edition 2024; commit dependencies to `Cargo.lock` when
+- Rust: pin the available 1.99.1 toolchain, edition 2024; commit dependencies to `Cargo.lock` when
   commit authority is given. Cargo workspace: `crates/workbench-core`, `crates/workbench-cli`,
   `crates/workbench-ui`, `crates/workbench-mcp`. Read [the GUI contract](docs/ui.md) for browser
   interface changes and [the MCP contract](docs/mcp.md) for bounded stdio adapter changes.

@@ -9,7 +9,7 @@ responsibilities, not claims that a named person approved a release.
 
 | ID | Choice and recommendation | Alternatives and tradeoff | Owner and due phase |
 |---|---|---|---|
-| DEC-01 | PoC selected: Rust 1.98.0, edition 2024, shared core plus CLI, locked dependencies | Reuses the installed compiler; no speed or security claim follows from language choice. Review dependency licenses and actual execution behavior | Technical lead, local choice resolved |
+| DEC-01 | PoC selected: Rust 1.98.0, moved to 1.99.1 on 2026-10-18; edition 2024, shared core plus CLI, locked dependencies | Reuses the installed compiler; no speed or security claim follows from language choice. Review dependency licenses and actual execution behavior | Technical lead, local choice resolved |
 | DEC-02 | Repository selected: latent-sre/agenticsre-rust, owner 2026-10-02; independent product release | SRE Workbench and save remain working names; branding/package collision checks remain open before distribution | Product owner; repository choice resolved, naming does not block local builds |
 | DEC-03 | Prove Linux x86-64 PoC first; retain Windows x86-64 for P1 and macOS arm64 after | Advertise only exercised OS/ABI combinations. Other execution returns unsupported until native supervisor tests pass; compilation is insufficient | Technical lead for PoC; platform owner for expanded support |
 | DEC-04 | Owner selected the home lab for the live pilot on 2026-10-10; Dradis Grafana is identified in lab configuration | Local fixture acceptance precedes live compatibility. Confirm the named service/context binding and scoped read identity; existing administrative credentials do not supply a read grant | Human SRE and access owner, P2 live pilot |

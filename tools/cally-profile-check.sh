@@ -9,7 +9,7 @@ if (( $# > 1 )) || [[ "$mode" != profile && "$mode" != gui && "$mode" != gui-foc
     printf '%s\n' 'Usage: tools/cally-profile-check.sh [profile|gui|gui-focused|mcp]' >&2
     exit 2
 fi
-image_ref=docker.io/library/rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959
+image_ref=docker.io/library/rust@sha256:e259494b14672950a909b4c54527e19d29cae6ebf980672114c8bb85e5594e4a
 evidence_dir=$(mktemp -d /tmp/agenticsre-profile-cally.XXXXXXXX)
 remote_started=0
 cleanup_staging() {
@@ -152,7 +152,7 @@ ssh "${ssh_args[@]}" "sudo -n /usr/local/libexec/forgejo-runner-engine run --rm 
     --name $run_name --timeout=900 --user=1000:1000 --pull=never --read-only \
     --tmpfs /tmp:rw,nosuid,nodev,size=512m,mode=1777 \
     --tmpfs /opt/workbench-source/target:rw,nosuid,nodev,size=2g,mode=1777 \
-    --env RUSTUP_TOOLCHAIN=1.98.0 --env CARGO_HOME=/tmp/cargo \
+    --env RUSTUP_TOOLCHAIN=1.99.1 --env CARGO_HOME=/tmp/cargo \
     --env CARGO_BUILD_JOBS=2 --env RUST_TEST_THREADS=2 \
     --env CARGO_INCREMENTAL=0 --env CARGO_PROFILE_DEV_DEBUG=0 --env CARGO_PROFILE_TEST_DEBUG=0 \
     --env WORKBENCH_PROFILE_REQUIRED=1 \

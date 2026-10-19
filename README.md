@@ -40,7 +40,7 @@ target/debug/save ui serve --allow task.run
 target/debug/save ui serve --allow queries.list --allow queries.describe
 ```
 
-Rust 1.98.0 is pinned in `rust-toolchain.toml`. See [development](docs/development.md) for sandboxed
+Rust 1.99.1 is pinned in `rust-toolchain.toml`. See [development](docs/development.md) for sandboxed
 tests and Cally's offline build, and [the PoC contract](docs/poc.md) for exact limits and scope.
 The [PoC](docs/poc-verification.md), [dashboard](docs/dashboard-verification.md),
 [error-budget](docs/error-budget-verification.md) and [Grafana acceptance](docs/grafana-verification.md)
