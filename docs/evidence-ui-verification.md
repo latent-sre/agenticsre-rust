@@ -64,3 +64,19 @@ formatting, schema synchronization and specification checks passed. After the fu
 installed mission, only a nested conditional in the new API test was collapsed to satisfy Clippy;
 all four API tests passed again. Production code, assets, schemas and browser harness hashes still
 match the installed acceptance record. The local source review is not immutable merge approval.
+
+## PR #7 review follow-up — 2026-10-19
+
+Both P2 comments were reproduced with failing tests and corrected. The form remembers target
+choices separately for collection, queries and diagnostics; installed catalogs preserve their
+family's selection without submitting a target. Collection selectors now count Unicode code points,
+matching the schema/core 128-character limit. Tests cover 65/128 non-BMP characters, refusal at
+129, catalog/query/target-free navigation, and the actual collection submission target.
+
+The [follow-up record](evidence/evidence-ui-2026-10-19/review-followup/summary.json) reports 86 passing
+frontend tests, TypeScript, ESLint, rebuilt assets and ordinary CLI build. The refreshed installed
+browser mission passed all six receipts and 19 HTTP contract checks using two aliases and a
+128-emoji service name, including the selected second alias after catalog navigation. Its
+[source-bound receipts](evidence/evidence-ui-2026-10-19/review-followup/browser-collection-results.json)
+retain the new executable/asset identities. Earlier full Rust/API results remain their recorded
+baseline; these corrections change frontend behavior and acceptance fixtures only.

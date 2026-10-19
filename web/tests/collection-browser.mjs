@@ -56,6 +56,11 @@ try {
   assert.deepEqual(await rpc({ action: 'ledger' }), []);
   await checks.selectOption('evidence-collect');
   assert.equal(await page.getByLabel('Collection target').inputValue(), 'fixture');
+  await page.getByLabel('Collection target').selectOption('fixture-secondary');
+  await checks.selectOption('evidence-packs-list');
+  await checks.selectOption('evidence-packs-describe');
+  await checks.selectOption('evidence-collect');
+  assert.equal(await page.getByLabel('Collection target').inputValue(), 'fixture-secondary');
   assert.equal(await page.getByLabel('Workspace', { exact: true }).count(), 0);
   const before = submissions.length;
   await page.getByRole('button', { name: 'Collect and save', exact: true }).click();
@@ -63,7 +68,8 @@ try {
   assert.equal(submissions.length, before);
   const job = '<img src="https://untrusted.invalid" onerror="alert(1)">';
   const fillCollection = async () => {
-    for (const [label, value] of [['Service', 'fixture-web'], ['Environment', 'dev'], ['Metrics datasource UID', 'metrics-1'], ['Metrics job', job], ['Logs datasource UID', 'logs-1'], ['Logs job', job]]) {
+    await page.getByLabel('Collection target').selectOption('fixture-secondary');
+    for (const [label, value] of [['Service', '😀'.repeat(128)], ['Environment', 'dev'], ['Metrics datasource UID', 'metrics-1'], ['Metrics job', job], ['Logs datasource UID', 'logs-1'], ['Logs job', job]]) {
       await page.getByLabel(label, { exact: true }).fill(value);
     }
   };
@@ -71,6 +77,8 @@ try {
   await page.getByLabel('Pack SHA-256 (optional)', { exact: true }).fill(description.receipt.data.pack.sha256);
   const collected = await finished('collected', () => page.getByRole('button', { name: 'Collect and save', exact: true }).click());
   assert.equal(collected.receipt.execution.status, 'succeeded');
+  assert.equal(submissions.at(-1).target_id, 'fixture-secondary');
+  assert.equal(submissions.at(-1).inputs.service, '😀'.repeat(128));
   assert.equal(collected.receipt.data.capture.state, 'complete');
   const ledger = await rpc({ action: 'ledger' }); assert.equal(ledger.length, 6);
   assert.equal(ledger[2].body.queries[0].expr, 'up{job=' + JSON.stringify(job) + '}');

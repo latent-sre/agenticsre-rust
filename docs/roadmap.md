@@ -2082,6 +2082,12 @@ records 599 passing Rust tests, zero failures, 33 existing scoped ignores, stric
 formatting, schema synchronization and specification checks. A final test-only lint adjustment
 passed the four affected API tests; product source and assets remain identical to browser acceptance.
 
+PR #7 review follow-up: both P2 findings are corrected with reproduced regressions. Collection
+targets survive catalog navigation, target choices remain separate across operation families, and
+selector length counts Unicode code points. The [follow-up verification](evidence/evidence-ui-2026-10-19/review-followup/summary.json)
+records 86 frontend tests and the refreshed six-receipt installed browser mission. The owner asked
+to keep PR #7 open and advance local main only; remote main remains unchanged.
+
 ## Remaining product queue
 
 The following ledger preserves the complete requested scope. Accepted slices are evidence for

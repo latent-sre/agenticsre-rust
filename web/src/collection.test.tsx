@@ -1,8 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useState } from 'react';
 import { availableChecks, initialValues, makeSubmission, validateForm } from './model';
-import type { Session } from './model';
+import type { Check, Session } from './model';
 import { CheckForm } from './CheckForm';
 import { CollectionResult } from './CollectionResult';
 
@@ -19,6 +20,46 @@ const values = { ...initialValues, check: 'evidence-collect' as const, target: '
   metricsDatasource: 'metrics-1', metricsJob: 'café"literal', logsDatasource: 'logs-1', logsJob: 'web', packPin: 'a'.repeat(64) };
 
 describe('browser evidence collection', () => {
+  it('counts collection selector limits in Unicode code points', () => {
+    for (const field of ['service', 'environment', 'team', 'deployment'] as const) {
+      for (const length of [65, 128]) expect(validateForm({ ...values, [field]: '😀'.repeat(length) })[field]).toBeUndefined();
+      expect(validateForm({ ...values, [field]: '😀'.repeat(129) })[field]).toBeTruthy();
+      expect(validateForm({ ...values, [field]: 'valid\ninvalid' })[field]).toBeTruthy();
+    }
+  });
+  it('retains independent target choices through catalogs and other check families', async () => {
+    const submit = vi.fn(); const user = userEvent.setup();
+    const multiple: Session = { ...session,
+      collection_targets: [...session.collection_targets!, { id: 'collection-second', label: 'Second collection' }],
+      query_targets: [{ id: 'query-first', label: 'First query' }, { id: 'query-second', label: 'Second query' }],
+      operations: [...session.operations, { id: 'query.run', version: 1, profile: 'saved-query-v1' }, { id: 'queries.list', version: 1, profile: 'installed-query-catalog-v1' }, { id: 'task.run', version: 1, tasks: ['error-budget'] }],
+    };
+    function Form() {
+      const [selection, setSelection] = useState<{ check: Check; target: string }>({ check: 'evidence-collect', target: 'fixture' });
+      return <CheckForm session={multiple} {...selection} busy={false} submitting={false} onSubmit={submit} onSelection={(check, _root, target) => setSelection({ check, target })} />;
+    }
+    render(<Form />);
+    const check = screen.getByLabelText('Check');
+    await user.selectOptions(screen.getByLabelText('Collection target'), 'collection-second');
+    for (const catalog of ['evidence-packs-list', 'evidence-packs-describe']) {
+      await user.selectOptions(check, catalog);
+      await user.click(screen.getByRole('button', { name: 'Inspect catalog' }));
+      expect(submit.mock.calls.at(-1)?.[0]).not.toHaveProperty('target_id');
+    }
+    await user.selectOptions(check, 'evidence-collect');
+    expect(screen.getByLabelText('Collection target')).toHaveProperty('value', 'collection-second');
+    await user.selectOptions(check, 'query-run');
+    await user.selectOptions(screen.getByLabelText('Query target'), 'query-second');
+    await user.selectOptions(check, 'queries-list');
+    await user.selectOptions(check, 'budget');
+    await user.selectOptions(check, 'evidence-collect');
+    expect(screen.getByLabelText('Collection target')).toHaveProperty('value', 'collection-second');
+    for (const [label, value] of [['Service', 'checkout'], ['Environment', 'dev'], ['Metrics datasource UID', 'metrics-1'], ['Metrics job', 'web'], ['Logs datasource UID', 'logs-1'], ['Logs job', 'web']]) await user.type(screen.getByLabelText(label!), value!);
+    await user.click(screen.getByRole('button', { name: 'Collect and save' }));
+    expect(submit.mock.calls.at(-1)?.[0]).toMatchObject({ operation: 'evidence.collect', target_id: 'collection-second' });
+    await user.selectOptions(check, 'query-run');
+    expect(screen.getByLabelText('Query target')).toHaveProperty('value', 'query-second');
+  });
   it('renders pack digests offline and partial saved evidence as inert text', () => {
     const { rerender, container } = render(<CollectionResult operation="evidence.packs.describe" data={{ pack: { id: 'service-queries', sha256: 'a'.repeat(64) } }} />);
     expect(screen.getByText('a'.repeat(64))).toBeTruthy();

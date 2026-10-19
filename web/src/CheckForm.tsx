@@ -10,12 +10,28 @@ type Props = {
   problem?: Problem; onSubmit: (request: Submission) => void;
   onSelection: (check: Check, root: string, target: string) => void;
 };
+const targetNamespace = (check: Check) => isCollection(check) ? 'collection' : isQuery(check) ? 'query' : check === 'diagnostics' ? 'diagnostic' : null;
 export function CheckForm({ session, check, root, target, busy, submitting, problem, onSubmit, onSelection }: Props) {
   const options = availableChecks(session);
   const selectedCheck = check && options.includes(check) ? check : options[0] ?? 'budget';
   const selectedRoot = session.roots.some(item => item.id === root) ? root ?? '' : session.roots[0]?.id ?? '';
-  const targets = selectedCheck === 'evidence-collect' ? session.collection_targets ?? [] : selectedCheck === 'query-run' ? session.query_targets ?? [] : session.targets;
-  const selectedTarget = targets.some(item => item.id === target) ? target ?? '' : targets[0]?.id ?? '';
+  const namespace = targetNamespace(selectedCheck);
+  const [targetSelections, setTargetSelections] = useState<Partial<Record<NonNullable<ReturnType<typeof targetNamespace>>, string>>>({});
+  const targetsFor = (check: Check) => isCollection(check) ? session.collection_targets ?? [] : isQuery(check) ? session.query_targets ?? [] : check === 'diagnostics' ? session.targets : [];
+  const targets = targetsFor(selectedCheck);
+  const rememberedTarget = namespace ? targetSelections[namespace] : undefined;
+  const selectedTarget = targets.find(item => item.id === target)?.id ?? targets.find(item => item.id === rememberedTarget)?.id ?? targets[0]?.id ?? '';
+  const selectCheck = (next: Check) => {
+    const selections = namespace ? { ...targetSelections, [namespace]: selectedTarget } : targetSelections;
+    setTargetSelections(selections);
+    const nextNamespace = targetNamespace(next);
+    const nextTargets = targetsFor(next);
+    const remembered = nextNamespace ? selections[nextNamespace] : undefined;
+    // Catalogs share their operation family's selection, but never submit a target.
+    const nextTarget = nextTargets.find(item => item.id === remembered)?.id ?? nextTargets[0]?.id ?? '';
+    setErrors({});
+    onSelection(next, selectedRoot, nextTarget);
+  };
   const pack = diagnosticPack(session);
   const [draft, setDraft] = useState(initialValues);
   const [collectionLimits, setCollectionLimits] = useState({ timeout: '60', outputLimit: '2097152' });
@@ -63,7 +79,7 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
     <div className="form-fields">
       <div className="form-grid">
         <Field id="check" label="Check">
-          <select id="check" value={selectedCheck} onChange={event => { if (isCheck(event.target.value)) { setErrors({}); onSelection(event.target.value, selectedRoot, selectedTarget); } }}>
+          <select id="check" value={selectedCheck} onChange={event => { if (isCheck(event.target.value)) selectCheck(event.target.value); }}>
             {options.map(option => <option key={option} value={option}>{checkNames[option]}</option>)}
           </select>
         </Field>

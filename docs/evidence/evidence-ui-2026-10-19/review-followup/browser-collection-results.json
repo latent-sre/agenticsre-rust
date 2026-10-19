@@ -1,0 +1,1858 @@
+{
+  "status": "passed",
+  "binary_sha256": "ce16cd2c65232e7d451ef035ad6ef488f7ce0a1cda02461410ede27bc4bef367",
+  "installed_copy_sha256": "ce16cd2c65232e7d451ef035ad6ef488f7ce0a1cda02461410ede27bc4bef367",
+  "sources_sha256": {
+    "web/src/App.test.tsx": "768b8dcbdf69c22b03223f40c7e09f92df2e668fc88097aa6183c39285130eb5",
+    "web/src/App.tsx": "27947f2a47dc9e5bf384abc6cfd98fed27adb1f0e8a687ee976b79169a0228cf",
+    "web/src/CheckForm.test.tsx": "f7764dff7fb3f94eb5f02cbd5d65d9aaa5b4de2954f559e271bacc34c1eff539",
+    "web/src/CheckForm.tsx": "e12922e0f2853746c51348c76949f5766b74fa09816592832918a8c9c092991f",
+    "web/src/CollectionFields.tsx": "b27e25301615d48686ba943fc430e1ba7ddb6fad6a7a5d49c73df9266b4562ba",
+    "web/src/CollectionResult.tsx": "505ced3b8f14bf5a85369f3d5222fb577607cce2729c8b65db222bbeac7443ff",
+    "web/src/DiagnosticResult.tsx": "f54880de1829f461c1a209ab9fcb2b7f14778e4f2103762ff5b8ea1567e96ab6",
+    "web/src/InvestigationResult.tsx": "6bc50a9ca95520d4158e6ceec136f8029835bd70a39f6b1c2b1a6c35f2100ebc",
+    "web/src/QueryResult.tsx": "affc6f384c3d8412fc949a25a4b6b7439881fe04aab761a32577eb143d31f8f9",
+    "web/src/Result.test.tsx": "f801af02e6e2589b2a4cc37e900385fcfea1a7d7a4b70eb16f4dcd6dd62607e5",
+    "web/src/Result.tsx": "cdd930000d8fd5bee7b16b7dc6f56a82725df246328e5b98f72f5ba5adf58b91",
+    "web/src/api.test.ts": "ae86d8e1909faacf651a731bbc0389453b57265845f5057289e927d6b0c99504",
+    "web/src/api.ts": "bee60923b488d15c592b5915f9b0cc9b3954dc5e6a2a7c8a29b86e5af25758d3",
+    "web/src/bootstrap.test.ts": "c3bdf9f53235f31c8dfd00731c9b93b8df9397dff27a319d292f9508cae59269",
+    "web/src/collection.test.tsx": "a692a112f4210f9e063c3e84c3085fc40c54f45f94c4bc9b3ad22f1f6283c64b",
+    "web/src/components.tsx": "df7cade8839f3425ff65264320dd2d3997d670edfb6f1f8ade3eb432ebadb5f3",
+    "web/src/generated/api.ts": "6b94402c1cbfe56432101f7b68f413f165e7ab1be2548cf64759fb21ba15290f",
+    "web/src/investigation.test.tsx": "829e204550d57fd487d6f4b4f8d7ca77049ced4d97a2cc5eae51ba66d37cca58",
+    "web/src/main.tsx": "032349edb93fe055652a3da23c52ec12557c8770bed5204bc551a062c2ac608c",
+    "web/src/model.test.ts": "73e024d1bc1fb046c82f7414fc6aa35ac7bb5ac25ac9c59f7af6116943d73e55",
+    "web/src/model.ts": "cfac16f149cfc890ee2f8a8e7a69d71060f870ae609fc907ae6473130eeda4ea",
+    "web/src/query.test.tsx": "2d6e23961703cc8e06d7083b0294e399b5ed1c1feb8bbf05a1367edd0b823908",
+    "web/src/router.tsx": "c48365925a0c09a909050569930801698ffb718b90e9ef262a3c09da2474da97",
+    "web/src/styles.css": "e64504bbe7fc89f9a620b8b83483395421897ddc6ac09cf8dbf964392dab8dd3",
+    "web/dist/assets/index-Ceka6JB8.css": "377145015c5face9c033a047a0bb996b94f93535b184aa1627d2ed4d8a638d76",
+    "web/dist/assets/index-Dv-0QL9c.js": "125ab70da0470a149585ae9829a48e2d5411cbe8971632d2e5c55f6e6bad0e9a",
+    "web/dist/bootstrap.js": "b442fa5823785babf1d0e1e72482b08021cf4f8de7284c108e746531f0c623a1",
+    "web/dist/index.html": "cec875116f91a598438b40d265891ac090510fa4ae779c915ede480293beafb3",
+    "web/tests/collection-browser.mjs": "0f224ca9edd7f483d984c4bd1bd843eb2127fb1319e5d225a8ee78c7bee6edec",
+    "tools/verify-evidence-ui.py": "6b4cc9f0c95628aa728b3a4d8163738997586d25c820a568f04906cf5c8ce681",
+    "docs/ui/openapi.json": "e9fd97c773fa5ffc0168a014151c8df82067d79e987ecb920cb07eda86866de3",
+    "tools/verify-evidence.py": "4a982bce5efbcd3a313c7025f6a4c697aa42b273fee63244caa9897a5336d098",
+    "tools/verify-grafana.py": "738f32be827a0316d1024f1f758aebae63c7361c19c7b2c76bee5a7c7c0ffe05",
+    "crates/capacity-projector/src/bin/extension-peer-fixture.rs": "678663d350bb0305612c9292a8c3f3d03411db8fbb9ba8d04de09d0e718f4a48",
+    "crates/capacity-projector/src/lib.rs": "9b4951be95c188473be0e8384a6b36c0fd7a37248bec1de4bf01616cd4ab5798",
+    "crates/capacity-projector/src/main.rs": "59f2efb52c179d361e9a46feb0dcebdf377e3527bb518cc9815657ca3305496f",
+    "crates/workbench-cli/src/main.rs": "c41ecc36616d0825fbc3da69fd1360d44598b2a7b4044114d86e56e6c5921a15",
+    "crates/workbench-cli/src/output.rs": "1893802c0b4f239d5a072b35537a7e1afbd0008f06e7a17b9d1fae3928cf79cf",
+    "crates/workbench-cli/tests/changes.rs": "b944fa486dbb7b3256a1045a9d6244050dcc4e77e1f931bfc929658e7b17729b",
+    "crates/workbench-cli/tests/comparison.rs": "f3574b4a131917dc7930fa02e9cf017bd7c8163def8c0268c85fc9aa18b4136d",
+    "crates/workbench-cli/tests/config_check.rs": "a920cab77bfc9f970853fb78688922b155a7b3d48a31b86ad9075d564964cd94",
+    "crates/workbench-cli/tests/context.rs": "b945b3c682f6848fa91359aab5b51633445b419e55ec7beff1d892b6fef8db18",
+    "crates/workbench-cli/tests/diagnostics.rs": "0eab0fed796e6244bbdb5cf3b9ff5fe63bd534122112d26e98160306daa206bf",
+    "crates/workbench-cli/tests/error_budget.rs": "a58f60fa3580afe09d8756c3c2d86cd31b3bf0f025c508026ea25d9add6ff6e3",
+    "crates/workbench-cli/tests/evidence.rs": "1d2cba5a61887b6368179153d60a88a2b67ba29dfc81cf05018907aa8b400aa0",
+    "crates/workbench-cli/tests/evidence_mcp.rs": "02d90986b6e2f4386b893fe705979630b06ef3240ea681e660d83b2ccc25fbbf",
+    "crates/workbench-cli/tests/evidence_ui.rs": "11829b370727d27b5eaa487237b79e2bce490e176045651fb2f1957196a122a3",
+    "crates/workbench-cli/tests/extension_runtime.rs": "3a09fa33523a447da6e863d9c547040723270af6596f0244b8432bae50f52a54",
+    "crates/workbench-cli/tests/extensions.rs": "3945688ebe6723274c797eb74cc1100a480f21def1d54d3f9e13a590597b4662",
+    "crates/workbench-cli/tests/fleet.rs": "2eaf7d9603e0b1aabe0837a2cd3b45a018ee39e355aa8152a49f9d77951dc71e",
+    "crates/workbench-cli/tests/grafana.rs": "17d371a9050a28615ab578f9015a62edb9c0271caf5ef06412f566f93e02e8d7",
+    "crates/workbench-cli/tests/investigation_mcp.rs": "40f950b2f31e21cc6b6cef0ff88d3ca3fbfc8d1489fff3b523f7cabe9a00e854",
+    "crates/workbench-cli/tests/investigation_ui.rs": "2b5cea4fd9a584f6189f5e60ea0d9b724b6e8f206857c67269f72c938cfef009",
+    "crates/workbench-cli/tests/jobs.rs": "3cae23d9f18b2df0397a8fc0aec796b6cc44b89d2db4450364a0d230c0f1b8cc",
+    "crates/workbench-cli/tests/mcp.rs": "79823224d4b80a049104afb0d92a79d66798a241954cb677d5168a80946a62a4",
+    "crates/workbench-cli/tests/mcp_authority.rs": "de6ff70f1f9e07993ffe56ead81d823a23362fce734462ed8e5e3cd7bccbe8c6",
+    "crates/workbench-cli/tests/mcp_queries.rs": "2425a1f6e653da5b533ae017173dae2d29ae5bcfcba79182a10b2fe5d94ab42c",
+    "crates/workbench-cli/tests/offline.rs": "a53987a02779d50a2d5900f8972bf97854f40187e224860b115aa12c0db3f78e",
+    "crates/workbench-cli/tests/prometheus_rules.rs": "c13f5f91cec048f6148f3aefc2bf71030e0e0202a3183aad7abbcd5007b1b093",
+    "crates/workbench-cli/tests/queries.rs": "3141650396a115febef03fe1541edfb64cca611bd35b1a02ac7a1dafae272b3e",
+    "crates/workbench-cli/tests/query_ui.rs": "e1797b3bd5373b20b70bfafa2ce67249bada08c60b684e7a88da82d972ecebde",
+    "crates/workbench-cli/tests/read_profile.rs": "e28f76483895830761d7f3d894ba07a0aea1f8573c6aaa5765360e5a1fa5d08f",
+    "crates/workbench-cli/tests/remote_runner.rs": "f6724ea694cb910111419a0735d049f90e9ef8e2f479a8a4aebc992a44a981be",
+    "crates/workbench-cli/tests/reports.rs": "54e55a45969f4a955388ad78c0a66fbc9098014c5d50b5d9dcb878a8781b2948",
+    "crates/workbench-cli/tests/runbooks.rs": "0ada168403c414e3fcfd796a51cc2c0dc4f13aa240ed6098f72f61996ee486eb",
+    "crates/workbench-cli/tests/runner.rs": "a537bc9510963a5328c1cf48c25f06de78539bf78cea23ab2838dfaaac18d9af",
+    "crates/workbench-cli/tests/support/grafana_https.rs": "d1bcbfeb28e2338de2e0777c7e38bc4771f0ca3336bbe99ae35a70cfa6c10b2b",
+    "crates/workbench-cli/tests/support/profile_fixture.rs": "9227042bd0c42c52ffc66ed5c8b8b7854e3d51a85f84289bf3597364df3f9d14",
+    "crates/workbench-cli/tests/support/runner_fixture.rs": "462eb06182c5284697e2a4110a363beadc0dab8eaa2b630ce3417fa59ed64115",
+    "crates/workbench-cli/tests/tasks.rs": "e533b279b0c879ea2a7b0d6c775d041b097359eb6cc7151cf0e9c375a4000a35",
+    "crates/workbench-cli/tests/toil.rs": "47e39692d6481c166e3c15fdcc34c53601553a5978c25f2f53c1ff815ea0869d",
+    "crates/workbench-cli/tests/ui.rs": "b7c2ab55a4cbc67e0e8be0c90c25b3752b3413490e852fe36b4f93acf1484bcb",
+    "crates/workbench-core/src/change/client.rs": "5350a066daccdb3c1c769d58e793ba71b39e77a9166d483959630370c4dc420f",
+    "crates/workbench-core/src/change/engine.rs": "962732c8eb5d543c8f180e02a4ab7f961b742bdc79e535a2f89d3f9cf448ee0c",
+    "crates/workbench-core/src/change/fs.rs": "2fe8b8464748875ec11fdb1e170d9f0a2a5c8bab5b05635841379dfe2cc3f26d",
+    "crates/workbench-core/src/change/ledger.rs": "230fd8eb061735d8daf552229a01731632fade66ea03c443f80c19a79813f6c6",
+    "crates/workbench-core/src/change.rs": "c85cfcbcf9ffdf6f9f618699dd54a080cbe4f5fe706d9302b38ce70d1728dcc4",
+    "crates/workbench-core/src/context.rs": "725983b799a3da970209454ee1e27044d19e3213d1b4218b02e261ba0b48b9ef",
+    "crates/workbench-core/src/diagnostics/config.rs": "dc8046c241769944726e04f60c4c5c7e803c25873fadb51c49448c083fca808b",
+    "crates/workbench-core/src/diagnostics/dns.rs": "1439c17b63d0f3fd85bf85431ed56cdad45fa1b67e689df031b1d01002155013",
+    "crates/workbench-core/src/diagnostics/http.rs": "9989101fe2d151d4b1276c00e7e30dd7f766dc5ed2df94d26e9eade22c01fd6c",
+    "crates/workbench-core/src/diagnostics/process.rs": "4bbe61c9be3fb332d37d27cb8962c70f688d3da7e4331c4bfd6bf0fcbf8b15e6",
+    "crates/workbench-core/src/diagnostics.rs": "34b51b3ffbdd397d0222d8bcdffa6d959a37104441fb1f0cfdba560c112e33a5",
+    "crates/workbench-core/src/discovery.rs": "f5cf3f9c8bb3e34961599b425c56e3f8d09bb25f46be9d53709fe337bd6a4794",
+    "crates/workbench-core/src/evidence/collect.rs": "b9e5528d69a3675d848a59d961dd1c2e1086ada9d388b65f7bedb6929b8aca5e",
+    "crates/workbench-core/src/evidence/compare.rs": "3877dfe50b872141b5f53cf31aa65a659eaad2afce21e9aa69cf6f8521e44c14",
+    "crates/workbench-core/src/evidence/frames.rs": "8d87308b03c631fb11b063bb22d14d4405f3b419e2451254b03c8aa7bdd0f5ea",
+    "crates/workbench-core/src/evidence/grant.rs": "ea063b38d5b28354ff531a6ac33c1bcfa0b4915c789062185082364db48ff125",
+    "crates/workbench-core/src/evidence/offline/profile.rs": "30e020552cd5505590123f0a19b8ab9a869e415a0b53ef95dc1a9393647489f9",
+    "crates/workbench-core/src/evidence/offline.rs": "d36f554cb1a3f860fa335ce5f426f59619976c59ae39fd5d6fc8284e0570ccd4",
+    "crates/workbench-core/src/evidence/pack.rs": "43cfcae109123da36d6833ce8a8ac35343c467524116b5291b03babee2ead117",
+    "crates/workbench-core/src/evidence/report.rs": "c438d79d19d05e7e6986bc136bbbac318051845218b77ab3d4ccc66e2aa3369e",
+    "crates/workbench-core/src/evidence/store/fs.rs": "269d05e23426a44c7af89387bf5c0913742ffa5f234bed7f5e0ec93bb06ce8bd",
+    "crates/workbench-core/src/evidence/store/linux.rs": "11db3d65b2cdd34603511cefa644b5a8f07935975432793d0cfc45cbf4c106ee",
+    "crates/workbench-core/src/evidence/store/tests.rs": "d05a63f59b4aa2fa62cb4331b4b529b8cdad3de0959e81cb750bca91d2c2876d",
+    "crates/workbench-core/src/evidence/store/unsupported.rs": "e60735e6a6003fb6f1410f3bb0a345e69e6cfafbb6ab096d0979242bd89adca2",
+    "crates/workbench-core/src/evidence/store.rs": "c8d2696f69c57f8e41eb43e92f163e475ec51d9d94c85763990eeb1d244026d5",
+    "crates/workbench-core/src/evidence.rs": "268fa59176363c92cbe3c8aea94e8bbb42a77012b7bd747835d8bc439e8de8e0",
+    "crates/workbench-core/src/extensions/discovery.rs": "19aa7bba5d0706ce65ed09f39b27e69d688b26c3f17c67b5eb86a74426a888cc",
+    "crates/workbench-core/src/extensions/execution.rs": "b8f5496a7a6691752e218fba206c134ae5079166bfc4e3e38dd9ca68c09601cd",
+    "crates/workbench-core/src/extensions/package.rs": "8e835819390b31c2362b1643cfe6460fad591123b5884203fc9528f5d348f783",
+    "crates/workbench-core/src/extensions/policy.rs": "2ff1511c7f36270e0e02e19f0b89c0ef661791d3d0fc6b526a591cd133fd3d1a",
+    "crates/workbench-core/src/extensions/protocol.rs": "ea20985b570bb20adf6690e132eef2267431e42c8f180f4080fffb52b650c902",
+    "crates/workbench-core/src/extensions/storage.rs": "d99d7b8e619fce8c033686957b45dec10525c30f5e4f167e02cffd1c108d7144",
+    "crates/workbench-core/src/extensions.rs": "ebb6f669523b6934497d07b1c5f0b152c5ca8fd1a86fef649460573f53347400",
+    "crates/workbench-core/src/fleet/config.rs": "0ad3cb28d4567600f60708688a124a3a783634c6d5e626a7d0fd9a7d59528627",
+    "crates/workbench-core/src/fleet/controller.rs": "4ff28cf52a20f5f482f47115cb43075a8ce630521b37c85f5799a6ed1995f828",
+    "crates/workbench-core/src/fleet/model.rs": "851d0c0b3a95b3944fe55a0279d99f60ae0f43e5f1d6a3636f23d84de341956a",
+    "crates/workbench-core/src/fleet/store.rs": "e075d606a7e068f2f947651d2a332fdca5ce86ba52acdf28681ba5c0957e0984",
+    "crates/workbench-core/src/fleet.rs": "7c7aba2e9a504472b447b4ad23c9bb72715c0dc3712462fcb73e7373b1ce8fa9",
+    "crates/workbench-core/src/grafana/config.rs": "5c07a20b6e4e2abeb96ada68b1fe4163c1134f558b5bcbc5dfba95e4d4ebb843",
+    "crates/workbench-core/src/grafana/redact.rs": "7817588daef47f5827c6a1190627e424aa53d2abb9983d2b06b12d2fbae0446d",
+    "crates/workbench-core/src/grafana.rs": "cd52942eccdc21b85e3067085b3b757900b12f9795a8296a4068a9286120f974",
+    "crates/workbench-core/src/investigation.rs": "ebb83cdcc5ae27f09a179e0b1ec141a2df1b940b1029bb9fb301dfb247596d25",
+    "crates/workbench-core/src/jobs/api.rs": "7d20c2c6742e8cfd762666f424195798c5461eb5cfc6fd4cc68e5ea5b791d7c6",
+    "crates/workbench-core/src/jobs/dispatch.rs": "fabf390da3e5afe0512fcdbabb390eeb543bdc006956a59e0f4643f889c90634",
+    "crates/workbench-core/src/jobs/model.rs": "53f871f1f35b47ea7dadead50052e9bae93ba865c70ec444e0a864d597176036",
+    "crates/workbench-core/src/jobs/remote.rs": "08b01e6bf26a0f9e3dea932751719245af4b072a0e3950a755a16db93e9f859e",
+    "crates/workbench-core/src/jobs/store.rs": "b92aea9be2250a8fecadb01d58136d6f33b830d8cd5e382ea94d218cc01c9158",
+    "crates/workbench-core/src/jobs/worker.rs": "e9924cb6c2fd71595bced9cd2c061c7c9dedd5f533d59f2fa9fa02f87549d0e2",
+    "crates/workbench-core/src/jobs.rs": "eb09fceaf8d9bdd4f2173e8436c63740b932beacc38ed6470deb9a642dab3ffc",
+    "crates/workbench-core/src/lib.rs": "00db0ad6539c2b5a36d8b3e20820edfbc74fd878577d0a5c2f067d0a60272030",
+    "crates/workbench-core/src/process/descriptor.rs": "657f983253878cc6262afd6418bf9808bb95e85218ce1b8ca461a7d7d0f39eac",
+    "crates/workbench-core/src/process/linux.rs": "ca720d61910df1ca092f6cdb167e7b3a1a71897420e7dada03a1d6ccfd8d601a",
+    "crates/workbench-core/src/process.rs": "b6020186e8cf05dc4ce70859b3e03b4b751c619582b3a717e4ef7d9f852f09c4",
+    "crates/workbench-core/src/queries.rs": "1fe24f0cfd8427a9cada53aa63fda51e7fcafdc6984df941ba8a41a742488960",
+    "crates/workbench-core/src/read_launcher.rs": "fb99c5f7947e300da7c455fdd311b62c13586361fc0cc8ad540a3cbef117636b",
+    "crates/workbench-core/src/read_profile/grammar.rs": "a56a85ca462f2a0b3854a9560bd8ef5b706bacb5d4697a55944bf2984fb5560f",
+    "crates/workbench-core/src/read_profile/policy.rs": "5bcb16c7de17bf4009cb3b65eabfd274b4d5958adeccf76e69f28e18bdcb82f0",
+    "crates/workbench-core/src/read_profile/seccomp.rs": "6a47e5a4b9e3bc8596e52ff8c7bc7b829aa12d7134a2a07cceb47f248df83c85",
+    "crates/workbench-core/src/read_profile.rs": "436f2b9c776fd4c3c0e08f459eebabd17fc8ccfadb3ff82b6a8ea83457f37180",
+    "crates/workbench-core/src/request.rs": "a0db3a535f9365474516f4d0cc8cce41039619cc5a3da2f819dea2386d57e2ed",
+    "crates/workbench-core/src/result.rs": "1952b17d4d777b9b39bea36062bdd2b5e70eded167c27ab05594553e441a3909",
+    "crates/workbench-core/src/runbooks/definition.rs": "be697e6d8bc82828994003e22e8f2d84e0b56947ebdbedc19400500ec15354ab",
+    "crates/workbench-core/src/runbooks/store.rs": "5da4b4109fb259ce0cd97336dd5ef3acc90d56a50c939324cc93bfb721133cf8",
+    "crates/workbench-core/src/runbooks.rs": "bc2ee0e785529c64326416a8aefd2960424c6451f71d4657bfe126033f4a19d2",
+    "crates/workbench-core/src/runner/config.rs": "df8f281b1dec636e716be4f9e558a70ddb4a1b9c7ed07e34939ac09a53e29ded",
+    "crates/workbench-core/src/runner/response.rs": "88a8eeebcf628e593d27b0f4423b16d3b72e432a307eb83bcb5911cf0c94ce57",
+    "crates/workbench-core/src/runner/server.rs": "4a284ef8da5924c9891fd392d0e99f2d1e6dbe2a04ff6e4010046caa3f6c5161",
+    "crates/workbench-core/src/runner/transport.rs": "07b0075fa1d57d72fa40901541befcf3b8ac029fb00233be1593980fd5c6a191",
+    "crates/workbench-core/src/runner.rs": "54898128ebd583abd9de59d2156ab42a82fb18855a1090bdd61258b32944a9b1",
+    "crates/workbench-core/src/schedule/calendar.rs": "453aa4aa8c6a4a220196a926d41e7e92312c41c13bb795b572313aac07964931",
+    "crates/workbench-core/src/schedule/config.rs": "c7e33c9229f612aeeb26bb096f700fb8ad91b7e72e5827a299727ca9c29d7523",
+    "crates/workbench-core/src/schedule/controller.rs": "b9a93b75c011ca6f6c7eea9028c6b1fe42a8fcd04ed04e30b3991e1122cc2a37",
+    "crates/workbench-core/src/schedule/model.rs": "57b503def172939a52c10d7a5770b82e5a9212f2f5a3da333c95e3dbb537d905",
+    "crates/workbench-core/src/schedule/store.rs": "797e5c225c7ece00f75879f2e1fb0dcf12930fbfc1d79335128d8ad6e2f1405a",
+    "crates/workbench-core/src/schedule.rs": "d201ec5e88f49e8b565754c6a9ac2605b875cda9f5f9aa2198be41dbd634cc07",
+    "crates/workbench-core/src/tasks/config_check.rs": "4942013b75f70604a825d09b25b1960db5e06a1f5e4b57d0240ab42689768754",
+    "crates/workbench-core/src/tasks/error_budget.rs": "8fa21f1ae57235b14697fed852262755d669391b30eecebc4b8ff18576204edb",
+    "crates/workbench-core/src/tasks/prometheus_rules.rs": "bd1c981b56ed3ee0b607579e0bb60dc38fedaf280102267118e99f2e188d40a6",
+    "crates/workbench-core/src/tasks.rs": "4ab53b34e7df0723807c83b3c4d9cb95f71bcce8034612118e52cbc4f9528a5c",
+    "crates/workbench-core/src/toil/execution.rs": "7ae0baa099732c620cc4e697aa2408136c547e0abb5a7e23a092cd17713d891c",
+    "crates/workbench-core/src/toil/store.rs": "abccf16e02e03ccd9d0a38f5e18490b61edaca7bfb98e0979d65c4f040aa2fc4",
+    "crates/workbench-core/src/toil/summary.rs": "146fe2f87c927fef37507683eeac9d0215ba4324ff9725af4bd588b8b4f18d20",
+    "crates/workbench-core/src/toil/tests.rs": "9480b2e88c60faa7912689220f0a0f06431ab118e8e50e8835e344cfa2edbf0a",
+    "crates/workbench-core/src/toil.rs": "dd0e34ce73daa771f206f9bb5d4f12451d3e7cadf5e625725582091e843a490b",
+    "crates/workbench-core/tests/changes_client.rs": "effdc9d76752c40e70eca383259d7390741c233ba96ec22a6c98a25a753d12a0",
+    "crates/workbench-core/tests/config.rs": "c0e4eb6cbead861fe52e142925830148048d9c811e09660c878033896d5ae6a9",
+    "crates/workbench-core/tests/contracts.rs": "2d3ad4d70864322359e066232e3f125e3ec97382d9db7f3ab3818957d409506c",
+    "crates/workbench-core/tests/diagnostic_grants.rs": "67775e7f2bb09f5a38a91a23a78f15fc6296aae6c498fc62e6a01b9cc74f81c5",
+    "crates/workbench-core/tests/evidence.rs": "48c2bc035bd3770c64d7ff40adcf51856faf53ba290d65a58b66290cd819f00c",
+    "crates/workbench-core/tests/extensions.rs": "3e3e72981e8370f860ebc978a78c6e9224a9bf442281b2c9b0b46b19297d74c0",
+    "crates/workbench-core/tests/investigation.rs": "7841ad00402a349e82acdd2575041682c4772959ccd8118e5a19193e7058c4a4",
+    "crates/workbench-core/tests/queries.rs": "e4d9e3c9b0821adc79b46b04601d064e1d387a50253fcd0a87e6230fecaa56ce",
+    "crates/workbench-core/tests/reports.rs": "69fd5605ad6e1e4b3fd12620acaa7adf085165192395e7ec604db546f2cbd1d4",
+    "crates/workbench-core/tests/runbooks.rs": "17658ce5d86e9a4069e03a3e94d8a6feb5b7e2032f4f0c1162a22e3d52871602",
+    "crates/workbench-core/tests/ui_seams.rs": "be1fd296e502532559a75dfd408e0c6dd679433f605e9fcd97f5fd6988e15cb4",
+    "crates/workbench-mcp/src/grants.rs": "3c19785e629278896ebcb0b1b7d6861d11be590e635c24418c1c9f94b3274fb1",
+    "crates/workbench-mcp/src/io.rs": "c5ee19adb869e3cec7a0878b1b52d962fdc079a698fa8e47747ebc31b0112f8e",
+    "crates/workbench-mcp/src/lib.rs": "4d15ff1b221225441a8525e332e52f03a93e4835a778d232fa53cdcc415eab7d",
+    "crates/workbench-mcp/src/mapping.rs": "3172d59722cdebbcd16e8a1992922aebd1c381acbd3677f7cc9b3dc1306025b7",
+    "crates/workbench-mcp/src/protocol.rs": "1cddf1ec1dd92d48561b11e889d2ed052c3b143aa8b0fd5699980be22f0190a7",
+    "crates/workbench-mcp/src/server.rs": "b9bffebbbdf8619ee593ed17843e9f4356f6b4b17392ea979dfa04c0cb3c25a6",
+    "crates/workbench-ui/build.rs": "ff57f3362709fb7bba35569ad82d34989fb9d9717224049b438fc4e087aeabaa",
+    "crates/workbench-ui/src/grants.rs": "13da9b9aa67556ae296fbc75ea219799824236e6916d0459453211d87c70fb70",
+    "crates/workbench-ui/src/http.rs": "6d46bde83aef364a2c25a8209d16532c7b66b55db8eb515acabb0cb18061803e",
+    "crates/workbench-ui/src/input.rs": "1bea92a00f1826ca6a0aa87eb808f8ba956a0c724318603c7f2f096b1a09efbd",
+    "crates/workbench-ui/src/lib.rs": "8324ba72c3b8544f3e0688b0379b7ddddac88de6fce2e5b2fd416104404cc523",
+    "crates/workbench-ui/src/queries.rs": "6947d297c156af351147a761758d15d0f7c788bf3fbfaa5bfeb9f237fad381ef",
+    "crates/workbench-ui/src/state.rs": "04dad0c1beb377b5f7d1f60f11399cf9f226634a4c671285f3d7c92e4b856f41",
+    "docs/sre-workbench/schemas/bundle.schema.json": "5543369764baebe90848fe8cf687b2dc9c6fd87fcefe8a2f63a87def754d32e0",
+    "docs/sre-workbench/schemas/capability.schema.json": "e0277bf32703281c941863bb6bce7bd631e1f04a1298f7ad8b6eab306f86d3a2",
+    "docs/sre-workbench/schemas/change-apply-input.schema.json": "ec8d1649c9f9ce5ef8bbe484a8dd6cafe1663d603e4522046f6ad22fec3fe625",
+    "docs/sre-workbench/schemas/change-approve-input.schema.json": "d03883dc6ffcd7799df365f86e70b872b46a5a0625a0317231aaed407fb98c7f",
+    "docs/sre-workbench/schemas/change-data.schema.json": "2b6aacb8b29c4cd2a747268a8b336f4c200c809ecee380d39920f04a94775949",
+    "docs/sre-workbench/schemas/change-plan-input.schema.json": "6d81bdc59b0963f196b0831268871ba07fbe93c8f74ccb12d12411c3846b9017",
+    "docs/sre-workbench/schemas/change-plan.schema.json": "5c948086f240af7ee883037e055b860ee74fba1cca25f3f9b9313e7d0d05a474",
+    "docs/sre-workbench/schemas/change-reconcile-input.schema.json": "d6b0c2bb241c7388d0cfbeea3cb72a0c35ceb6d5a74bd87fbc668c5398f01ea1",
+    "docs/sre-workbench/schemas/change-status-input.schema.json": "71e78c1bfc61f90d1811464e43d41fd821308ea45c28bb4bf2fe8ee4739b3b8a",
+    "docs/sre-workbench/schemas/common.schema.json": "7a5898d26f7301d4b3e868e3b2cf35e38ab044763f2db60ebea18e0857453a50",
+    "docs/sre-workbench/schemas/config-check-data.schema.json": "8478b5781920dbe767f1cbe9bf091a9a8ff9e5077d60667f346362ec52eede9d",
+    "docs/sre-workbench/schemas/config-check-input.schema.json": "0bb8bfd6bb3bba5e1e35e3aa1ebfc2c6a554e9309df53186e86250cc374c06a6",
+    "docs/sre-workbench/schemas/config.schema.json": "f57bab2bc388bdf1112834121d7e9463029d72851336b700f5b46cd403f8fb34",
+    "docs/sre-workbench/schemas/context-data.schema.json": "af8c6b7b61d7183a3fe85c6be94686a4c96579dee2edfb048816996db0b42b04",
+    "docs/sre-workbench/schemas/context-export.schema.json": "279f2a0a54fae33a0a187a4e7a00da4d8d601f41bd8804434b71bca5828d3923",
+    "docs/sre-workbench/schemas/context-resolve-input.schema.json": "8d50105aca782dfd2790bdf5a44c92101663694ac40491d573ec75b4f27f0fef",
+    "docs/sre-workbench/schemas/dashboard-config-data.schema.json": "4f8783c7b9b88afc21469b56d0b31955c7b1c722440259e75733e7441e275c9b",
+    "docs/sre-workbench/schemas/dashboard-hygiene-data.schema.json": "f108c53296da6ee47e641aa00848ddb3d316d0a6eb4cd92ce3861438370c98cf",
+    "docs/sre-workbench/schemas/dashboard-hygiene-input.schema.json": "bdb7ff637a718a20c6910adfc076bff485196b19a1110ffc6356f19249565fca",
+    "docs/sre-workbench/schemas/diagnostics-config.schema.json": "aa83711703ee76a41c6df3711025dc6bc7f766091629c6fb7c10a446c0dcc886",
+    "docs/sre-workbench/schemas/diagnostics-data.schema.json": "ad2154451d338529723f00197473f73a82f37afe46c503c7ae1cc4c3b650263f",
+    "docs/sre-workbench/schemas/diagnostics-pack-input.schema.json": "fff308b73ca5c77c3cd1de207fecf4ccefb9040a62b9613759655c9111efaa78",
+    "docs/sre-workbench/schemas/diagnostics-run-input.schema.json": "8e52e63a5481c1a5570229e5f42acc536e824778597c01497c1d712f31ee85f5",
+    "docs/sre-workbench/schemas/error-budget-data.schema.json": "7489135a18052ce9cfdaeb6c5780b692abbeff1b002e78c00fdbe37d174e9406",
+    "docs/sre-workbench/schemas/error-budget-input.schema.json": "4c00ba1909240ec914062ea4f10c9d83d02aebcea0777280839e4dd5e1b42b7b",
+    "docs/sre-workbench/schemas/event.schema.json": "21626bd019924fa8911cc5f9ba69c9406648bca50352f0b56dc806a66f22a6f4",
+    "docs/sre-workbench/schemas/evidence-collect-input.schema.json": "8f4ad3c96f0a13cd37401525a54563bdd280a1fa693775fc4696e330687defda",
+    "docs/sre-workbench/schemas/evidence-collection-data.schema.json": "b303564216ebe204b11a578c660fb19dac3c7674bbbb6a18d30aa2079befca76",
+    "docs/sre-workbench/schemas/evidence-collection-payload.schema.json": "9c6b05e11eccd5f8afbd186368406edcc654dc0a6ca218853e12f00395d3fda1",
+    "docs/sre-workbench/schemas/evidence-compare-input.schema.json": "9d47c4f3279a3a53a6c75fa94864850ebd8982a419c5d84836e6aeb78e1b56b0",
+    "docs/sre-workbench/schemas/evidence-comparison-data.schema.json": "31b2b35a3b3f8f4cbf23d011ec5d19fe830830f973f0b6fb3ad3e41d4c7962cd",
+    "docs/sre-workbench/schemas/evidence-manifest.schema.json": "f958132144e3ea9917022184b4f65ee3f7c4c6cbf5036152af959ec8334d9115",
+    "docs/sre-workbench/schemas/evidence-offline-data.schema.json": "0e0e75506110ed0c51be2d3fcbc44fac101bbed3d9db4956bdb1c3af17883663",
+    "docs/sre-workbench/schemas/evidence-reference-input.schema.json": "aeda6ce0dd4191407f103b827a3fe5f798f44875a8b4e51e1405d97aba4ad087",
+    "docs/sre-workbench/schemas/extension-data.schema.json": "76427a45329e1bc776490ef205cd3338f5a021cc69cb3ea4ad5fafd6066a2dca",
+    "docs/sre-workbench/schemas/extension-inspect-input.schema.json": "89cda69da7817c3db706ea7f4ae24e05ae5379603ac899200bf243b83671a1c8",
+    "docs/sre-workbench/schemas/extension-install-input.schema.json": "636dedb415c665718e088e101f1069fb0a7e18630176167f61cfdef2cfcd6892",
+    "docs/sre-workbench/schemas/extension-manifest.schema.json": "bbfdb3be75616e7a7810d0425c90744294c62347d910a60c13c463b5488da9a0",
+    "docs/sre-workbench/schemas/extension-package.schema.json": "021d3fcdbece84a40c67010407de1ca753e5b9dad2dd5ac262a9329f2c359a55",
+    "docs/sre-workbench/schemas/extension-policy.schema.json": "6e28928bbd280fe977b524a9218934ac330cd3376039f5898069dc893729849d",
+    "docs/sre-workbench/schemas/extension-protocol-frame.schema.json": "aab8a3ef2c22d60f57f0cf8ba5dd676fd57f364523961f5b573e563f81f4efe6",
+    "docs/sre-workbench/schemas/extension-run-data.schema.json": "7182752a6990711e7a783983eacc0fdfe04abc9507b676b39db53fe021779b11",
+    "docs/sre-workbench/schemas/fleet-cancel-input.schema.json": "3b7be32bc596180a398adfce554e65055fa0daf6925f8b38ae47194e09700662",
+    "docs/sre-workbench/schemas/fleet-collect-input.schema.json": "db2b2e1c912750581c02861fabfd0c62972735ab7f949818c2b4fef2ed062d38",
+    "docs/sre-workbench/schemas/fleet-data.schema.json": "9977164ec46a6fe25ec1bf48b84a976e7993cae3e7c1a454568167efc479628d",
+    "docs/sre-workbench/schemas/fleet-inventory.schema.json": "40af5a8cf1b2dfc08af13d7dc6207962a9bc05c35ccf4159b7807f771f9bf5a7",
+    "docs/sre-workbench/schemas/fleet-resume-input.schema.json": "e624e80393b2cb8881095de4c9877b79199579bd3352d8fb02a9735bd7ac4b95",
+    "docs/sre-workbench/schemas/fleet-status-input.schema.json": "eeb2f8c92d3e67aa27da051d8881723b7bac4816d1a11671bfa444784a4268d2",
+    "docs/sre-workbench/schemas/grafana-dashboard-data.schema.json": "afe144f69afcb8a8341b6b51d076ae80d014459506edb3b7e6b21b6e7b1aed28",
+    "docs/sre-workbench/schemas/grafana-dashboard-input.schema.json": "48e60b8b1590ad1eeb7362e3d962387e2e9cce93181e2aff9c47ccb4c0899bdd",
+    "docs/sre-workbench/schemas/grafana-query-data.schema.json": "8ec6e3156601c0ce14593c6156af46900651a9eb2e05433a975b7ff257211fe1",
+    "docs/sre-workbench/schemas/grafana-query-input.schema.json": "7bd28cfe9eb84246e2f1b860cada3a8e95c8cab9d6dd20c5b78be74a2da69ae3",
+    "docs/sre-workbench/schemas/job-cancel-input.schema.json": "c307083d3305bd1601eba336b7f99de91f9874d166be787079ae1421fbc9aa4b",
+    "docs/sre-workbench/schemas/job-data.schema.json": "23503a605e8493fd5d9efc331b1a58931b4d90405b5994568d8cbac459c607df",
+    "docs/sre-workbench/schemas/job-status-input.schema.json": "815a04883b2f19ba75d67447bae88a6486ccb92668aa930a596b77b06411fc09",
+    "docs/sre-workbench/schemas/job-submit-input.schema.json": "ed7196e0bab9373f4159c9d299af40d2e208e6da47dff1b0da865bbbd3cb2ab4",
+    "docs/sre-workbench/schemas/job-watch-input.schema.json": "bb99fea859b389de21d7e02f14f6bba4a076b3f043d96e730cac2ec78b44496e",
+    "docs/sre-workbench/schemas/job-work-input.schema.json": "a0628dcdb697277189c52044a5114ff9fde65401272164a95d7d50a286ceda0c",
+    "docs/sre-workbench/schemas/process-input.schema.json": "44800b1fbdebcb526d7b6469c51af208ab686acba5225a2f7f08d2642c53259c",
+    "docs/sre-workbench/schemas/prometheus-config-data.schema.json": "f84303fe73583cdbe09fc21b5c44d74cb452e30fc52941de720c45bcbd3378d5",
+    "docs/sre-workbench/schemas/query-run-data.schema.json": "091a6a9ee44d6bab6ff5a53c4b35079890a3775d6b6b99be37c186a2bad459f2",
+    "docs/sre-workbench/schemas/query-run-input.schema.json": "2cdc0c3fb05f377c51ed3f243e51c8fb1812e2c6e228e5caf2c98509306430e5",
+    "docs/sre-workbench/schemas/query.schema.json": "c701afda64ea639cd9b70f69abeec3238664a575073633e5d7264ac8153fb486",
+    "docs/sre-workbench/schemas/read-policy.schema.json": "7801c185903cb31a865a114eb02aac4bfb718959881ca8fa62db9d21297e46a6",
+    "docs/sre-workbench/schemas/read-profile-data.schema.json": "30e5f2beac708d58b7f92f9e269abcbd25cb6bb80450221df21c82335b15e31e",
+    "docs/sre-workbench/schemas/report-create-input.schema.json": "1a23b94c0bf846b2a0d382dd161ca8b5b3da5683c75fbf4bf75de7a671165488",
+    "docs/sre-workbench/schemas/report-data.schema.json": "f393d4b8df4fd3b9958f4894e1007f2b297c9763f1d773c51b983f8faac64a06",
+    "docs/sre-workbench/schemas/request.schema.json": "4602d29d23e78a35502803315d6386812e5b3294d4f9af318328f4bdce50ec45",
+    "docs/sre-workbench/schemas/result.schema.json": "e003035f0a28f5b7e0ba5f326a8564c855766b379bf68f786c89454186509b86",
+    "docs/sre-workbench/schemas/runbook-data.schema.json": "89f83970d32cd0b816a38a06c257a209e40fb7db397affd59d6c4558e6970317",
+    "docs/sre-workbench/schemas/runbook-input.schema.json": "b3e64fba1c291b0cb3b5e18fa776724b35d64d852708a05761ed38421cce3447",
+    "docs/sre-workbench/schemas/runbook-resume-input.schema.json": "752fed1945c65a868927da0f1f2e37de01f92bfa72916ccd3d992d43cc7609b2",
+    "docs/sre-workbench/schemas/runbook-run-input.schema.json": "4729fb46907fcc590cc9ee466356edd4f9e26c877c3e0eed0760393e3ce3e895",
+    "docs/sre-workbench/schemas/runbook-show-input.schema.json": "af60afdfe62673212f2c22625489949bbc5cf9ff592536a2daf4fa743e060ac9",
+    "docs/sre-workbench/schemas/runbook-status-input.schema.json": "95eb897aaaef8d7a142c76fcf3f564e69fda64734e0cebe6304b69c77dba97ec",
+    "docs/sre-workbench/schemas/runner-cancel-input.schema.json": "a52c3ed2c817411facf0000f134ca3645f8e2eab1376df6ab10638c65780eca9",
+    "docs/sre-workbench/schemas/runner-client-config.schema.json": "58e9c7f8e85f15f935bdf64cdd88fb3347610e271006bef7fb59764d16ddbafe",
+    "docs/sre-workbench/schemas/runner-data.schema.json": "45f225af4a1585f63d11006a36238273efe485f00c894d34a79c9b06656505ea",
+    "docs/sre-workbench/schemas/runner-handshake-input.schema.json": "aa13a34c81d03e78bee171e930d374107bcaa2f1bbe1b113e9b4bd017fd9de13",
+    "docs/sre-workbench/schemas/runner-server-config.schema.json": "f6a2c35f70291a8c4ee7b4087864151c6eac5444a13b8dec888afd1d736770b1",
+    "docs/sre-workbench/schemas/runner-status-input.schema.json": "a5ea21398121a88061d3fdfa65fcfbb13ab260f07eb019b87743e1a69d151b2d",
+    "docs/sre-workbench/schemas/runner-submit-input.schema.json": "918f2cb2fca9a977abcd9d2b8b1e573bc9637b9ba03b9b5136f9c46ed6aae005",
+    "docs/sre-workbench/schemas/runner-watch-input.schema.json": "3ff5fe35a8f549671538cfd07315ec5397a9aca47dc82d7f79a69444e6a6fd2c",
+    "docs/sre-workbench/schemas/runner-wire-request.schema.json": "b9f5c19852297034d570d931155d6d9d7f4e77ff2c7c26638fa3c5c15303e1e5",
+    "docs/sre-workbench/schemas/runner-wire-response.schema.json": "98a1a3736060060d83ba9ef93a7cd20754afc3bd8892b89f2be4c05afd250446",
+    "docs/sre-workbench/schemas/schedule-cancel-active-input.schema.json": "be63bcc54ccbe384ed79bf8598b72b45e6630c9d5b7c556c0dd177844d7e7d25",
+    "docs/sre-workbench/schemas/schedule-create-input.schema.json": "71449ea0de3013576868dde46cf6422aa159005cf1a258a054cc50c04e5dc1d0",
+    "docs/sre-workbench/schemas/schedule-data.schema.json": "af64585a6ea96029ad11b0e1fba696e3305fb8033cd19875e0ac9beca6deacd0",
+    "docs/sre-workbench/schemas/schedule-definition.schema.json": "40cff7adbd4089568b31179f2e084a89977dafa15a5099ffe2b00f8aadb1500c",
+    "docs/sre-workbench/schemas/schedule-list-input.schema.json": "23d4fcdcf67a0d6c17c1502644cd210d02a958de479f418b7a05d3e3f5d1e4ae",
+    "docs/sre-workbench/schemas/schedule-pause-input.schema.json": "0c8cb9c586871441859e60c9376a2816a3fc4ef2e56ac684985d57654fe5b601",
+    "docs/sre-workbench/schemas/schedule-preview-input.schema.json": "e5ee52008912774bb84cde153fcb603879630e8749489a2d4a4d4e9ffe32d948",
+    "docs/sre-workbench/schemas/schedule-run-now-input.schema.json": "abb08bb2d44edd656312637166a439a98ed10c435e2b476658b614225b0c5980",
+    "docs/sre-workbench/schemas/schedule-status-input.schema.json": "94c1e7b3887e56900f7286e63f7f853d5ef76c630e0732e38738553070b8a7dc",
+    "docs/sre-workbench/schemas/schedule-update-input.schema.json": "d697ab36f3e1681494c4f41a32cd1065ed22eee66851d45c368d6c5429f4952f",
+    "docs/sre-workbench/schemas/schedule-work-input.schema.json": "fb5b63e8a7e4b4e96270567b58a56659b120ae3ce81714cbc1e3e8a29ec6cdc6",
+    "docs/sre-workbench/schemas/task-run-input.schema.json": "a7e1531aa5370064a32979edaa03fc760ffb651a3c3e9519815454f61f4596bb",
+    "docs/sre-workbench/schemas/task.schema.json": "8db4484e43f79d689383c0f7f3cd20df3b47a7817005f03d3e33057188df766c",
+    "docs/sre-workbench/schemas/toil-annotate-input.schema.json": "ea6876e3eb56e27424f491def727988f822e452be59105a525251be3aab759ea",
+    "docs/sre-workbench/schemas/toil-capture-input.schema.json": "8fb5eceae47114a637bb4ae75f8931dd0e950373f01ada49c203488c08ff7b74",
+    "docs/sre-workbench/schemas/toil-configure-input.schema.json": "b39620a69285578a24c118dc8dba4715f39490324318f08a29dcc2b736d3b133",
+    "docs/sre-workbench/schemas/toil-data.schema.json": "63b0c8aa8232b8b08460de2cdcb4a4d38e182c8571677536ad2b3023ccf3cdde",
+    "docs/sre-workbench/schemas/toil-delete-input.schema.json": "270f58c1bebe97aaf12d1fb2ab317b27cda353712707713b62ff8f959758928d",
+    "docs/sre-workbench/schemas/toil-record-input.schema.json": "a2aae40d02fc18838283b0d11e683cb27080fde161b2c76f3715d6a0c0f628e9",
+    "docs/sre-workbench/schemas/toil-sample.schema.json": "5bca7be8248c3534946db607c97c814cb6ed60ab16acd15de2f5376426a65bfd",
+    "docs/sre-workbench/schemas/toil-summary-data.schema.json": "cc6a2715b51f0ebd83982de81136e2eb642676da3abf15c7a9d01c7cf95c8308",
+    "docs/sre-workbench/schemas/toil-summary-input.schema.json": "b1d0dec9c15bd4e199d5c705d67918b92aa501bc898894c18c09ebad8bd3fcc8",
+    "docs/sre-workbench/schemas/workflow.schema.json": "e50d8b5f7f8f579fb3c17c19ab56c904131b8f2517cf34042f417ccbb0f7a87a"
+  },
+  "records": [
+    {
+      "name": "catalog",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18e006289c4629ec-9",
+        "run_id": "run-10-18e006289c485b4d-b",
+        "operation": "evidence.packs.list",
+        "operation_version": 1,
+        "target": {
+          "kind": "local",
+          "id": "workstation"
+        },
+        "resolved_target": {},
+        "started_at": "2026-10-19T19:50:23.183889248Z",
+        "finished_at": "2026-10-19T19:50:23.184097373Z",
+        "duration_ms": 0,
+        "execution": {
+          "status": "succeeded",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "not_applicable",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_applicable",
+          "scope": "This local operation only; no service health assessment",
+          "limitations": []
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "packs": [
+            {
+              "classification": "restricted",
+              "id": "service-queries",
+              "input_schema": {
+                "$ref": "urn:sre-workbench:spec:evidence-collect-input:0.1"
+              },
+              "limitations": [
+                "The source context is an offline declaration and grants no execution or credential authority.",
+                "Complete receipt retention does not establish source-data coverage, service health or causation.",
+                "Known credentials are redacted; arbitrary sensitive telemetry is not automatically detected.",
+                "This pack has fixture evidence only; no live Grafana version or hosted grant is established."
+              ],
+              "limits": {
+                "finalization_allowance_ms": 2500,
+                "max_concurrency": 1,
+                "max_timeout_ms": 60000
+              },
+              "output_schema": {
+                "$ref": "urn:sre-workbench:spec:evidence-collection-data:0.1"
+              },
+              "purpose": "Retain bounded metrics and log observations for one explicitly bound service and common time window.",
+              "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236",
+              "steps": [
+                {
+                  "id": "metrics",
+                  "operation": "query.run",
+                  "operation_version": 1,
+                  "query": {
+                    "dialect": "promql",
+                    "id": "prometheus.up-by-job",
+                    "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+                    "version": 1
+                  }
+                },
+                {
+                  "id": "logs",
+                  "operation": "query.run",
+                  "operation_version": 1,
+                  "query": {
+                    "dialect": "logql",
+                    "id": "loki.logs-by-job",
+                    "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+                    "version": 1
+                  }
+                }
+              ],
+              "version": 1
+            }
+          ]
+        },
+        "errors": [],
+        "sources": [],
+        "artifacts": [],
+        "effective_limits": {
+          "timeout_ms": 30000,
+          "max_output_bytes": 16384
+        },
+        "record_mode": "never"
+      }
+    },
+    {
+      "name": "describe",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18e00628a4f58fe6-10",
+        "run_id": "run-10-18e00628a4f7aeba-12",
+        "operation": "evidence.packs.describe",
+        "operation_version": 1,
+        "target": {
+          "kind": "local",
+          "id": "workstation"
+        },
+        "resolved_target": {},
+        "started_at": "2026-10-19T19:50:23.329599868Z",
+        "finished_at": "2026-10-19T19:50:23.329792313Z",
+        "duration_ms": 0,
+        "execution": {
+          "status": "succeeded",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "not_applicable",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_applicable",
+          "scope": "This local operation only; no service health assessment",
+          "limitations": []
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "pack": {
+            "classification": "restricted",
+            "id": "service-queries",
+            "input_schema": {
+              "$ref": "urn:sre-workbench:spec:evidence-collect-input:0.1"
+            },
+            "limitations": [
+              "The source context is an offline declaration and grants no execution or credential authority.",
+              "Complete receipt retention does not establish source-data coverage, service health or causation.",
+              "Known credentials are redacted; arbitrary sensitive telemetry is not automatically detected.",
+              "This pack has fixture evidence only; no live Grafana version or hosted grant is established."
+            ],
+            "limits": {
+              "finalization_allowance_ms": 2500,
+              "max_concurrency": 1,
+              "max_timeout_ms": 60000
+            },
+            "output_schema": {
+              "$ref": "urn:sre-workbench:spec:evidence-collection-data:0.1"
+            },
+            "purpose": "Retain bounded metrics and log observations for one explicitly bound service and common time window.",
+            "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236",
+            "steps": [
+              {
+                "id": "metrics",
+                "operation": "query.run",
+                "operation_version": 1,
+                "query": {
+                  "dialect": "promql",
+                  "id": "prometheus.up-by-job",
+                  "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+                  "version": 1
+                }
+              },
+              {
+                "id": "logs",
+                "operation": "query.run",
+                "operation_version": 1,
+                "query": {
+                  "dialect": "logql",
+                  "id": "loki.logs-by-job",
+                  "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+                  "version": 1
+                }
+              }
+            ],
+            "version": 1
+          }
+        },
+        "errors": [],
+        "sources": [],
+        "artifacts": [],
+        "effective_limits": {
+          "timeout_ms": 30000,
+          "max_output_bytes": 16384
+        },
+        "record_mode": "never"
+      }
+    },
+    {
+      "name": "collected",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18e00628ae6ed91b-17",
+        "run_id": "run-10-18e00628ae716cad-19",
+        "operation": "evidence.collect",
+        "operation_version": 1,
+        "target": {
+          "kind": "connection",
+          "id": "fixture-secondary"
+        },
+        "resolved_target": {
+          "connection": "fixture-secondary",
+          "effects": "local_store_write",
+          "profile": "hosted-collection"
+        },
+        "started_at": "2026-10-19T19:50:23.488558297Z",
+        "finished_at": "2026-10-19T19:50:23.53541895Z",
+        "duration_ms": 46,
+        "execution": {
+          "status": "succeeded",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "succeeded",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_established",
+          "scope": "Retained receipts for the fixed service queries; source-data coverage and service health remain unestablished.",
+          "limitations": [
+            "Complete capture means successful receipt retention, not complete telemetry coverage or service health.",
+            "Known credential echoes are redacted; unrelated sensitive telemetry is not automatically detected.",
+            "Finalization may use up to 2500 ms for observed bytes and metadata; synchronous filesystem I/O cannot forcibly preempt an uninterruptible kernel operation."
+          ]
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "bundle": {
+            "digest": "sha256:3bb94fac6c29ecac540b88f2941d666a297e5fc28a64268eeeee24b17ff30d66",
+            "id": "run-10-18e00628ae716cad-19"
+          },
+          "cancellation_signal": null,
+          "capture": {
+            "expected_steps": 2,
+            "retained_receipts": 2,
+            "state": "complete"
+          },
+          "connection": {
+            "id": "fixture-secondary",
+            "organization_id": 7,
+            "origin": "https://127.0.0.1:40743/grafana"
+          },
+          "delivery_cancellation_signal": null,
+          "errors": [],
+          "finalized_at": "2026-10-19T19:50:23.534280789Z",
+          "format_version": 1,
+          "on_failure": "continue",
+          "pack": {
+            "id": "service-queries",
+            "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236",
+            "version": 1
+          },
+          "producer": {
+            "id": "save",
+            "spec_version": "0.1",
+            "version": "0.1.0"
+          },
+          "provenance": {
+            "context": {
+              "record": {
+                "bindings": {
+                  "environment": "dev",
+                  "organization": "7",
+                  "target": "fixture-secondary"
+                },
+                "deployment": "blue",
+                "environment": "dev",
+                "last_reviewed": "2026-10-19T19:50:22.280451+00:00",
+                "service": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+                "state": "active",
+                "team": "platform"
+              },
+              "resolution": {
+                "age_seconds": 1,
+                "max_age_days": 30,
+                "state": "resolved",
+                "usable": true
+              },
+              "source": {
+                "evidence_state": "sourced",
+                "id": "synthetic-team-export",
+                "kind": "fixture-export",
+                "observed_at": "2026-10-19T19:50:23.49253013Z",
+                "revision": "fixture-1",
+                "sha256": "sha256:b66558538b458e674dd3c948f0e25b47929f093ab740de7e283f8736b3e1c751"
+              }
+            },
+            "grafana_ca": {
+              "kind": "custom",
+              "sha256": "sha256:543c409185f0ab089fed6568e916554ce2bb574d74a83866a7b60b49661d6b91"
+            },
+            "grafana_config_sha256": "sha256:11e929ba05a2b84f17f62f7a90ebe9e4416679ac0d6914c58ff7aeca5d37fb90"
+          },
+          "redaction": {
+            "applied": true,
+            "replacements": 2
+          },
+          "request_id": "request-10-18e00628ae6ed91b-17",
+          "run_id": "run-10-18e00628ae716cad-19",
+          "selection": {
+            "deployment": null,
+            "environment": "dev",
+            "service": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+            "team": null
+          },
+          "started_at": "2026-10-19T19:50:23.488558297Z",
+          "steps": [
+            {
+              "artifact": {
+                "bytes": 3404,
+                "classification": "restricted",
+                "digest": "sha256:011898a056c4ce4b5eb699c9f5770dd977c890c9e445024af2b415cf2b3044ef",
+                "media_type": "application/json",
+                "path": "artifacts/011898a056c4ce4b5eb699c9f5770dd977c890c9e445024af2b415cf2b3044ef.json"
+              },
+              "coverage": {
+                "limitations": [
+                  "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                  "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                  "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                  "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                  "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+                  "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+                  "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+                ],
+                "scope": "Bounded query response from the configured Grafana connection and datasource",
+                "state": "not_established"
+              },
+              "definition": {
+                "dialect": "promql",
+                "id": "prometheus.up-by-job",
+                "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+                "version": 1
+              },
+              "duration_ms": 29,
+              "errors": [],
+              "finished_at": "2026-10-19T19:50:23.52388149Z",
+              "id": "metrics",
+              "omission": null,
+              "operation": "query.run",
+              "redaction": {
+                "applied": true,
+                "replacements": 1
+              },
+              "run_id": "run-10-18e00628aec63f14-1e",
+              "started_at": "2026-10-19T19:50:23.494136741Z",
+              "status": "succeeded",
+              "truncation": {
+                "stderr": false,
+                "stdout": false
+              }
+            },
+            {
+              "artifact": {
+                "bytes": 3343,
+                "classification": "restricted",
+                "digest": "sha256:d47acccc9ff28acde3b7c9782c8529b951b7e8b1808fbac9bb4a59c2d29e32a9",
+                "media_type": "application/json",
+                "path": "artifacts/d47acccc9ff28acde3b7c9782c8529b951b7e8b1808fbac9bb4a59c2d29e32a9.json"
+              },
+              "coverage": {
+                "limitations": [
+                  "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                  "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                  "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                  "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                  "Returned log entries do not establish service health or complete event coverage.",
+                  "Log retention, sampling, job-label reuse and incomplete returned data can limit the observation.",
+                  "Requested lines do not prove returned coverage; empty results are not zero or an all-clear."
+                ],
+                "scope": "Bounded query response from the configured Grafana connection and datasource",
+                "state": "not_established"
+              },
+              "definition": {
+                "dialect": "logql",
+                "id": "loki.logs-by-job",
+                "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+                "version": 1
+              },
+              "duration_ms": 7,
+              "errors": [],
+              "finished_at": "2026-10-19T19:50:23.532880239Z",
+              "id": "logs",
+              "omission": null,
+              "operation": "query.run",
+              "redaction": {
+                "applied": true,
+                "replacements": 1
+              },
+              "run_id": "run-10-18e00628b0a0a739-21",
+              "started_at": "2026-10-19T19:50:23.525223548Z",
+              "status": "succeeded",
+              "truncation": {
+                "stderr": false,
+                "stdout": false
+              }
+            }
+          ],
+          "window": {
+            "from": "2026-10-19T19:45:23.488Z",
+            "to": "2026-10-19T19:50:23.488Z"
+          }
+        },
+        "errors": [],
+        "sources": [
+          {
+            "evidence_state": "sourced",
+            "observed_at": "2026-10-19T19:50:23.535336063Z",
+            "reference": "evidence:sealed-collection",
+            "untrusted": true
+          }
+        ],
+        "artifacts": [
+          {
+            "bytes": 3404,
+            "classification": "restricted",
+            "digest": "sha256:011898a056c4ce4b5eb699c9f5770dd977c890c9e445024af2b415cf2b3044ef",
+            "media_type": "application/json",
+            "path": "artifacts/011898a056c4ce4b5eb699c9f5770dd977c890c9e445024af2b415cf2b3044ef.json"
+          },
+          {
+            "bytes": 3343,
+            "classification": "restricted",
+            "digest": "sha256:d47acccc9ff28acde3b7c9782c8529b951b7e8b1808fbac9bb4a59c2d29e32a9",
+            "media_type": "application/json",
+            "path": "artifacts/d47acccc9ff28acde3b7c9782c8529b951b7e8b1808fbac9bb4a59c2d29e32a9.json"
+          }
+        ],
+        "effective_limits": {
+          "timeout_ms": 60000,
+          "max_output_bytes": 1048576
+        },
+        "record_mode": "always"
+      }
+    },
+    {
+      "name": "opened",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18e00628e0a1a835-26",
+        "run_id": "run-10-18e00628e0a4358e-28",
+        "operation": "evidence.open",
+        "operation_version": 1,
+        "target": {
+          "kind": "local",
+          "id": "workstation"
+        },
+        "resolved_target": {},
+        "started_at": "2026-10-19T19:50:24.330742824Z",
+        "finished_at": "2026-10-19T19:50:24.336928209Z",
+        "duration_ms": 6,
+        "execution": {
+          "status": "partial",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "not_applicable",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "partial",
+          "scope": "Historical observations in the verified local bundle only.",
+          "limitations": [
+            "Integrity verification does not establish source truth or authorship. Historical observations are not current health; source coverage, absent telemetry and causation remain unestablished."
+          ]
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "algorithm": {
+            "id": "retained-observations-v1",
+            "version": 1
+          },
+          "analysis": {
+            "at": "2026-10-19T19:50:24.335329043Z",
+            "profile": "linux-offline-v1",
+            "tool": "save",
+            "version": "0.1.0"
+          },
+          "bundle": {
+            "digest": "sha256:3bb94fac6c29ecac540b88f2941d666a297e5fc28a64268eeeee24b17ff30d66",
+            "id": "run-10-18e00628ae716cad-19"
+          },
+          "checks": [
+            {
+              "definition": {
+                "dialect": "promql",
+                "id": "prometheus.up-by-job",
+                "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+                "version": 1
+              },
+              "details": [
+                {
+                  "receipt": {
+                    "artifacts": [],
+                    "assessment": "not_assessed",
+                    "coverage": {
+                      "limitations": [
+                        "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                        "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                        "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                        "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                        "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+                        "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+                        "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+                      ],
+                      "scope": "Bounded query response from the configured Grafana connection and datasource",
+                      "state": "not_established"
+                    },
+                    "data": {
+                      "adapter": {
+                        "api_profile": "grafana-legacy-v1",
+                        "compatibility_evidence": "fixture_only",
+                        "id": "grafana",
+                        "upstream_digest": "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7",
+                        "upstream_revision": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7",
+                        "version": 1
+                      },
+                      "binding": {
+                        "organization_id": 7,
+                        "organization_verified": true,
+                        "origin": "https://127.0.0.1:40743/grafana"
+                      },
+                      "cancellation_signal": null,
+                      "definition": {
+                        "dialect": "promql",
+                        "id": "prometheus.up-by-job",
+                        "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+                        "version": 1
+                      },
+                      "parameters": {
+                        "job": "<img src=\"https://untrusted.invalid\" onerror=\"alert(1)\">"
+                      },
+                      "redaction": {
+                        "applied": true,
+                        "replacements": 1
+                      },
+                      "request": {
+                        "datasource": "metrics-1",
+                        "expr": "up{job=\"<img src=\\\"https://untrusted.invalid\\\" onerror=\\\"alert(1)\\\">\"}",
+                        "from": "2026-10-19T19:45:23.488Z",
+                        "interval_ms": 1000,
+                        "kind": "prometheus",
+                        "max_data_points": 1000,
+                        "max_lines": null,
+                        "to": "2026-10-19T19:50:23.488Z"
+                      },
+                      "response": {
+                        "results": {
+                          "A": {
+                            "frames": [
+                              {
+                                "data": {
+                                  "values": [
+                                    [
+                                      1790899200000
+                                    ],
+                                    [
+                                      1
+                                    ]
+                                  ]
+                                },
+                                "schema": {
+                                  "fields": [
+                                    {
+                                      "name": "Time",
+                                      "type": "time"
+                                    },
+                                    {
+                                      "labels": {
+                                        "job": "fixture"
+                                      },
+                                      "name": "Value",
+                                      "type": "number"
+                                    }
+                                  ],
+                                  "meta": {
+                                    "notice": "[REDACTED]"
+                                  },
+                                  "refId": "A"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "transport": {
+                        "request_timeout_ms": 20000,
+                        "requests_started": 3,
+                        "response_limit_bytes": 2097152,
+                        "responses_received": 3,
+                        "stage": "complete"
+                      },
+                      "window": {
+                        "from": "2026-10-19T19:45:23.488Z",
+                        "to": "2026-10-19T19:50:23.488Z"
+                      }
+                    },
+                    "duration_ms": 29,
+                    "effect_outcome": "not_applicable",
+                    "effective_limits": {
+                      "max_output_bytes": 2097152,
+                      "timeout_ms": 59994
+                    },
+                    "errors": [],
+                    "execution": {
+                      "child_exit_code": null,
+                      "signal": null,
+                      "status": "succeeded"
+                    },
+                    "finished_at": "2026-10-19T19:50:23.52388149Z",
+                    "operation": "query.run",
+                    "operation_version": 1,
+                    "output": {
+                      "encoding": "utf-8",
+                      "stderr": "",
+                      "stderr_truncated": false,
+                      "stdout": "",
+                      "stdout_truncated": false
+                    },
+                    "record_mode": "never",
+                    "request_id": "request-10-18e00628aec618ba-1d",
+                    "resolved_target": {
+                      "api_profile": "grafana-legacy-v1",
+                      "connection": "fixture-secondary",
+                      "effects": "observe",
+                      "profile": "operator-local"
+                    },
+                    "run_id": "run-10-18e00628aec63f14-1e",
+                    "sources": [
+                      {
+                        "evidence_state": "sourced",
+                        "observed_at": "2026-10-19T19:50:23.523847906Z",
+                        "reference": "grafana:selected-connection",
+                        "untrusted": true
+                      }
+                    ],
+                    "spec_version": "0.1",
+                    "started_at": "2026-10-19T19:50:23.494136741Z",
+                    "target": {
+                      "id": "fixture-secondary",
+                      "kind": "connection"
+                    }
+                  },
+                  "type": "receipt"
+                }
+              ],
+              "id": "metrics",
+              "kind": "prometheus",
+              "omitted_details": 0,
+              "reasons": [
+                "observation_outside_window"
+              ],
+              "state": "incompatible",
+              "summary": {
+                "retained_receipts": 1
+              },
+              "unit": "dimensionless"
+            },
+            {
+              "definition": {
+                "dialect": "logql",
+                "id": "loki.logs-by-job",
+                "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+                "version": 1
+              },
+              "details": [
+                {
+                  "receipt": {
+                    "artifacts": [],
+                    "assessment": "not_assessed",
+                    "coverage": {
+                      "limitations": [
+                        "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                        "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                        "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                        "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                        "Returned log entries do not establish service health or complete event coverage.",
+                        "Log retention, sampling, job-label reuse and incomplete returned data can limit the observation.",
+                        "Requested lines do not prove returned coverage; empty results are not zero or an all-clear."
+                      ],
+                      "scope": "Bounded query response from the configured Grafana connection and datasource",
+                      "state": "not_established"
+                    },
+                    "data": {
+                      "adapter": {
+                        "api_profile": "grafana-legacy-v1",
+                        "compatibility_evidence": "fixture_only",
+                        "id": "grafana",
+                        "upstream_digest": "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7",
+                        "upstream_revision": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7",
+                        "version": 1
+                      },
+                      "binding": {
+                        "organization_id": 7,
+                        "organization_verified": true,
+                        "origin": "https://127.0.0.1:40743/grafana"
+                      },
+                      "cancellation_signal": null,
+                      "definition": {
+                        "dialect": "logql",
+                        "id": "loki.logs-by-job",
+                        "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+                        "version": 1
+                      },
+                      "parameters": {
+                        "job": "<img src=\"https://untrusted.invalid\" onerror=\"alert(1)\">"
+                      },
+                      "redaction": {
+                        "applied": true,
+                        "replacements": 1
+                      },
+                      "request": {
+                        "datasource": "logs-1",
+                        "expr": "{job=\"<img src=\\\"https://untrusted.invalid\\\" onerror=\\\"alert(1)\\\">\"}",
+                        "from": "2026-10-19T19:45:23.488Z",
+                        "interval_ms": 1000,
+                        "kind": "loki",
+                        "max_data_points": 1000,
+                        "max_lines": 500,
+                        "to": "2026-10-19T19:50:23.488Z"
+                      },
+                      "response": {
+                        "results": {
+                          "A": {
+                            "frames": [
+                              {
+                                "data": {
+                                  "values": [
+                                    [
+                                      1790899200000
+                                    ],
+                                    [
+                                      "fixture log"
+                                    ]
+                                  ]
+                                },
+                                "schema": {
+                                  "fields": [
+                                    {
+                                      "name": "Time",
+                                      "type": "time"
+                                    },
+                                    {
+                                      "name": "Line",
+                                      "type": "string"
+                                    }
+                                  ],
+                                  "meta": {
+                                    "notice": "[REDACTED]"
+                                  },
+                                  "refId": "A"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "transport": {
+                        "request_timeout_ms": 20000,
+                        "requests_started": 3,
+                        "response_limit_bytes": 2097152,
+                        "responses_received": 3,
+                        "stage": "complete"
+                      },
+                      "window": {
+                        "from": "2026-10-19T19:45:23.488Z",
+                        "to": "2026-10-19T19:50:23.488Z"
+                      }
+                    },
+                    "duration_ms": 7,
+                    "effect_outcome": "not_applicable",
+                    "effective_limits": {
+                      "max_output_bytes": 2097152,
+                      "timeout_ms": 59963
+                    },
+                    "errors": [],
+                    "execution": {
+                      "child_exit_code": null,
+                      "signal": null,
+                      "status": "succeeded"
+                    },
+                    "finished_at": "2026-10-19T19:50:23.532880239Z",
+                    "operation": "query.run",
+                    "operation_version": 1,
+                    "output": {
+                      "encoding": "utf-8",
+                      "stderr": "",
+                      "stderr_truncated": false,
+                      "stdout": "",
+                      "stdout_truncated": false
+                    },
+                    "record_mode": "never",
+                    "request_id": "request-10-18e00628b0a06ee8-20",
+                    "resolved_target": {
+                      "api_profile": "grafana-legacy-v1",
+                      "connection": "fixture-secondary",
+                      "effects": "observe",
+                      "profile": "operator-local"
+                    },
+                    "run_id": "run-10-18e00628b0a0a739-21",
+                    "sources": [
+                      {
+                        "evidence_state": "sourced",
+                        "observed_at": "2026-10-19T19:50:23.532857886Z",
+                        "reference": "grafana:selected-connection",
+                        "untrusted": true
+                      }
+                    ],
+                    "spec_version": "0.1",
+                    "started_at": "2026-10-19T19:50:23.525223548Z",
+                    "target": {
+                      "id": "fixture-secondary",
+                      "kind": "connection"
+                    }
+                  },
+                  "type": "receipt"
+                }
+              ],
+              "id": "logs",
+              "kind": "loki",
+              "omitted_details": 0,
+              "reasons": [
+                "observation_outside_window"
+              ],
+              "state": "incompatible",
+              "summary": {
+                "retained_receipts": 1
+              },
+              "unit": "entries"
+            }
+          ],
+          "format_version": 1,
+          "manifest": {
+            "artifacts": {
+              "logs": {
+                "bytes": 3343,
+                "classification": "restricted",
+                "digest": "sha256:d47acccc9ff28acde3b7c9782c8529b951b7e8b1808fbac9bb4a59c2d29e32a9",
+                "media_type": "application/json",
+                "path": "artifacts/d47acccc9ff28acde3b7c9782c8529b951b7e8b1808fbac9bb4a59c2d29e32a9.json"
+              },
+              "metrics": {
+                "bytes": 3404,
+                "classification": "restricted",
+                "digest": "sha256:011898a056c4ce4b5eb699c9f5770dd977c890c9e445024af2b415cf2b3044ef",
+                "media_type": "application/json",
+                "path": "artifacts/011898a056c4ce4b5eb699c9f5770dd977c890c9e445024af2b415cf2b3044ef.json"
+              }
+            },
+            "created_at_unix_ms": 1792439423493,
+            "finalized_at_unix_ms": 1792439423535,
+            "format_version": 1,
+            "id": "run-10-18e00628ae716cad-19",
+            "payload": {
+              "cancellation_signal": null,
+              "capture": {
+                "expected_steps": 2,
+                "retained_receipts": 2,
+                "state": "complete"
+              },
+              "connection": {
+                "id": "fixture-secondary",
+                "organization_id": 7,
+                "origin": "https://127.0.0.1:40743/grafana"
+              },
+              "errors": [],
+              "finalized_at": "2026-10-19T19:50:23.534280789Z",
+              "format_version": 1,
+              "on_failure": "continue",
+              "pack": {
+                "id": "service-queries",
+                "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236",
+                "version": 1
+              },
+              "producer": {
+                "id": "save",
+                "spec_version": "0.1",
+                "version": "0.1.0"
+              },
+              "provenance": {
+                "context": {
+                  "record": {
+                    "bindings": {
+                      "environment": "dev",
+                      "organization": "7",
+                      "target": "fixture-secondary"
+                    },
+                    "deployment": "blue",
+                    "environment": "dev",
+                    "last_reviewed": "2026-10-19T19:50:22.280451+00:00",
+                    "service": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+                    "state": "active",
+                    "team": "platform"
+                  },
+                  "resolution": {
+                    "age_seconds": 1,
+                    "max_age_days": 30,
+                    "state": "resolved",
+                    "usable": true
+                  },
+                  "source": {
+                    "evidence_state": "sourced",
+                    "id": "synthetic-team-export",
+                    "kind": "fixture-export",
+                    "observed_at": "2026-10-19T19:50:23.49253013Z",
+                    "revision": "fixture-1",
+                    "sha256": "sha256:b66558538b458e674dd3c948f0e25b47929f093ab740de7e283f8736b3e1c751"
+                  }
+                },
+                "grafana_ca": {
+                  "kind": "custom",
+                  "sha256": "sha256:543c409185f0ab089fed6568e916554ce2bb574d74a83866a7b60b49661d6b91"
+                },
+                "grafana_config_sha256": "sha256:11e929ba05a2b84f17f62f7a90ebe9e4416679ac0d6914c58ff7aeca5d37fb90"
+              },
+              "redaction": {
+                "applied": true,
+                "replacements": 2
+              },
+              "request_id": "request-10-18e00628ae6ed91b-17",
+              "run_id": "run-10-18e00628ae716cad-19",
+              "selection": {
+                "deployment": null,
+                "environment": "dev",
+                "service": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+                "team": null
+              },
+              "started_at": "2026-10-19T19:50:23.488558297Z",
+              "steps": [
+                {
+                  "artifact": {
+                    "bytes": 3404,
+                    "classification": "restricted",
+                    "digest": "sha256:011898a056c4ce4b5eb699c9f5770dd977c890c9e445024af2b415cf2b3044ef",
+                    "media_type": "application/json",
+                    "path": "artifacts/011898a056c4ce4b5eb699c9f5770dd977c890c9e445024af2b415cf2b3044ef.json"
+                  },
+                  "coverage": {
+                    "limitations": [
+                      "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                      "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                      "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                      "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                      "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+                      "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+                      "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+                    ],
+                    "scope": "Bounded query response from the configured Grafana connection and datasource",
+                    "state": "not_established"
+                  },
+                  "definition": {
+                    "dialect": "promql",
+                    "id": "prometheus.up-by-job",
+                    "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+                    "version": 1
+                  },
+                  "duration_ms": 29,
+                  "errors": [],
+                  "finished_at": "2026-10-19T19:50:23.52388149Z",
+                  "id": "metrics",
+                  "omission": null,
+                  "operation": "query.run",
+                  "redaction": {
+                    "applied": true,
+                    "replacements": 1
+                  },
+                  "run_id": "run-10-18e00628aec63f14-1e",
+                  "started_at": "2026-10-19T19:50:23.494136741Z",
+                  "status": "succeeded",
+                  "truncation": {
+                    "stderr": false,
+                    "stdout": false
+                  }
+                },
+                {
+                  "artifact": {
+                    "bytes": 3343,
+                    "classification": "restricted",
+                    "digest": "sha256:d47acccc9ff28acde3b7c9782c8529b951b7e8b1808fbac9bb4a59c2d29e32a9",
+                    "media_type": "application/json",
+                    "path": "artifacts/d47acccc9ff28acde3b7c9782c8529b951b7e8b1808fbac9bb4a59c2d29e32a9.json"
+                  },
+                  "coverage": {
+                    "limitations": [
+                      "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                      "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                      "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                      "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                      "Returned log entries do not establish service health or complete event coverage.",
+                      "Log retention, sampling, job-label reuse and incomplete returned data can limit the observation.",
+                      "Requested lines do not prove returned coverage; empty results are not zero or an all-clear."
+                    ],
+                    "scope": "Bounded query response from the configured Grafana connection and datasource",
+                    "state": "not_established"
+                  },
+                  "definition": {
+                    "dialect": "logql",
+                    "id": "loki.logs-by-job",
+                    "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+                    "version": 1
+                  },
+                  "duration_ms": 7,
+                  "errors": [],
+                  "finished_at": "2026-10-19T19:50:23.532880239Z",
+                  "id": "logs",
+                  "omission": null,
+                  "operation": "query.run",
+                  "redaction": {
+                    "applied": true,
+                    "replacements": 1
+                  },
+                  "run_id": "run-10-18e00628b0a0a739-21",
+                  "started_at": "2026-10-19T19:50:23.525223548Z",
+                  "status": "succeeded",
+                  "truncation": {
+                    "stderr": false,
+                    "stdout": false
+                  }
+                }
+              ],
+              "window": {
+                "from": "2026-10-19T19:45:23.488Z",
+                "to": "2026-10-19T19:50:23.488Z"
+              }
+            },
+            "state": "sealed"
+          },
+          "mode": "open",
+          "observation": {
+            "capture": {
+              "expected_steps": 2,
+              "retained_receipts": 2,
+              "state": "complete"
+            },
+            "finalized_at": "2026-10-19T19:50:23.534280789Z",
+            "manifest_state": "sealed",
+            "selection": {
+              "deployment": null,
+              "environment": "dev",
+              "service": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+              "team": null
+            },
+            "started_at": "2026-10-19T19:50:23.488558297Z",
+            "window": {
+              "from": "2026-10-19T19:45:23.488Z",
+              "to": "2026-10-19T19:50:23.488Z"
+            }
+          },
+          "omitted_details": 0,
+          "source_limitations": [],
+          "state": "partial"
+        },
+        "errors": [],
+        "sources": [
+          {
+            "evidence_state": "sourced",
+            "observed_at": "2026-10-19T19:50:23.488558297Z",
+            "reference": "evidence-bundle:run-10-18e00628ae716cad-19@sha256:3bb94fac6c29ecac540b88f2941d666a297e5fc28a64268eeeee24b17ff30d66",
+            "untrusted": true
+          }
+        ],
+        "artifacts": [],
+        "effective_limits": {
+          "timeout_ms": 30000,
+          "max_output_bytes": 16384,
+          "max_items": 100
+        },
+        "record_mode": "never"
+      }
+    },
+    {
+      "name": "partial",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18e00628e6aea599-2d",
+        "run_id": "run-10-18e00628e6b21149-2f",
+        "operation": "evidence.collect",
+        "operation_version": 1,
+        "target": {
+          "kind": "connection",
+          "id": "fixture-secondary"
+        },
+        "resolved_target": {
+          "connection": "fixture-secondary",
+          "effects": "local_store_write",
+          "profile": "hosted-collection"
+        },
+        "started_at": "2026-10-19T19:50:24.432303818Z",
+        "finished_at": "2026-10-19T19:50:24.446446697Z",
+        "duration_ms": 14,
+        "execution": {
+          "status": "partial",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "succeeded",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_established",
+          "scope": "Retained receipts for the fixed service queries; source-data coverage and service health remain unestablished.",
+          "limitations": [
+            "Complete capture means successful receipt retention, not complete telemetry coverage or service health.",
+            "Known credential echoes are redacted; unrelated sensitive telemetry is not automatically detected.",
+            "Finalization may use up to 2500 ms for observed bytes and metadata; synchronous filesystem I/O cannot forcibly preempt an uninterruptible kernel operation."
+          ]
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "bundle": {
+            "digest": "sha256:7fe5a06229428dea545c61db8a02217f76a51704a53c8f9a63d85ae18afbc95d",
+            "id": "run-10-18e00628e6b21149-2f"
+          },
+          "cancellation_signal": null,
+          "capture": {
+            "expected_steps": 2,
+            "retained_receipts": 1,
+            "state": "partial"
+          },
+          "connection": {
+            "id": "fixture-secondary",
+            "organization_id": 7,
+            "origin": "https://127.0.0.1:40743/grafana"
+          },
+          "delivery_cancellation_signal": null,
+          "errors": [
+            "collection_step_failed"
+          ],
+          "finalized_at": "2026-10-19T19:50:24.44544816Z",
+          "format_version": 1,
+          "on_failure": "stop",
+          "pack": {
+            "id": "service-queries",
+            "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236",
+            "version": 1
+          },
+          "producer": {
+            "id": "save",
+            "spec_version": "0.1",
+            "version": "0.1.0"
+          },
+          "provenance": {
+            "context": {
+              "record": {
+                "bindings": {
+                  "environment": "dev",
+                  "organization": "7",
+                  "target": "fixture-secondary"
+                },
+                "deployment": "blue",
+                "environment": "dev",
+                "last_reviewed": "2026-10-19T19:50:22.280451+00:00",
+                "service": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+                "state": "active",
+                "team": "platform"
+              },
+              "resolution": {
+                "age_seconds": 2,
+                "max_age_days": 30,
+                "state": "resolved",
+                "usable": true
+              },
+              "source": {
+                "evidence_state": "sourced",
+                "id": "synthetic-team-export",
+                "kind": "fixture-export",
+                "observed_at": "2026-10-19T19:50:24.434909546Z",
+                "revision": "fixture-1",
+                "sha256": "sha256:b66558538b458e674dd3c948f0e25b47929f093ab740de7e283f8736b3e1c751"
+              }
+            },
+            "grafana_ca": {
+              "kind": "custom",
+              "sha256": "sha256:543c409185f0ab089fed6568e916554ce2bb574d74a83866a7b60b49661d6b91"
+            },
+            "grafana_config_sha256": "sha256:11e929ba05a2b84f17f62f7a90ebe9e4416679ac0d6914c58ff7aeca5d37fb90"
+          },
+          "redaction": {
+            "applied": false,
+            "replacements": 0
+          },
+          "request_id": "request-10-18e00628e6aea599-2d",
+          "run_id": "run-10-18e00628e6b21149-2f",
+          "selection": {
+            "deployment": null,
+            "environment": "dev",
+            "service": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+            "team": null
+          },
+          "started_at": "2026-10-19T19:50:24.432303818Z",
+          "steps": [
+            {
+              "artifact": {
+                "bytes": 3272,
+                "classification": "restricted",
+                "digest": "sha256:5fc7899cc6d1b84245428384541926e6c149c0a53ed9aadbb5468f42b6ecd8a6",
+                "media_type": "application/json",
+                "path": "artifacts/5fc7899cc6d1b84245428384541926e6c149c0a53ed9aadbb5468f42b6ecd8a6.json"
+              },
+              "coverage": {
+                "limitations": [
+                  "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                  "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                  "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                  "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                  "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+                  "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+                  "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+                ],
+                "scope": "Bounded query response from the configured Grafana connection and datasource",
+                "state": "not_established"
+              },
+              "definition": {
+                "dialect": "promql",
+                "id": "prometheus.up-by-job",
+                "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+                "version": 1
+              },
+              "duration_ms": 6,
+              "errors": [
+                "query_failed"
+              ],
+              "finished_at": "2026-10-19T19:50:24.444248592Z",
+              "id": "metrics",
+              "omission": null,
+              "operation": "query.run",
+              "redaction": {
+                "applied": false,
+                "replacements": 0
+              },
+              "run_id": "run-10-18e00628e6fffe2f-33",
+              "started_at": "2026-10-19T19:50:24.437445032Z",
+              "status": "failed",
+              "truncation": {
+                "stderr": false,
+                "stdout": false
+              }
+            },
+            {
+              "artifact": null,
+              "coverage": null,
+              "definition": {
+                "dialect": "logql",
+                "id": "loki.logs-by-job",
+                "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+                "version": 1
+              },
+              "duration_ms": null,
+              "errors": [],
+              "finished_at": null,
+              "id": "logs",
+              "omission": "after_failure",
+              "operation": "query.run",
+              "redaction": null,
+              "run_id": null,
+              "started_at": null,
+              "status": "omitted",
+              "truncation": {
+                "stderr": false,
+                "stdout": false
+              }
+            }
+          ],
+          "window": {
+            "from": "2026-10-19T19:45:24.432Z",
+            "to": "2026-10-19T19:50:24.432Z"
+          }
+        },
+        "errors": [
+          {
+            "code": "collection_step_failed",
+            "message": "The collection could not retain a complete successful set of observations; inspect the explicit step outcomes and retained references.",
+            "retryable": false
+          }
+        ],
+        "sources": [
+          {
+            "evidence_state": "sourced",
+            "observed_at": "2026-10-19T19:50:24.446379248Z",
+            "reference": "evidence:sealed-collection",
+            "untrusted": true
+          }
+        ],
+        "artifacts": [
+          {
+            "bytes": 3272,
+            "classification": "restricted",
+            "digest": "sha256:5fc7899cc6d1b84245428384541926e6c149c0a53ed9aadbb5468f42b6ecd8a6",
+            "media_type": "application/json",
+            "path": "artifacts/5fc7899cc6d1b84245428384541926e6c149c0a53ed9aadbb5468f42b6ecd8a6.json"
+          }
+        ],
+        "effective_limits": {
+          "timeout_ms": 60000,
+          "max_output_bytes": 1048576
+        },
+        "record_mode": "always"
+      }
+    },
+    {
+      "name": "cancelled",
+      "receipt": {
+        "spec_version": "0.1",
+        "request_id": "request-10-18e006291550a733-39",
+        "run_id": "run-10-18e006291552dda1-3b",
+        "operation": "evidence.collect",
+        "operation_version": 1,
+        "target": {
+          "kind": "connection",
+          "id": "fixture-secondary"
+        },
+        "resolved_target": {
+          "connection": "fixture-secondary",
+          "effects": "local_store_write",
+          "profile": "hosted-collection"
+        },
+        "started_at": "2026-10-19T19:50:25.214623482Z",
+        "finished_at": "2026-10-19T19:50:25.285826674Z",
+        "duration_ms": 71,
+        "execution": {
+          "status": "cancelled",
+          "child_exit_code": null,
+          "signal": null
+        },
+        "effect_outcome": "succeeded",
+        "assessment": "not_assessed",
+        "coverage": {
+          "state": "not_established",
+          "scope": "Retained receipts for the fixed service queries; source-data coverage and service health remain unestablished.",
+          "limitations": [
+            "Complete capture means successful receipt retention, not complete telemetry coverage or service health.",
+            "Known credential echoes are redacted; unrelated sensitive telemetry is not automatically detected.",
+            "Finalization may use up to 2500 ms for observed bytes and metadata; synchronous filesystem I/O cannot forcibly preempt an uninterruptible kernel operation."
+          ]
+        },
+        "output": {
+          "stdout": "",
+          "stderr": "",
+          "stdout_truncated": false,
+          "stderr_truncated": false,
+          "encoding": "utf-8"
+        },
+        "data": {
+          "bundle": {
+            "digest": "sha256:b44a981539dbbe62e2e9320f31f566d43b5af3448ddbb02f608e102cc6dab2b0",
+            "id": "run-10-18e006291552dda1-3b"
+          },
+          "cancellation_signal": 2,
+          "capture": {
+            "expected_steps": 2,
+            "retained_receipts": 1,
+            "state": "partial"
+          },
+          "connection": {
+            "id": "fixture-secondary",
+            "organization_id": 7,
+            "origin": "https://127.0.0.1:40743/grafana"
+          },
+          "delivery_cancellation_signal": null,
+          "errors": [
+            "collection_step_failed",
+            "cancelled"
+          ],
+          "finalized_at": "2026-10-19T19:50:25.28483486Z",
+          "format_version": 1,
+          "on_failure": "stop",
+          "pack": {
+            "id": "service-queries",
+            "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236",
+            "version": 1
+          },
+          "producer": {
+            "id": "save",
+            "spec_version": "0.1",
+            "version": "0.1.0"
+          },
+          "provenance": {
+            "context": {
+              "record": {
+                "bindings": {
+                  "environment": "dev",
+                  "organization": "7",
+                  "target": "fixture-secondary"
+                },
+                "deployment": "blue",
+                "environment": "dev",
+                "last_reviewed": "2026-10-19T19:50:22.280451+00:00",
+                "service": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+                "state": "active",
+                "team": "platform"
+              },
+              "resolution": {
+                "age_seconds": 2,
+                "max_age_days": 30,
+                "state": "resolved",
+                "usable": true
+              },
+              "source": {
+                "evidence_state": "sourced",
+                "id": "synthetic-team-export",
+                "kind": "fixture-export",
+                "observed_at": "2026-10-19T19:50:25.217143688Z",
+                "revision": "fixture-1",
+                "sha256": "sha256:b66558538b458e674dd3c948f0e25b47929f093ab740de7e283f8736b3e1c751"
+              }
+            },
+            "grafana_ca": {
+              "kind": "custom",
+              "sha256": "sha256:543c409185f0ab089fed6568e916554ce2bb574d74a83866a7b60b49661d6b91"
+            },
+            "grafana_config_sha256": "sha256:11e929ba05a2b84f17f62f7a90ebe9e4416679ac0d6914c58ff7aeca5d37fb90"
+          },
+          "redaction": {
+            "applied": false,
+            "replacements": 0
+          },
+          "request_id": "request-10-18e006291550a733-39",
+          "run_id": "run-10-18e006291552dda1-3b",
+          "selection": {
+            "deployment": null,
+            "environment": "dev",
+            "service": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+            "team": null
+          },
+          "started_at": "2026-10-19T19:50:25.214623482Z",
+          "steps": [
+            {
+              "artifact": {
+                "bytes": 3270,
+                "classification": "restricted",
+                "digest": "sha256:9e976ac6ad361315cd44f79daee6265bdd70a23bcafab0a71f29955bdf6de93c",
+                "media_type": "application/json",
+                "path": "artifacts/9e976ac6ad361315cd44f79daee6265bdd70a23bcafab0a71f29955bdf6de93c.json"
+              },
+              "coverage": {
+                "limitations": [
+                  "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                  "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                  "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                  "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                  "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+                  "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+                  "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+                ],
+                "scope": "Bounded query response from the configured Grafana connection and datasource",
+                "state": "not_established"
+              },
+              "definition": {
+                "dialect": "promql",
+                "id": "prometheus.up-by-job",
+                "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+                "version": 1
+              },
+              "duration_ms": 62,
+              "errors": [
+                "cancelled"
+              ],
+              "finished_at": "2026-10-19T19:50:25.283510775Z",
+              "id": "metrics",
+              "omission": null,
+              "operation": "query.run",
+              "redaction": {
+                "applied": false,
+                "replacements": 0
+              },
+              "run_id": "run-10-18e0062915ba5cfc-3f",
+              "started_at": "2026-10-19T19:50:25.221410822Z",
+              "status": "cancelled",
+              "truncation": {
+                "stderr": false,
+                "stdout": false
+              }
+            },
+            {
+              "artifact": null,
+              "coverage": null,
+              "definition": {
+                "dialect": "logql",
+                "id": "loki.logs-by-job",
+                "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+                "version": 1
+              },
+              "duration_ms": null,
+              "errors": [],
+              "finished_at": null,
+              "id": "logs",
+              "omission": "cancelled",
+              "operation": "query.run",
+              "redaction": null,
+              "run_id": null,
+              "started_at": null,
+              "status": "omitted",
+              "truncation": {
+                "stderr": false,
+                "stdout": false
+              }
+            }
+          ],
+          "window": {
+            "from": "2026-10-19T19:45:25.214Z",
+            "to": "2026-10-19T19:50:25.214Z"
+          }
+        },
+        "errors": [
+          {
+            "code": "collection_step_failed",
+            "message": "The collection could not retain a complete successful set of observations; inspect the explicit step outcomes and retained references.",
+            "retryable": false
+          },
+          {
+            "code": "cancelled",
+            "message": "The collection could not retain a complete successful set of observations; inspect the explicit step outcomes and retained references.",
+            "retryable": false
+          }
+        ],
+        "sources": [
+          {
+            "evidence_state": "sourced",
+            "observed_at": "2026-10-19T19:50:25.285767231Z",
+            "reference": "evidence:sealed-collection",
+            "untrusted": true
+          }
+        ],
+        "artifacts": [
+          {
+            "bytes": 3270,
+            "classification": "restricted",
+            "digest": "sha256:9e976ac6ad361315cd44f79daee6265bdd70a23bcafab0a71f29955bdf6de93c",
+            "media_type": "application/json",
+            "path": "artifacts/9e976ac6ad361315cd44f79daee6265bdd70a23bcafab0a71f29955bdf6de93c.json"
+          }
+        ],
+        "effective_limits": {
+          "timeout_ms": 60000,
+          "max_output_bytes": 1048576
+        },
+        "record_mode": "always"
+      }
+    }
+  ],
+  "http_contract_validations": 19,
+  "validation": "Canonical receipts, collection data, sealed manifest and artifact digests validated",
+  "cleanup": "UI process, browser driver and fixture threads joined"
+}

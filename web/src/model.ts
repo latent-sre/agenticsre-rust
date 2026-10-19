@@ -109,7 +109,7 @@ export function validateForm(values: FormValues): FieldErrors {
     if (values.check === 'evidence-collect') {
       if (!values.target) errors.target = 'Select a granted collection target.';
       for (const field of ['service', 'environment', 'team', 'deployment'] as const) {
-        if ((!values[field] && (field === 'service' || field === 'environment')) || values[field].length > 128 || hasControl(values[field])) errors[field] = 'Use 1–128 characters without control characters.';
+        if ((!values[field] && (field === 'service' || field === 'environment')) || Array.from(values[field]).length > 128 || hasControl(values[field])) errors[field] = 'Use 1–128 characters without control characters.';
       }
       // Reuse the installed-query validation for each literal query and their common window.
       for (const [datasource, job] of [['metricsDatasource', 'metricsJob'], ['logsDatasource', 'logsJob']] as const) {

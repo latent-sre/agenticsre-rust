@@ -26,10 +26,11 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("binary", type=Path)
+    parser.add_argument("--output", type=Path)
     options = parser.parse_args()
     assert os.environ.get("CARGO_HOME") == "/tmp/cargo" and Path("/toolchain").is_dir(), "Use test-ui-sandbox.sh"
     binary = options.binary.resolve(strict=True)
-    output = Path(os.environ["WORKBENCH_UI_OUTPUT"]) / "collection"
+    output = options.output or Path(os.environ["WORKBENCH_UI_OUTPUT"]) / "collection"
     output.mkdir(parents=True, exist_ok=True)
     schemas = [json.loads(path.read_text()) for path in (ROOT / "docs/sre-workbench/schemas").glob("*.schema.json")]
     registry = Registry().with_resources((schema["$id"], Resource.from_contents(schema)) for schema in schemas)
@@ -60,10 +61,12 @@ def main():
         cert = fixture_module.certificates(scratch)
         fixture = evidence.Fixture(cert["server.pem"], cert["server.key"])
         configuration = scratch / "config.json"
-        configuration.write_text(json.dumps({"spec_version": "0.1", "record": "never", "connections": {"fixture": {
+        connection = {
             "origin": fixture.origin, "expected_org_id": 7, "api_profile": "grafana-legacy-v1",
             "credential_ref": "env:" + evidence.PROVIDER, "tls_ca_file": str(cert["ca.pem"]),
-        }}}))
+        }
+        configuration.write_text(json.dumps({"spec_version": "0.1", "record": "never",
+            "connections": {"fixture": connection, "fixture-secondary": connection}}))
         environment = {"PATH": "/usr/bin:/bin", "LANG": "C.UTF-8", "TZ": "UTC", evidence.PROVIDER: json.dumps({
             "origin": fixture.origin, "expected_org_id": 7, "operations": ["grafana.query"],
             "auth": {"kind": "bearer", "token": evidence.TOKEN},
@@ -73,13 +76,13 @@ def main():
         for name, raw in (("format.json", '{"format_version":1}\n'), ("lock", "")):
             path = store / name; path.write_text(raw); path.chmod(0o600)
         context = json.loads((ROOT / "tests/fixtures/context/unique.json").read_bytes())
-        context["records"][0].update(service="fixture-web", last_reviewed=datetime.now(timezone.utc).isoformat(),
-            bindings={"target":"fixture","environment":"dev","organization":"7"})
+        context["records"][0].update(service="😀" * 128, last_reviewed=datetime.now(timezone.utc).isoformat(),
+            bindings={"target":"fixture-secondary","environment":"dev","organization":"7"})
         source.write_text(json.dumps(context))
         server = subprocess.Popen([str(installed), "--config", str(configuration), "--context-source", str(source),
             "--context-max-age-days", "30", "--state-dir", str(store), "ui", "serve",
             "--allow", "evidence.packs.list", "--allow", "evidence.packs.describe", "--allow", "evidence.collect",
-            "--allow", "evidence.open", "--collection-target", "fixture"], cwd=working, env=environment,
+            "--allow", "evidence.open", "--collection-target", "fixture", "--collection-target", "fixture-secondary"], cwd=working, env=environment,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
         driver = None
         records = []

@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "base_commit": "ffd8052f5cb82945c422440dde086780d152e7aa",
+  "findings": [
+    "4318044984: target selection across catalog views",
+    "4318045006: Unicode selector length"
+  ],
+  "regression_before_fix": "Both added tests failed on the reviewed source for the reported behavior.",
+  "frontend_tests_passed": 86,
+  "other_checks": [
+    "TypeScript",
+    "ESLint",
+    "production asset build",
+    "ordinary CLI build",
+    "git diff --check"
+  ],
+  "browser": {
+    "receipts": 6,
+    "http_contract_validations": 19,
+    "binary_sha256": "ce16cd2c65232e7d451ef035ad6ef488f7ce0a1cda02461410ede27bc4bef367",
+    "evidence_sha256": "fe68c114bb9575e39d541cdab57e54630c45d932944e49dd03e9fe530b3aa82c"
+  },
+  "scope": "Frontend fixes only; existing Rust/API acceptance retained. Browser mission now uses two collection aliases and a 128-code-point non-BMP service selector."
+}
