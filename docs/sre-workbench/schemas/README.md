@@ -32,6 +32,9 @@ registers them locally and never retrieves schema references over the network.
 The selected capability's input_schema and output_schema add operation-specific validation.
 Embedded schemas must be checked against the meta-schema and resolve only approved packaged
 references. A manifest cannot request arbitrary remote schema retrieval.
+The verifier supports Draft 2020-12 at every embedded schema position, absolute references to
+registered package IDs, and fragment-local pointers/anchors. Other dialect declarations and
+unregistered resource references are rejected, including references in unused schema branches.
 
 Capability output_schema validates the final result envelope. Task output_schema validates the
 helper's structured payload before the core inserts it into result.data. The core owns identities,

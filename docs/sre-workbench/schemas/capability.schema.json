@@ -148,6 +148,11 @@
         "kind",
         "reference"
       ],
+      "if": {
+        "properties": {"kind": {"enum": ["executable", "script"]}},
+        "required": ["kind"]
+      },
+      "then": {"required": ["digest"]},
       "additionalProperties": false
     }
   },

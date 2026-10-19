@@ -10,6 +10,10 @@ workflow, task, query and bundle metadata. Negative examples demonstrate structu
 role injection, unknown versions, contradictory denial/effect status, unexpected secret fields,
 artifact traversal and invalid limits.
 
+Each negative case also declares `expected_error`: the validation keyword, instance `path`
+and absolute `schema_path` that must fail. Nested branch errors are checked at their exact schema
+location, so a different failure cannot hide the loss of the intended constraint.
+
 The imported package adds an invalid-timestamp fixture. The verifier must have RFC3339 date-time
 checking installed and must reject that value; an unavailable format plugin is a validation failure.
 

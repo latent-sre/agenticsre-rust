@@ -29,5 +29,9 @@ jobs:
         run: python -m pip install --require-hashes -r requirements-docs.txt
       - name: Validate schemas examples links and coverage
         run: python -B docs/sre-workbench/verify_specs.py
+      - name: Specification gate regressions
+        run: python -B tools/test-specifications.py
+      - name: Notice provenance regressions
+        run: python -B tools/test-prepare-package-notices.py
       - name: Check whitespace
         run: git diff --check HEAD^ HEAD

@@ -9,9 +9,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path, PurePosixPath
 import re
-import shutil
+import stat
 import tomllib
 
 
@@ -23,6 +24,24 @@ NOTICE_NAME = re.compile(r"^(?:LICEN[CS]E|COPYING|COPYRIGHT|NOTICE)(?:[._-].*)?$
 def digest(path: Path) -> str:
     with path.open("rb") as stream:
         return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def snapshot(path: Path) -> bytes:
+    """Read once with a byte ceiling; hash and consume this same private value."""
+    if path.is_symlink():
+        raise ValueError("Invalid notice input")
+
+    def opener(name, flags):
+        return os.open(name, flags | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
+
+    with open(path, "rb", opener=opener) as stream:
+        metadata = os.fstat(stream.fileno())
+        if not stat.S_ISREG(metadata.st_mode) or metadata.st_size > MAX_NOTICE:
+            raise ValueError("Nonregular or oversized notice")
+        data = stream.read(MAX_NOTICE + 1)
+    if len(data) > MAX_NOTICE:
+        raise ValueError("Oversized notice")
+    return data
 
 
 def regular(root: Path, relative: str) -> Path:
@@ -49,12 +68,11 @@ def prepare(repo: Path, vendor: Path, destination: Path) -> dict:
 
     def copy(source: Path, relative: str, expected: str | None = None) -> str:
         nonlocal total
-        if source.is_symlink() or not source.is_file() or source.stat().st_size > MAX_NOTICE:
-            raise ValueError("Invalid notice input")
-        actual = digest(source)
+        data = snapshot(source)
+        actual = hashlib.sha256(data).hexdigest()
         if expected is not None and actual != expected:
             raise ValueError("Notice checksum mismatch")
-        total += source.stat().st_size
+        total += len(data)
         if total > MAX_TOTAL:
             raise ValueError("Notice corpus too large")
         # Output paths are composed from validated package/checksum paths below.
@@ -62,7 +80,8 @@ def prepare(repo: Path, vendor: Path, destination: Path) -> dict:
         target.parent.mkdir(parents=True, exist_ok=True)
         if target.exists():
             raise ValueError("Duplicate notice output")
-        shutil.copyfile(source, target)
+        with target.open("xb") as stream:
+            stream.write(data)
         target.chmod(0o644)
         return relative
 
@@ -92,9 +111,10 @@ def prepare(repo: Path, vendor: Path, destination: Path) -> dict:
         if checksums["package"] != package["checksum"]:
             raise ValueError("Vendor package checksum mismatch")
         metadata_path = regular(directory, "Cargo.toml")
-        if digest(metadata_path) != checksums["files"]["Cargo.toml"]:
+        metadata_bytes = snapshot(metadata_path)
+        if hashlib.sha256(metadata_bytes).hexdigest() != checksums["files"]["Cargo.toml"]:
             raise ValueError("Vendor metadata checksum mismatch")
-        metadata = tomllib.loads(metadata_path.read_text())["package"]
+        metadata = tomllib.loads(metadata_bytes.decode("utf-8"))["package"]
         if metadata["name"] != package["name"] or metadata["version"] != package["version"]:
             raise ValueError("Vendor package identity mismatch")
         selected = {path for path in checksums["files"] if NOTICE_NAME.fullmatch(PurePosixPath(path).name)}
