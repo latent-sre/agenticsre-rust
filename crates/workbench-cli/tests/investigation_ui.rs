@@ -156,10 +156,11 @@ use std::{
 };
 use workbench_core::{EvidenceStoreOptions, OperatorContext, RunControl, request::Request};
 
-const OPERATIONS: [&str; 5] = [
+const OPERATIONS: [&str; 6] = [
     "context.resolve",
     "evidence.list",
     "evidence.open",
+    "evidence.replay",
     "evidence.compare",
     "report.create",
 ];
@@ -289,7 +290,10 @@ fn stable(mut value: Value) -> Value {
             object.remove(field);
         }
     }
-    if value["operation"] == "evidence.open" {
+    if matches!(
+        value["operation"].as_str(),
+        Some("evidence.open" | "evidence.replay")
+    ) {
         value["data"]["analysis"]
             .as_object_mut()
             .unwrap()
@@ -336,7 +340,7 @@ fn real_http_investigations_return_core_receipts_dedup_history_and_json() {
     let fixture = Fixture::new();
     let server = fixture.launch(&OPERATIONS);
     let session = server.get("/api/v1/session").json();
-    assert_eq!(session["operations"].as_array().unwrap().len(), 5);
+    assert_eq!(session["operations"].as_array().unwrap().len(), 6);
     assert_eq!(session["roots"], json!([]));
     assert_eq!(session["targets"], json!([]));
     for op in session["operations"].as_array().unwrap() {
@@ -361,6 +365,7 @@ fn real_http_investigations_return_core_receipts_dedup_history_and_json() {
         json!({"service":"checkout","environment":"dev"}),
         json!({}),
         bundles[0].clone(),
+        bundles[0].clone(),
         json!({"before":bundles[0],"after":bundles[1],"normalization":"exact-window-v1"}),
         json!({"bundles":[bundles[0]],"format":"markdown"}),
     ];
@@ -370,7 +375,10 @@ fn real_http_investigations_return_core_receipts_dedup_history_and_json() {
     for (index, (operation, inputs)) in OPERATIONS.into_iter().zip(inputs).enumerate() {
         let payload = submission(operation, inputs.clone(), index);
         let actual = receipt(&server, &payload);
-        if matches!(operation, "evidence.open" | "evidence.compare") {
+        if matches!(
+            operation,
+            "evidence.open" | "evidence.replay" | "evidence.compare"
+        ) {
             let mut explicit = payload.clone();
             explicit["limits"]["max_items"] = json!(100);
             assert_eq!(server.post("/api/v1/runs", &explicit).status, 202);
@@ -408,7 +416,7 @@ fn real_http_investigations_return_core_receipts_dedup_history_and_json() {
             .as_array()
             .unwrap()
             .len(),
-        5
+        6
     );
 }
 #[test]
@@ -440,7 +448,6 @@ fn browser_cannot_supply_selectors_paths_roles_or_ungranted_operations() {
     }
     for operation in [
         "evidence.collect",
-        "evidence.replay",
         "evidence.delete",
         "extension.run",
         "change.apply",
@@ -458,7 +465,7 @@ fn browser_cannot_supply_selectors_paths_roles_or_ungranted_operations() {
         payload["limits"]["max_items"] = json!(10);
         assert_eq!(server.post("/api/v1/runs", &payload).status, 422);
     }
-    for operation in ["evidence.open", "evidence.compare"] {
+    for operation in ["evidence.open", "evidence.replay", "evidence.compare"] {
         for value in [Value::Null, json!(0), json!(1001), json!(true)] {
             let mut payload = submission(operation, json!({}), 91);
             payload["limits"]["max_items"] = value;
@@ -477,6 +484,7 @@ fn browser_cannot_supply_selectors_paths_roles_or_ungranted_operations() {
     for operation in [
         "context.resolve",
         "evidence.open",
+        "evidence.replay",
         "evidence.compare",
         "report.create",
     ] {
@@ -512,6 +520,44 @@ fn pinned_source_and_store_drift_refuse_dispatch_with_canonical_receipts() {
     assert_ne!(denied["execution"]["status"], "succeeded");
     assert!(!denied["errors"].as_array().unwrap().is_empty());
 }
+
+#[test]
+fn replay_only_session_preserves_bounds_and_rejects_other_grants_and_store_drift() {
+    let fixture = Fixture::new();
+    let server = fixture.launch(&["evidence.replay"]);
+    let session = server.get("/api/v1/session").json();
+    assert_eq!(
+        session["operations"],
+        json!([{"id":"evidence.replay","version":1,"profile":"verified-evidence-v1"}])
+    );
+    let bundle = fixture.bundles()[0].clone();
+    let mut payload = submission("evidence.replay", bundle.clone(), 1);
+    payload["limits"]["max_items"] = json!(1);
+    let result = receipt(&server, &payload);
+    assert_eq!(result["execution"]["status"], "partial");
+    assert_eq!(result["data"]["mode"], "replay");
+    assert_eq!(result["data"]["analysis"]["profile"], "linux-offline-v1");
+    assert!(result["data"]["omitted_details"].as_u64().unwrap() > 0);
+    for operation in [
+        "evidence.open",
+        "evidence.list",
+        "evidence.collect",
+        "report.create",
+    ] {
+        assert_eq!(
+            server
+                .post("/api/v1/runs", &submission(operation, bundle.clone(), 2))
+                .status,
+            403
+        );
+    }
+    let old = fixture.directory.join("old-replay-store");
+    fs::rename(&fixture.store, &old).unwrap();
+    copy_store(&old, &fixture.store);
+    let result = receipt(&server, &submission("evidence.replay", bundle, 3));
+    assert_eq!(result["errors"][0]["code"], "store_identity_changed");
+    assert!(result["data"].get("checks").is_none());
+}
 #[test]
 fn startup_requires_exact_grants_and_existing_sources_without_creation() {
     let fixture = Fixture::new();
@@ -520,6 +566,7 @@ fn startup_requires_exact_grants_and_existing_sources_without_creation() {
         vec!["ui", "serve", "--allow", "context.resolve"],
         vec!["ui", "serve", "--allow", "evidence.list"],
         vec!["ui", "serve", "--allow", "evidence.open"],
+        vec!["ui", "serve", "--allow", "evidence.replay"],
         vec!["ui", "serve", "--allow", "evidence.compare"],
         vec!["ui", "serve", "--allow", "report.create"],
         vec![

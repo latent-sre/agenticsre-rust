@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "canonical_receipts": 19,
+  "openapi_transactions": 39,
+  "acceptance_groups": 17,
+  "source_files": 326,
+  "binary": {
+    "sha256": "7ed9a73b0d4a98fc6977232fef30f1530a2b3b352a3ed9aabfedc5f81db5a2f5",
+    "bytes": 50826592
+  },
+  "source_manifest_sha256": "c5b44bbad172e38698ce842524665c1ac6dab79739db12f5b55f288c9cc9db44"
+}

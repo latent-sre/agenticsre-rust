@@ -186,6 +186,67 @@ raise SystemExit(status)
         self.assertEqual(self.first["archive_sha256"], response["archive_sha256"])
         self.assertEqual(response["archive_sha256"], sha(repeated.read_bytes()))
 
+    def test_current_bundle_declares_operation_specific_recording_and_external_stores(self) -> None:
+        result = self.cli("verify", self.bundle, "--expected-sha256", self.first["archive_sha256"])
+        self.assertEqual(result["manifest"]["schema_version"], 2)
+        expected = {"record": "per-operation", "ui_history": "session-only",
+                    "persistent_stores": "explicit-external", "storage_migrations": "none",
+                    "external_config": "untouched", "authority": "invoking-account"}
+        self.assertEqual(result["manifest"]["compatibility"], expected)
+        installed = self.install_first()
+        self.assertEqual(installed["compatibility"], expected)
+        selected = self.cli("activate", self.first["artifact_id"], "--root", self.root)
+        self.assertEqual(selected["compatibility"], expected)
+        readme = (Path(installed["release"]) / "README.txt").read_text()
+        self.assertIn("Recording is operation-specific", readme)
+        self.assertIn("does not migrate", readme)
+        self.assertNotIn("record=never; UI history", readme)
+
+    def legacy_bundle(self) -> tuple[Path, str]:
+        entries = self.entries()
+        manifest = json.loads(entries[0][1])
+        manifest["schema_version"] = 1
+        manifest["compatibility"] = {"record": "never", "ui_history": "session-only",
+                                     "storage_migrations": "none", "external_config": "untouched",
+                                     "authority": "invoking-account"}
+        for index, (item, _) in enumerate(entries):
+            if item.name == "README.txt":
+                raw = b"Synthetic legacy stateless fixture; record=never.\n"
+                entries[index] = (item, raw)
+                next(value for value in manifest["files"] if value["path"] == "README.txt").update(
+                    size=len(raw), sha256=sha(raw))
+        entries[0] = (entries[0][0], encode(manifest))
+        return self.rewrite(entries)
+
+    def test_legacy_and_current_selection_return_the_selected_contract_without_store_changes(self) -> None:
+        legacy, checksum = self.legacy_bundle()
+        old = self.cli("install", legacy, "--expected-sha256", checksum, "--root", self.root)
+        self.assertEqual(old["compatibility"]["record"], "never")
+        self.cli("activate", old["artifact_id"], "--root", self.root)
+        canary = self.base / "external-evidence.json"
+        canary.write_bytes(b'{"retained":"must not change"}\n')
+        second, created = self.package("current", Path("/usr/bin/false"))
+        current = self.cli("install", second, "--expected-sha256", created["archive_sha256"], "--root", self.root)
+        activated = self.cli("activate", current["artifact_id"], "--root", self.root)
+        self.assertEqual(activated["compatibility"]["record"], "per-operation")
+        rollback = self.cli("rollback", old["artifact_id"], "--root", self.root)
+        self.assertEqual(rollback["compatibility"]["record"], "never")
+        self.assertEqual(os.readlink(self.root / "current"), "releases/" + old["artifact_id"])
+        inspected = self.cli("inspect-installed", old["artifact_id"], "--root", self.root)
+        self.assertEqual(inspected["manifest"]["schema_version"], 1)
+        self.assertEqual(inspected["installation"]["schema_version"], 1)
+        self.assertEqual(canary.read_bytes(), b'{"retained":"must not change"}\n')
+
+    def test_compatibility_cannot_be_substituted_in_an_installed_receipt(self) -> None:
+        installed = self.install_first()
+        receipt_path = Path(installed["release"]) / "install.json"
+        receipt = json.loads(receipt_path.read_bytes())
+        receipt["compatibility"]["record"] = "always"
+        receipt_path.write_bytes(encode(receipt))
+        self.cli("activate", self.first["artifact_id"], "--root", self.root,
+                 refusal="installed receipt mismatch")
+        self.assertFalse((self.root / "current").exists())
+
     def test_checksum_corruption_refused_before_root_creation(self) -> None:
         changed = bytearray(self.bundle.read_bytes())
         changed[1024] ^= 1
@@ -290,7 +351,7 @@ raise SystemExit(status)
     def test_unsupported_manifest_revision_refused(self) -> None:
         entries = self.entries()
         value = json.loads(entries[0][1])
-        value["schema_version"] = 2
+        value["schema_version"] = 3
         entries[0] = (entries[0][0], encode(value))
         self.refuse_install(entries, "unsupported bundle manifest revision")
 
@@ -310,7 +371,7 @@ raise SystemExit(status)
 
     def test_duplicate_json_key_and_excessive_nesting_refused(self) -> None:
         entries = self.entries()
-        entries[0] = (entries[0][0], entries[0][1].replace(b'"schema_version":1', b'"schema_version":1,"schema_version":1'))
+        entries[0] = (entries[0][0], entries[0][1].replace(b'"schema_version":2', b'"schema_version":2,"schema_version":2'))
         self.refuse_install(entries, "duplicate JSON key")
         entries = self.entries()
         entries[0] = (entries[0][0], b'{"deep":' + b'[' * 33 + b'0' + b']' * 33 + b'}')

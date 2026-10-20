@@ -1,0 +1,6 @@
+{
+  "status": "refused",
+  "exit_code": 2,
+  "reason": "directory must be an explicit absolute path",
+  "cause": "Caller used relative paths; corrected to explicit absolute paths. No product change."
+}

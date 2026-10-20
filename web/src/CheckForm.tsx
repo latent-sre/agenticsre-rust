@@ -121,7 +121,7 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
           <input {...inputProps(key)} value={values[key]} onChange={event => setValue(key, event.target.value)} autoComplete="off" />
         </Field>)}</div>}
         {selectedCheck === 'evidence-list' && <p className="field-hint">List saved evidence from the launcher-granted store. Copy an evidence ID into Inspect evidence, Compare evidence or Evidence report.</p>}
-        {(selectedCheck === 'evidence-open' || selectedCheck === 'evidence-compare') && <div className="form-grid">{(selectedCheck === 'evidence-open' ? [{ id: 'bundleId', pin: 'bundlePin', label: 'Evidence' }] as const : [{ id: 'beforeId', pin: 'beforePin', label: 'Baseline evidence' }, { id: 'afterId', pin: 'afterPin', label: 'Comparison evidence' }] as const).map(reference => <div key={reference.id}>
+        {(selectedCheck === 'evidence-open' || selectedCheck === 'evidence-replay' || selectedCheck === 'evidence-compare') && <div className="form-grid">{(selectedCheck !== 'evidence-compare' ? [{ id: 'bundleId', pin: 'bundlePin', label: 'Evidence' }] as const : [{ id: 'beforeId', pin: 'beforePin', label: 'Baseline evidence' }, { id: 'afterId', pin: 'afterPin', label: 'Comparison evidence' }] as const).map(reference => <div key={reference.id}>
           <Field id={reference.id} label={`${reference.label} ID`} error={fieldError(reference.id)} hint="Copy the exact saved evidence ID, such as run-1-ab-c.">
             <input {...inputProps(reference.id)} value={values[reference.id]} onChange={event => setValue(reference.id, event.target.value)} autoComplete="off" spellCheck={false} />
           </Field>
@@ -206,7 +206,7 @@ export function CheckForm({ session, check, root, target, busy, submitting, prob
         {(diagnostics || investigation || query || collection) && <Field id="outputLimit" label="Output allowance (bytes)" error={fieldError('outputLimit')} hint={collection ? "1,024–2,097,152 bytes. Large results may be partial." : diagnostics ? "1,024–16,384 bytes. Body capture uses this allowance and the 16 KiB diagnostic ceiling." : "1,024–1,048,576 bytes. Large results may be partial; canonical receipt retains the disclosed bounds."}>
           <input {...inputProps('outputLimit')} inputMode="numeric" value={values.outputLimit} onChange={event => setValue('outputLimit', event.target.value)} />
         </Field>}
-      {(selectedCheck === 'evidence-open' || selectedCheck === 'evidence-compare') && <Field id="maxItems" label="Maximum detail items" error={fieldError('maxItems')} hint="1–1,000. Omitted details are disclosed in the result."><input {...inputProps('maxItems')} inputMode="numeric" value={values.maxItems} onChange={event => setValue('maxItems', event.target.value)} /></Field>}
+      {(selectedCheck === 'evidence-open' || selectedCheck === 'evidence-replay' || selectedCheck === 'evidence-compare') && <Field id="maxItems" label="Maximum detail items" error={fieldError('maxItems')} hint="1–1,000. Omitted details are disclosed in the result."><input {...inputProps('maxItems')} inputMode="numeric" value={values.maxItems} onChange={event => setValue('maxItems', event.target.value)} /></Field>}
       </div></details>
     </div>
     <div className="form-footer"><code className="command-preview" aria-label="Check preview">{plainText(preview)}</code><div className="actions">

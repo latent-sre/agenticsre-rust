@@ -453,12 +453,12 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
     if had_max_items
         && !matches!(
             input.operation.as_str(),
-            "evidence.open" | "evidence.compare"
+            "evidence.open" | "evidence.replay" | "evidence.compare"
         )
     {
         return Err(ApiError::invalid(
             "limits.max_items",
-            "Only evidence.open and evidence.compare accept max_items.",
+            "Only evidence.open, evidence.replay and evidence.compare accept max_items.",
         ));
     }
     let (inputs, label) = if collection || collection_catalog {
@@ -544,6 +544,7 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
             "context.resolve" => "Service context",
             "evidence.list" => "Saved evidence",
             "evidence.open" => "Inspect evidence",
+            "evidence.replay" => "Replay evidence",
             "evidence.compare" => "Compare evidence",
             "report.create" => "Evidence report",
             _ => unreachable!("core investigation grant operation"),
@@ -665,7 +666,7 @@ pub(crate) fn normalize(value: Value, grants: &Grants) -> Result<Normalized, Api
     request.limits.max_output_bytes = input.limits.max_output_bytes;
     request.limits.max_items = if matches!(
         input.operation.as_str(),
-        "evidence.open" | "evidence.compare"
+        "evidence.open" | "evidence.replay" | "evidence.compare"
     ) {
         Some(input.limits.max_items.unwrap_or(100))
     } else {
