@@ -87,10 +87,11 @@ fn request(id: Value, method: &str, mut params: Value) -> Value {
     params["_meta"] = json!({"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}});
     json!({"jsonrpc":"2.0","id":id,"method":method,"params":params})
 }
-const OPERATIONS: [&str; 5] = [
+const OPERATIONS: [&str; 6] = [
     "context.resolve",
     "evidence.list",
     "evidence.open",
+    "evidence.replay",
     "evidence.compare",
     "report.create",
 ];
@@ -143,7 +144,11 @@ impl Fixture {
         if operations.iter().any(|op| {
             matches!(
                 *op,
-                "evidence.list" | "evidence.open" | "evidence.compare" | "report.create"
+                "evidence.list"
+                    | "evidence.open"
+                    | "evidence.replay"
+                    | "evidence.compare"
+                    | "report.create"
             )
         }) {
             command.arg("--state-dir").arg(&self.store);
@@ -188,7 +193,10 @@ fn stable(mut value: Value) -> Value {
             object.remove(field);
         }
     }
-    if value["operation"] == "evidence.open" {
+    if matches!(
+        value["operation"].as_str(),
+        Some("evidence.open" | "evidence.replay")
+    ) {
         value["data"]["analysis"]
             .as_object_mut()
             .unwrap()
@@ -251,17 +259,19 @@ fn snapshot(root: &Path) -> BTreeMap<PathBuf, Vec<u8>> {
 const BEFORE: &str = "run-9-18dd60cacef0724e-1";
 const AFTER: &str = "run-16-18dd60cad194352b-1";
 const SHIFTED: &str = "run-23-18dd60cad423c07a-1";
-const TOOLS: [&str; 5] = [
+const TOOLS: [&str; 6] = [
     "workbench_context_resolve",
     "workbench_evidence_list",
     "workbench_evidence_open",
+    "workbench_evidence_replay",
     "workbench_compare",
     "workbench_report_create",
 ];
-fn inputs() -> [Value; 5] {
+fn inputs() -> [Value; 6] {
     [
         json!({"service":"checkout","environment":"dev"}),
         json!({}),
+        json!({"id":BEFORE}),
         json!({"id":BEFORE}),
         json!({"before":{"id":BEFORE},"after":{"id":AFTER},"normalization":"exact-window-v1"}),
         json!({"bundles":[{"id":BEFORE},{"id":AFTER}],"format":"markdown"}),
@@ -333,7 +343,10 @@ fn both_protocols_return_unchanged_core_investigations_and_honest_partial_receip
             let actual = canonical(reply, operation);
             assert_eq!(actual["execution"]["status"], "succeeded", "{actual}");
             let mut request = Request::new(operation, input);
-            if matches!(operation, "evidence.open" | "evidence.compare") {
+            if matches!(
+                operation,
+                "evidence.open" | "evidence.replay" | "evidence.compare"
+            ) {
                 request.limits.max_items = Some(100);
             }
             let expected = serde_json::to_value(workbench_core::execute_with_investigation_grant(
@@ -349,6 +362,20 @@ fn both_protocols_return_unchanged_core_investigations_and_honest_partial_receip
             );
         }
         for (tool, operation, input, status, detail) in [
+            (
+                "workbench_evidence_replay",
+                "evidence.replay",
+                json!({"id":BEFORE,"limits":{"max_items":1}}),
+                "partial",
+                None,
+            ),
+            (
+                "workbench_evidence_replay",
+                "evidence.replay",
+                json!({"id":BEFORE,"expected_manifest_sha256":format!("sha256:{}","0".repeat(64))}),
+                "failed",
+                Some("manifest_digest_mismatch"),
+            ),
             (
                 "workbench_evidence_open",
                 "evidence.open",
@@ -440,7 +467,7 @@ fn client_arguments_cannot_replace_authority_or_bypass_operation_limits() {
     let fixture = Fixture::new();
     let original = snapshot(&fixture.store);
     let mut client = fixture.launch(&OPERATIONS);
-    assert_eq!(discovery(&mut client).len(), 5);
+    assert_eq!(discovery(&mut client).len(), 6);
     for ((operation, tool), input) in OPERATIONS.into_iter().zip(TOOLS).zip(inputs()) {
         for (field, value) in [
             ("path", json!("/tmp/not-authorized")),
@@ -483,7 +510,10 @@ fn client_arguments_cannot_replace_authority_or_bypass_operation_limits() {
         }
         let mut bounded = input;
         bounded["limits"] = json!({"timeout_ms":300000,"max_output_bytes":1048576,"max_items":1});
-        if matches!(operation, "evidence.open" | "evidence.compare") {
+        if matches!(
+            operation,
+            "evidence.open" | "evidence.replay" | "evidence.compare"
+        ) {
             let result = canonical(call(&mut client, tool, bounded, false), operation);
             assert_eq!(result["effective_limits"]["max_items"], 1);
             assert_eq!(result["effective_limits"]["timeout_ms"], 300000);
@@ -500,6 +530,11 @@ fn client_arguments_cannot_replace_authority_or_bypass_operation_limits() {
             json!({"service":"checkout","environment":"dev","team":null}),
         ),
         ("workbench_evidence_open", json!({"id":"../escape"})),
+        ("workbench_evidence_replay", json!({"id":"../escape"})),
+        (
+            "workbench_evidence_replay",
+            json!({"id":BEFORE,"expected_manifest_sha256":null}),
+        ),
         (
             "workbench_evidence_open",
             json!({"id":BEFORE,"expected_manifest_sha256":null}),
@@ -517,7 +552,6 @@ fn client_arguments_cannot_replace_authority_or_bypass_operation_limits() {
     }
     for hidden in [
         "workbench_evidence_collect",
-        "workbench_evidence_replay",
         "workbench_evidence_delete",
         "workbench_change_apply",
     ] {
@@ -536,7 +570,7 @@ fn source_bytes_source_inode_and_store_replacement_return_canonical_refusals() {
     let original = snapshot(&fixture.store);
     let source = fs::read(&fixture.source).unwrap();
     let mut client = fixture.launch(&OPERATIONS);
-    assert_eq!(discovery(&mut client).len(), 5);
+    assert_eq!(discovery(&mut client).len(), 6);
     fs::write(&fixture.source, [&source[..], b" "].concat()).unwrap();
     let denied = canonical(
         call(&mut client, TOOLS[0], inputs()[0].clone(), false),

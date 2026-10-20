@@ -1,0 +1,254 @@
+{
+  "status": "passed",
+  "binary_sha256": "256c3ae501b0879e0a1892f7dc6ce42d5bf87fc94366ce4fbe4df286e65105a5",
+  "binary_bytes": 50826272,
+  "source_manifest_sha256": "5dd9cbbe33626630eba8608015e8058c7e5968299f3c2ca0aeddf751bde1ffd9",
+  "checks": [
+    "Explicit discovery: six private offline tools, bounded self-contained schemas and read-only hints",
+    "Modern protocol: all six canonical receipts match installed CLI semantics; replay is deterministic",
+    "Legacy protocol: all six canonical receipts match installed CLI semantics; replay is deterministic",
+    "Discovery/runtime agree on unknown/null authority fields, limits and hidden tool refusals",
+    "Missing/pinned/bounded/incompatible evidence and JSON reports retain accurate error/coverage semantics",
+    "All observations preserve context and retained store bytes/modes",
+    "Consumed-byte source pin and descriptor-bound store identity reject replacement",
+    "Independent mixed grants preserve numerical tasks and cancellation suppresses the queued evidence result",
+    "Standalone replay requires only its private store; other tools stay hidden and cancellation leaves the session responsive",
+    "Default empty discovery and direct hidden-tool denial remain unchanged",
+    "Corrupt retained evidence fails without repair or mutation",
+    "Installed binary and complete scoped source identities stay unchanged throughout acceptance"
+  ],
+  "receipts": [
+    {
+      "case": "modern-context.resolve",
+      "file": "modern-context.resolve.json",
+      "sha256": "b4acc88d20869e441fdc7b31b4fd460307918dc221397eb99478b243449de0fe",
+      "operation": "context.resolve",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "modern-evidence.list",
+      "file": "modern-evidence.list.json",
+      "sha256": "7d0a69a7a21a772a22ab7f4ce3914ed53f6b600e3dcbccdcd1aca13489fde6de",
+      "operation": "evidence.list",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "modern-evidence.open",
+      "file": "modern-evidence.open.json",
+      "sha256": "90689fd708828099cb21dca24ec307fd14457dcf63c9ada7259a416a54f73088",
+      "operation": "evidence.open",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "modern-evidence.replay",
+      "file": "modern-evidence.replay.json",
+      "sha256": "f3731d4b0b0f165ef33750b664acba12aa5a151b1fbec9f32560d0161d2fb31c",
+      "operation": "evidence.replay",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "modern-evidence.replay-repeat",
+      "file": "modern-evidence.replay-repeat.json",
+      "sha256": "47fb5b878d9c5a914f6862f9a0fe3491903cd6317336dd6141fe20e21b18bcfb",
+      "operation": "evidence.replay",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "modern-evidence.compare",
+      "file": "modern-evidence.compare.json",
+      "sha256": "dd6027c2e80d84e273876aa76a45e32142360cfce8e769e169ac1c78ef8f3625",
+      "operation": "evidence.compare",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "modern-report.create",
+      "file": "modern-report.create.json",
+      "sha256": "095973d5f45006362eb694d43f7e48acef23d9f11604a3e441a0c6094ff13d75",
+      "operation": "report.create",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "legacy-context.resolve",
+      "file": "legacy-context.resolve.json",
+      "sha256": "3345cd4d5a7968f05d35728626718314bbf15dc5c7e90a8ac0ee7266e5310404",
+      "operation": "context.resolve",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "legacy-evidence.list",
+      "file": "legacy-evidence.list.json",
+      "sha256": "8530dd72ffe76938290962d9b00dbf4e9796012411dcb7f39db5bf6b1ce75b1e",
+      "operation": "evidence.list",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "legacy-evidence.open",
+      "file": "legacy-evidence.open.json",
+      "sha256": "931bd22523d5ec724a8239801e2571da645abeb94e42b525bb82a1e1b082931e",
+      "operation": "evidence.open",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "legacy-evidence.replay",
+      "file": "legacy-evidence.replay.json",
+      "sha256": "9858183f595f43764682d58fcb16b918bf25e2e0508cb08754518d4f4603bb9e",
+      "operation": "evidence.replay",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "legacy-evidence.replay-repeat",
+      "file": "legacy-evidence.replay-repeat.json",
+      "sha256": "c2024447b656a505ee88f647e3082d6a6a760f31c1d948b1b225b0230807e2c5",
+      "operation": "evidence.replay",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "legacy-evidence.compare",
+      "file": "legacy-evidence.compare.json",
+      "sha256": "efaaabaeb1fc40e22f5c34ffeb20cbc86159f4252f7c7ee9f056304ecef0dbca",
+      "operation": "evidence.compare",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "legacy-report.create",
+      "file": "legacy-report.create.json",
+      "sha256": "f37f513d48beaaca862cd26ba5539910a0809cb57a1605cd800ac255a11217c3",
+      "operation": "report.create",
+      "status": "succeeded",
+      "protocol": "2025-11-25"
+    },
+    {
+      "case": "bad-manifest-pin",
+      "file": "bad-manifest-pin.json",
+      "sha256": "e7001e133ce1ad00e69d5c037c10de1c2aaf04a1daf5c34fcb3a761847ca3ef7",
+      "operation": "evidence.open",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "missing-bundle",
+      "file": "missing-bundle.json",
+      "sha256": "7f3c7aa966560d51778b628b36ae2a9cd5d52f67e5e69cc2bee04bbfb7c53ec0",
+      "operation": "evidence.open",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "bounded-open",
+      "file": "bounded-open.json",
+      "sha256": "0ee589e053fcc19f6debcda27015202a284efe8eb4829e43d270f165e638835f",
+      "operation": "evidence.open",
+      "status": "partial",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "replay-bad-pin",
+      "file": "replay-bad-pin.json",
+      "sha256": "c62cc1a870ac88c89c8d26821b27e4b92f8305537c0bfde2d3a8d1d6a978ae2d",
+      "operation": "evidence.replay",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "replay-missing",
+      "file": "replay-missing.json",
+      "sha256": "948f34b85e7566249748493a5b0a7df7b7c11a9492287384ddc758e79a921fd7",
+      "operation": "evidence.replay",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "bounded-replay",
+      "file": "bounded-replay.json",
+      "sha256": "5c15aeeba072c0d7ae577a71e4d8a80350bc39a589ec0e9b133400641d8b829c",
+      "operation": "evidence.replay",
+      "status": "partial",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "incompatible-windows",
+      "file": "incompatible-windows.json",
+      "sha256": "04f1eef3425afb033cf46ea0208f45aa1e5361bf2bfa6d29e340bd8a6be98a4f",
+      "operation": "evidence.compare",
+      "status": "partial",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "json-report",
+      "file": "json-report.json",
+      "sha256": "6b3a779f22c3820de854cfd608e05bfc2cc15c8992bfefbe5faa6563cb3e4399",
+      "operation": "report.create",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "changed-source",
+      "file": "changed-source.json",
+      "sha256": "680c7e22d38e7f09ca9d72aa715a549e3f892425293e769bb9bae3c02205b581",
+      "operation": "context.resolve",
+      "status": "denied",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "replaced-store",
+      "file": "replaced-store.json",
+      "sha256": "3819f06596f6a23c316df729275e7bc57c25847939243b322b2da27b7187f479",
+      "operation": "evidence.list",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "replay-replaced-store",
+      "file": "replay-replaced-store.json",
+      "sha256": "308ae96f8e71560388adb8bb6617ecd89dd9ba631d7415c1cec4006a7a8b8e9a",
+      "operation": "evidence.replay",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "mixed-list",
+      "file": "mixed-list.json",
+      "sha256": "c0f945eee70af29e274a45337826425ee387c77848a257664baaf0caf66cf591",
+      "operation": "evidence.list",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "standalone-replay",
+      "file": "standalone-replay.json",
+      "sha256": "3aacb89bae828607e9c3107dd012ca713f9f24753ab8c75add1eee8a63c544b8",
+      "operation": "evidence.replay",
+      "status": "succeeded",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "corrupt-bundle",
+      "file": "corrupt-bundle.json",
+      "sha256": "07111085c3558ff88aead7b7ca880a44deaed5b0c2ee6de73d5e521c5110b9f5",
+      "operation": "evidence.open",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    },
+    {
+      "case": "replay-corrupt-bundle",
+      "file": "replay-corrupt-bundle.json",
+      "sha256": "8bce117bfdfd2123d014520fdb4a47b062b1f85ee0108ebc0081186e98c80c50",
+      "operation": "evidence.replay",
+      "status": "failed",
+      "protocol": "2026-07-28"
+    }
+  ]
+}

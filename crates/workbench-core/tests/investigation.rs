@@ -414,5 +414,64 @@ fn normalization_is_strict_and_canonicalizes_report_defaults() {
         normalize_investigation_input("context.resolve", &selectors()).unwrap(),
         selectors()
     );
-    assert!(normalize_investigation_input("evidence.replay", &json!({"id":BEFORE})).is_err());
+    assert_eq!(
+        normalize_investigation_input("evidence.replay", &json!({"id":BEFORE})).unwrap(),
+        json!({"id":BEFORE})
+    );
+}
+
+#[test]
+fn replay_requires_its_own_grant_and_preserves_offline_profile_and_store() {
+    let fixture = Fixture::new();
+    let path = fixture.store();
+    let original = snapshot(&path);
+    let context = OperatorContext {
+        evidence_store: Some(EvidenceStoreOptions::new(path.clone())),
+        config_path: Some(fixture.0.join("must-not-read-config")),
+        ..Default::default()
+    };
+    let request = || Request::new("evidence.replay", json!({"id":BEFORE}));
+    let generic =
+        execute_with_authority_identities(request(), &RunControl::default(), &context, None, None);
+    assert_eq!(generic.errors[0].code, "evidence_grants_unavailable");
+    let open = investigation_grant(&context, &operations(&["evidence.open"])).unwrap();
+    let refused = execute_with_investigation_grant(request(), &RunControl::default(), &open);
+    assert_eq!(
+        refused.errors[0].code,
+        "investigation_operation_not_granted"
+    );
+
+    let replay = investigation_grant(&context, &operations(&["evidence.replay"])).unwrap();
+    let result = execute_with_investigation_grant(request(), &RunControl::default(), &replay);
+    assert_eq!(
+        result.execution.status,
+        Status::Succeeded,
+        "{:?}",
+        result.errors
+    );
+    assert_eq!(result.data["mode"], "replay");
+    assert_eq!(result.data["analysis"]["profile"], "linux-offline-v1");
+    assert_eq!(result.data["algorithm"]["id"], "retained-observations-v1");
+    assert_eq!(result.data["bundle"]["id"], BEFORE);
+    assert_eq!(result.record_mode, "never");
+    for operation in [
+        "evidence.open",
+        "evidence.collect",
+        "evidence.delete",
+        "grafana.query",
+        "process.exec",
+    ] {
+        let denied = execute_with_investigation_grant(
+            Request::new(operation, json!({})),
+            &RunControl::default(),
+            &replay,
+        );
+        assert_eq!(denied.errors[0].code, "investigation_operation_not_granted");
+    }
+    let control = RunControl::default();
+    control.signal.store(2, Ordering::Relaxed);
+    let cancelled = execute_with_investigation_grant(request(), &control, &replay);
+    assert_eq!(cancelled.execution.status, Status::Cancelled);
+    assert!(cancelled.data.get("checks").is_none());
+    assert_eq!(snapshot(&path), original);
 }
