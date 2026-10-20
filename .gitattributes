@@ -4,6 +4,7 @@
 /docs/evidence/**/*.log -whitespace
 # These exact downloaded report artifacts retain a final blank line covered by their hashes.
 /docs/evidence/investigation-ui-2026-10-15/browser-report.download.md whitespace=-blank-at-eof
+/docs/evidence/browser-offline-replay-2026-10-19/browser-report.download.md whitespace=-blank-at-eof
 /docs/evidence/reports-2026-10-11/handoff.md whitespace=-blank-at-eof
 /docs/ui/previews/*.log -whitespace
 # Retain upstream license text, including its original whitespace.

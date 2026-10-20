@@ -64,8 +64,8 @@ It has no path to credential lookup, live query dispatch, scripts or plugin call
 commands and URLs are inert source data. This is a fixed-analyzer network/command restriction,
 not a filesystem or credential sandbox for arbitrary extension code. Live rechecks require a
 separate explicit collection. The [browser investigation extension](investigation-ui.md) grants
-`evidence.open`, `evidence.list`, `evidence.compare` and `report.create` independently against an
-existing startup store; it does not grant replay or collection. The
+`evidence.open`, `evidence.replay`, `evidence.list`, `evidence.compare` and `report.create` independently against an
+existing startup store; collection requires its separate recording grant. The
 [MCP investigation extension](investigation-mcp.md) also independently grants `evidence.replay`
 against an existing startup store, using this same fixed analyzer and offline worker.
 Generic hosted execution retains its refusals without a dedicated investigation grant.

@@ -1,0 +1,10 @@
+{
+  "archive_sha256": "5f4c6d3bbea35ecc5ece6eccbe00fa7b2f7d76ab5ded5e3e0943119bcea06002",
+  "checks": 9,
+  "current_artifact_id": "save-0.1.0-src-3b5c3d68b34c032c-bin-7ed9a73b0d4a98fc",
+  "evidence_replay_checked": true,
+  "missing_python_checked": false,
+  "previous_archive_sha256": "6beb6e6d5d86ae18d1404dc093e1b3b68f20f9c5c939b80c91612ab0346c3b75",
+  "previous_artifact_id": "save-0.1.0-src-8a410c2c04ba2be3-bin-256c3ae501b0879e",
+  "scope": "Linux development bundle"
+}

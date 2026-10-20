@@ -1,14 +1,14 @@
 # Browser context and historical evidence investigations
 
-WORKBENCH-027 extends the existing local checks, results and session-history interface with
-service context, saved evidence inspection, comparisons and report previews. The existing
+WORKBENCH-027 and WORKBENCH-035 extend the existing local checks, results and session-history interface with
+service context, saved evidence inspection/replay, comparisons and report previews. The existing
 [HTTP/session contract](ui.md) remains the boundary. Live status and verification belong in
 [the roadmap](roadmap.md).
 
 ## Scope and authority
 
 The launcher independently grants exactly `context.resolve`, `evidence.list`, `evidence.open`,
-`evidence.compare` and `report.create` through repeated `--allow`. Context uses the existing paired
+`evidence.replay`, `evidence.compare` and `report.create` through repeated `--allow`. Context uses the existing paired
 `--context-source` and `--context-max-age-days`; evidence/report operations use an existing private
 `--state-dir`. Required startup inputs must be present, and inputs without matching grants are
 refused. Evidence retention/size overrides remain unavailable to the browser launcher.
@@ -33,7 +33,7 @@ retained-byte guarantee. Browser-origin requests never carry paths, credentials 
 
 ## Browser behavior
 
-The Check selector adds Service context, Saved evidence, Inspect evidence, Compare evidence and
+The Check selector adds Service context, Saved evidence, Inspect evidence, Replay evidence, Compare evidence and
 Evidence report. It lists only operations granted by this process. Forms submit the existing core
 input schemas through `POST /api/v1/runs`; no additional execution endpoint or alternate executor
 is introduced. Root/diagnostic target selectors are absent for these operations.
@@ -43,10 +43,11 @@ is introduced. Root/diagnostic target selectors are absent for these operations.
 | Service context | Service/environment and optional team/deployment; source identity, selected ownership/bindings/dependencies, freshness and reasons a mapping is unusable |
 | Saved evidence | Empty input; retained run identifiers, state, observation/storage times, protection and errors |
 | Inspect evidence | Run identifier and optional exact manifest digest; original window, capture, checks, missing/omitted details and provenance |
+| Replay evidence | Run identifier and optional exact manifest digest; deterministic metric/log projections, original observation window, separate analysis time and explicit omissions |
 | Compare evidence | Before/after references and exact-window or window-offset normalization; compatibility, reasons, metric/log changes and omissions |
 | Evidence report | One to four distinct references, format and optional title; plain-text Markdown/JSON preview and explicit local download |
 
-Timeout and output controls preserve existing core ceilings. Item limits apply only to open and
+Timeout and output controls preserve existing core ceilings. Item limits apply only to open, replay and
 compare. Unknown/null controls, filesystem paths, duplicate report references and malformed pins
 are refused. Mutations are never retried automatically; the existing submission identity,
 reconciliation, cancellation and history rules remain unchanged.
@@ -56,6 +57,14 @@ no HTML execution, automatic links or remote images. Historical observation time
 from analysis/generation time. Missing samples remain missing, incompatible comparisons remain
 incompatible, and completed analysis does not claim current service health. Proposals remain
 pending and cannot approve themselves.
+
+Replay runs the fixed `retained-observations-v1` analyzer under `linux-offline-v1`, without
+recollection or evidence mutation. Its grant is independent of inspection, comparison and report
+grants. An existing private store is its only required startup resource:
+
+```sh
+save --state-dir /absolute/private/existing-store ui serve --allow evidence.replay
+```
 
 The canonical JSON receipt remains downloadable byte-for-byte from the same retained invocation.
 Report download is an explicit browser Blob action with a safe fixed filename and revoked object
@@ -70,7 +79,7 @@ adapter owns startup pairing, normalization and the dedicated executor call. Ope
 existing authoritative schemas; generated TypeScript consumes that artifact. The frontend extends
 the accepted forms, themes, result panels and history without replacing their lifecycle.
 
-Verify the actual context → list → inspect → compare → report browser workflow against copied
+Verify the actual context → list → inspect → replay → compare → report browser workflow against copied
 retained fixtures with no source credentials or live targets. Check exact receipt/download bytes,
 source/store immutability, swapped-source/store refusal, missing/corrupt/pinned evidence, bounded
 output, hostile content, deduplication, grants and existing token/Host/Origin controls. Exercise

@@ -1,0 +1,24 @@
+{
+  "binary_sha256": "256c3ae501b0879e0a1892f7dc6ce42d5bf87fc94366ce4fbe4df286e65105a5",
+  "binary_size": 50826272,
+  "build_command": [
+    "tools/test-sandbox.sh",
+    "cargo",
+    "build",
+    "-p",
+    "workbench-cli",
+    "--locked",
+    "--offline"
+  ],
+  "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+  "evidence": "Fresh ordinary build from clean detached published MCP replay commit; matches the accepted MCP executable byte-for-byte.",
+  "platform": {
+    "architecture": "x86_64",
+    "environment": "Ubuntu 26.04.1 LTS; kernel 7.0.0-38-generic; private Bubblewrap test namespace",
+    "libc": "glibc 2.43",
+    "os": "linux"
+  },
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "schema_version": 1,
+  "source_manifest_sha256": "8a410c2c04ba2be37d2d8d7e96e03fc1dd9a8d7595bf5a91227094ff595221ae"
+}

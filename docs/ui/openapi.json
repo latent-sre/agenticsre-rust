@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "AgenticSRE local workbench",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Local bearer-authenticated browser adapter. Normative semantics: docs/ui.md, docs/diagnostics-ui.md, docs/investigation-ui.md and docs/query-ui.md. Embedded core schemas preserve authoritative validation semantics with local schema references; metadata literal references remain unchanged."
   },
   "paths": {
@@ -1727,6 +1727,9 @@
             "$ref": "#/components/schemas/EvidenceOpenSubmission"
           },
           {
+            "$ref": "#/components/schemas/EvidenceReplaySubmission"
+          },
+          {
             "$ref": "#/components/schemas/EvidenceCompareSubmission"
           },
           {
@@ -1769,6 +1772,7 @@
               "context.resolve",
               "evidence.list",
               "evidence.open",
+              "evidence.replay",
               "evidence.compare",
               "report.create",
               "queries.list",
@@ -1948,6 +1952,7 @@
                     "context.resolve",
                     "evidence.list",
                     "evidence.open",
+                    "evidence.replay",
                     "evidence.compare",
                     "report.create"
                   ]
@@ -10258,6 +10263,7 @@
             "enum": [
               "evidence.list",
               "evidence.open",
+              "evidence.replay",
               "evidence.compare",
               "report.create"
             ]
@@ -13069,6 +13075,35 @@
           "cancellation_signal",
           "bundle",
           "delivery_cancellation_signal"
+        ],
+        "additionalProperties": false
+      },
+      "EvidenceReplaySubmission": {
+        "type": "object",
+        "properties": {
+          "submission_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation_version": {
+            "const": 1
+          },
+          "limits": {
+            "$ref": "#/components/schemas/EvidenceLimits"
+          },
+          "operation": {
+            "const": "evidence.replay"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/CoreEvidenceReferenceInput"
+          }
+        },
+        "required": [
+          "submission_id",
+          "operation_version",
+          "limits",
+          "operation",
+          "inputs"
         ],
         "additionalProperties": false
       }

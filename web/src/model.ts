@@ -14,12 +14,12 @@ export const diagnosticStepNames: Record<DiagnosticStep['id'], string> = {
   dns: 'DNS lookup', tcp: 'TCP connection', tls: 'TLS validation',
   http: 'HTTP response', process: 'Local process',
 };
-export type Check = 'status' | 'diff' | 'log' | 'files' | 'search' | 'budget' | 'diagnostics' | 'context' | 'evidence-list' | 'evidence-open' | 'evidence-compare' | 'evidence-report' | 'queries-list' | 'queries-describe' | 'query-run' | 'evidence-packs-list' | 'evidence-packs-describe' | 'evidence-collect';
+export type Check = 'status' | 'diff' | 'log' | 'files' | 'search' | 'budget' | 'diagnostics' | 'context' | 'evidence-list' | 'evidence-open' | 'evidence-replay' | 'evidence-compare' | 'evidence-report' | 'queries-list' | 'queries-describe' | 'query-run' | 'evidence-packs-list' | 'evidence-packs-describe' | 'evidence-collect';
 export type Theme = 'light' | 'dark' | 'system';
 export const checkNames: Record<Check, string> = {
   status: 'Working tree status', diff: 'Working tree diff', log: 'Recent commits',
   files: 'List files', search: 'Find literal text', budget: 'Error budget', diagnostics: 'Diagnostics',
-  context: 'Service context', 'evidence-list': 'Saved evidence', 'evidence-open': 'Inspect evidence',
+  context: 'Service context', 'evidence-list': 'Saved evidence', 'evidence-open': 'Inspect evidence', 'evidence-replay': 'Replay evidence',
   'evidence-compare': 'Compare evidence', 'evidence-report': 'Evidence report',
   'evidence-packs-list': 'Evidence pack catalog', 'evidence-packs-describe': 'Inspect evidence pack', 'evidence-collect': 'Collect evidence',
   'queries-list': 'Saved query catalog', 'queries-describe': 'Inspect saved query', 'query-run': 'Run saved query',
@@ -29,7 +29,7 @@ export const isCheck = (value: unknown): value is Check =>
   typeof value === 'string' && checkOptions.includes(value as Check);
 
 export const investigationOperations = { context: 'context.resolve', 'evidence-list': 'evidence.list',
-  'evidence-open': 'evidence.open', 'evidence-compare': 'evidence.compare', 'evidence-report': 'report.create' } as const;
+  'evidence-open': 'evidence.open', 'evidence-replay': 'evidence.replay', 'evidence-compare': 'evidence.compare', 'evidence-report': 'report.create' } as const;
 export const isInvestigation = (check: Check): check is keyof typeof investigationOperations => Object.hasOwn(investigationOperations, check);
 export const collectionOperations = { 'evidence-packs-list': 'evidence.packs.list', 'evidence-packs-describe': 'evidence.packs.describe', 'evidence-collect': 'evidence.collect' } as const;
 export const isCollection = (check: Check): check is keyof typeof collectionOperations => Object.hasOwn(collectionOperations, check);
@@ -145,9 +145,9 @@ export function validateForm(values: FormValues): FieldErrors {
     if (values.check === 'context') for (const field of ['service', 'environment', 'team', 'deployment'] as const) {
       if ((!values[field] && (field === 'service' || field === 'environment')) || values[field].length > 128 || hasControl(values[field])) errors[field] = 'Use 1–128 characters without control characters.';
     }
-    if (values.check === 'evidence-open') reference('bundleId', 'bundlePin');
+    if (values.check === 'evidence-open' || values.check === 'evidence-replay') reference('bundleId', 'bundlePin');
     if (values.check === 'evidence-compare') { reference('beforeId', 'beforePin'); reference('afterId', 'afterPin'); }
-    if (values.check === 'evidence-open' || values.check === 'evidence-compare') number('maxItems', v => Number.isInteger(v) && v >= 1 && v <= 1000 && /^\d+$/u.test(values.maxItems), 'Use a whole number from 1 to 1,000.');
+    if (values.check === 'evidence-open' || values.check === 'evidence-replay' || values.check === 'evidence-compare') number('maxItems', v => Number.isInteger(v) && v >= 1 && v <= 1000 && /^\d+$/u.test(values.maxItems), 'Use a whole number from 1 to 1,000.');
     if (values.check === 'evidence-report') {
       const ids: string[] = [];
       for (const index of [1, 2, 3, 4] as const) {
@@ -190,7 +190,7 @@ export function commandInput(values: FormValues): components['schemas']['Command
     case 'files': args = ['--files', ...(values.hidden ? ['--hidden'] : [])]; break;
     case 'search': args = ['-F', ...(values.ignoreCase ? ['-i'] : []), ...(values.hidden ? ['--hidden'] : []), '-e', values.pattern]; break;
     case 'budget': throw new Error('A calculation has no command arguments.');
-    case 'context': case 'evidence-list': case 'evidence-open': case 'evidence-compare': case 'evidence-report': throw new Error('Offline investigation has no command arguments.');
+    case 'context': case 'evidence-list': case 'evidence-open': case 'evidence-replay': case 'evidence-compare': case 'evidence-report': throw new Error('Offline investigation has no command arguments.');
     case 'diagnostics': throw new Error('Diagnostics have no command arguments.');
     case 'evidence-packs-list': case 'evidence-packs-describe': case 'evidence-collect': throw new Error('Evidence collection has no command arguments.');
     case 'queries-list': case 'queries-describe': case 'query-run': throw new Error('Saved queries have no command arguments.');
@@ -232,7 +232,7 @@ export function makeSubmission(values: FormValues, operation: Submission['operat
     const offline = { ...shared, limits };
     if (values.check === 'context') return { ...offline, operation: 'context.resolve', inputs: { service: values.service, environment: values.environment, ...(values.team ? { team: values.team } : {}), ...(values.deployment ? { deployment: values.deployment } : {}) } };
     if (values.check === 'evidence-list') return { ...offline, operation: 'evidence.list', inputs: {} };
-    if (values.check === 'evidence-open') return { ...offline, operation: 'evidence.open', inputs: reference(values.bundleId, values.bundlePin), limits: { ...limits, max_items: Number(values.maxItems) } };
+    if (values.check === 'evidence-open' || values.check === 'evidence-replay') return { ...offline, operation: investigationOperations[values.check], inputs: reference(values.bundleId, values.bundlePin), limits: { ...limits, max_items: Number(values.maxItems) } };
     if (values.check === 'evidence-compare') return { ...offline, operation: 'evidence.compare', inputs: { before: reference(values.beforeId, values.beforePin), after: reference(values.afterId, values.afterPin), normalization: values.normalization }, limits: { ...limits, max_items: Number(values.maxItems) } };
     return { ...offline, operation: 'report.create', inputs: { bundles: ([1, 2, 3, 4] as const).filter(index => values[`reportId${index}`]).map(index => reference(values[`reportId${index}`], values[`reportPin${index}`])), format: values.reportFormat, ...(values.reportTitle ? { title: values.reportTitle } : {}) } };
   }

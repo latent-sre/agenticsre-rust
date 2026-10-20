@@ -55,6 +55,7 @@ impl Grants {
                     | "context.resolve"
                     | "evidence.list"
                     | "evidence.open"
+                    | "evidence.replay"
                     | "evidence.compare"
                     | "report.create"
                     | "queries.list"
@@ -135,7 +136,11 @@ impl Grants {
         let evidence = operations.iter().any(|op| {
             matches!(
                 op.as_str(),
-                "evidence.list" | "evidence.open" | "evidence.compare" | "report.create"
+                "evidence.list"
+                    | "evidence.open"
+                    | "evidence.replay"
+                    | "evidence.compare"
+                    | "report.create"
             )
         });
         if (evidence || collection) && options.evidence_store.is_none() {
@@ -167,6 +172,7 @@ impl Grants {
                     "context.resolve"
                         | "evidence.list"
                         | "evidence.open"
+                        | "evidence.replay"
                         | "evidence.compare"
                         | "report.create"
                 )

@@ -525,9 +525,14 @@ acceptance status is tracked in [WORKBENCH-013](roadmap.md#workbench-013--eviden
 
 The [Linux development bundle](packaging.md) contains the ordinary `save` binary, embedded browser
 assets and task bindings, exact source/build manifests, dependency inventory and available notices.
-The [acceptance record](packaging-verification.md) identifies the current context archive and retained
-baselines, with their separately trusted SHA-256 values. The tested runtime is Debian 13 x86-64 with glibc 2.41;
-the artifact does not establish compatibility with Adama or other distributions.
+The [current candidate record](acceptance-bundle-verification.md) identifies the browser replay
+archive and its MCP replay baseline, with trusted digests and installation instructions. It was
+tested on Ubuntu 26.04.1 x86-64 with glibc 2.43. The [historical context acceptance
+record](packaging-verification.md) below covers Debian 13 x86-64 with glibc 2.41. Neither establishes
+compatibility with other distributions or hosts.
+
+The following examples retain the historical context artifact's identities. Its old archive paths
+are not present in this checkout; use the current candidate record for locally available artifacts.
 
 Use an operator-trusted checkout of `tools/package-linux.py` with Python 3.11+. Validation runs no
 archive code or product commands. Supply an absolute installation root you control; the installer
@@ -553,7 +558,7 @@ system Python 3.11+. Stdio MCP can be launched from the same selected binary usi
 [explicit grant instructions](mcp.md). Installing or selecting a version does not add grants,
 global PATH entries or system services.
 
-The current archive is retained as `target/packages/linux-context-r1/current.tar` in this checkout.
+The historical context archive was retained as `target/packages/linux-context-r1/current.tar`.
 To resolve context after installation, select a reviewed regular export and explicit age policy:
 
 ```bash
