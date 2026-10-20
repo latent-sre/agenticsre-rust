@@ -2,8 +2,9 @@
 
 This implements the Linux development portion of CAP-25/WP-05. Current execution status belongs
 in [the roadmap](roadmap.md). Publication, managed installation, Windows support and the five-task
-human/agent pilot remain separate requirements. The first artifact is a portable development
-archive, tested in Cally's existing Debian 13 x86-64 GNU/Linux environment.
+human/agent pilot remain separate requirements. The first artifact was a portable development
+archive, tested in Cally's existing Debian 13 x86-64 GNU/Linux environment. Current candidates
+retain their own exact source, executable, environment and archive identities.
 
 ## Mission and compatibility
 
@@ -27,16 +28,24 @@ with an explicit export path and review-age policy. Its regular-file descriptor 
 Linux `openat2` and the trusted proc descriptor route; unavailable prerequisites are refused.
 The installed mission must exercise both direct selectors and structured requests, validate the
 observed export digest, and preserve stale/ambiguous/missing refusals without choosing a fallback.
-Context configuration is not exposed by the current UI/MCP servers. Earlier artifacts retain
-their original feature sets and identities.
+The current UI/MCP servers can expose context and evidence through their separately configured
+grants. Earlier artifacts retain their original feature sets and identities.
 
 ## Artifact identity and contents
 
 Each artifact has a source-qualified ID rather than an invented product release version. Its
 manifest includes the product version, exact source capture identity, binary digest and size,
-platform/build metadata, a bounded list of file sizes/digests/modes and the current stateless
+platform/build metadata, a bounded list of file sizes/digests/modes and a versioned
 compatibility contract. Preserve the source-file manifest and recorded toolchain/build command.
-The build evidence binds those claims to the actual Cally build and tested archive.
+The build evidence binds those claims to the actual build environment and tested archive.
+
+New archives use bundle manifest revision 2, declaring `record=per-operation`, explicit external
+persistent stores, session-only UI history and no installer-driven migrations. Revision-1 source,
+build, dependency-inventory and installation-receipt formats remain unchanged. Verification,
+installation and selection continue to accept revision-1 stateless bundles with their original
+compatibility values. Installation receipts and returned selection metadata must match the selected
+manifest, never a global default. Unknown revisions and mismatched compatibility declarations are
+refused. Earlier packaging tools refuse revision-2 archives; use this updated tool for new candidates.
 
 Include the project/upstream notices, dependency inventory with license metadata and available
 license texts, runtime/compatibility notes and operation/rollback instructions. Distinguish the
@@ -68,10 +77,12 @@ Refuse an unrelated existing activation file or escaping pointer. Revalidate the
 before switching, preserve the prior version, and disclose the selected path/identity. Same-account
 modification remains possible; this is not a protected administrator installation.
 
-Rollback selects a retained verified version; no execution is replayed. Current product storage is
-`record=never` with session-only UI history. There is no config/store migration in this increment.
-The installer/selector never rewrites external config or evidence. Durable storage and migrations
-will need their own compatibility and backup contract when implemented.
+Rollback selects a retained verified version; no execution is replayed. Recording is operation-
+specific and durable stores require explicit external paths and authority. UI history stays
+session-only. The installer/selector never rewrites external config or evidence and performs no
+store migration. Switching executable versions does not establish that an older executable can
+read a newer store format; use the selected operation's version checks and preserve the appropriate
+data backup separately. Archive-format compatibility is not persistent-store downgrade acceptance.
 
 ## Required evidence
 
@@ -81,8 +92,11 @@ will need their own compatibility and backup contract when implemented.
 - Offline help/version/doctor; the literal-command mission and both embedded tasks away from source.
 - Installed stdio numerical MCP transaction and embedded UI response inside private test networking.
 - Honest missing-Python behavior; no global/path/service/grant effects and unchanged external canaries.
+- Current replay-capable candidates: installed replay before/after upgrade and rollback, matching
+  historical projections and unchanged external store bytes/modes. This proves the exercised store
+  format only; it does not promise compatibility with future persistent formats.
 - Independent review and executable acceptance bound to the actual archive, plus confirmed cleanup.
 
 Actual commands and their verified outcomes are added to [development](development.md) when the
-tooling exists. AC-34/AC-35 acceptance is scoped to the tested Linux/stateless slice. AC-36 still
+tooling exists. AC-34/AC-35 acceptance is scoped to each tested Linux candidate. AC-36 still
 requires the separate human/agent usefulness pilot.

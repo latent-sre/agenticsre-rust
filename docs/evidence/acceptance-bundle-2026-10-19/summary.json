@@ -1,0 +1,88 @@
+{
+  "artifacts": {
+    "current-build.json": "d73a020139574f022822f072ad00d38039ce1b4bd5328b2c85363be74c544c1b",
+    "current-build.log": "99bd394484152ec24a99b115509c10bbb69f77e86de045c17f7c1ca783c1125c",
+    "current-create.json": "12e1655932ac1399b3ab33f58d72a8d213a560bd7a9e3a56986374199eb6ff56",
+    "current-manifest.json": "ae13b1532efbab0f778c4665da9217d0e365fdc34a40c1b331188e5c0a4deaca",
+    "current-source.json": "3b5c3d68b34c032c58608657df03bdf75c220d91f36de94e34d4d808c8609c93",
+    "dependency-inventory.json": "be6544a606e7c15d172da6036aa41c9bc4ae7779a58e34247009bb24e22e0d78",
+    "environment.json": "4086042c4eef88fd498d53f018474413a53677762f7873cc8f307224f26601fd",
+    "hardlink-create-refusal.json": "b90149ee31062dcbbdab281bfceab44e9f278aafbc87dbe814f3ab90a33adc53",
+    "independent-review.json": "5cb93f7c0c130e613f8051d9d66ba5227b48dcb911ce27f4eb1771759075afcd",
+    "initial-create-refusal.json": "5150b596e8c962f1a8550d26c82bf54db7347ae22c2cf612d37fec7208452dad",
+    "installed-acceptance.log": "79b311a67f9cfe3bd3e78daf8ed0685481521e5c3abdfcc22a5b6aa93c4d6819",
+    "installed-summary.json": "e2e57527d8f7ebb7c66f376550c22a6869b53bd98cd29eb9006081bb13e26e0c",
+    "package-tests.log": "f9a2c82002cd6176125114e42eca74e184f91ed8dc3bcbe3f149646bc7ca91e6",
+    "prior-build.json": "8eecaae690eb39130a4c35a7c0b3c4037d6a44b5a5c6d16f2ca73272308618f1",
+    "prior-build.log": "004ccaa271a840879257b70dcffa4115568b4b88e379dfc4f1d5befab510e41d",
+    "prior-create.json": "1f596f61ecf6f7cff140af30693d00a4ef758867edb825649821fc3543810d15",
+    "prior-manifest.json": "82b009b2409b202c08a6d0a51e5da0016bd48a116e023782602cbee3e58bb0dc",
+    "prior-source.json": "8a410c2c04ba2be37d2d8d7e96e03fc1dd9a8d7595bf5a91227094ff595221ae",
+    "receipts.jsonl": "e0f9f2671d68a0c7eb19f4b02092b573780e2938a6ba57f83d8fc79051036923",
+    "repack-create.json": "07ac166a9aff39d040c9f0f42f5df2876e819c7eb07bd5348f87df13191f45a0",
+    "schema-validation.json": "864633845519d18eac3de7f08ded6ea3c5ab63680248bcfaa09ee7c7cab0048e",
+    "store-integrity.json": "0ebf02135b4edaddaef9eadba8c12d8fa263eec5db036af41b8bac30f23fad02",
+    "test-without-system-python.sh": "760f8badccb79c55126dc89142a583c9381fc3c1072ff127ca10eeeb228faef9",
+    "unavailable-python-acceptance.log": "1ed8161da378719549e80fe7b6985ea6791f72d5858315321d6c986f32ef2f71",
+    "unavailable-python-receipts.jsonl": "84e845abdc42c4adbbaa60528d388d5cbff631f54461363d1cd18ae5de7687a3",
+    "unavailable-python-summary.json": "812d2bec6436d7d8e693bc154cf65acdcc03460d038d003fbad08ff6867d0046"
+  },
+  "canonical_receipts": 25,
+  "current": {
+    "archive": "/home/hawkfire/rusty/agenticsre-rust/target/acceptance-bundle/current.tar",
+    "archive_sha256": "5f4c6d3bbea35ecc5ece6eccbe00fa7b2f7d76ab5ded5e3e0943119bcea06002",
+    "archive_size": 54494208,
+    "artifact_id": "save-0.1.0-src-3b5c3d68b34c032c-bin-7ed9a73b0d4a98fc",
+    "operation": "create",
+    "status": "created"
+  },
+  "deterministic_repack": true,
+  "distribution_gaps": [
+    "Development inventory has not received a release-level dependency/license clearance.",
+    "Frontend notices were captured from the pinned installation; cached npm archives were unavailable for independent integrity revalidation.",
+    "Rust standard-library/compiler and external system-library notices are outside this lockfile inventory and still require release-level coverage.",
+    "No available license text: asn1-rs-impl-0.2.0",
+    "No available license text: jni-0.22.4",
+    "No available license text: jni-macros-0.22.4",
+    "No available license text: jni-sys-macros-0.4.1",
+    "No available license text: ndk-context-0.1.1",
+    "No available license text: r-efi-6.0.0",
+    "No available license text: rmcp-3.5.0",
+    "No available license text: rustls-platform-verifier-android-0.2.0"
+  ],
+  "installed_checks": 9,
+  "installed_verifier_sha256": "38a8eb2c96c1d146faeab3ce7e315197c832005b293a3cc70106a73be2c49f7b",
+  "matches_prior_accepted_product_binaries": true,
+  "offline_data_validations": 3,
+  "package_source_sha256": "83e4ce8f340481f569b64fe6bfbf4787ec4b0b57c68a99c7785b8b95ffd9ffec",
+  "packaging_regressions": 34,
+  "prior": {
+    "archive": "/home/hawkfire/rusty/agenticsre-rust/target/acceptance-bundle/prior.tar",
+    "archive_sha256": "6beb6e6d5d86ae18d1404dc093e1b3b68f20f9c5c939b80c91612ab0346c3b75",
+    "archive_size": 54487552,
+    "artifact_id": "save-0.1.0-src-8a410c2c04ba2be3-bin-256c3ae501b0879e",
+    "operation": "create",
+    "status": "created"
+  },
+  "remaining": [
+    "Human AC-36 before/after measurements, feedback, acceptance decision and support ownership",
+    "Actual selected agent host and native platform acceptance",
+    "Named live service/context and scoped read identity for the home-lab pilot",
+    "Dependency/license clearance and production release requirements",
+    "Remaining capability queue in docs/roadmap.md"
+  ],
+  "scope": "Local Linux development candidate; fixture acceptance, not release or user acceptance",
+  "setup_refusals": [
+    "relative input paths refused; corrected to absolute paths",
+    "Cargo hard-linked output refused; packaged a byte-identical ordinary file copy"
+  ],
+  "source_snapshot": {
+    "commit": "ac541d16488ad6368286f468d4c21df1093753f9",
+    "git_bundle": "/home/hawkfire/rusty/agenticsre-rust/target/acceptance-bundle/current-source.bundle",
+    "git_bundle_sha256": "cfe0c1459d6c6055f3a4723aa9a9d27528f07320abe24cbbb1c362b8e38847f5",
+    "kind": "disposable local Git commit, not publication"
+  },
+  "status": "passed_for_named_scope",
+  "store_entries_unchanged": 25,
+  "unavailable_python_checks": 4
+}

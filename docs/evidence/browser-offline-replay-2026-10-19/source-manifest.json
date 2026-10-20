@@ -1,0 +1,1950 @@
+[
+  {
+    "path": "crates/capacity-projector/Cargo.toml",
+    "sha256": "7cc8bbfed13e6e7d1396a036d999ba6c4e8e927a8e8ef2363b9fb9e0faeeb0ad",
+    "bytes": 530,
+    "mode": 436
+  },
+  {
+    "path": "crates/capacity-projector/src/bin/extension-peer-fixture.rs",
+    "sha256": "678663d350bb0305612c9292a8c3f3d03411db8fbb9ba8d04de09d0e718f4a48",
+    "bytes": 6949,
+    "mode": 436
+  },
+  {
+    "path": "crates/capacity-projector/src/lib.rs",
+    "sha256": "9b4951be95c188473be0e8384a6b36c0fd7a37248bec1de4bf01616cd4ab5798",
+    "bytes": 16592,
+    "mode": 436
+  },
+  {
+    "path": "crates/capacity-projector/src/main.rs",
+    "sha256": "59f2efb52c179d361e9a46feb0dcebdf377e3527bb518cc9815657ca3305496f",
+    "bytes": 481,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/Cargo.toml",
+    "sha256": "f422403384852a468cf8790de85e2e2a95a2f9071063c70da60cde6b7a1e861b",
+    "bytes": 967,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/src/main.rs",
+    "sha256": "8e40451c67261d4419ab27596ffb40d4953ee62a7889476edef4b0a3f1ec9ebb",
+    "bytes": 73757,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/src/output.rs",
+    "sha256": "1893802c0b4f239d5a072b35537a7e1afbd0008f06e7a17b9d1fae3928cf79cf",
+    "bytes": 3311,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/changes.rs",
+    "sha256": "b944fa486dbb7b3256a1045a9d6244050dcc4e77e1f931bfc929658e7b17729b",
+    "bytes": 20599,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/comparison.rs",
+    "sha256": "f3574b4a131917dc7930fa02e9cf017bd7c8163def8c0268c85fc9aa18b4136d",
+    "bytes": 21071,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/config_check.rs",
+    "sha256": "a920cab77bfc9f970853fb78688922b155a7b3d48a31b86ad9075d564964cd94",
+    "bytes": 8048,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/context.rs",
+    "sha256": "b945b3c682f6848fa91359aab5b51633445b419e55ec7beff1d892b6fef8db18",
+    "bytes": 17220,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/diagnostics.rs",
+    "sha256": "0eab0fed796e6244bbdb5cf3b9ff5fe63bd534122112d26e98160306daa206bf",
+    "bytes": 12678,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/error_budget.rs",
+    "sha256": "a58f60fa3580afe09d8756c3c2d86cd31b3bf0f025c508026ea25d9add6ff6e3",
+    "bytes": 11067,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/evidence.rs",
+    "sha256": "1d2cba5a61887b6368179153d60a88a2b67ba29dfc81cf05018907aa8b400aa0",
+    "bytes": 47587,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/evidence_mcp.rs",
+    "sha256": "02d90986b6e2f4386b893fe705979630b06ef3240ea681e660d83b2ccc25fbbf",
+    "bytes": 11047,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/evidence_ui.rs",
+    "sha256": "11829b370727d27b5eaa487237b79e2bce490e176045651fb2f1957196a122a3",
+    "bytes": 17427,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/extension_runtime.rs",
+    "sha256": "3a09fa33523a447da6e863d9c547040723270af6596f0244b8432bae50f52a54",
+    "bytes": 12218,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/extensions.rs",
+    "sha256": "3945688ebe6723274c797eb74cc1100a480f21def1d54d3f9e13a590597b4662",
+    "bytes": 7716,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/fleet.rs",
+    "sha256": "2eaf7d9603e0b1aabe0837a2cd3b45a018ee39e355aa8152a49f9d77951dc71e",
+    "bytes": 24550,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/grafana.rs",
+    "sha256": "17d371a9050a28615ab578f9015a62edb9c0271caf5ef06412f566f93e02e8d7",
+    "bytes": 28048,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/investigation_mcp.rs",
+    "sha256": "80c0b3239d095a36a9a6b509ede291caec13147ab76a5f15545ec872491b3246",
+    "bytes": 26048,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/investigation_ui.rs",
+    "sha256": "7cbbe1362c321a91728af826a4933c0728764a6bda51a7b5aa0d6bcac29dfb1c",
+    "bytes": 22661,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/jobs.rs",
+    "sha256": "3cae23d9f18b2df0397a8fc0aec796b6cc44b89d2db4450364a0d230c0f1b8cc",
+    "bytes": 20511,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/mcp.rs",
+    "sha256": "79823224d4b80a049104afb0d92a79d66798a241954cb677d5168a80946a62a4",
+    "bytes": 15859,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/mcp_authority.rs",
+    "sha256": "de6ff70f1f9e07993ffe56ead81d823a23362fce734462ed8e5e3cd7bccbe8c6",
+    "bytes": 18286,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/mcp_queries.rs",
+    "sha256": "2425a1f6e653da5b533ae017173dae2d29ae5bcfcba79182a10b2fe5d94ab42c",
+    "bytes": 9685,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/offline.rs",
+    "sha256": "a53987a02779d50a2d5900f8972bf97854f40187e224860b115aa12c0db3f78e",
+    "bytes": 15831,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/prometheus_rules.rs",
+    "sha256": "c13f5f91cec048f6148f3aefc2bf71030e0e0202a3183aad7abbcd5007b1b093",
+    "bytes": 7364,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/queries.rs",
+    "sha256": "3141650396a115febef03fe1541edfb64cca611bd35b1a02ac7a1dafae272b3e",
+    "bytes": 32502,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/query_ui.rs",
+    "sha256": "e1797b3bd5373b20b70bfafa2ce67249bada08c60b684e7a88da82d972ecebde",
+    "bytes": 11426,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/read_profile.rs",
+    "sha256": "e28f76483895830761d7f3d894ba07a0aea1f8573c6aaa5765360e5a1fa5d08f",
+    "bytes": 38721,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/remote_runner.rs",
+    "sha256": "f6724ea694cb910111419a0735d049f90e9ef8e2f479a8a4aebc992a44a981be",
+    "bytes": 25164,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/reports.rs",
+    "sha256": "54e55a45969f4a955388ad78c0a66fbc9098014c5d50b5d9dcb878a8781b2948",
+    "bytes": 14951,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/runbooks.rs",
+    "sha256": "0ada168403c414e3fcfd796a51cc2c0dc4f13aa240ed6098f72f61996ee486eb",
+    "bytes": 25494,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/runner.rs",
+    "sha256": "a537bc9510963a5328c1cf48c25f06de78539bf78cea23ab2838dfaaac18d9af",
+    "bytes": 18725,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/support/grafana_https.rs",
+    "sha256": "d1bcbfeb28e2338de2e0777c7e38bc4771f0ca3336bbe99ae35a70cfa6c10b2b",
+    "bytes": 12885,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/support/profile_fixture.rs",
+    "sha256": "9227042bd0c42c52ffc66ed5c8b8b7854e3d51a85f84289bf3597364df3f9d14",
+    "bytes": 7251,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/support/runner_fixture.rs",
+    "sha256": "462eb06182c5284697e2a4110a363beadc0dab8eaa2b630ce3417fa59ed64115",
+    "bytes": 5183,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/tasks.rs",
+    "sha256": "e533b279b0c879ea2a7b0d6c775d041b097359eb6cc7151cf0e9c375a4000a35",
+    "bytes": 20012,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/toil.rs",
+    "sha256": "47e39692d6481c166e3c15fdcc34c53601553a5978c25f2f53c1ff815ea0869d",
+    "bytes": 11622,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-cli/tests/ui.rs",
+    "sha256": "b7c2ab55a4cbc67e0e8be0c90c25b3752b3413490e852fe36b4f93acf1484bcb",
+    "bytes": 20391,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/Cargo.toml",
+    "sha256": "0e883965570cb7dc318bcea132ef13ad7b318fac671a3edcca8974cf833fc8f6",
+    "bytes": 718,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/dashboard-hygiene/LICENSE",
+    "sha256": "15711d458b8ffc1711bfaa063043311eef1822bc143af5dba0aad82ce3d70837",
+    "bytes": 1091,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/dashboard-hygiene/SOURCE",
+    "sha256": "6d8d58c9fbe85285223ad8389cd1ba277ad80f12ec798cfbfd067360cd3df793",
+    "bytes": 343,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/dashboard-hygiene/dashboard_hygiene.py",
+    "sha256": "8a109e921332b2da99885cda111ad6b6e7d22965291fd2bc4ddd0199876ec5b2",
+    "bytes": 10822,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/dashboard-hygiene/wrapper.py",
+    "sha256": "bcb2c19e2cebf86f0a2cdc7e2af4d012b84cec6802db8ce7d77d88ba9f8f0731",
+    "bytes": 10045,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/error-budget/LICENSE",
+    "sha256": "15711d458b8ffc1711bfaa063043311eef1822bc143af5dba0aad82ce3d70837",
+    "bytes": 1091,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/error-budget/SOURCE",
+    "sha256": "fd7fd93c6888391dfdf97612aa25a971f5c0ef0c48b563b8671431fc6281056a",
+    "bytes": 752,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/error-budget/calculator.py",
+    "sha256": "e7938a81478ea47bb2568a2d24b303e8bc1767612ccdac9ffeb7da95df17a17f",
+    "bytes": 6582,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/error-budget/test_calculator.py",
+    "sha256": "c7a64875ed7e607edeeb9c39c8b0c0fb2f0d21666ee6066780029e164096e789",
+    "bytes": 5390,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/error-budget/upstream.py",
+    "sha256": "4e55475e6b10a4a2e195b1a6f162d688b093664c06bee69cb09435f1931cf5c2",
+    "bytes": 10630,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/error-budget/wrapper.py",
+    "sha256": "9c5675dd11d8a3610872d3c69ec7de1df2d07bc886ce8399e6e846ee6b8550fe",
+    "bytes": 1905,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/evidence/service-queries.v1.json",
+    "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236",
+    "bytes": 1489,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/queries/loki.logs-by-job.v1.json",
+    "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+    "bytes": 1136,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/queries/prometheus.up-by-job.v1.json",
+    "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+    "bytes": 1217,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runbooks/evidence-review.v1.json",
+    "sha256": "7bd4c25251342606602c0209404b7bc67e45a34b76ba324bc101430443672480",
+    "bytes": 3632,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/change-data.schema.json",
+    "sha256": "2b6aacb8b29c4cd2a747268a8b336f4c200c809ecee380d39920f04a94775949",
+    "bytes": 3608,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/change-plan.schema.json",
+    "sha256": "5c948086f240af7ee883037e055b860ee74fba1cca25f3f9b9313e7d0d05a474",
+    "bytes": 9265,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/common.schema.json",
+    "sha256": "7a5898d26f7301d4b3e868e3b2cf35e38ab044763f2db60ebea18e0857453a50",
+    "bytes": 4543,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/dashboard-hygiene-data.schema.json",
+    "sha256": "f108c53296da6ee47e641aa00848ddb3d316d0a6eb4cd92ce3861438370c98cf",
+    "bytes": 12100,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/error-budget-data.schema.json",
+    "sha256": "7489135a18052ce9cfdaeb6c5780b692abbeff1b002e78c00fdbe37d174e9406",
+    "bytes": 17017,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/error-budget-fixture.json",
+    "sha256": "f19118220c1d339769aa6b0be2fad98c4efeea54a8ca7d3eefbe9cf246ff3a6c",
+    "bytes": 2520,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/error-budget-input.schema.json",
+    "sha256": "4c00ba1909240ec914062ea4f10c9d83d02aebcea0777280839e4dd5e1b42b7b",
+    "bytes": 1952,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/job-data.schema.json",
+    "sha256": "23503a605e8493fd5d9efc331b1a58931b4d90405b5994568d8cbac459c607df",
+    "bytes": 9915,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/prometheus-config-data.schema.json",
+    "sha256": "f84303fe73583cdbe09fc21b5c44d74cb452e30fc52941de720c45bcbd3378d5",
+    "bytes": 5680,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/result.schema.json",
+    "sha256": "e003035f0a28f5b7e0ba5f326a8564c855766b379bf68f786c89454186509b86",
+    "bytes": 6757,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/runner-data.schema.json",
+    "sha256": "45f225af4a1585f63d11006a36238273efe485f00c894d34a79c9b06656505ea",
+    "bytes": 13152,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/runner-server-config.schema.json",
+    "sha256": "f6a2c35f70291a8c4ee7b4087864151c6eac5444a13b8dec888afd1d736770b1",
+    "bytes": 8909,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/resources/runner/runner-wire-response.schema.json",
+    "sha256": "98a1a3736060060d83ba9ef93a7cd20754afc3bd8892b89f2be4c05afd250446",
+    "bytes": 790,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/change/client.rs",
+    "sha256": "5350a066daccdb3c1c769d58e793ba71b39e77a9166d483959630370c4dc420f",
+    "bytes": 23182,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/change/engine.rs",
+    "sha256": "962732c8eb5d543c8f180e02a4ab7f961b742bdc79e535a2f89d3f9cf448ee0c",
+    "bytes": 37667,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/change/fs.rs",
+    "sha256": "2fe8b8464748875ec11fdb1e170d9f0a2a5c8bab5b05635841379dfe2cc3f26d",
+    "bytes": 23877,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/change/ledger.rs",
+    "sha256": "230fd8eb061735d8daf552229a01731632fade66ea03c443f80c19a79813f6c6",
+    "bytes": 9771,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/change.rs",
+    "sha256": "c85cfcbcf9ffdf6f9f618699dd54a080cbe4f5fe706d9302b38ce70d1728dcc4",
+    "bytes": 3069,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/context.rs",
+    "sha256": "725983b799a3da970209454ee1e27044d19e3213d1b4218b02e261ba0b48b9ef",
+    "bytes": 21936,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/diagnostics/config.rs",
+    "sha256": "dc8046c241769944726e04f60c4c5c7e803c25873fadb51c49448c083fca808b",
+    "bytes": 14057,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/diagnostics/dns.rs",
+    "sha256": "1439c17b63d0f3fd85bf85431ed56cdad45fa1b67e689df031b1d01002155013",
+    "bytes": 12024,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/diagnostics/http.rs",
+    "sha256": "9989101fe2d151d4b1276c00e7e30dd7f766dc5ed2df94d26e9eade22c01fd6c",
+    "bytes": 14571,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/diagnostics/process.rs",
+    "sha256": "4bbe61c9be3fb332d37d27cb8962c70f688d3da7e4331c4bfd6bf0fcbf8b15e6",
+    "bytes": 7894,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/diagnostics.rs",
+    "sha256": "34b51b3ffbdd397d0222d8bcdffa6d959a37104441fb1f0cfdba560c112e33a5",
+    "bytes": 34690,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/discovery.rs",
+    "sha256": "f5cf3f9c8bb3e34961599b425c56e3f8d09bb25f46be9d53709fe337bd6a4794",
+    "bytes": 27048,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/collect.rs",
+    "sha256": "b9e5528d69a3675d848a59d961dd1c2e1086ada9d388b65f7bedb6929b8aca5e",
+    "bytes": 49102,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/compare.rs",
+    "sha256": "3877dfe50b872141b5f53cf31aa65a659eaad2afce21e9aa69cf6f8521e44c14",
+    "bytes": 21275,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/frames.rs",
+    "sha256": "8d87308b03c631fb11b063bb22d14d4405f3b419e2451254b03c8aa7bdd0f5ea",
+    "bytes": 67436,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/grant.rs",
+    "sha256": "ea063b38d5b28354ff531a6ac33c1bcfa0b4915c789062185082364db48ff125",
+    "bytes": 8216,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/offline/profile.rs",
+    "sha256": "30e020552cd5505590123f0a19b8ab9a869e415a0b53ef95dc1a9393647489f9",
+    "bytes": 4625,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/offline.rs",
+    "sha256": "d36f554cb1a3f860fa335ce5f426f59619976c59ae39fd5d6fc8284e0570ccd4",
+    "bytes": 16724,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/pack.rs",
+    "sha256": "43cfcae109123da36d6833ce8a8ac35343c467524116b5291b03babee2ead117",
+    "bytes": 4447,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/report.rs",
+    "sha256": "c438d79d19d05e7e6986bc136bbbac318051845218b77ab3d4ccc66e2aa3369e",
+    "bytes": 25490,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/store/fs.rs",
+    "sha256": "269d05e23426a44c7af89387bf5c0913742ffa5f234bed7f5e0ec93bb06ce8bd",
+    "bytes": 12785,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/store/linux.rs",
+    "sha256": "11db3d65b2cdd34603511cefa644b5a8f07935975432793d0cfc45cbf4c106ee",
+    "bytes": 70996,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/store/tests.rs",
+    "sha256": "d05a63f59b4aa2fa62cb4331b4b529b8cdad3de0959e81cb750bca91d2c2876d",
+    "bytes": 49807,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/store/unsupported.rs",
+    "sha256": "e60735e6a6003fb6f1410f3bb0a345e69e6cfafbb6ab096d0979242bd89adca2",
+    "bytes": 2650,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence/store.rs",
+    "sha256": "c8d2696f69c57f8e41eb43e92f163e475ec51d9d94c85763990eeb1d244026d5",
+    "bytes": 5254,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/evidence.rs",
+    "sha256": "268fa59176363c92cbe3c8aea94e8bbb42a77012b7bd747835d8bc439e8de8e0",
+    "bytes": 11763,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/extensions/discovery.rs",
+    "sha256": "19aa7bba5d0706ce65ed09f39b27e69d688b26c3f17c67b5eb86a74426a888cc",
+    "bytes": 5595,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/extensions/execution.rs",
+    "sha256": "b8f5496a7a6691752e218fba206c134ae5079166bfc4e3e38dd9ca68c09601cd",
+    "bytes": 17324,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/extensions/package.rs",
+    "sha256": "8e835819390b31c2362b1643cfe6460fad591123b5884203fc9528f5d348f783",
+    "bytes": 9293,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/extensions/policy.rs",
+    "sha256": "2ff1511c7f36270e0e02e19f0b89c0ef661791d3d0fc6b526a591cd133fd3d1a",
+    "bytes": 5045,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/extensions/protocol.rs",
+    "sha256": "ea20985b570bb20adf6690e132eef2267431e42c8f180f4080fffb52b650c902",
+    "bytes": 14474,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/extensions/storage.rs",
+    "sha256": "d99d7b8e619fce8c033686957b45dec10525c30f5e4f167e02cffd1c108d7144",
+    "bytes": 15916,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/extensions.rs",
+    "sha256": "ebb6f669523b6934497d07b1c5f0b152c5ca8fd1a86fef649460573f53347400",
+    "bytes": 10238,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/fleet/config.rs",
+    "sha256": "0ad3cb28d4567600f60708688a124a3a783634c6d5e626a7d0fd9a7d59528627",
+    "bytes": 4681,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/fleet/controller.rs",
+    "sha256": "4ff28cf52a20f5f482f47115cb43075a8ce630521b37c85f5799a6ed1995f828",
+    "bytes": 44823,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/fleet/model.rs",
+    "sha256": "851d0c0b3a95b3944fe55a0279d99f60ae0f43e5f1d6a3636f23d84de341956a",
+    "bytes": 14024,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/fleet/store.rs",
+    "sha256": "e075d606a7e068f2f947651d2a332fdca5ce86ba52acdf28681ba5c0957e0984",
+    "bytes": 21300,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/fleet.rs",
+    "sha256": "7c7aba2e9a504472b447b4ad23c9bb72715c0dc3712462fcb73e7373b1ce8fa9",
+    "bytes": 4220,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/grafana/config.rs",
+    "sha256": "5c07a20b6e4e2abeb96ada68b1fe4163c1134f558b5bcbc5dfba95e4d4ebb843",
+    "bytes": 16687,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/grafana/redact.rs",
+    "sha256": "7817588daef47f5827c6a1190627e424aa53d2abb9983d2b06b12d2fbae0446d",
+    "bytes": 5803,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/grafana.rs",
+    "sha256": "cd52942eccdc21b85e3067085b3b757900b12f9795a8296a4068a9286120f974",
+    "bytes": 37288,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/investigation.rs",
+    "sha256": "cb9fdab40737001dcc7259918666e67ee6a94ab5634d21c142147354b6a2176a",
+    "bytes": 6601,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/jobs/api.rs",
+    "sha256": "7d20c2c6742e8cfd762666f424195798c5461eb5cfc6fd4cc68e5ea5b791d7c6",
+    "bytes": 12917,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/jobs/dispatch.rs",
+    "sha256": "fabf390da3e5afe0512fcdbabb390eeb543bdc006956a59e0f4643f889c90634",
+    "bytes": 9864,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/jobs/model.rs",
+    "sha256": "53f871f1f35b47ea7dadead50052e9bae93ba865c70ec444e0a864d597176036",
+    "bytes": 9396,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/jobs/remote.rs",
+    "sha256": "08b01e6bf26a0f9e3dea932751719245af4b072a0e3950a755a16db93e9f859e",
+    "bytes": 12147,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/jobs/store.rs",
+    "sha256": "b92aea9be2250a8fecadb01d58136d6f33b830d8cd5e382ea94d218cc01c9158",
+    "bytes": 13907,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/jobs/worker.rs",
+    "sha256": "e9924cb6c2fd71595bced9cd2c061c7c9dedd5f533d59f2fa9fa02f87549d0e2",
+    "bytes": 9121,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/jobs.rs",
+    "sha256": "eb09fceaf8d9bdd4f2173e8436c63740b932beacc38ed6470deb9a642dab3ffc",
+    "bytes": 19530,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/lib.rs",
+    "sha256": "00db0ad6539c2b5a36d8b3e20820edfbc74fd878577d0a5c2f067d0a60272030",
+    "bytes": 26153,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/process/descriptor.rs",
+    "sha256": "657f983253878cc6262afd6418bf9808bb95e85218ce1b8ca461a7d7d0f39eac",
+    "bytes": 4293,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/process/linux.rs",
+    "sha256": "ca720d61910df1ca092f6cdb167e7b3a1a71897420e7dada03a1d6ccfd8d601a",
+    "bytes": 18893,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/process.rs",
+    "sha256": "b6020186e8cf05dc4ce70859b3e03b4b751c619582b3a717e4ef7d9f852f09c4",
+    "bytes": 6761,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/queries.rs",
+    "sha256": "1fe24f0cfd8427a9cada53aa63fda51e7fcafdc6984df941ba8a41a742488960",
+    "bytes": 17626,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/read_launcher.rs",
+    "sha256": "fb99c5f7947e300da7c455fdd311b62c13586361fc0cc8ad540a3cbef117636b",
+    "bytes": 14928,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/read_profile/grammar.rs",
+    "sha256": "a56a85ca462f2a0b3854a9560bd8ef5b706bacb5d4697a55944bf2984fb5560f",
+    "bytes": 13732,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/read_profile/policy.rs",
+    "sha256": "5bcb16c7de17bf4009cb3b65eabfd274b4d5958adeccf76e69f28e18bdcb82f0",
+    "bytes": 13553,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/read_profile/seccomp.rs",
+    "sha256": "6a47e5a4b9e3bc8596e52ff8c7bc7b829aa12d7134a2a07cceb47f248df83c85",
+    "bytes": 6238,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/read_profile.rs",
+    "sha256": "436f2b9c776fd4c3c0e08f459eebabd17fc8ccfadb3ff82b6a8ea83457f37180",
+    "bytes": 38012,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/request.rs",
+    "sha256": "a0db3a535f9365474516f4d0cc8cce41039619cc5a3da2f819dea2386d57e2ed",
+    "bytes": 14237,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/result.rs",
+    "sha256": "1952b17d4d777b9b39bea36062bdd2b5e70eded167c27ab05594553e441a3909",
+    "bytes": 30631,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/runbooks/definition.rs",
+    "sha256": "be697e6d8bc82828994003e22e8f2d84e0b56947ebdbedc19400500ec15354ab",
+    "bytes": 4906,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/runbooks/store.rs",
+    "sha256": "5da4b4109fb259ce0cd97336dd5ef3acc90d56a50c939324cc93bfb721133cf8",
+    "bytes": 28681,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/runbooks.rs",
+    "sha256": "bc2ee0e785529c64326416a8aefd2960424c6451f71d4657bfe126033f4a19d2",
+    "bytes": 47079,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/runner/config.rs",
+    "sha256": "df8f281b1dec636e716be4f9e558a70ddb4a1b9c7ed07e34939ac09a53e29ded",
+    "bytes": 12462,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/runner/response.rs",
+    "sha256": "88a8eeebcf628e593d27b0f4423b16d3b72e432a307eb83bcb5911cf0c94ce57",
+    "bytes": 20876,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/runner/server.rs",
+    "sha256": "4a284ef8da5924c9891fd392d0e99f2d1e6dbe2a04ff6e4010046caa3f6c5161",
+    "bytes": 28636,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/runner/transport.rs",
+    "sha256": "07b0075fa1d57d72fa40901541befcf3b8ac029fb00233be1593980fd5c6a191",
+    "bytes": 30764,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/runner.rs",
+    "sha256": "54898128ebd583abd9de59d2156ab42a82fb18855a1090bdd61258b32944a9b1",
+    "bytes": 19600,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/schedule/calendar.rs",
+    "sha256": "453aa4aa8c6a4a220196a926d41e7e92312c41c13bb795b572313aac07964931",
+    "bytes": 21263,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/schedule/config.rs",
+    "sha256": "c7e33c9229f612aeeb26bb096f700fb8ad91b7e72e5827a299727ca9c29d7523",
+    "bytes": 4257,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/schedule/controller.rs",
+    "sha256": "b9a93b75c011ca6f6c7eea9028c6b1fe42a8fcd04ed04e30b3991e1122cc2a37",
+    "bytes": 47170,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/schedule/model.rs",
+    "sha256": "57b503def172939a52c10d7a5770b82e5a9212f2f5a3da333c95e3dbb537d905",
+    "bytes": 12988,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/schedule/store.rs",
+    "sha256": "797e5c225c7ece00f75879f2e1fb0dcf12930fbfc1d79335128d8ad6e2f1405a",
+    "bytes": 9998,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/schedule.rs",
+    "sha256": "d201ec5e88f49e8b565754c6a9ac2605b875cda9f5f9aa2198be41dbd634cc07",
+    "bytes": 4898,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/tasks/config_check.rs",
+    "sha256": "4942013b75f70604a825d09b25b1960db5e06a1f5e4b57d0240ab42689768754",
+    "bytes": 15384,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/tasks/error_budget.rs",
+    "sha256": "8fa21f1ae57235b14697fed852262755d669391b30eecebc4b8ff18576204edb",
+    "bytes": 19427,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/tasks/prometheus_rules.rs",
+    "sha256": "bd1c981b56ed3ee0b607579e0bb60dc38fedaf280102267118e99f2e188d40a6",
+    "bytes": 38970,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/tasks.rs",
+    "sha256": "4ab53b34e7df0723807c83b3c4d9cb95f71bcce8034612118e52cbc4f9528a5c",
+    "bytes": 23037,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/toil/execution.rs",
+    "sha256": "7ae0baa099732c620cc4e697aa2408136c547e0abb5a7e23a092cd17713d891c",
+    "bytes": 12474,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/toil/store.rs",
+    "sha256": "abccf16e02e03ccd9d0a38f5e18490b61edaca7bfb98e0979d65c4f040aa2fc4",
+    "bytes": 7829,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/toil/summary.rs",
+    "sha256": "146fe2f87c927fef37507683eeac9d0215ba4324ff9725af4bd588b8b4f18d20",
+    "bytes": 8392,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/toil/tests.rs",
+    "sha256": "9480b2e88c60faa7912689220f0a0f06431ab118e8e50e8835e344cfa2edbf0a",
+    "bytes": 17441,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/src/toil.rs",
+    "sha256": "dd0e34ce73daa771f206f9bb5d4f12451d3e7cadf5e625725582091e843a490b",
+    "bytes": 11012,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/changes_client.rs",
+    "sha256": "effdc9d76752c40e70eca383259d7390741c233ba96ec22a6c98a25a753d12a0",
+    "bytes": 1309,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/config.rs",
+    "sha256": "c0e4eb6cbead861fe52e142925830148048d9c811e09660c878033896d5ae6a9",
+    "bytes": 5529,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/contracts.rs",
+    "sha256": "2d3ad4d70864322359e066232e3f125e3ec97382d9db7f3ab3818957d409506c",
+    "bytes": 8099,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/diagnostic_grants.rs",
+    "sha256": "67775e7f2bb09f5a38a91a23a78f15fc6296aae6c498fc62e6a01b9cc74f81c5",
+    "bytes": 4865,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/evidence.rs",
+    "sha256": "48c2bc035bd3770c64d7ff40adcf51856faf53ba290d65a58b66290cd819f00c",
+    "bytes": 6092,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/extensions.rs",
+    "sha256": "3e3e72981e8370f860ebc978a78c6e9224a9bf442281b2c9b0b46b19297d74c0",
+    "bytes": 23760,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/investigation.rs",
+    "sha256": "3e481b9df65489c2e6b10f3d21fdb54dbd237fda7929c0c6edfae70ad88b5d48",
+    "bytes": 17249,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/queries.rs",
+    "sha256": "e4d9e3c9b0821adc79b46b04601d064e1d387a50253fcd0a87e6230fecaa56ce",
+    "bytes": 2753,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/reports.rs",
+    "sha256": "69fd5605ad6e1e4b3fd12620acaa7adf085165192395e7ec604db546f2cbd1d4",
+    "bytes": 2542,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/runbooks.rs",
+    "sha256": "17658ce5d86e9a4069e03a3e94d8a6feb5b7e2032f4f0c1162a22e3d52871602",
+    "bytes": 2031,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-core/tests/ui_seams.rs",
+    "sha256": "be1fd296e502532559a75dfd408e0c6dd679433f605e9fcd97f5fd6988e15cb4",
+    "bytes": 3709,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-mcp/Cargo.toml",
+    "sha256": "6006191e56687eddb9548157317bdb2cee91e4391900743aecaf7deb4ae9c99d",
+    "bytes": 464,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-mcp/src/grants.rs",
+    "sha256": "83f46c31c6ad855e618c094cdbc37ea50239ce87593715e75e0e97483a69cc42",
+    "bytes": 19286,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-mcp/src/io.rs",
+    "sha256": "c5ee19adb869e3cec7a0878b1b52d962fdc079a698fa8e47747ebc31b0112f8e",
+    "bytes": 4360,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-mcp/src/lib.rs",
+    "sha256": "4d15ff1b221225441a8525e332e52f03a93e4835a778d232fa53cdcc415eab7d",
+    "bytes": 745,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-mcp/src/mapping.rs",
+    "sha256": "704821e6e2ce986d667f109a6a1748bb01a0fa46a4a7836fca4eeef60a19df21",
+    "bytes": 54855,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-mcp/src/protocol.rs",
+    "sha256": "1cddf1ec1dd92d48561b11e889d2ed052c3b143aa8b0fd5699980be22f0190a7",
+    "bytes": 7306,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-mcp/src/server.rs",
+    "sha256": "b9bffebbbdf8619ee593ed17843e9f4356f6b4b17392ea979dfa04c0cb3c25a6",
+    "bytes": 46673,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-ui/Cargo.toml",
+    "sha256": "dcae49a8c9b4ac2e43f5f64492c3e3e0ec715e3dbccd02189a195c807684cd8f",
+    "bytes": 712,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-ui/build.rs",
+    "sha256": "ff57f3362709fb7bba35569ad82d34989fb9d9717224049b438fc4e087aeabaa",
+    "bytes": 2778,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-ui/src/grants.rs",
+    "sha256": "28ca1ce91373915e4d589548c27558762d20d0043bb183a29790888d87161a2a",
+    "bytes": 16554,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-ui/src/http.rs",
+    "sha256": "6d46bde83aef364a2c25a8209d16532c7b66b55db8eb515acabb0cb18061803e",
+    "bytes": 14476,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-ui/src/input.rs",
+    "sha256": "446cffee15272d04c86b441e5328a939ec957cf688a0cc7644c74ff4753394f1",
+    "bytes": 26842,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-ui/src/lib.rs",
+    "sha256": "8324ba72c3b8544f3e0688b0379b7ddddac88de6fce2e5b2fd416104404cc523",
+    "bytes": 15606,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-ui/src/queries.rs",
+    "sha256": "6947d297c156af351147a761758d15d0f7c788bf3fbfaa5bfeb9f237fad381ef",
+    "bytes": 3251,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-ui/src/state.rs",
+    "sha256": "04dad0c1beb377b5f7d1f60f11399cf9f226634a4c671285f3d7c92e4b856f41",
+    "bytes": 11783,
+    "mode": 436
+  },
+  {
+    "path": "crates/workbench-ui/tests/http_contract.py",
+    "sha256": "31fb933d28c73db01ef99d5219abf8b4fc441fda9adb23d6ecc959b023f2ed91",
+    "bytes": 7338,
+    "mode": 436
+  },
+  {
+    "path": "web/src/App.test.tsx",
+    "sha256": "768b8dcbdf69c22b03223f40c7e09f92df2e668fc88097aa6183c39285130eb5",
+    "bytes": 3323,
+    "mode": 436
+  },
+  {
+    "path": "web/src/App.tsx",
+    "sha256": "27947f2a47dc9e5bf384abc6cfd98fed27adb1f0e8a687ee976b79169a0228cf",
+    "bytes": 15879,
+    "mode": 436
+  },
+  {
+    "path": "web/src/CheckForm.test.tsx",
+    "sha256": "f7764dff7fb3f94eb5f02cbd5d65d9aaa5b4de2954f559e271bacc34c1eff539",
+    "bytes": 6799,
+    "mode": 436
+  },
+  {
+    "path": "web/src/CheckForm.tsx",
+    "sha256": "790cfabb0f0f61a617d1982f6eaa8f3c947de8c61a96a279aa3767c5c30f58fa",
+    "bytes": 25920,
+    "mode": 436
+  },
+  {
+    "path": "web/src/CollectionFields.tsx",
+    "sha256": "b27e25301615d48686ba943fc430e1ba7ddb6fad6a7a5d49c73df9266b4562ba",
+    "bytes": 3935,
+    "mode": 436
+  },
+  {
+    "path": "web/src/CollectionResult.tsx",
+    "sha256": "505ced3b8f14bf5a85369f3d5222fb577607cce2729c8b65db222bbeac7443ff",
+    "bytes": 4115,
+    "mode": 436
+  },
+  {
+    "path": "web/src/DiagnosticResult.tsx",
+    "sha256": "f54880de1829f461c1a209ab9fcb2b7f14778e4f2103762ff5b8ea1567e96ab6",
+    "bytes": 7227,
+    "mode": 436
+  },
+  {
+    "path": "web/src/InvestigationResult.tsx",
+    "sha256": "5dd46b6f99c58cc33a4473825bf0d872622ca5659219b7c6a56d8922c1e07b78",
+    "bytes": 9161,
+    "mode": 436
+  },
+  {
+    "path": "web/src/QueryResult.tsx",
+    "sha256": "affc6f384c3d8412fc949a25a4b6b7439881fe04aab761a32577eb143d31f8f9",
+    "bytes": 3563,
+    "mode": 436
+  },
+  {
+    "path": "web/src/Result.test.tsx",
+    "sha256": "f801af02e6e2589b2a4cc37e900385fcfea1a7d7a4b70eb16f4dcd6dd62607e5",
+    "bytes": 17152,
+    "mode": 436
+  },
+  {
+    "path": "web/src/Result.tsx",
+    "sha256": "cdd930000d8fd5bee7b16b7dc6f56a82725df246328e5b98f72f5ba5adf58b91",
+    "bytes": 11313,
+    "mode": 436
+  },
+  {
+    "path": "web/src/api.test.ts",
+    "sha256": "ae86d8e1909faacf651a731bbc0389453b57265845f5057289e927d6b0c99504",
+    "bytes": 1851,
+    "mode": 436
+  },
+  {
+    "path": "web/src/api.ts",
+    "sha256": "bee60923b488d15c592b5915f9b0cc9b3954dc5e6a2a7c8a29b86e5af25758d3",
+    "bytes": 1467,
+    "mode": 436
+  },
+  {
+    "path": "web/src/bootstrap.test.ts",
+    "sha256": "c3bdf9f53235f31c8dfd00731c9b93b8df9397dff27a319d292f9508cae59269",
+    "bytes": 1100,
+    "mode": 436
+  },
+  {
+    "path": "web/src/collection.test.tsx",
+    "sha256": "a692a112f4210f9e063c3e84c3085fc40c54f45f94c4bc9b3ad22f1f6283c64b",
+    "bytes": 8874,
+    "mode": 436
+  },
+  {
+    "path": "web/src/components.tsx",
+    "sha256": "df7cade8839f3425ff65264320dd2d3997d670edfb6f1f8ade3eb432ebadb5f3",
+    "bytes": 2201,
+    "mode": 436
+  },
+  {
+    "path": "web/src/generated/api.ts",
+    "sha256": "9f283f5cd21a48b6f73d2c218c0e5bf32fa0c17135b6c9c8a124cc9505e0b52a",
+    "bytes": 102526,
+    "mode": 436
+  },
+  {
+    "path": "web/src/investigation.test.tsx",
+    "sha256": "0c0ae4d685eb53fa809e3ac09dd095d64159a6832e8767cb4c00660d50ae3b02",
+    "bytes": 13512,
+    "mode": 436
+  },
+  {
+    "path": "web/src/main.tsx",
+    "sha256": "032349edb93fe055652a3da23c52ec12557c8770bed5204bc551a062c2ac608c",
+    "bytes": 1621,
+    "mode": 436
+  },
+  {
+    "path": "web/src/model.test.ts",
+    "sha256": "73e024d1bc1fb046c82f7414fc6aa35ac7bb5ac25ac9c59f7af6116943d73e55",
+    "bytes": 5277,
+    "mode": 436
+  },
+  {
+    "path": "web/src/model.ts",
+    "sha256": "225d6bf5c03d0f6fc47620bf24df9a813df902aa6bd76a55126de57df29a81a8",
+    "bytes": 25106,
+    "mode": 436
+  },
+  {
+    "path": "web/src/query.test.tsx",
+    "sha256": "2d6e23961703cc8e06d7083b0294e399b5ed1c1feb8bbf05a1367edd0b823908",
+    "bytes": 6486,
+    "mode": 436
+  },
+  {
+    "path": "web/src/router.tsx",
+    "sha256": "c48365925a0c09a909050569930801698ffb718b90e9ef262a3c09da2474da97",
+    "bytes": 1517,
+    "mode": 436
+  },
+  {
+    "path": "web/src/styles.css",
+    "sha256": "e64504bbe7fc89f9a620b8b83483395421897ddc6ac09cf8dbf964392dab8dd3",
+    "bytes": 19086,
+    "mode": 436
+  },
+  {
+    "path": "web/dist/assets/index-CPTAZ2VG.js",
+    "sha256": "710e8bd88e7fa822a67dd737d295ef67027d138756729705b057eb13916c22b7",
+    "bytes": 420756,
+    "mode": 436
+  },
+  {
+    "path": "web/dist/assets/index-Ceka6JB8.css",
+    "sha256": "377145015c5face9c033a047a0bb996b94f93535b184aa1627d2ed4d8a638d76",
+    "bytes": 25024,
+    "mode": 436
+  },
+  {
+    "path": "web/dist/bootstrap.js",
+    "sha256": "b442fa5823785babf1d0e1e72482b08021cf4f8de7284c108e746531f0c623a1",
+    "bytes": 744,
+    "mode": 436
+  },
+  {
+    "path": "web/dist/index.html",
+    "sha256": "456cbdcbb4ea7c5d4be316a77788d85db999260357a6aa39e21e3477d1f516a4",
+    "bytes": 574,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/README.md",
+    "sha256": "2b8f62822d67d71e143f0280bd942aa747caa857e5a64abd89ea5e4ac802a58d",
+    "bytes": 6085,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/bundle.schema.json",
+    "sha256": "5543369764baebe90848fe8cf687b2dc9c6fd87fcefe8a2f63a87def754d32e0",
+    "bytes": 1741,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/capability.schema.json",
+    "sha256": "e0277bf32703281c941863bb6bce7bd631e1f04a1298f7ad8b6eab306f86d3a2",
+    "bytes": 3684,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/change-apply-input.schema.json",
+    "sha256": "ec8d1649c9f9ce5ef8bbe484a8dd6cafe1663d603e4522046f6ad22fec3fe625",
+    "bytes": 643,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/change-approve-input.schema.json",
+    "sha256": "d03883dc6ffcd7799df365f86e70b872b46a5a0625a0317231aaed407fb98c7f",
+    "bytes": 646,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/change-data.schema.json",
+    "sha256": "2b6aacb8b29c4cd2a747268a8b336f4c200c809ecee380d39920f04a94775949",
+    "bytes": 3608,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/change-plan-input.schema.json",
+    "sha256": "6d81bdc59b0963f196b0831268871ba07fbe93c8f74ccb12d12411c3846b9017",
+    "bytes": 1020,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/change-plan.schema.json",
+    "sha256": "5c948086f240af7ee883037e055b860ee74fba1cca25f3f9b9313e7d0d05a474",
+    "bytes": 9265,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/change-reconcile-input.schema.json",
+    "sha256": "d6b0c2bb241c7388d0cfbeea3cb72a0c35ceb6d5a74bd87fbc668c5398f01ea1",
+    "bytes": 539,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/change-status-input.schema.json",
+    "sha256": "71e78c1bfc61f90d1811464e43d41fd821308ea45c28bb4bf2fe8ee4739b3b8a",
+    "bytes": 533,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/common.schema.json",
+    "sha256": "7a5898d26f7301d4b3e868e3b2cf35e38ab044763f2db60ebea18e0857453a50",
+    "bytes": 4543,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/config-check-data.schema.json",
+    "sha256": "8478b5781920dbe767f1cbe9bf091a9a8ff9e5077d60667f346362ec52eede9d",
+    "bytes": 327,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/config-check-input.schema.json",
+    "sha256": "0bb8bfd6bb3bba5e1e35e3aa1ebfc2c6a554e9309df53186e86250cc374c06a6",
+    "bytes": 1731,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/config.schema.json",
+    "sha256": "f57bab2bc388bdf1112834121d7e9463029d72851336b700f5b46cd403f8fb34",
+    "bytes": 2279,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/context-data.schema.json",
+    "sha256": "af8c6b7b61d7183a3fe85c6be94686a4c96579dee2edfb048816996db0b42b04",
+    "bytes": 3315,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/context-export.schema.json",
+    "sha256": "279f2a0a54fae33a0a187a4e7a00da4d8d601f41bd8804434b71bca5828d3923",
+    "bytes": 4996,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/context-resolve-input.schema.json",
+    "sha256": "8d50105aca782dfd2790bdf5a44c92101663694ac40491d573ec75b4f27f0fef",
+    "bytes": 630,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/dashboard-config-data.schema.json",
+    "sha256": "4f8783c7b9b88afc21469b56d0b31955c7b1c722440259e75733e7441e275c9b",
+    "bytes": 5290,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/dashboard-hygiene-data.schema.json",
+    "sha256": "f108c53296da6ee47e641aa00848ddb3d316d0a6eb4cd92ce3861438370c98cf",
+    "bytes": 12100,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/dashboard-hygiene-input.schema.json",
+    "sha256": "bdb7ff637a718a20c6910adfc076bff485196b19a1110ffc6356f19249565fca",
+    "bytes": 398,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/diagnostics-config.schema.json",
+    "sha256": "aa83711703ee76a41c6df3711025dc6bc7f766091629c6fb7c10a446c0dcc886",
+    "bytes": 3972,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/diagnostics-data.schema.json",
+    "sha256": "ad2154451d338529723f00197473f73a82f37afe46c503c7ae1cc4c3b650263f",
+    "bytes": 50641,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/diagnostics-pack-input.schema.json",
+    "sha256": "fff308b73ca5c77c3cd1de207fecf4ccefb9040a62b9613759655c9111efaa78",
+    "bytes": 358,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/diagnostics-run-input.schema.json",
+    "sha256": "8e52e63a5481c1a5570229e5f42acc536e824778597c01497c1d712f31ee85f5",
+    "bytes": 436,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/error-budget-data.schema.json",
+    "sha256": "7489135a18052ce9cfdaeb6c5780b692abbeff1b002e78c00fdbe37d174e9406",
+    "bytes": 17017,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/error-budget-input.schema.json",
+    "sha256": "4c00ba1909240ec914062ea4f10c9d83d02aebcea0777280839e4dd5e1b42b7b",
+    "bytes": 1952,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/event.schema.json",
+    "sha256": "21626bd019924fa8911cc5f9ba69c9406648bca50352f0b56dc806a66f22a6f4",
+    "bytes": 817,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/evidence-collect-input.schema.json",
+    "sha256": "8f4ad3c96f0a13cd37401525a54563bdd280a1fa693775fc4696e330687defda",
+    "bytes": 4105,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/evidence-collection-data.schema.json",
+    "sha256": "b303564216ebe204b11a578c660fb19dac3c7674bbbb6a18d30aa2079befca76",
+    "bytes": 40451,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/evidence-collection-payload.schema.json",
+    "sha256": "9c6b05e11eccd5f8afbd186368406edcc654dc0a6ca218853e12f00395d3fda1",
+    "bytes": 39659,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/evidence-compare-input.schema.json",
+    "sha256": "9d47c4f3279a3a53a6c75fa94864850ebd8982a419c5d84836e6aeb78e1b56b0",
+    "bytes": 601,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/evidence-comparison-data.schema.json",
+    "sha256": "31b2b35a3b3f8f4cbf23d011ec5d19fe830830f973f0b6fb3ad3e41d4c7962cd",
+    "bytes": 26896,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/evidence-manifest.schema.json",
+    "sha256": "f958132144e3ea9917022184b4f65ee3f7c4c6cbf5036152af959ec8334d9115",
+    "bytes": 2652,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/evidence-offline-data.schema.json",
+    "sha256": "0e0e75506110ed0c51be2d3fcbc44fac101bbed3d9db4956bdb1c3af17883663",
+    "bytes": 12820,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/evidence-reference-input.schema.json",
+    "sha256": "aeda6ce0dd4191407f103b827a3fe5f798f44875a8b4e51e1405d97aba4ad087",
+    "bytes": 574,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/extension-data.schema.json",
+    "sha256": "76427a45329e1bc776490ef205cd3338f5a021cc69cb3ea4ad5fafd6066a2dca",
+    "bytes": 2464,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/extension-inspect-input.schema.json",
+    "sha256": "89cda69da7817c3db706ea7f4ae24e05ae5379603ac899200bf243b83671a1c8",
+    "bytes": 574,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/extension-install-input.schema.json",
+    "sha256": "636dedb415c665718e088e101f1069fb0a7e18630176167f61cfdef2cfcd6892",
+    "bytes": 605,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/extension-manifest.schema.json",
+    "sha256": "bbfdb3be75616e7a7810d0425c90744294c62347d910a60c13c463b5488da9a0",
+    "bytes": 10239,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/extension-package.schema.json",
+    "sha256": "021d3fcdbece84a40c67010407de1ca753e5b9dad2dd5ac262a9329f2c359a55",
+    "bytes": 640,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/extension-policy.schema.json",
+    "sha256": "6e28928bbd280fe977b524a9218934ac330cd3376039f5898069dc893729849d",
+    "bytes": 1178,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/extension-protocol-frame.schema.json",
+    "sha256": "aab8a3ef2c22d60f57f0cf8ba5dd676fd57f364523961f5b573e563f81f4efe6",
+    "bytes": 7631,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/extension-run-data.schema.json",
+    "sha256": "7182752a6990711e7a783983eacc0fdfe04abc9507b676b39db53fe021779b11",
+    "bytes": 10673,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/fleet-cancel-input.schema.json",
+    "sha256": "3b7be32bc596180a398adfce554e65055fa0daf6925f8b38ae47194e09700662",
+    "bytes": 398,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/fleet-collect-input.schema.json",
+    "sha256": "db2b2e1c912750581c02861fabfd0c62972735ab7f949818c2b4fef2ed062d38",
+    "bytes": 1251,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/fleet-data.schema.json",
+    "sha256": "9977164ec46a6fe25ec1bf48b84a976e7993cae3e7c1a454568167efc479628d",
+    "bytes": 8204,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/fleet-inventory.schema.json",
+    "sha256": "40af5a8cf1b2dfc08af13d7dc6207962a9bc05c35ccf4159b7807f771f9bf5a7",
+    "bytes": 1463,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/fleet-resume-input.schema.json",
+    "sha256": "e624e80393b2cb8881095de4c9877b79199579bd3352d8fb02a9735bd7ac4b95",
+    "bytes": 398,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/fleet-status-input.schema.json",
+    "sha256": "eeb2f8c92d3e67aa27da051d8881723b7bac4816d1a11671bfa444784a4268d2",
+    "bytes": 398,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/grafana-dashboard-data.schema.json",
+    "sha256": "afe144f69afcb8a8341b6b51d076ae80d014459506edb3b7e6b21b6e7b1aed28",
+    "bytes": 5460,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/grafana-dashboard-input.schema.json",
+    "sha256": "48e60b8b1590ad1eeb7362e3d962387e2e9cce93181e2aff9c47ccb4c0899bdd",
+    "bytes": 380,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/grafana-query-data.schema.json",
+    "sha256": "8ec6e3156601c0ce14593c6156af46900651a9eb2e05433a975b7ff257211fe1",
+    "bytes": 8337,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/grafana-query-input.schema.json",
+    "sha256": "7bd28cfe9eb84246e2f1b860cada3a8e95c8cab9d6dd20c5b78be74a2da69ae3",
+    "bytes": 750,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/job-cancel-input.schema.json",
+    "sha256": "c307083d3305bd1601eba336b7f99de91f9874d166be787079ae1421fbc9aa4b",
+    "bytes": 382,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/job-data.schema.json",
+    "sha256": "23503a605e8493fd5d9efc331b1a58931b4d90405b5994568d8cbac459c607df",
+    "bytes": 9915,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/job-status-input.schema.json",
+    "sha256": "815a04883b2f19ba75d67447bae88a6486ccb92668aa930a596b77b06411fc09",
+    "bytes": 382,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/job-submit-input.schema.json",
+    "sha256": "ed7196e0bab9373f4159c9d299af40d2e208e6da47dff1b0da865bbbd3cb2ab4",
+    "bytes": 576,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/job-watch-input.schema.json",
+    "sha256": "bb99fea859b389de21d7e02f14f6bba4a076b3f043d96e730cac2ec78b44496e",
+    "bytes": 512,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/job-work-input.schema.json",
+    "sha256": "a0628dcdb697277189c52044a5114ff9fde65401272164a95d7d50a286ceda0c",
+    "bytes": 378,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/process-input.schema.json",
+    "sha256": "44800b1fbdebcb526d7b6469c51af208ab686acba5225a2f7f08d2642c53259c",
+    "bytes": 653,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/prometheus-config-data.schema.json",
+    "sha256": "f84303fe73583cdbe09fc21b5c44d74cb452e30fc52941de720c45bcbd3378d5",
+    "bytes": 5680,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/query-run-data.schema.json",
+    "sha256": "091a6a9ee44d6bab6ff5a53c4b35079890a3775d6b6b99be37c186a2bad459f2",
+    "bytes": 5357,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/query-run-input.schema.json",
+    "sha256": "2cdc0c3fb05f377c51ed3f243e51c8fb1812e2c6e228e5caf2c98509306430e5",
+    "bytes": 2241,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/query.schema.json",
+    "sha256": "c701afda64ea639cd9b70f69abeec3238664a575073633e5d7264ac8153fb486",
+    "bytes": 2583,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/read-policy.schema.json",
+    "sha256": "7801c185903cb31a865a114eb02aac4bfb718959881ca8fa62db9d21297e46a6",
+    "bytes": 2638,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/read-profile-data.schema.json",
+    "sha256": "30e5f2beac708d58b7f92f9e269abcbd25cb6bb80450221df21c82335b15e31e",
+    "bytes": 10847,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/report-create-input.schema.json",
+    "sha256": "1a23b94c0bf846b2a0d382dd161ca8b5b3da5683c75fbf4bf75de7a671165488",
+    "bytes": 1675,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/report-data.schema.json",
+    "sha256": "f393d4b8df4fd3b9958f4894e1007f2b297c9763f1d773c51b983f8faac64a06",
+    "bytes": 10023,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/request.schema.json",
+    "sha256": "4602d29d23e78a35502803315d6386812e5b3294d4f9af318328f4bdce50ec45",
+    "bytes": 1022,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/result.schema.json",
+    "sha256": "e003035f0a28f5b7e0ba5f326a8564c855766b379bf68f786c89454186509b86",
+    "bytes": 6757,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runbook-data.schema.json",
+    "sha256": "89f83970d32cd0b816a38a06c257a209e40fb7db397affd59d6c4558e6970317",
+    "bytes": 8780,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runbook-input.schema.json",
+    "sha256": "b3e64fba1c291b0cb3b5e18fa776724b35d64d852708a05761ed38421cce3447",
+    "bytes": 681,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runbook-resume-input.schema.json",
+    "sha256": "752fed1945c65a868927da0f1f2e37de01f92bfa72916ccd3d992d43cc7609b2",
+    "bytes": 742,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runbook-run-input.schema.json",
+    "sha256": "4729fb46907fcc590cc9ee466356edd4f9e26c877c3e0eed0760393e3ce3e895",
+    "bytes": 1051,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runbook-show-input.schema.json",
+    "sha256": "af60afdfe62673212f2c22625489949bbc5cf9ff592536a2daf4fa743e060ac9",
+    "bytes": 368,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runbook-status-input.schema.json",
+    "sha256": "95eb897aaaef8d7a142c76fcf3f564e69fda64734e0cebe6304b69c77dba97ec",
+    "bytes": 412,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runner-cancel-input.schema.json",
+    "sha256": "a52c3ed2c817411facf0000f134ca3645f8e2eab1376df6ab10638c65780eca9",
+    "bytes": 366,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runner-client-config.schema.json",
+    "sha256": "58e9c7f8e85f15f935bdf64cdd88fb3347610e271006bef7fb59764d16ddbafe",
+    "bytes": 1395,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runner-data.schema.json",
+    "sha256": "45f225af4a1585f63d11006a36238273efe485f00c894d34a79c9b06656505ea",
+    "bytes": 13152,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runner-handshake-input.schema.json",
+    "sha256": "aa13a34c81d03e78bee171e930d374107bcaa2f1bbe1b113e9b4bd017fd9de13",
+    "bytes": 254,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runner-server-config.schema.json",
+    "sha256": "f6a2c35f70291a8c4ee7b4087864151c6eac5444a13b8dec888afd1d736770b1",
+    "bytes": 8909,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runner-status-input.schema.json",
+    "sha256": "a5ea21398121a88061d3fdfa65fcfbb13ab260f07eb019b87743e1a69d151b2d",
+    "bytes": 366,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runner-submit-input.schema.json",
+    "sha256": "918f2cb2fca9a977abcd9d2b8b1e573bc9637b9ba03b9b5136f9c46ed6aae005",
+    "bytes": 1106,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runner-watch-input.schema.json",
+    "sha256": "3ff5fe35a8f549671538cfd07315ec5397a9aca47dc82d7f79a69444e6a6fd2c",
+    "bytes": 496,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runner-wire-request.schema.json",
+    "sha256": "b9f5c19852297034d570d931155d6d9d7f4e77ff2c7c26638fa3c5c15303e1e5",
+    "bytes": 8545,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/runner-wire-response.schema.json",
+    "sha256": "98a1a3736060060d83ba9ef93a7cd20754afc3bd8892b89f2be4c05afd250446",
+    "bytes": 790,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-cancel-active-input.schema.json",
+    "sha256": "be63bcc54ccbe384ed79bf8598b72b45e6630c9d5b7c556c0dd177844d7e7d25",
+    "bytes": 527,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-create-input.schema.json",
+    "sha256": "71449ea0de3013576868dde46cf6422aa159005cf1a258a054cc50c04e5dc1d0",
+    "bytes": 483,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-data.schema.json",
+    "sha256": "af64585a6ea96029ad11b0e1fba696e3305fb8033cd19875e0ac9beca6deacd0",
+    "bytes": 10563,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-definition.schema.json",
+    "sha256": "40cff7adbd4089568b31179f2e084a89977dafa15a5099ffe2b00f8aadb1500c",
+    "bytes": 3129,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-list-input.schema.json",
+    "sha256": "23d4fcdcf67a0d6c17c1502644cd210d02a958de479f418b7a05d3e3f5d1e4ae",
+    "bytes": 248,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-pause-input.schema.json",
+    "sha256": "0c8cb9c586871441859e60c9376a2816a3fc4ef2e56ac684985d57654fe5b601",
+    "bytes": 511,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-preview-input.schema.json",
+    "sha256": "e5ee52008912774bb84cde153fcb603879630e8749489a2d4a4d4e9ffe32d948",
+    "bytes": 477,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-run-now-input.schema.json",
+    "sha256": "abb08bb2d44edd656312637166a439a98ed10c435e2b476658b614225b0c5980",
+    "bytes": 663,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-status-input.schema.json",
+    "sha256": "94c1e7b3887e56900f7286e63f7f853d5ef76c630e0732e38738553070b8a7dc",
+    "bytes": 375,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-update-input.schema.json",
+    "sha256": "d697ab36f3e1681494c4f41a32cd1065ed22eee66851d45c368d6c5429f4952f",
+    "bytes": 621,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/schedule-work-input.schema.json",
+    "sha256": "fb5b63e8a7e4b4e96270567b58a56659b120ae3ce81714cbc1e3e8a29ec6cdc6",
+    "bytes": 372,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/task-run-input.schema.json",
+    "sha256": "a7e1531aa5370064a32979edaa03fc760ffb651a3c3e9519815454f61f4596bb",
+    "bytes": 968,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/task.schema.json",
+    "sha256": "8db4484e43f79d689383c0f7f3cd20df3b47a7817005f03d3e33057188df766c",
+    "bytes": 2910,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/toil-annotate-input.schema.json",
+    "sha256": "ea6876e3eb56e27424f491def727988f822e452be59105a525251be3aab759ea",
+    "bytes": 888,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/toil-capture-input.schema.json",
+    "sha256": "8fb5eceae47114a637bb4ae75f8931dd0e950373f01ada49c203488c08ff7b74",
+    "bytes": 661,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/toil-configure-input.schema.json",
+    "sha256": "b39620a69285578a24c118dc8dba4715f39490324318f08a29dcc2b736d3b133",
+    "bytes": 437,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/toil-data.schema.json",
+    "sha256": "63b0c8aa8232b8b08460de2cdcb4a4d38e182c8571677536ad2b3023ccf3cdde",
+    "bytes": 5006,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/toil-delete-input.schema.json",
+    "sha256": "270f58c1bebe97aaf12d1fb2ab317b27cda353712707713b62ff8f959758928d",
+    "bytes": 455,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/toil-record-input.schema.json",
+    "sha256": "a2aae40d02fc18838283b0d11e683cb27080fde161b2c76f3715d6a0c0f628e9",
+    "bytes": 1572,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/toil-sample.schema.json",
+    "sha256": "5bca7be8248c3534946db607c97c814cb6ed60ab16acd15de2f5376426a65bfd",
+    "bytes": 4020,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/toil-summary-data.schema.json",
+    "sha256": "cc6a2715b51f0ebd83982de81136e2eb642676da3abf15c7a9d01c7cf95c8308",
+    "bytes": 19522,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/toil-summary-input.schema.json",
+    "sha256": "b1d0dec9c15bd4e199d5c705d67918b92aa501bc898894c18c09ebad8bd3fcc8",
+    "bytes": 2130,
+    "mode": 436
+  },
+  {
+    "path": "docs/sre-workbench/schemas/workflow.schema.json",
+    "sha256": "e50d8b5f7f8f579fb3c17c19ab56c904131b8f2517cf34042f417ccbb0f7a87a",
+    "bytes": 3799,
+    "mode": 436
+  },
+  {
+    "path": "tests/fixtures/context/unique.json",
+    "sha256": "697d8a8fe81e869f74eb9868bb03ffc1b3a8cb9e54598bc9734b606d9fc97746",
+    "bytes": 719,
+    "mode": 436
+  },
+  {
+    "path": "Cargo.toml",
+    "sha256": "8fbd795f72ad2b178a4fe0ebb7fc10e0122ee0da2c7716dd3ee657e35295bf46",
+    "bytes": 1396
+  },
+  {
+    "path": "Cargo.lock",
+    "sha256": "546aa55f4e23707929307d26b3d791bbc8bff7c0ff9e726334eaf1a6c7e98b9e",
+    "bytes": 65671
+  },
+  {
+    "path": "web/package.json",
+    "sha256": "44f425deba960e7c784e785c4199dd1d1466b3b0bc564760dca2f05ffa3b0d45",
+    "bytes": 1361
+  },
+  {
+    "path": "web/package-lock.json",
+    "sha256": "8aad80c575ee760fccbb309fc231d3cc5264e1d93078983d7dcc36a77b5a82d7",
+    "bytes": 167033
+  },
+  {
+    "path": "docs/ui/openapi.json",
+    "sha256": "eb263bace9dd40c5575c104df0add1c4df244263ffe0640e8e4c86972c4d6e02",
+    "bytes": 412765
+  },
+  {
+    "path": "docs/investigation-ui.md",
+    "sha256": "86d5121a59f710f92b44e6e9733c8c512aa5c9e20f43ec3da14ffef8ce1db6fb",
+    "bytes": 6338
+  },
+  {
+    "path": "web/tests/investigations.mjs",
+    "sha256": "5fcde8d5c5a76925da277f56d2f4d2b006046cc94aa4ccca79306f902fefd4bb",
+    "bytes": 25431
+  },
+  {
+    "path": "tools/test-ui-sandbox.sh",
+    "sha256": "9f37943327b85fdee4d69af08b7d1b3074e748a86f528bf46dc129d132101ba4",
+    "bytes": 6242
+  }
+]

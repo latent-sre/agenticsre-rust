@@ -2112,6 +2112,58 @@ the installed acceptance manifest; no product checks need repeating solely for p
 Agent-host registration, live configuration and deployment remain separate. Browser replay,
 hosted runbooks, native platforms, connectors and the broader product queue remain open.
 
+## WORKBENCH-035 — browser offline evidence replay (2026-10-19)
+
+The owner set the continuing goal of finishing toward user acceptance. The browser now offers
+independently granted `evidence.replay`, sharing the existing analyzer, pinned store and restricted
+worker with CLI/MCP. Forms, historical results, partial omissions, exact downloads and session
+history use the existing lifecycle. No core, MCP or persistent-store implementation changed.
+
+[Installed browser acceptance](replay-ui-verification.md) passed 17 groups, 19 schema-valid receipts
+and 39 OpenAPI transaction validations. It includes a replay-only session, source/store drift and
+pin/corruption refusals, inert text, exact history/downloads, and inspected light/dark/mobile views.
+The ordinary CLI hash is `7ed9a73b0d4a98fc6977232fef30f1530a2b3b352a3ed9aabfedc5f81db5a2f5`.
+The workspace passed 601 tests with zero failures and 33 existing scoped ignores; 88 frontend
+tests, types, lint, build, generated-contract, strict workspace lint and specification checks passed.
+Independent static review found no actionable issue. Test-only lint and history-navigation
+corrections are disclosed in the acceptance record; product bytes stayed fixed afterward.
+
+Publication uses `codex/browser-offline-replay`, based on PR #8's `96476b2`.
+The development-bundle follow-up is recorded below. The platform/agent/live-source and five-workflow
+user-acceptance requirements remain open, alongside the complete product queue and existing
+live/publication boundaries.
+
+## WORKBENCH-036 — current Linux development candidate (2026-10-19)
+
+The [candidate acceptance record](acceptance-bundle-verification.md) binds freshly prepared current
+and prior archives to exact source captures and ordinary binaries. The current source is a
+disposable local snapshot of the browser replay work; the baseline is published MCP commit
+`96476b2`. Fresh builds matched the already accepted executable bytes, preserving their product
+verification. Deterministic repacking passed. Historical October 3 archive paths are unavailable
+in this checkout and are not represented as the new baseline.
+
+Bundle manifest revision 2 truthfully declares per-operation recording, explicit external stores
+and no installer migrations. Legacy revision-1 bundles keep their original compatibility contract;
+installation receipts and selection responses bind to the selected manifest. All **34 packaging
+regressions** passed. Independent static review found no actionable P0/P1/P2 issue in its recorded
+packaging scope; later verifier/documentation additions are qualified in the evidence record.
+
+The installed mission passed **nine groups**, including real upgrade/rollback and retained evidence
+replay with unchanged bytes/modes for all 25 store entries. The missing-runtime lane passed **four
+groups**. All **25 canonical receipts** and three offline-data payloads validate. Cleanup completed.
+The current archive is `target/acceptance-bundle/current.tar`, SHA-256
+`5f4c6d3bbea35ecc5ece6eccbe00fa7b2f7d76ab5ded5e3e0943119bcea06002`.
+The tested environment is Ubuntu 26.04.1 Linux x86-64, glibc 2.43, kernel 7.0.0-38.
+
+The [five-workflow user walkthrough](user-acceptance.md) is prepared. Actual before/after human
+measurements, feedback, decision and support ownership remain unfilled. Selected agent-client
+acceptance and live service/context/read-identity prerequisites remain open. The 283-package
+inventory retains release-clearance gaps. The owner's commit-and-PR request is carried through to
+this verified follow-up on `codex/browser-offline-replay`, targeting PR #8's
+`codex/mcp-offline-replay` branch. PR #8 covers the separately published MCP checkpoint. No merge,
+host installation, agent registration or live pilot is performed by publication. The full
+user-acceptance goal is open.
+
 ## Remaining product queue
 
 The following ledger preserves the complete requested scope. Accepted slices are evidence for
@@ -2134,7 +2186,7 @@ and [verification](sre-workbench/verification.md).
 | CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted; [local MCP grants](query-mcp-verification.md) and [browser grants](query-ui-verification.md) | Additional reviewed definitions and live/platform acceptance |
 | CAP-12 runbooks | [Installed evidence-review workflow](runbooks-verification.md), typed checkpoints, durable revision-bound resume and fresh attempts | Additional reviewed runbooks, hosted/platform acceptance; live observation workflows remain separate |
 | CAP-13 configuration checks | [Dashboard acceptance](config-check-verification.md) and [Prometheus rules](alert-rules-verification.md), kind/validator/digest pins, supported rules, refusals and unchanged originals | Hosted/platform acceptance, live semantics and broader validator coverage |
-| CAP-14 offline investigation | [Offline inspection/replay acceptance](offline-evidence-verification.md), [browser](investigation-ui-verification.md), [MCP inspection](investigation-mcp-verification.md) and [MCP replay](replay-mcp-verification.md), integrity, immutable history and no-network/no-command profile | Additional bundle kinds, browser replay, agent-host acceptance and native-platform profiles |
+| CAP-14 offline investigation | [Offline inspection/replay acceptance](offline-evidence-verification.md), [browser inspection](investigation-ui-verification.md), [browser replay](replay-ui-verification.md), [MCP inspection](investigation-mcp-verification.md) and [MCP replay](replay-mcp-verification.md), integrity, immutable history and no-network/no-command profile | Additional bundle kinds, agent-host acceptance and native-platform profiles |
 | CAP-15 reports/handoff | [Historical report acceptance](reports-verification.md), [browser previews/downloads](investigation-ui-verification.md) and [MCP reports](investigation-mcp-verification.md), format parity, partial data and pending source-bound proposals | Additional report evidence kinds, native-platform support and separately authorized publishing |
 | CAP-16 toil | [Opt-in Linux metadata and summaries](toil-verification.md), capture, effort provenance, costs, retention and missing-data behavior | Representative human/agent benefit measurements; additional task/hosted/platform support |
 | CAP-17 extensions | [Inert package management](extensions-verification.md) and [policy-pinned external protocol/capacity experiment](extension-runtime-verification.md) | Hosted/platform support, artifact exchange, automated recovery, wider schemas and distribution/signing/revocation policy |
@@ -2145,7 +2197,7 @@ and [verification](sre-workbench/verification.md).
 | CAP-22 controlled changes | [Approved private rule-file replacement](changes-verification.md), exact plans, distinct mTLS principals, durable intent, inode readback and separately approved recovery | Human approval custody, additional consumers, live deployment/reload, cross-host/native-platform acceptance and automatic retention |
 | CAP-23 browser UI | [Local browser commands/task/results/history](ui-verification.md), [diagnostics](diagnostics-ui-verification.md) and [context/evidence/compare/report views](investigation-ui-verification.md), [saved queries](query-ui-verification.md) and [evidence collection](evidence-ui-verification.md) | Additional permitted workflow/catalog surfaces and remote/team surfaces |
 | CAP-24 integrations/visual evidence | Diagnostic network/process and Grafana API fixture slices exist | Every planned connector family retains its separate API/identity/limit/acceptance increment; requested operational visual capture remains separate |
-| CAP-25 installation/diagnostics | [Linux development archives, doctor and private install/rollback](packaging-verification.md) | Release/dependency clearance, platform artifacts, online doctor, store migration/uninstall and human/agent pilot |
+| CAP-25 installation/diagnostics | [Historical Linux development archives](packaging-verification.md) and [current browser replay candidate, doctor, install/rollback and unchanged stores](acceptance-bundle-verification.md) | Release/dependency clearance, platform artifacts, online doctor, store migration/uninstall and human/agent pilot |
 
 The [browser diagnostics increment](diagnostics-ui-verification.md) is now qualified PASS. It grants
 explicit target aliases, pins configuration/CA identities and exposes five actual observations
@@ -2164,7 +2216,7 @@ Linux scopes. The named local configuration-change consumer under WORKBENCH-026 
 including exact-plan approval, target preconditions, readback and reconciliation without replay.
 The local context and evidence/compare/report browser increment under CAP-23 and corresponding
 MCP investigation grants are also accepted. Local saved-query and diagnostic MCP grants,
-browser saved queries, explicit MCP/browser collection and MCP offline replay have fixture evidence. Remaining browser/catalog
+browser saved queries, explicit MCP/browser collection and MCP/browser offline replay have fixture evidence. Remaining browser/catalog
 surfaces, additional controlled-change consumers and connector
 families retain their own scopes. Continue in the delivery plan's dependency order. Connector work
 and native/live acceptance keep their own prerequisites; an unavailable live source does not block

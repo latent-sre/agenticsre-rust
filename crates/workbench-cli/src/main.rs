@@ -1035,7 +1035,7 @@ enum UiCommands {
         #[arg(
             long,
             value_name = "OPERATION",
-            help = "Repeat process.exec, command.inspect, task.run, diagnostics.run, queries.list, queries.describe, query.run, context.resolve, evidence.packs.list, evidence.packs.describe, evidence.collect, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no checks"
+            help = "Repeat process.exec, command.inspect, task.run, diagnostics.run, queries.list, queries.describe, query.run, context.resolve, evidence.packs.list, evidence.packs.describe, evidence.collect, evidence.list, evidence.open, evidence.replay, evidence.compare or report.create; empty grants expose no checks"
         )]
         allow: Vec<String>,
         #[arg(
@@ -1760,6 +1760,7 @@ fn run() -> u8 {
                         "evidence.collect"
                             | "evidence.list"
                             | "evidence.open"
+                            | "evidence.replay"
                             | "evidence.compare"
                             | "report.create"
                     )

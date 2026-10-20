@@ -1,0 +1,24 @@
+{
+  "binary_sha256": "7ed9a73b0d4a98fc6977232fef30f1530a2b3b352a3ed9aabfedc5f81db5a2f5",
+  "binary_size": 50826592,
+  "build_command": [
+    "tools/test-sandbox.sh",
+    "cargo",
+    "build",
+    "-p",
+    "workbench-cli",
+    "--locked",
+    "--offline"
+  ],
+  "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+  "evidence": "Fresh ordinary build from disposable clean Git snapshot; matches the accepted browser executable byte-for-byte.",
+  "platform": {
+    "architecture": "x86_64",
+    "environment": "Ubuntu 26.04.1 LTS; kernel 7.0.0-38-generic; private Bubblewrap test namespace",
+    "libc": "glibc 2.43",
+    "os": "linux"
+  },
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "schema_version": 1,
+  "source_manifest_sha256": "3b5c3d68b34c032c58608657df03bdf75c220d91f36de94e34d4d808c8609c93"
+}

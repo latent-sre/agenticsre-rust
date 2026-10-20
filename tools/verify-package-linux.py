@@ -17,6 +17,7 @@ import os
 from pathlib import Path
 import re
 import select
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -105,6 +106,28 @@ def basics(binary: Path, cwd: Path, environment: dict, missing_python: bool = Fa
                 assert value["data"]["calculation"]["status"]["state"] == "exhausted"
                 assert math.isclose(value["data"]["calculation"]["status"]["budget"], 40.32, abs_tol=1e-10)
     assert not (cwd / "workspace-code-ran").exists()
+
+
+def store_snapshot(store: Path) -> dict:
+    paths = [store, *sorted(store.rglob("*"))]
+    assert all(not path.is_symlink() and (path.is_file() or path.is_dir()) for path in paths)
+    return {str(path.relative_to(store)): {"mode": path.stat().st_mode & 0o7777,
+                                          "sha256": checksum(path) if path.is_file() else None}
+            for path in paths}
+
+
+def replay(binary: Path, cwd: Path, environment: dict, store: Path, label: str) -> dict:
+    value = product(binary, cwd, environment, "--json", "--state-dir", store,
+                    "evidence", "replay", "run-9-18dd60cacef0724e-1", label=label)
+    assert value["execution"]["status"] == "succeeded"
+    assert value["operation"] == "evidence.replay" and value["errors"] == []
+    data = value["data"]
+    assert data["state"] == "complete" and data["analysis"]["profile"] == "linux-offline-v1"
+    assert data["observation"]["window"] == {"from": "2026-10-02T00:00:00Z", "to": "2026-10-02T00:05:00Z"}
+    assert data["checks"][0]["summary"]["samples"] == 4
+    assert data["checks"][1]["summary"]["entries"] == 3
+    # Analysis time is per invocation; historical observation and projections must agree.
+    return {key: item for key, item in data.items() if key != "analysis"}
 
 
 def mcp(binary: Path, cwd: Path, environment: dict) -> None:
@@ -221,9 +244,13 @@ def main() -> int:
     parser.add_argument("--previous-expected-sha256")
     parser.add_argument("--json-results", action="store_true",
                         help="export each exact decoded product receipt as a bounded PACKAGE_RESULT JSON line")
+    parser.add_argument("--evidence-replay", action="store_true",
+                        help="both artifacts must replay the retained fixture store before/after selection")
     parser.add_argument("--missing-python-only", action="store_true",
                         help="only installed offline behavior and missing-runtime refusals; not full acceptance")
     options = parser.parse_args()
+    if options.evidence_replay and options.missing_python_only:
+        parser.error("--evidence-replay requires full two-artifact acceptance")
     EXPORT_RESULTS = options.json_results
     if not options.missing_python_only and (
             options.previous_bundle is None or options.previous_expected_sha256 is None):
@@ -246,6 +273,14 @@ def main() -> int:
     with tempfile.TemporaryDirectory(prefix="workbench-installed-bundle-") as temporary:
         scratch = Path(temporary)
         install_root = scratch / "install"
+        store = scratch / "external-evidence-store"
+        before_store = None
+        if options.evidence_replay:
+            shutil.copytree(ROOT / "docs/evidence/evidence-comparison-2026-10-10/installed-r2/store", store)
+            for path in [store, *store.rglob("*")]:
+                assert not path.is_symlink()
+                path.chmod(0o700 if path.is_dir() else 0o600)
+            before_store = store_snapshot(store)
         hostile = scratch / "hostile-cwd"
         hostile.mkdir()
         marker = hostile / "workspace-code-ran"
@@ -282,34 +317,53 @@ def main() -> int:
             installed_prior = package("install", previous_bundle, "--expected-sha256",
                                       options.previous_expected_sha256, "--root", install_root)
             prior_binary = Path(installed_prior["binary"])
+            assert installed_prior["compatibility"] == prior["manifest"]["compatibility"]
             prior_hash = checksum(prior_binary)
             assert prior_hash == prior["manifest"]["binary"]["sha256"]
-            package("activate", prior["artifact_id"], "--root", install_root)
+            selected_prior = package("activate", prior["artifact_id"], "--root", install_root)
+            assert selected_prior["compatibility"] == prior["manifest"]["compatibility"]
             basics(install_root / "current/bin/save", hostile, environment, label="prior")
+            if options.evidence_replay:
+                prior_replay = replay(install_root / "current/bin/save", hostile, environment, store, "prior-replay")
+                assert store_snapshot(store) == before_store
             passed("prior real artifact installed and mission/tasks executed away from checkout")
         installed_current = package("install", bundle, "--expected-sha256", options.expected_sha256, "--root", install_root)
         current_binary = Path(installed_current["binary"])
+        assert installed_current["compatibility"] == current["manifest"]["compatibility"]
         assert checksum(current_binary) == current["manifest"]["binary"]["sha256"]
         assert current_binary.stat().st_mode & 0o7777 == 0o755
         repeated = package("install", bundle, "--expected-sha256", options.expected_sha256, "--root", install_root)
         assert repeated["status"] == "already_present"
+        assert repeated["compatibility"] == current["manifest"]["compatibility"]
         if prior is not None:
             assert os.readlink(install_root / "current") == "releases/" + prior["artifact_id"]
         else:
             assert not (install_root / "current").is_symlink()
-        package("activate", current["artifact_id"], "--root", install_root)
+        selected_current = package("activate", current["artifact_id"], "--root", install_root)
+        assert selected_current["compatibility"] == current["manifest"]["compatibility"]
         assert os.readlink(install_root / "current") == "releases/" + current["artifact_id"]
         basics(install_root / "current/bin/save", hostile, environment, options.missing_python_only)
+        if options.evidence_replay:
+            assert replay(install_root / "current/bin/save", hostile, environment, store, "current-replay") == prior_replay
+            assert store_snapshot(store) == before_store
         passed("fresh/repeated install, explicit selection, modes, digest and installed offline mission/tasks")
         if prior is not None:
             mcp(install_root / "current/bin/save", hostile, environment)
             passed("installed numerical stdio MCP receipt with clean EOF shutdown")
             ui(install_root / "current/bin/save", hostile, environment)
             passed("embedded UI assets and authenticated numerical API receipt with SIGTERM cleanup")
-            package("rollback", prior["artifact_id"], "--root", install_root)
+            selected_rollback = package("rollback", prior["artifact_id"], "--root", install_root)
+            assert selected_rollback["compatibility"] == prior["manifest"]["compatibility"]
             assert os.readlink(install_root / "current") == "releases/" + prior["artifact_id"]
             assert checksum(prior_binary) == prior_hash
             basics(install_root / "current/bin/save", hostile, environment, label="rollback")
+            if options.evidence_replay:
+                assert replay(install_root / "current/bin/save", hostile, environment, store, "rollback-replay") == prior_replay
+                after_store = store_snapshot(store)
+                assert after_store == before_store
+                if EXPORT_RESULTS:
+                    print("PACKAGE_STORE " + json.dumps({"before": before_store, "after": after_store}, sort_keys=True))
+                passed("retained evidence replay agrees across upgrade/rollback; all external store bytes/modes unchanged")
             assert checksum(current_binary) == current["manifest"]["binary"]["sha256"]
             assert len(list((install_root / "releases").iterdir())) == 2
             passed("rollback selects retained prior bytes and repeats installed mission/tasks")
@@ -325,6 +379,7 @@ def main() -> int:
                       "current_artifact_id": current["artifact_id"], "archive_sha256": options.expected_sha256,
                       "previous_artifact_id": None if prior is None else prior["artifact_id"], "checks": count,
                       "previous_archive_sha256": None if prior is None else options.previous_expected_sha256,
+                      "evidence_replay_checked": options.evidence_replay,
                       "missing_python_checked": options.missing_python_only}, sort_keys=True))
     return 0
 
