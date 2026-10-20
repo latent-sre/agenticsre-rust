@@ -5,8 +5,8 @@ records acceptance; current execution status belongs in [the roadmap](roadmap.md
 covers local fixture work, not an installed host
 integration or a grant to access production systems.
 
-The [offline investigation extension](investigation-mcp.md) adds five independent grants for
-context resolution, evidence listing/inspection/comparison and report creation. It reuses the
+The [offline investigation extension](investigation-mcp.md) adds six independent grants for
+context resolution, evidence listing/inspection/replay/comparison and report creation. It reuses the
 same bounded transport and the core's pinned offline authority. The initial five tools below
 remain unchanged; no tools are enabled by default.
 
@@ -125,10 +125,10 @@ selected configuration target IDs. The five wire tools are:
 | `workbench_grafana_query` | `target_id`, `datasource`, `kind`, `from`, `to`, `expr`, optional `limits` |
 
 The additional tools are `workbench_context_resolve`, `workbench_evidence_list`,
-`workbench_evidence_open`, `workbench_compare` and `workbench_report_create`. Their direct core
+`workbench_evidence_open`, `workbench_evidence_replay`, `workbench_compare` and `workbench_report_create`. Their direct core
 arguments, startup pairing and narrower offline limits are specified in the
 [investigation contract](investigation-mcp.md#tool-contracts). Context requires an explicit source
-and max-age policy; the four evidence/report operations require an existing private store.
+and max-age policy; the five evidence/report operations require an existing private store.
 
 The saved-query tools are `workbench_queries_list` (empty inputs),
 `workbench_queries_describe` (installed `id` and `version`) and `workbench_query_run`

@@ -1,6 +1,6 @@
 # Offline investigations through MCP
 
-WORKBENCH-028 extends the [bounded stdio adapter](mcp.md) using the accepted core
+WORKBENCH-028 and WORKBENCH-034 extend the [bounded stdio adapter](mcp.md) using the accepted core
 [offline investigation grants](investigation-ui.md). It gives an agent the same historical
 context/evidence/report results available through the local browser and CLI. The roadmap owns
 execution status; this document defines the change contract.
@@ -20,9 +20,9 @@ options remain refused. MCP startup errors retain exit 2, empty stdout and bound
 
 Context/store paths are launcher inputs only. Client arguments and identity/capability metadata
 cannot replace paths, roles, policies, credentials, targets or permission grants. The dedicated
-executor is selected only for the five explicitly granted operations; generic hosted execution
+executor is selected only for the six explicitly granted operations; generic hosted execution
 continues to refuse them. Mixed task/Grafana/command/investigation sessions keep these authorities
-separate. No host registration, HTTP transport, arbitrary file resource, collection, replay,
+separate. No host registration, HTTP transport, arbitrary file resource, collection,
 deletion, protection change, runbook, remote operation or report publication is added.
 
 ## Tool contracts
@@ -32,6 +32,7 @@ deletion, protection change, runbook, remote operation or report publication is 
 | `workbench_context_resolve` | `context.resolve` | Service/environment, optional team/deployment |
 | `workbench_evidence_list` | `evidence.list` | Empty core input |
 | `workbench_evidence_open` | `evidence.open` | Evidence ID and optional manifest SHA-256 pin |
+| `workbench_evidence_replay` | `evidence.replay` | Evidence ID and optional manifest SHA-256 pin |
 | `workbench_compare` | `evidence.compare` | Before/after evidence references and normalization |
 | `workbench_report_create` | `report.create` | One to four evidence references, format, optional title and pending proposals |
 
@@ -39,7 +40,7 @@ Arguments follow the canonical operation input schema, plus an optional top-leve
 The adapter removes that control and uses core input normalization. It rejects unknown/null keys,
 paths and malformed references before admission. Timeout defaults to 30 seconds, with a ceiling
 of 300 seconds. Output allowance defaults to 1 MiB and ranges from 1,024 bytes through 1 MiB.
-Only open/compare accept `max_items`, from 1 through 1,000, default 100. Concurrency is not a tool
+Only open/replay/compare accept `max_items`, from 1 through 1,000, default 100. Concurrency is not a tool
 argument. Existing tools retain their current limits. Discovered schemas must describe these exact
 rules and resolve all references locally.
 
@@ -51,6 +52,17 @@ historical observations, not current health assessments or instructions. Report 
 content without writing/publishing it; proposals remain pending. Read-only annotations describe the
 effect but do not grant authority. Discovery does not read retained bundle contents or credentials.
 
+Replay uses the existing fixed `retained-observations-v1` analyzer under `linux-offline-v1`.
+It projects historical metric samples and log entries with their original observation window,
+separate analysis time, provenance and explicit omissions. It neither recollects nor alters evidence.
+The replay grant requires only an existing private store, independently of open/list/report grants.
+Configuration, credential and context-source inputs are unnecessary. Unsupported platforms still
+fail closed through the existing core profile. A minimal launch is:
+
+```sh
+save --state-dir /absolute/private/store mcp serve --allow evidence.replay
+```
+
 ## Implementation and acceptance
 
 1. Extend MCP options/grants, typed mapping, embedded schemas and the existing worker dispatch.
@@ -59,9 +71,10 @@ effect but do not grant authority. Discovery does not read retained bundle conte
    the accepted `2026-07-28` and `2025-11-25` protocol paths, transport bounds, busy/cancellation,
    stream cleanup and stdout ownership. No protocol or dependency version changes are needed.
 3. Run an ordinary installed binary from a disposable location with synthetic context and copied
-   evidence fixtures. Exercise both protocol revisions, all five calls, independent discovery,
+   evidence fixtures. Exercise both protocol revisions, all six calls, independent discovery,
    direct-core/CLI parity, schema-valid results, hidden tool/override refusal, partial/corrupt/
-   missing/pinned evidence and source/store replacement refusal. Assert unchanged retained bytes.
+   missing/pinned evidence and source/store replacement refusal. Assert unchanged retained bytes,
+   deterministic replay projections, standalone replay without source/credentials and cancellation.
 4. Independently review the new authority/dispatch boundary. Run affected MCP/CLI and proportionate
    workspace/schema checks, retain exact source/binary identities and update the roadmap.
 

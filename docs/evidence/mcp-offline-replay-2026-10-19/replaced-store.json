@@ -1,0 +1,63 @@
+{
+  "jsonrpc": "2.0",
+  "id": "replaced-store",
+  "result": {
+    "resultType": "complete",
+    "content": [
+      {
+        "text": "Workbench execution failed; assessment not_assessed. Inspect structuredContent for the complete receipt.",
+        "type": "text"
+      }
+    ],
+    "structuredContent": {
+      "spec_version": "0.1",
+      "request_id": "request-3-18e01f167d3d5004-49",
+      "run_id": "run-3-18e01f167d40be53-4a",
+      "operation": "evidence.list",
+      "operation_version": 1,
+      "target": {
+        "kind": "local",
+        "id": "workstation"
+      },
+      "resolved_target": {},
+      "started_at": "2026-10-20T03:27:13.1445661Z",
+      "finished_at": "2026-10-20T03:27:13.14466079Z",
+      "duration_ms": 0,
+      "execution": {
+        "status": "failed",
+        "child_exit_code": null,
+        "signal": null
+      },
+      "effect_outcome": "not_attempted",
+      "assessment": "not_assessed",
+      "coverage": {
+        "state": "not_applicable",
+        "scope": "This local operation only; no service health assessment",
+        "limitations": []
+      },
+      "output": {
+        "stdout": "",
+        "stderr": "",
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "encoding": "utf-8"
+      },
+      "data": {},
+      "errors": [
+        {
+          "code": "store_identity_changed",
+          "message": "The evidence store operation could not be completed; no successful write is implied.",
+          "retryable": false
+        }
+      ],
+      "sources": [],
+      "artifacts": [],
+      "effective_limits": {
+        "timeout_ms": 30000,
+        "max_output_bytes": 1048576
+      },
+      "record_mode": "never"
+    },
+    "isError": true
+  }
+}

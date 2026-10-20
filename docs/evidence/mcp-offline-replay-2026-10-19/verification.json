@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "base_sha": "3781d9bf496a5cb63b96a8a086798d8b5955cd34",
+  "workspace": {
+    "command": "tools/test-sandbox.sh cargo test --workspace --all-features --locked --offline",
+    "exit_code": 0,
+    "passed": 600,
+    "failed": 0,
+    "ignored": 33,
+    "log": "commands/workspace-tests.log"
+  },
+  "clippy": {
+    "command": "tools/test-sandbox.sh cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+    "exit_code": 0
+  },
+  "installed": {
+    "command": "tools/test-sandbox.sh .venv/bin/python -B tools/verify-investigation-mcp.py target/debug/save --output target/mcp-offline-replay/installed",
+    "exit_code": 0,
+    "groups": 12,
+    "mcp_receipts": 29,
+    "cli_receipts": 12,
+    "summary": "summary.json"
+  },
+  "initial_failure": {
+    "log": "commands/initial-workspace-tests.log",
+    "reason": "Pre-existing discovery test expectation still counted 19 rather than the new 20 tools; corrected test expectation only."
+  },
+  "red_green": "Expanded CLI integration tests (4 failures) and new core replay grant test failed before implementation at missing replay admission, then passed.",
+  "scope": "Local Linux x86-64; no host registration, live service, publishing, commit, push or deployment.",
+  "final_checks": [
+    {
+      "command": "cargo fmt --all -- --check",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -B docs/sre-workbench/verify_specs.py",
+      "exit_code": 0,
+      "schemas": 108,
+      "positive_fixtures": 72,
+      "negative_fixtures": 63
+    },
+    {
+      "command": ".venv/bin/python -B tools/sync-ui-core-schemas.py --check",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    {
+      "check": "Installed binary, 295-file source manifest and 29 retained MCP receipts match final bytes",
+      "status": "passed"
+    }
+  ]
+}

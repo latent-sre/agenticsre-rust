@@ -998,7 +998,7 @@ enum McpCommands {
         #[arg(
             long,
             value_name = "OPERATION",
-            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get, grafana.query, queries.list, queries.describe, query.run, diagnostics.list, diagnostics.describe, diagnostics.run, context.resolve, evidence.packs.list, evidence.packs.describe, evidence.collect, evidence.list, evidence.open, evidence.compare or report.create; empty grants expose no tools"
+            help = "Repeat process.exec, command.inspect, task.run, grafana.dashboard.get, grafana.query, queries.list, queries.describe, query.run, diagnostics.list, diagnostics.describe, diagnostics.run, context.resolve, evidence.packs.list, evidence.packs.describe, evidence.collect, evidence.list, evidence.open, evidence.replay, evidence.compare or report.create; empty grants expose no tools"
         )]
         allow: Vec<String>,
         #[arg(
@@ -1693,6 +1693,7 @@ fn run() -> u8 {
                         operation.as_str(),
                         "evidence.list"
                             | "evidence.open"
+                            | "evidence.replay"
                             | "evidence.compare"
                             | "report.create"
                             | "evidence.collect"

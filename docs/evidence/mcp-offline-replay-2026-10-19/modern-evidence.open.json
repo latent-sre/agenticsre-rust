@@ -1,0 +1,759 @@
+{
+  "jsonrpc": "2.0",
+  "id": "modern-evidence.open",
+  "result": {
+    "resultType": "complete",
+    "content": [
+      {
+        "text": "Workbench execution succeeded; assessment not_assessed. Inspect structuredContent for the complete receipt.",
+        "type": "text"
+      }
+    ],
+    "structuredContent": {
+      "spec_version": "0.1",
+      "request_id": "request-3-18e01f1640c0070a-5",
+      "run_id": "run-3-18e01f1640c4941c-6",
+      "operation": "evidence.open",
+      "operation_version": 1,
+      "target": {
+        "kind": "local",
+        "id": "workstation"
+      },
+      "resolved_target": {},
+      "started_at": "2026-10-20T03:27:12.129795528Z",
+      "finished_at": "2026-10-20T03:27:12.14845322Z",
+      "duration_ms": 18,
+      "execution": {
+        "status": "succeeded",
+        "child_exit_code": null,
+        "signal": null
+      },
+      "effect_outcome": "not_applicable",
+      "assessment": "not_assessed",
+      "coverage": {
+        "state": "not_established",
+        "scope": "Historical observations in the verified local bundle only.",
+        "limitations": [
+          "Integrity verification does not establish source truth or authorship. Historical observations are not current health; source coverage, absent telemetry and causation remain unestablished."
+        ]
+      },
+      "output": {
+        "stdout": "",
+        "stderr": "",
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "encoding": "utf-8"
+      },
+      "data": {
+        "algorithm": {
+          "id": "retained-observations-v1",
+          "version": 1
+        },
+        "analysis": {
+          "at": "2026-10-20T03:27:12.145555435Z",
+          "profile": "linux-offline-v1",
+          "tool": "save",
+          "version": "0.1.0"
+        },
+        "bundle": {
+          "digest": "sha256:934501b62b26d4cde3bf582b7c5a0c748ca79435dfd77e17fb0561bb87715299",
+          "id": "run-9-18dd60cacef0724e-1"
+        },
+        "checks": [
+          {
+            "definition": {
+              "dialect": "promql",
+              "id": "prometheus.up-by-job",
+              "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+              "version": 1
+            },
+            "details": [
+              {
+                "receipt": {
+                  "artifacts": [],
+                  "assessment": "not_assessed",
+                  "coverage": {
+                    "limitations": [
+                      "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                      "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                      "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                      "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                      "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+                      "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+                      "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+                    ],
+                    "scope": "Bounded query response from the configured Grafana connection and datasource",
+                    "state": "not_established"
+                  },
+                  "data": {
+                    "adapter": {
+                      "api_profile": "grafana-legacy-v1",
+                      "compatibility_evidence": "fixture_only",
+                      "id": "grafana",
+                      "upstream_digest": "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7",
+                      "upstream_revision": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7",
+                      "version": 1
+                    },
+                    "binding": {
+                      "organization_id": 7,
+                      "organization_verified": true,
+                      "origin": "https://127.0.0.1:46719/grafana"
+                    },
+                    "cancellation_signal": null,
+                    "definition": {
+                      "dialect": "promql",
+                      "id": "prometheus.up-by-job",
+                      "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+                      "version": 1
+                    },
+                    "parameters": {
+                      "job": "fixture"
+                    },
+                    "redaction": {
+                      "applied": false,
+                      "replacements": 0
+                    },
+                    "request": {
+                      "datasource": "metrics-1",
+                      "expr": "up{job=\"fixture\"}",
+                      "from": "2026-10-02T00:00:00Z",
+                      "interval_ms": 1000,
+                      "kind": "prometheus",
+                      "max_data_points": 1000,
+                      "max_lines": null,
+                      "to": "2026-10-02T00:05:00Z"
+                    },
+                    "response": {
+                      "results": {
+                        "A": {
+                          "frames": [
+                            {
+                              "data": {
+                                "values": [
+                                  [
+                                    1790899200000,
+                                    1790899201000
+                                  ],
+                                  [
+                                    1,
+                                    1
+                                  ]
+                                ]
+                              },
+                              "schema": {
+                                "fields": [
+                                  {
+                                    "config": {
+                                      "interval": 1000
+                                    },
+                                    "name": "Time",
+                                    "type": "time"
+                                  },
+                                  {
+                                    "config": {
+                                      "unit": "none"
+                                    },
+                                    "labels": {
+                                      "instance": "a",
+                                      "job": "fixture"
+                                    },
+                                    "name": "up",
+                                    "type": "number"
+                                  }
+                                ],
+                                "meta": {
+                                  "type": "timeseries-multi",
+                                  "typeVersion": [
+                                    0,
+                                    1
+                                  ]
+                                },
+                                "refId": "A"
+                              }
+                            },
+                            {
+                              "data": {
+                                "values": [
+                                  [
+                                    1790899200000,
+                                    1790899201000
+                                  ],
+                                  [
+                                    0,
+                                    1
+                                  ]
+                                ]
+                              },
+                              "schema": {
+                                "fields": [
+                                  {
+                                    "config": {
+                                      "interval": 1000
+                                    },
+                                    "name": "Time",
+                                    "type": "time"
+                                  },
+                                  {
+                                    "config": {
+                                      "unit": "none"
+                                    },
+                                    "labels": {
+                                      "instance": "removed",
+                                      "job": "fixture"
+                                    },
+                                    "name": "up",
+                                    "type": "number"
+                                  }
+                                ],
+                                "meta": {
+                                  "type": "timeseries-multi",
+                                  "typeVersion": [
+                                    0,
+                                    1
+                                  ]
+                                },
+                                "refId": "A"
+                              }
+                            }
+                          ],
+                          "status": 200
+                        }
+                      }
+                    },
+                    "transport": {
+                      "request_timeout_ms": 20000,
+                      "requests_started": 3,
+                      "response_limit_bytes": 2097152,
+                      "responses_received": 3,
+                      "stage": "complete"
+                    },
+                    "window": {
+                      "from": "2026-10-02T00:00:00Z",
+                      "to": "2026-10-02T00:05:00Z"
+                    }
+                  },
+                  "duration_ms": 24,
+                  "effect_outcome": "not_applicable",
+                  "effective_limits": {
+                    "max_output_bytes": 2097152,
+                    "timeout_ms": 59994
+                  },
+                  "errors": [],
+                  "execution": {
+                    "child_exit_code": null,
+                    "signal": null,
+                    "status": "succeeded"
+                  },
+                  "finished_at": "2026-10-11T04:57:30.96526972Z",
+                  "operation": "query.run",
+                  "operation_version": 1,
+                  "output": {
+                    "encoding": "utf-8",
+                    "stderr": "",
+                    "stderr_truncated": false,
+                    "stdout": "",
+                    "stdout_truncated": false
+                  },
+                  "record_mode": "never",
+                  "request_id": "request-9-18dd60cacf444321-4",
+                  "resolved_target": {
+                    "api_profile": "grafana-legacy-v1",
+                    "connection": "fixture",
+                    "effects": "observe",
+                    "profile": "operator-local"
+                  },
+                  "run_id": "run-9-18dd60cacf446542-5",
+                  "sources": [
+                    {
+                      "evidence_state": "sourced",
+                      "observed_at": "2026-10-11T04:57:30.965255564Z",
+                      "reference": "grafana:selected-connection",
+                      "untrusted": true
+                    }
+                  ],
+                  "spec_version": "0.1",
+                  "started_at": "2026-10-11T04:57:30.940345518Z",
+                  "target": {
+                    "id": "fixture",
+                    "kind": "connection"
+                  }
+                },
+                "type": "receipt"
+              }
+            ],
+            "id": "metrics",
+            "kind": "prometheus",
+            "omitted_details": 0,
+            "reasons": [],
+            "state": "complete",
+            "summary": {
+              "retained_receipts": 1
+            },
+            "unit": "dimensionless"
+          },
+          {
+            "definition": {
+              "dialect": "logql",
+              "id": "loki.logs-by-job",
+              "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+              "version": 1
+            },
+            "details": [
+              {
+                "receipt": {
+                  "artifacts": [],
+                  "assessment": "not_assessed",
+                  "coverage": {
+                    "limitations": [
+                      "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                      "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                      "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                      "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                      "Returned log entries do not establish service health or complete event coverage.",
+                      "Log retention, sampling, job-label reuse and incomplete returned data can limit the observation.",
+                      "Requested lines do not prove returned coverage; empty results are not zero or an all-clear."
+                    ],
+                    "scope": "Bounded query response from the configured Grafana connection and datasource",
+                    "state": "not_established"
+                  },
+                  "data": {
+                    "adapter": {
+                      "api_profile": "grafana-legacy-v1",
+                      "compatibility_evidence": "fixture_only",
+                      "id": "grafana",
+                      "upstream_digest": "sha256:1c1711d8bd1c70e49e5715813506a0a4389021041f457d9d6b1a95a39f8fc3f7",
+                      "upstream_revision": "7d900fb999abee3b3712e1da881dcc7e80b1f6e7",
+                      "version": 1
+                    },
+                    "binding": {
+                      "organization_id": 7,
+                      "organization_verified": true,
+                      "origin": "https://127.0.0.1:46719/grafana"
+                    },
+                    "cancellation_signal": null,
+                    "definition": {
+                      "dialect": "logql",
+                      "id": "loki.logs-by-job",
+                      "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+                      "version": 1
+                    },
+                    "parameters": {
+                      "job": "fixture"
+                    },
+                    "redaction": {
+                      "applied": false,
+                      "replacements": 0
+                    },
+                    "request": {
+                      "datasource": "logs-1",
+                      "expr": "{job=\"fixture\"}",
+                      "from": "2026-10-02T00:00:00Z",
+                      "interval_ms": 1000,
+                      "kind": "loki",
+                      "max_data_points": 1000,
+                      "max_lines": 500,
+                      "to": "2026-10-02T00:05:00Z"
+                    },
+                    "response": {
+                      "results": {
+                        "A": {
+                          "frames": [
+                            {
+                              "data": {
+                                "nanos": [
+                                  null,
+                                  [
+                                    123,
+                                    123,
+                                    123
+                                  ],
+                                  null,
+                                  null,
+                                  null
+                                ],
+                                "values": [
+                                  [
+                                    {
+                                      "job": "fixture"
+                                    },
+                                    {
+                                      "job": "fixture"
+                                    },
+                                    {
+                                      "job": "fixture"
+                                    }
+                                  ],
+                                  [
+                                    1790899200000,
+                                    1790899200000,
+                                    1790899200000
+                                  ],
+                                  [
+                                    "duplicate",
+                                    "duplicate",
+                                    "removed"
+                                  ],
+                                  [
+                                    "1790899200000000123",
+                                    "1790899200000000123",
+                                    "1790899200000000123"
+                                  ],
+                                  [
+                                    "generated-0",
+                                    "generated-1",
+                                    "generated-2"
+                                  ]
+                                ]
+                              },
+                              "schema": {
+                                "fields": [
+                                  {
+                                    "name": "labels",
+                                    "type": "other"
+                                  },
+                                  {
+                                    "name": "Time",
+                                    "type": "time"
+                                  },
+                                  {
+                                    "name": "Line",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "name": "tsNs",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "name": "id",
+                                    "type": "string"
+                                  }
+                                ],
+                                "meta": {
+                                  "custom": {
+                                    "frameType": "LabeledTimeValues"
+                                  },
+                                  "typeVersion": [
+                                    0,
+                                    0
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "status": 200
+                        }
+                      }
+                    },
+                    "transport": {
+                      "request_timeout_ms": 20000,
+                      "requests_started": 3,
+                      "response_limit_bytes": 2097152,
+                      "responses_received": 3,
+                      "stage": "complete"
+                    },
+                    "window": {
+                      "from": "2026-10-02T00:00:00Z",
+                      "to": "2026-10-02T00:05:00Z"
+                    }
+                  },
+                  "duration_ms": 6,
+                  "effect_outcome": "not_applicable",
+                  "effective_limits": {
+                    "max_output_bytes": 2097152,
+                    "timeout_ms": 59968
+                  },
+                  "errors": [],
+                  "execution": {
+                    "child_exit_code": null,
+                    "signal": null,
+                    "status": "succeeded"
+                  },
+                  "finished_at": "2026-10-11T04:57:30.972769415Z",
+                  "operation": "query.run",
+                  "operation_version": 1,
+                  "output": {
+                    "encoding": "utf-8",
+                    "stderr": "",
+                    "stderr_truncated": false,
+                    "stdout": "",
+                    "stdout_truncated": false
+                  },
+                  "record_mode": "never",
+                  "request_id": "request-9-18dd60cad0d31e1c-6",
+                  "resolved_target": {
+                    "api_profile": "grafana-legacy-v1",
+                    "connection": "fixture",
+                    "effects": "observe",
+                    "profile": "operator-local"
+                  },
+                  "run_id": "run-9-18dd60cad0d33c0d-7",
+                  "sources": [
+                    {
+                      "evidence_state": "sourced",
+                      "observed_at": "2026-10-11T04:57:30.972755447Z",
+                      "reference": "grafana:selected-connection",
+                      "untrusted": true
+                    }
+                  ],
+                  "spec_version": "0.1",
+                  "started_at": "2026-10-11T04:57:30.966484264Z",
+                  "target": {
+                    "id": "fixture",
+                    "kind": "connection"
+                  }
+                },
+                "type": "receipt"
+              }
+            ],
+            "id": "logs",
+            "kind": "loki",
+            "omitted_details": 0,
+            "reasons": [],
+            "state": "complete",
+            "summary": {
+              "retained_receipts": 1
+            },
+            "unit": "entries"
+          }
+        ],
+        "format_version": 1,
+        "manifest": {
+          "artifacts": {
+            "logs": {
+              "bytes": 3587,
+              "classification": "restricted",
+              "digest": "sha256:1d48af2a0ef37bf3280730d93f410daf51054298169422e344bdc81e69ba8f67",
+              "media_type": "application/json",
+              "path": "artifacts/1d48af2a0ef37bf3280730d93f410daf51054298169422e344bdc81e69ba8f67.json"
+            },
+            "metrics": {
+              "bytes": 3675,
+              "classification": "restricted",
+              "digest": "sha256:5c84ca326ad01f7769e40b49c47ec785f5f6e9d37c1f79f0071d28c363042b5b",
+              "media_type": "application/json",
+              "path": "artifacts/5c84ca326ad01f7769e40b49c47ec785f5f6e9d37c1f79f0071d28c363042b5b.json"
+            }
+          },
+          "created_at_unix_ms": 1791694650940,
+          "finalized_at_unix_ms": 1791694650974,
+          "format_version": 1,
+          "id": "run-9-18dd60cacef0724e-1",
+          "payload": {
+            "cancellation_signal": null,
+            "capture": {
+              "expected_steps": 2,
+              "retained_receipts": 2,
+              "state": "complete"
+            },
+            "connection": {
+              "id": "fixture",
+              "organization_id": 7,
+              "origin": "https://127.0.0.1:46719/grafana"
+            },
+            "errors": [],
+            "finalized_at": "2026-10-11T04:57:30.97401695Z",
+            "format_version": 1,
+            "on_failure": "continue",
+            "pack": {
+              "id": "service-queries",
+              "sha256": "602806667cfb6b1ec1ce4e321a0205814d57ae30b06f6ca879e9e6e5f7319236",
+              "version": 1
+            },
+            "producer": {
+              "id": "save",
+              "spec_version": "0.1",
+              "version": "0.1.0"
+            },
+            "provenance": {
+              "context": {
+                "record": {
+                  "bindings": {
+                    "environment": "dev",
+                    "organization": "7",
+                    "target": "fixture"
+                  },
+                  "deployment": "blue",
+                  "environment": "dev",
+                  "last_reviewed": "2026-10-11T04:57:30.932728+00:00",
+                  "service": "fixture-web",
+                  "state": "active",
+                  "team": "platform"
+                },
+                "resolution": {
+                  "age_seconds": 0,
+                  "max_age_days": 30,
+                  "state": "resolved",
+                  "usable": true
+                },
+                "source": {
+                  "evidence_state": "sourced",
+                  "id": "comparison",
+                  "kind": "fixture-export",
+                  "observed_at": "2026-10-11T04:57:30.93913915Z",
+                  "revision": "1",
+                  "sha256": "sha256:4e9f959c5427e061af22d47f845e048feab09b854661aed029b961b2abec9c9b"
+                }
+              },
+              "grafana_ca": {
+                "kind": "custom",
+                "sha256": "sha256:b47321c8115362e4d8311a999ff98117a71a2c1173885647394fa9b1356b892e"
+              },
+              "grafana_config_sha256": "sha256:280cbe6b1ba60b867502f5cded9dee12cac28ca935e08761c42f73ce09eb0f3f"
+            },
+            "redaction": {
+              "applied": false,
+              "replacements": 0
+            },
+            "request_id": "request-9-18dd60caceef968c-0",
+            "run_id": "run-9-18dd60cacef0724e-1",
+            "selection": {
+              "deployment": null,
+              "environment": "dev",
+              "service": "fixture-web",
+              "team": null
+            },
+            "started_at": "2026-10-11T04:57:30.934817013Z",
+            "steps": [
+              {
+                "artifact": {
+                  "bytes": 3675,
+                  "classification": "restricted",
+                  "digest": "sha256:5c84ca326ad01f7769e40b49c47ec785f5f6e9d37c1f79f0071d28c363042b5b",
+                  "media_type": "application/json",
+                  "path": "artifacts/5c84ca326ad01f7769e40b49c47ec785f5f6e9d37c1f79f0071d28c363042b5b.json"
+                },
+                "coverage": {
+                  "limitations": [
+                    "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                    "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                    "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                    "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                    "Metric meaning is declared by the installed query; backend semantics and service health are not verified.",
+                    "Scrape coverage, absent series, sampling, staleness and job-label reuse can limit the observation.",
+                    "Requested points do not prove returned coverage; empty results are not zero or an all-clear."
+                  ],
+                  "scope": "Bounded query response from the configured Grafana connection and datasource",
+                  "state": "not_established"
+                },
+                "definition": {
+                  "dialect": "promql",
+                  "id": "prometheus.up-by-job",
+                  "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+                  "version": 1
+                },
+                "duration_ms": 24,
+                "errors": [],
+                "finished_at": "2026-10-11T04:57:30.96526972Z",
+                "id": "metrics",
+                "omission": null,
+                "operation": "query.run",
+                "redaction": {
+                  "applied": false,
+                  "replacements": 0
+                },
+                "run_id": "run-9-18dd60cacf446542-5",
+                "started_at": "2026-10-11T04:57:30.940345518Z",
+                "status": "succeeded",
+                "truncation": {
+                  "stderr": false,
+                  "stdout": false
+                }
+              },
+              {
+                "artifact": {
+                  "bytes": 3587,
+                  "classification": "restricted",
+                  "digest": "sha256:1d48af2a0ef37bf3280730d93f410daf51054298169422e344bdc81e69ba8f67",
+                  "media_type": "application/json",
+                  "path": "artifacts/1d48af2a0ef37bf3280730d93f410daf51054298169422e344bdc81e69ba8f67.json"
+                },
+                "coverage": {
+                  "limitations": [
+                    "This adapter has fixture evidence only; no live Grafana version, rendering, panel transformation or service-health claim is made.",
+                    "Known credentials are masked in private echoes and observational data; arbitrary sensitive telemetry is not detected. Public request identity and generated controls are preserved.",
+                    "Requested points/lines do not prove returned coverage. Empty frames are not an all-clear; cancelling a client does not prove remote query cancellation.",
+                    "The operator environment provider catches accidental retargeting; it does not isolate credentials from the same OS account.",
+                    "Returned log entries do not establish service health or complete event coverage.",
+                    "Log retention, sampling, job-label reuse and incomplete returned data can limit the observation.",
+                    "Requested lines do not prove returned coverage; empty results are not zero or an all-clear."
+                  ],
+                  "scope": "Bounded query response from the configured Grafana connection and datasource",
+                  "state": "not_established"
+                },
+                "definition": {
+                  "dialect": "logql",
+                  "id": "loki.logs-by-job",
+                  "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+                  "version": 1
+                },
+                "duration_ms": 6,
+                "errors": [],
+                "finished_at": "2026-10-11T04:57:30.972769415Z",
+                "id": "logs",
+                "omission": null,
+                "operation": "query.run",
+                "redaction": {
+                  "applied": false,
+                  "replacements": 0
+                },
+                "run_id": "run-9-18dd60cad0d33c0d-7",
+                "started_at": "2026-10-11T04:57:30.966484264Z",
+                "status": "succeeded",
+                "truncation": {
+                  "stderr": false,
+                  "stdout": false
+                }
+              }
+            ],
+            "window": {
+              "from": "2026-10-02T00:00:00Z",
+              "to": "2026-10-02T00:05:00Z"
+            }
+          },
+          "state": "sealed"
+        },
+        "mode": "open",
+        "observation": {
+          "capture": {
+            "expected_steps": 2,
+            "retained_receipts": 2,
+            "state": "complete"
+          },
+          "finalized_at": "2026-10-11T04:57:30.97401695Z",
+          "manifest_state": "sealed",
+          "selection": {
+            "deployment": null,
+            "environment": "dev",
+            "service": "fixture-web",
+            "team": null
+          },
+          "started_at": "2026-10-11T04:57:30.934817013Z",
+          "window": {
+            "from": "2026-10-02T00:00:00Z",
+            "to": "2026-10-02T00:05:00Z"
+          }
+        },
+        "omitted_details": 0,
+        "source_limitations": [],
+        "state": "complete"
+      },
+      "errors": [],
+      "sources": [
+        {
+          "evidence_state": "sourced",
+          "observed_at": "2026-10-11T04:57:30.934817013Z",
+          "reference": "evidence-bundle:run-9-18dd60cacef0724e-1@sha256:934501b62b26d4cde3bf582b7c5a0c748ca79435dfd77e17fb0561bb87715299",
+          "untrusted": true
+        }
+      ],
+      "artifacts": [],
+      "effective_limits": {
+        "timeout_ms": 30000,
+        "max_output_bytes": 1048576,
+        "max_items": 100
+      },
+      "record_mode": "never"
+    },
+    "isError": false
+  }
+}
