@@ -2088,6 +2088,30 @@ selector length counts Unicode code points. The [follow-up verification](evidenc
 records 86 frontend tests and the refreshed six-receipt installed browser mission. The owner asked
 to keep PR #7 open and advance local main only; remote main remains unchanged.
 
+## WORKBENCH-034 — offline evidence replay through MCP (2026-10-19)
+
+The owner requested continuing the local product roadmap. The next offline investigation increment
+adds independently granted `evidence.replay` through `workbench_evidence_replay`, using the existing
+fixed analyzer, restricted Linux worker and pinned private store. Other investigation grants remain
+separate. Client input cannot supply paths, live targets, credentials, recording policy or analyzers.
+
+[Installed replay acceptance](replay-mcp-verification.md) passed 12 groups, with 29 schema-valid MCP
+receipts and 12 CLI parity receipts across both supported protocol revisions. It proves deterministic
+historical projections, explicit partial limits, independent replay without source/configuration,
+cancellation, manifest/store pinning, corrupt/missing evidence refusal and unchanged retained bytes.
+The [packet](evidence/mcp-offline-replay-2026-10-19/summary.json) binds this mission to ordinary binary
+`256c3ae501b0879e0a1892f7dc6ce42d5bf87fc94366ce4fbe4df286e65105a5` and a 295-file source manifest.
+Independent static review found no actionable issue against the matched working-tree diff.
+The final workspace passed **600 tests, zero failures and 33 existing scoped ignores**; strict
+workspace lint, formatting, schema synchronization and specification checks passed. A stale
+19-tool test expectation was corrected to include replay; the initial failed run is retained.
+
+The owner authorized committing this verified checkpoint and opening a PR on 2026-10-19.
+Publication uses `codex/mcp-offline-replay`, based on `3781d9b`, targeting `main`. Source bytes match
+the installed acceptance manifest; no product checks need repeating solely for publication.
+Agent-host registration, live configuration and deployment remain separate. Browser replay,
+hosted runbooks, native platforms, connectors and the broader product queue remain open.
+
 ## Remaining product queue
 
 The following ledger preserves the complete requested scope. Accepted slices are evidence for
@@ -2110,7 +2134,7 @@ and [verification](sre-workbench/verification.md).
 | CAP-11 saved queries | [Installed versioned PromQL/LogQL core/CLI](saved-queries-verification.md), typed literal parameters and one resolved parent window accepted; [local MCP grants](query-mcp-verification.md) and [browser grants](query-ui-verification.md) | Additional reviewed definitions and live/platform acceptance |
 | CAP-12 runbooks | [Installed evidence-review workflow](runbooks-verification.md), typed checkpoints, durable revision-bound resume and fresh attempts | Additional reviewed runbooks, hosted/platform acceptance; live observation workflows remain separate |
 | CAP-13 configuration checks | [Dashboard acceptance](config-check-verification.md) and [Prometheus rules](alert-rules-verification.md), kind/validator/digest pins, supported rules, refusals and unchanged originals | Hosted/platform acceptance, live semantics and broader validator coverage |
-| CAP-14 offline investigation | [Offline inspection/replay acceptance](offline-evidence-verification.md), [browser](investigation-ui-verification.md) and [MCP inspection](investigation-mcp-verification.md), integrity, immutable history and no-network/no-command profile | Additional bundle kinds, hosted replay and native-platform profiles |
+| CAP-14 offline investigation | [Offline inspection/replay acceptance](offline-evidence-verification.md), [browser](investigation-ui-verification.md), [MCP inspection](investigation-mcp-verification.md) and [MCP replay](replay-mcp-verification.md), integrity, immutable history and no-network/no-command profile | Additional bundle kinds, browser replay, agent-host acceptance and native-platform profiles |
 | CAP-15 reports/handoff | [Historical report acceptance](reports-verification.md), [browser previews/downloads](investigation-ui-verification.md) and [MCP reports](investigation-mcp-verification.md), format parity, partial data and pending source-bound proposals | Additional report evidence kinds, native-platform support and separately authorized publishing |
 | CAP-16 toil | [Opt-in Linux metadata and summaries](toil-verification.md), capture, effort provenance, costs, retention and missing-data behavior | Representative human/agent benefit measurements; additional task/hosted/platform support |
 | CAP-17 extensions | [Inert package management](extensions-verification.md) and [policy-pinned external protocol/capacity experiment](extension-runtime-verification.md) | Hosted/platform support, artifact exchange, automated recovery, wider schemas and distribution/signing/revocation policy |
@@ -2140,7 +2164,7 @@ Linux scopes. The named local configuration-change consumer under WORKBENCH-026 
 including exact-plan approval, target preconditions, readback and reconciliation without replay.
 The local context and evidence/compare/report browser increment under CAP-23 and corresponding
 MCP investigation grants are also accepted. Local saved-query and diagnostic MCP grants,
-browser saved queries and explicit MCP/browser collection have fixture evidence. Remaining browser/catalog
+browser saved queries, explicit MCP/browser collection and MCP offline replay have fixture evidence. Remaining browser/catalog
 surfaces, additional controlled-change consumers and connector
 families retain their own scopes. Continue in the delivery plan's dependency order. Connector work
 and native/live acceptance keep their own prerequisites; an unavailable live source does not block

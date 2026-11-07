@@ -1,0 +1,18 @@
+{
+  "type": "independent_static_review",
+  "reviewer": "review_mcp_replay",
+  "base_sha": "3781d9bf496a5cb63b96a8a086798d8b5955cd34",
+  "reviewed_diff_sha256": "71612b8a7d10bf750d465d9d03f27aa514d152411d59fb5dd555d98e178772ac",
+  "scope": "Ten modified source/test/contract/harness files; acceptance packet, verification record and roadmap added afterward.",
+  "validated_p0_p1_p2_findings": [],
+  "static_assessment": "No actionable static mismatch; exact grant, restricted worker, store pinning, limits, schema/runtime and browser/generic-hosted boundaries preserved.",
+  "reviewer_verdict": "PROVISIONAL \u2014 COMMIT AND RE-REVIEW",
+  "qualification": "Mutable working-tree review gives no formal merge approval. No commit or merge is requested for this local continuation. Reviewed diff and installed source hashes were independently matched after review; no second review is needed absent a material change.",
+  "executed_code": false,
+  "excluded": [
+    "Installed agent-host compatibility",
+    "Native non-Linux behavior",
+    "Live systems",
+    "Acceptance and roadmap records added after review"
+  ]
+}

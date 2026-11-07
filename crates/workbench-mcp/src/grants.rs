@@ -7,10 +7,11 @@ use workbench_core::{
     InvestigationGrant, OperatorContext,
 };
 
-pub(crate) const INVESTIGATION_OPERATIONS: [&str; 5] = [
+pub(crate) const INVESTIGATION_OPERATIONS: [&str; 6] = [
     "context.resolve",
     "evidence.list",
     "evidence.open",
+    "evidence.replay",
     "evidence.compare",
     "report.create",
 ];

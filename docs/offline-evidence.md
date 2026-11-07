@@ -66,7 +66,8 @@ not a filesystem or credential sandbox for arbitrary extension code. Live rechec
 separate explicit collection. The [browser investigation extension](investigation-ui.md) grants
 `evidence.open`, `evidence.list`, `evidence.compare` and `report.create` independently against an
 existing startup store; it does not grant replay or collection. The
-[MCP investigation extension](investigation-mcp.md) applies the same explicit offline grants.
+[MCP investigation extension](investigation-mcp.md) also independently grants `evidence.replay`
+against an existing startup store, using this same fixed analyzer and offline worker.
 Generic hosted execution retains its refusals without a dedicated investigation grant.
 
 ## Acceptance

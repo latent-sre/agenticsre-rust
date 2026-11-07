@@ -1,0 +1,230 @@
+{
+  "jsonrpc": "2.0",
+  "id": "legacy-evidence.replay-repeat",
+  "result": {
+    "content": [
+      {
+        "text": "Workbench execution succeeded; assessment not_assessed. Inspect structuredContent for the complete receipt.",
+        "type": "text"
+      }
+    ],
+    "structuredContent": {
+      "spec_version": "0.1",
+      "request_id": "request-3-18e01f166096bb4d-1d",
+      "run_id": "run-3-18e01f16609b7072-1e",
+      "operation": "evidence.replay",
+      "operation_version": 1,
+      "target": {
+        "kind": "local",
+        "id": "workstation"
+      },
+      "resolved_target": {},
+      "started_at": "2026-10-20T03:27:12.663969031Z",
+      "finished_at": "2026-10-20T03:27:12.677161542Z",
+      "duration_ms": 13,
+      "execution": {
+        "status": "succeeded",
+        "child_exit_code": null,
+        "signal": null
+      },
+      "effect_outcome": "not_applicable",
+      "assessment": "not_assessed",
+      "coverage": {
+        "state": "not_established",
+        "scope": "Historical observations in the verified local bundle only.",
+        "limitations": [
+          "Integrity verification does not establish source truth or authorship. Historical observations are not current health; source coverage, absent telemetry and causation remain unestablished."
+        ]
+      },
+      "output": {
+        "stdout": "",
+        "stderr": "",
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "encoding": "utf-8"
+      },
+      "data": {
+        "algorithm": {
+          "id": "retained-observations-v1",
+          "version": 1
+        },
+        "analysis": {
+          "at": "2026-10-20T03:27:12.673504205Z",
+          "profile": "linux-offline-v1",
+          "tool": "save",
+          "version": "0.1.0"
+        },
+        "bundle": {
+          "digest": "sha256:934501b62b26d4cde3bf582b7c5a0c748ca79435dfd77e17fb0561bb87715299",
+          "id": "run-9-18dd60cacef0724e-1"
+        },
+        "checks": [
+          {
+            "definition": {
+              "dialect": "promql",
+              "id": "prometheus.up-by-job",
+              "sha256": "e42bc20e72b99554cc61b2c09d06b2dd3ad028a1455aa835517f2dd956c1363f",
+              "version": 1
+            },
+            "details": [
+              {
+                "nonfinite": null,
+                "series": {
+                  "field": "up",
+                  "labels": {
+                    "instance": "a",
+                    "job": "fixture"
+                  }
+                },
+                "state": "finite",
+                "timestamp_ns": "1790899200000000000",
+                "type": "metric_sample",
+                "value": 1
+              },
+              {
+                "nonfinite": null,
+                "series": {
+                  "field": "up",
+                  "labels": {
+                    "instance": "a",
+                    "job": "fixture"
+                  }
+                },
+                "state": "finite",
+                "timestamp_ns": "1790899201000000000",
+                "type": "metric_sample",
+                "value": 1
+              },
+              {
+                "nonfinite": null,
+                "series": {
+                  "field": "up",
+                  "labels": {
+                    "instance": "removed",
+                    "job": "fixture"
+                  }
+                },
+                "state": "finite",
+                "timestamp_ns": "1790899200000000000",
+                "type": "metric_sample",
+                "value": 0
+              },
+              {
+                "nonfinite": null,
+                "series": {
+                  "field": "up",
+                  "labels": {
+                    "instance": "removed",
+                    "job": "fixture"
+                  }
+                },
+                "state": "finite",
+                "timestamp_ns": "1790899201000000000",
+                "type": "metric_sample",
+                "value": 1
+              }
+            ],
+            "id": "metrics",
+            "kind": "prometheus",
+            "omitted_details": 0,
+            "reasons": [],
+            "state": "complete",
+            "summary": {
+              "finite": 4,
+              "missing": 0,
+              "nonfinite": 0,
+              "samples": 4,
+              "sampling_gaps": 0,
+              "series": 2
+            },
+            "unit": "dimensionless"
+          },
+          {
+            "definition": {
+              "dialect": "logql",
+              "id": "loki.logs-by-job",
+              "sha256": "d4661dbe0efc261ccb5eb340cbcbceb90568fa2e0973b6518cfa4fd796eb6019",
+              "version": 1
+            },
+            "details": [
+              {
+                "count": 2,
+                "label_types": {},
+                "labels": {
+                  "job": "fixture"
+                },
+                "line": "duplicate",
+                "timestamp_ns": "1790899200000000123",
+                "type": "log_entry"
+              },
+              {
+                "count": 1,
+                "label_types": {},
+                "labels": {
+                  "job": "fixture"
+                },
+                "line": "removed",
+                "timestamp_ns": "1790899200000000123",
+                "type": "log_entry"
+              }
+            ],
+            "id": "logs",
+            "kind": "loki",
+            "omitted_details": 0,
+            "reasons": [],
+            "state": "complete",
+            "summary": {
+              "duplicate_entries": 1,
+              "entries": 3,
+              "label_sets": 1,
+              "unique_entries": 2
+            },
+            "unit": "entries"
+          }
+        ],
+        "format_version": 1,
+        "mode": "replay",
+        "observation": {
+          "capture": {
+            "expected_steps": 2,
+            "retained_receipts": 2,
+            "state": "complete"
+          },
+          "finalized_at": "2026-10-11T04:57:30.97401695Z",
+          "manifest_state": "sealed",
+          "selection": {
+            "deployment": null,
+            "environment": "dev",
+            "service": "fixture-web",
+            "team": null
+          },
+          "started_at": "2026-10-11T04:57:30.934817013Z",
+          "window": {
+            "from": "2026-10-02T00:00:00Z",
+            "to": "2026-10-02T00:05:00Z"
+          }
+        },
+        "omitted_details": 0,
+        "source_limitations": [],
+        "state": "complete"
+      },
+      "errors": [],
+      "sources": [
+        {
+          "evidence_state": "sourced",
+          "observed_at": "2026-10-11T04:57:30.934817013Z",
+          "reference": "evidence-bundle:run-9-18dd60cacef0724e-1@sha256:934501b62b26d4cde3bf582b7c5a0c748ca79435dfd77e17fb0561bb87715299",
+          "untrusted": true
+        }
+      ],
+      "artifacts": [],
+      "effective_limits": {
+        "timeout_ms": 30000,
+        "max_output_bytes": 1048576,
+        "max_items": 100
+      },
+      "record_mode": "never"
+    },
+    "isError": false
+  }
+}

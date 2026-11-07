@@ -7,10 +7,11 @@ use crate::{
 use serde_json::{Value, json};
 use std::{collections::BTreeSet, sync::atomic::Ordering, time::Instant};
 
-const OPERATIONS: [&str; 5] = [
+const OPERATIONS: [&str; 6] = [
     "context.resolve",
     "evidence.list",
     "evidence.open",
+    "evidence.replay",
     "evidence.compare",
     "report.create",
 ];
@@ -28,7 +29,7 @@ impl InvestigationGrant {
     }
 }
 
-/// Admit only the five fixed offline observations, validating existing startup resources without
+/// Admit only the fixed offline observations, validating existing startup resources without
 /// creating store entries. Every invocation checks identities on the actual descriptors/bytes used.
 pub fn investigation_grant(
     context: &OperatorContext,
@@ -103,7 +104,7 @@ pub fn normalize_investigation_input(operation: &str, inputs: &Value) -> Result<
             "invalid_evidence_input",
             "Evidence listing accepts an empty input object only.",
         )),
-        "evidence.open" => {
+        "evidence.open" | "evidence.replay" => {
             evidence::reference(inputs)?;
             Ok(inputs.clone())
         }
@@ -155,7 +156,7 @@ pub fn execute_with_investigation_grant(
             "evidence.list" => {
                 evidence::manage(&request, control, &grant.context, start, &mut result)
             }
-            "evidence.open" => {
+            "evidence.open" | "evidence.replay" => {
                 evidence::offline::run(&request, control, &grant.context, start, &mut result)
             }
             "evidence.compare" => {
