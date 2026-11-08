@@ -1,0 +1,223 @@
+{
+  "status": "passed",
+  "binary": {
+    "sha256": "7ed9a73b0d4a98fc6977232fef30f1530a2b3b352a3ed9aabfedc5f81db5a2f5",
+    "bytes": 50826592
+  },
+  "source_manifest_sha256": "c5b44bbad172e38698ce842524665c1ac6dab79739db12f5b55f288c9cc9db44",
+  "browser_version": "156.0.8078.4",
+  "cases": [
+    {
+      "name": "Context keyboard flow; pinned source, freshness, ownership and hostile text remain inert",
+      "status": "passed"
+    },
+    {
+      "name": "Saved evidence list exposes historical storage state and IDs",
+      "status": "passed"
+    },
+    {
+      "name": "Verified pinned inspection; canonical browser receipt download matches API bytes exactly",
+      "status": "passed"
+    },
+    {
+      "name": "Pinned replay keyboard flow, historical metric/log summaries, exact download and partial omissions in light/dark mobile views",
+      "status": "passed"
+    },
+    {
+      "name": "Comparable metric/log deltas and incompatible original windows remain distinct",
+      "status": "passed"
+    },
+    {
+      "name": "Plain-text report preview and explicit Markdown download; dark mobile view has no horizontal overflow",
+      "status": "passed"
+    },
+    {
+      "name": "Explicit JSON report download matches the retained report",
+      "status": "passed"
+    },
+    {
+      "name": "Session history reopens the original invocation without recomputation",
+      "status": "passed"
+    },
+    {
+      "name": "Real API authentication/origin, independent grants and request authority override refusals",
+      "status": "passed"
+    },
+    {
+      "name": "Manifest pin mismatch, missing evidence and bounded partial inspection retain honest receipts; dedup/conflicts preserved",
+      "status": "passed"
+    },
+    {
+      "name": "All browser/API observations leave source and retained store bytes/modes unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "Changed context bytes and same-content replacement store are refused by existing grants",
+      "status": "passed"
+    },
+    {
+      "name": "Corrupt historical manifest is rejected without repair or store mutation",
+      "status": "passed"
+    },
+    {
+      "name": "Stale context retains its provenance and cannot claim usable bindings",
+      "status": "passed"
+    },
+    {
+      "name": "Replay-only browser session requires no context source and grants no inspection authority",
+      "status": "passed"
+    },
+    {
+      "name": "Ungranting all operations removes runnable browser controls and denies direct API requests",
+      "status": "passed"
+    },
+    {
+      "name": "No browser script errors/remote requests; source and installed binary identities stable throughout acceptance",
+      "status": "passed"
+    }
+  ],
+  "receipts": [
+    {
+      "name": "browser-context",
+      "file": "browser-context.receipt.json",
+      "sha256": "11c8b1ace8b18ff4784c7ed9187e67a13ccd36a2d2680876eefba2eb027e8d93",
+      "operation": "context.resolve",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-list",
+      "file": "browser-list.receipt.json",
+      "sha256": "ca1b088165c509f3285efd65ec7eb5649a8dba13a4bba8a291c8222b0fa900d7",
+      "operation": "evidence.list",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-open",
+      "file": "browser-open.receipt.json",
+      "sha256": "25fa8a896f5ee2602fcd0fcaae848aa8477ee2744ca51d34756874cecefd5170",
+      "operation": "evidence.open",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-replay",
+      "file": "browser-replay.receipt.json",
+      "sha256": "e8c1d62d05552f833408bb8954a678bbd68d6c85df7b4ebf58451b3de4ff0349",
+      "operation": "evidence.replay",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-replay-limited",
+      "file": "browser-replay-limited.receipt.json",
+      "sha256": "c62b8f1d394b1589e96ec96aa4b5d58baebad6887e9b57d6d87ba5fbde3f7c20",
+      "operation": "evidence.replay",
+      "status": "partial"
+    },
+    {
+      "name": "browser-compare",
+      "file": "browser-compare.receipt.json",
+      "sha256": "ab0294e924af5160bcb527a306b8ccbecff3646b83ecf40618c9e1e9f0302ec6",
+      "operation": "evidence.compare",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-incompatible",
+      "file": "browser-incompatible.receipt.json",
+      "sha256": "5073ab57a03fec1548a3d23a9e9465227815b625a7e1dd88d49c7e537a7e8cb7",
+      "operation": "evidence.compare",
+      "status": "partial"
+    },
+    {
+      "name": "browser-report",
+      "file": "browser-report.receipt.json",
+      "sha256": "7a868446a729cab5873410081424558464d7c27022e875b09a4651bc957f9b97",
+      "operation": "report.create",
+      "status": "succeeded"
+    },
+    {
+      "name": "browser-report-json",
+      "file": "browser-report-json.receipt.json",
+      "sha256": "b1b8aa32f359168d6bd4cd51bd96948f5ab7db21c6c69c0fb6ff05bd8e16ee65",
+      "operation": "report.create",
+      "status": "succeeded"
+    },
+    {
+      "name": "api-bad-pin",
+      "file": "api-bad-pin.receipt.json",
+      "sha256": "24a17782f89c74d6816928f97a3fd1679664dc966d2aafbcc2e80ca6a8ef8385",
+      "operation": "evidence.open",
+      "status": "failed"
+    },
+    {
+      "name": "api-missing-bundle",
+      "file": "api-missing-bundle.receipt.json",
+      "sha256": "2cee37f518b994be23ea13308374615a66632217e8c85f4a9925f031d42ab1e4",
+      "operation": "evidence.open",
+      "status": "failed"
+    },
+    {
+      "name": "api-replay-bad-pin",
+      "file": "api-replay-bad-pin.receipt.json",
+      "sha256": "2570dfbbfaad1ef04dd4ab68e4fc1a1f9111661ba00e40a1ee97a34d60ed392d",
+      "operation": "evidence.replay",
+      "status": "failed"
+    },
+    {
+      "name": "api-bounded-open",
+      "file": "api-bounded-open.receipt.json",
+      "sha256": "4d3f1086fbf78f7ee288fbf20d25a5019aeef065b1de5a2016b988c5d792d8f4",
+      "operation": "evidence.open",
+      "status": "partial"
+    },
+    {
+      "name": "api-source-changed",
+      "file": "api-source-changed.receipt.json",
+      "sha256": "6d186185e869d2eeeac762f64f8d90f1b95cb5cb048c55fe364f847ed0c1deb4",
+      "operation": "context.resolve",
+      "status": "denied"
+    },
+    {
+      "name": "api-store-replaced",
+      "file": "api-store-replaced.receipt.json",
+      "sha256": "6040cbbb1af6d9b710ecaf527cda0dcabcf828e70954bf727072ede90b1943c8",
+      "operation": "evidence.list",
+      "status": "failed"
+    },
+    {
+      "name": "api-replay-store-replaced",
+      "file": "api-replay-store-replaced.receipt.json",
+      "sha256": "4f1a9ad1fc1e07ba90385277d5bb736ba1a6a55f9acc3e725f1e0b2a9e1dcbba",
+      "operation": "evidence.replay",
+      "status": "failed"
+    },
+    {
+      "name": "api-corrupt-bundle",
+      "file": "api-corrupt-bundle.receipt.json",
+      "sha256": "c60a40e14d76c4c0d543447edfdd6df304489304a7b5c5e29f6b7f5619b597a2",
+      "operation": "evidence.open",
+      "status": "failed"
+    },
+    {
+      "name": "api-corrupt-replay",
+      "file": "api-corrupt-replay.receipt.json",
+      "sha256": "862481d611923021bb5312ed3f4313693bd049539f33c0714c0d2cb888bd7127",
+      "operation": "evidence.replay",
+      "status": "failed"
+    },
+    {
+      "name": "api-stale-context",
+      "file": "api-stale-context.receipt.json",
+      "sha256": "269b60596e8e5947555b9a7c6a6add955ff557f013a558c43e330465838c73b7",
+      "operation": "context.resolve",
+      "status": "denied"
+    }
+  ],
+  "screenshots": [
+    "context-light.png",
+    "evidence-light.png",
+    "replay-light.png",
+    "replay-mobile-dark.png",
+    "replay-results-mobile-dark.png",
+    "compare-dark.png",
+    "report-mobile-dark.png"
+  ]
+}

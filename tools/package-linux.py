@@ -23,6 +23,7 @@ import tempfile
 import uuid
 
 REVISION = 1
+BUNDLE_REVISION = 2
 MAX_ARCHIVE = 96 * 1024 * 1024
 MAX_BINARY = 64 * 1024 * 1024
 MAX_DATA_FILE = 4 * 1024 * 1024
@@ -39,9 +40,12 @@ FIXED = {"bin/save", SOURCE, BUILD, INVENTORY, "README.txt"}
 REQUIRED_NOTICES = {"notices/LICENSE", "notices/project/third-party__save-toolkit-LICENSE.txt",
                     "notices/project/crates__workbench-core__resources__dashboard-hygiene__LICENSE",
                     "notices/project/crates__workbench-core__resources__error-budget__LICENSE"}
-COMPATIBILITY = {"record": "never", "ui_history": "session-only",
-                 "storage_migrations": "none", "external_config": "untouched",
-                 "authority": "invoking-account"}
+LEGACY_COMPATIBILITY = {"record": "never", "ui_history": "session-only",
+                        "storage_migrations": "none", "external_config": "untouched",
+                        "authority": "invoking-account"}
+COMPATIBILITY = {"record": "per-operation", "ui_history": "session-only",
+                 "persistent_stores": "explicit-external", "storage_migrations": "none",
+                 "external_config": "untouched", "authority": "invoking-account"}
 SHA = re.compile(r"[0-9a-f]{64}\Z")
 GIT = re.compile(r"[0-9a-f]{40}\Z")
 VERSION = re.compile(r"[0-9A-Za-z][0-9A-Za-z.+-]{0,63}\Z")
@@ -298,7 +302,7 @@ def manifest_metadata(data: bytes) -> dict:
     value = object_keys(bounded_json(data), {"schema_version", "archive_format", "artifact_id", "product",
                         "source", "binary", "platform", "build_provenance", "dependency_inventory",
                         "compatibility", "files"})
-    require(type(value["schema_version"]) is int and value["schema_version"] == REVISION,
+    require(type(value["schema_version"]) is int and value["schema_version"] in (1, BUNDLE_REVISION),
             "unsupported bundle manifest revision")
     require(value["archive_format"] == "canonical-ustar-v1", "unsupported archive format")
     product = object_keys(value["product"], {"name", "version"})
@@ -318,7 +322,8 @@ def manifest_metadata(data: bytes) -> dict:
     inventory = object_keys(value["dependency_inventory"], {"path", "sha256", "scope", "distribution_gaps"})
     require(inventory["path"] == INVENTORY, "invalid inventory path")
     sha(inventory["sha256"])
-    require(value["compatibility"] == COMPATIBILITY, "unsupported storage/authority compatibility")
+    compatibility = LEGACY_COMPATIBILITY if value["schema_version"] == 1 else COMPATIBILITY
+    require(value["compatibility"] == compatibility, "unsupported storage/authority compatibility")
     files = value["files"]
     require(isinstance(files, list) and 0 < len(files) <= MAX_FILES, "file count exceeds limit")
     names = []
@@ -493,8 +498,12 @@ def create(options) -> dict:
         "Validation does not run archive code, product commands or post-install hooks.\n"
         "Versions are retained and never overwritten by the installer. Selection is atomic\n"
         "within the filesystem; power-loss durability is not claimed.\n"
-        "record=never; UI history is session-only; there are no storage/config migrations.\n"
-        "External config and evidence are never rewritten. Same-account modification remains possible.\n"
+        "Recording is operation-specific and requires explicit operation/store authority.\n"
+        "Persistent stores live outside version directories; UI history is session-only.\n"
+        "The installer does not migrate storage or external configuration.\n"
+        "Rollback selects older executable bytes; it does not establish that newer store formats\n"
+        "are readable by that version. Check the selected operation's store compatibility.\n"
+        "The installer never rewrites external config or evidence. Same-account modification remains possible.\n"
         "Dependency inventory scope and unresolved distribution gaps are in the manifest\n"
         "and provenance/dependency-inventory.json. Inventory does not prove binary linkage.\n"
         f"Distribution gaps (prepared inventory): {json.dumps(inventory['distribution_gaps'], ensure_ascii=True, sort_keys=True)}\n"
@@ -504,7 +513,7 @@ def create(options) -> dict:
         "other files <=4MiB; <=4096 directories; JSON <=1MiB/depth32/100000 values; ASCII paths <=200 bytes.\n"
     ).encode("ascii")
     entries = [descriptor(name, files[name]) for name in sorted(files)]
-    manifest = {"schema_version": REVISION, "archive_format": "canonical-ustar-v1", "artifact_id": ident,
+    manifest = {"schema_version": BUNDLE_REVISION, "archive_format": "canonical-ustar-v1", "artifact_id": ident,
                 "product": {"name": "save", "version": options.product_version},
                 "source": {"path": SOURCE, "sha256": source_sha,
                            "git_commit": source["git_commit"], "git_tree": source["git_tree"]},
@@ -595,7 +604,7 @@ def verify_installed(release: Path, ident: str) -> tuple[dict, dict]:
                           {"schema_version", "artifact_id", "archive_sha256", "manifest_sha256", "compatibility"})
     require(type(receipt["schema_version"]) is int and receipt["schema_version"] == REVISION
             and receipt["artifact_id"] == ident and receipt["manifest_sha256"] == digest(manifest_data)
-            and receipt["compatibility"] == COMPATIBILITY, "installed receipt mismatch")
+            and receipt["compatibility"] == manifest["compatibility"], "installed receipt mismatch")
     sha(receipt["archive_sha256"])
     require(stat.S_IMODE((release / "install.json").lstat().st_mode) == 0o644, "installed receipt mode mismatch")
     expected = {item["path"] for item in manifest["files"]} | {"manifest.json", "install.json"}
@@ -675,7 +684,7 @@ def install(options) -> dict:
                         require(checksum.hexdigest() == item["sha256"], "archive changed during install")
                     receipt = {"schema_version": REVISION, "artifact_id": ident,
                                "archive_sha256": options.expected_sha256, "manifest_sha256": manifest_sha,
-                               "compatibility": COMPATIBILITY}
+                               "compatibility": manifest["compatibility"]}
                     (staging / "install.json").write_bytes(canonical(receipt))
                     (staging / "install.json").chmod(0o644)
                     # Pin directory modes despite the caller's umask and verify the staged
@@ -694,7 +703,7 @@ def install(options) -> dict:
             installed(options.root, ident)
     return {"operation": "install", "status": state, "artifact_id": ident,
             "archive_sha256": options.expected_sha256, "release": str(release),
-            "binary": str(release / "bin/save"), "selected": False, "compatibility": COMPATIBILITY}
+            "binary": str(release / "bin/save"), "selected": False, "compatibility": manifest["compatibility"]}
 
 
 def selection(options) -> dict:
@@ -719,7 +728,7 @@ def selection(options) -> dict:
     return {"operation": options.operation, "status": "selected", "artifact_id": manifest["artifact_id"],
             "previous_artifact_id": previous, "archive_sha256": receipt["archive_sha256"],
             "pointer": f"releases/{options.artifact_id}", "binary": str(current / "bin/save"),
-            "compatibility": COMPATIBILITY}
+            "compatibility": manifest["compatibility"]}
 
 
 def main() -> int:

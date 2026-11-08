@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "workspace": {
+    "command": "tools/test-sandbox.sh cargo test --workspace --all-features --locked --offline",
+    "exit_code": 0,
+    "passed": 601,
+    "failed": 0,
+    "ignored": 33,
+    "log": "commands/workspace-tests.log"
+  },
+  "frontend": {
+    "all_tests_passed": 88,
+    "focused_after_test_lint_adjustment": 22,
+    "typecheck": "passed",
+    "eslint": "passed",
+    "build": "passed",
+    "generated_api": "passed"
+  },
+  "clippy": "workspace all targets and features passed with -D warnings",
+  "schemas": "108 schemas, 72 positive and 63 negative fixtures; embedded schema sync passed",
+  "browser": "17 groups, 19 canonical receipts, 39 OpenAPI transactions; light and dark/mobile screenshots inspected",
+  "source_manifest_sha256": "c5b44bbad172e38698ce842524665c1ac6dab79739db12f5b55f288c9cc9db44",
+  "failed_attempts": [
+    {
+      "kind": "expected red tests",
+      "reason": "Browser replay absent: 3 HTTP integration failures and 3 frontend failures before implementation"
+    },
+    {
+      "kind": "test lint",
+      "reason": "expect.any matcher violated no-unsafe-assignment; corrected assertion only"
+    },
+    {
+      "kind": "browser harness",
+      "reason": "History selection navigates to Checks; driver now reopens History before the next selection"
+    }
+  ]
+}

@@ -13,13 +13,27 @@ import { InvestigationResult } from './InvestigationResult';
 afterEach(cleanup);
 const session: Session = { api_version: '0.1', session_id: 'offline', roots: [], targets: [],
  operations: [ { id: 'context.resolve', version: 1, profile: 'offline-context-v1' },
- ...(['evidence.list', 'evidence.open', 'evidence.compare', 'report.create'] as const).map(id => ({ id, version: 1 as const, profile: 'verified-evidence-v1' as const })) ],
+ ...(['evidence.list', 'evidence.open', 'evidence.replay', 'evidence.compare', 'report.create'] as const).map(id => ({ id, version: 1 as const, profile: 'verified-evidence-v1' as const })) ],
  limits: { active_runs: 1, history_entries: 50, history_bytes: 16777216, max_request_bytes: 65536, max_submissions: 1024 } };
 const before = 'run-1-ab-c'; const after = 'run-2-ab-c'; const pin = `sha256:${'a'.repeat(64)}`;
 describe('offline investigation admission', () => {
  it('intersects each independent operation grant without needing roots or targets', () => {
-  expect(availableChecks(session)).toEqual(['context', 'evidence-list', 'evidence-open', 'evidence-compare', 'evidence-report']);
+  expect(availableChecks(session)).toEqual(['context', 'evidence-list', 'evidence-open', 'evidence-replay', 'evidence-compare', 'evidence-report']);
   expect(availableChecks({ ...session, operations: [session.operations[2]!] })).toEqual(['evidence-open']);
+ });
+ it('replay has an independent form and sends only its reference and bounds', async () => {
+  const replayOnly: Session = { ...session, operations: [{ id: 'evidence.replay', version: 1, profile: 'verified-evidence-v1' }] };
+  expect(availableChecks(replayOnly)).toEqual(['evidence-replay']);
+  const user = userEvent.setup(); const submit = vi.fn();
+  render(<CheckForm session={replayOnly} check="evidence-replay" busy={false} submitting={false} onSubmit={submit} onSelection={vi.fn()} />);
+  expect(screen.queryByLabelText('Workspace')).toBeNull();
+  await user.click(screen.getByRole('button', { name: 'Run check' }));
+  expect(document.activeElement).toBe(screen.getByLabelText('Evidence ID'));
+  await user.type(screen.getByLabelText('Evidence ID'), before);
+  await user.clear(screen.getByLabelText('Maximum detail items'));
+  await user.type(screen.getByLabelText('Maximum detail items'), '1');
+  await user.click(screen.getByRole('button', { name: 'Run check' }));
+  expect(submit.mock.calls[0]?.[0]).toMatchObject({ operation: 'evidence.replay', operation_version: 1, inputs: { id: before }, limits: { timeout_ms: 30000, max_output_bytes: 16384, max_items: 1 } });
  });
  it('sends exact direct inputs and only operation-specific limits', () => {
   expect(makeSubmission({ ...initialValues, check: 'context', service: 'orders', environment: 'test' }, 'context.resolve', 'id')).toEqual({ submission_id: 'id', operation_version: 1, operation: 'context.resolve', inputs: { service: 'orders', environment: 'test' }, limits: { timeout_ms: 30000, max_output_bytes: 16384 } });
@@ -58,7 +72,7 @@ describe('offline investigation admission', () => {
  });
 });
 describe('historical evidence presentation', () => {
- it.each(['evidence.open', 'evidence.compare'])('renders prototype-named keys in %s nested evidence labels as inert text', operation => {
+ it.each(['evidence.open', 'evidence.replay', 'evidence.compare'])('renders prototype-named keys in %s nested evidence labels as inert text', operation => {
   const evidenceLabels: unknown = JSON.parse('{"__proto__":"proto label value","constructor":"constructor label value","toString":"toString label value","job":"orders"}');
   const { container } = render(<InvestigationResult operation={operation} data={{
     state: 'complete', bundle: { id: before, digest: pin }, observation: { window: { from: '2026-10-01T00:00:00Z', to: '2026-10-01T01:00:00Z' } },

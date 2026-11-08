@@ -1,0 +1,14 @@
+{
+  "actionable_findings": 0,
+  "base_sha": "96476b24ae100f2a20d56b66c9ad5532346b7031",
+  "independently_found_p0_p1": 0,
+  "qualification": "Mutable working-tree review. Production packaging code unchanged afterward. Later verifier changes and documentation/evidence updates are outside this static review; actual installed verifier checks passed. Final README-related 34-test rerun was completed before evidence capture.",
+  "reviewer": "review_mcp_replay",
+  "scope": [
+    "tools/package-linux.py",
+    "tools/test-package-linux.py",
+    "docs/packaging.md"
+  ],
+  "scoped_git_diff_binary_sha256": "a8d03aa31d0362ef838aaef2650b207fb9a31b685a3b03abb9a129ce54f8947b",
+  "static_only": true
+}

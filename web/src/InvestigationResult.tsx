@@ -58,15 +58,15 @@ export function InvestigationResult({ operation, data }: { operation: string; da
       <Section name="Resolution and freshness" value={data.resolution} />
       <Section name="Service ownership, bindings and dependencies" value={data.record} />
       <Section name="Context source" value={data.source} />
-    </> : operation === 'evidence.list' ? <section className="investigation-section"><h3>Saved evidence</h3><p className="field-hint">Copy an ID to Inspect evidence, Compare evidence or Evidence report. List entries describe storage state; inspection verifies the bundle.</p>
+    </> : operation === 'evidence.list' ? <section className="investigation-section"><h3>Saved evidence</h3><p className="field-hint">Copy an ID to Inspect evidence, Replay evidence, Compare evidence or Evidence report. List entries describe storage state; inspection verifies the bundle.</p>
       {Array.isArray(data.runs) && data.runs.length === 0 && <p>No saved evidence returned.</p>}
       {Array.isArray(data.runs) && data.runs.filter(isRecord).map((run, index) => <article className="diagnostic-step" key={index}><h3>{typeof run.id === 'string' ? plainText(run.id) : 'Evidence ID unavailable'}</h3>
         <Fields value={Object.fromEntries(Object.entries(run).filter(([key]) => key !== 'id').map(([key, value]) => [key, key === 'created_at_unix_ms' || key === 'finalized_at_unix_ms' ? storedTime(value) : value]))} />
       </article>)}
-    </section> : operation === 'evidence.open' ? <>
+    </section> : operation === 'evidence.open' || operation === 'evidence.replay' ? <>
       <Section name="Verified bundle" value={data.bundle} /><Section name="Original observation window and capture" value={data.observation} />
       <Section name="Source limitations" value={data.source_limitations} /><Checks value={data.checks} />
-      <details className="step-observation"><summary>Manifest and analysis provenance</summary><Fields value={{ manifest: data.manifest, analysis: data.analysis, algorithm: data.algorithm, omitted_details: data.omitted_details }} /></details>
+      <details className="step-observation"><summary>{operation === 'evidence.replay' ? 'Analysis provenance' : 'Manifest and analysis provenance'}</summary><Fields value={{ ...(operation === 'evidence.open' ? { manifest: data.manifest } : {}), analysis: data.analysis, algorithm: data.algorithm, omitted_details: data.omitted_details }} /></details>
     </> : operation === 'evidence.compare' ? <>
       <Section name="Compatibility and reasons" value={data.compatibility} /><Section name="Comparison normalization" value={data.normalization} />
       <Section name="Baseline original observation" value={data.before} /><Section name="Comparison original observation" value={data.after} />

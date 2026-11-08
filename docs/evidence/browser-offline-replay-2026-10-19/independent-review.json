@@ -1,0 +1,18 @@
+{
+  "type": "independent_static_review",
+  "reviewer": "review_mcp_replay",
+  "base_sha": "96476b24ae100f2a20d56b66c9ad5532346b7031",
+  "tracked_diff_binary_sha256": "3637374fb2d4eed846fd7ba67955810696b3e184a49a84690881d6114a046e34",
+  "untracked_asset": "web/dist/assets/index-CPTAZ2VG.js",
+  "asset_sha256": "710e8bd88e7fa822a67dd737d295ef67027d138756729705b057eb13916c22b7",
+  "validated_p0_p1_p2_findings": [],
+  "assessment": "Exact independent grant, canonical inputs/results, store pinning, inert rendering and existing history/download lifecycle preserved. Core and MCP unchanged.",
+  "verdict": "Provisional mutable-byte static review; no formal merge approval.",
+  "post_review_changes": "Only browser harness navigation back to History before its second selection, an additional mobile result screenshot, and acceptance/roadmap records. Product bytes unchanged.",
+  "excluded": [
+    "Native platforms",
+    "Live sources",
+    "Actual agent-host compatibility",
+    "Acceptance/roadmap records"
+  ]
+}

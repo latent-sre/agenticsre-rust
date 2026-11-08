@@ -1,5 +1,9 @@
 # Linux development bundle acceptance
 
+This is the historical stateless/context artifact record. The [current browser replay candidate
+record](acceptance-bundle-verification.md) covers the newer persistent-operation compatibility
+declaration and its own installed upgrade/rollback evidence.
+
 Independent verdict: **PASS** for the current context-containing development bundle. Its installed
 CLI/context/tasks, MCP/UI, upgrade and rollback checks passed on Cally. Original MCP/GUI bundle
 acceptance and the separate unavailable-Python fixture remain retained below.

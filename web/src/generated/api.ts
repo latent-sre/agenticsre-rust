@@ -436,7 +436,7 @@ export interface components {
             operation: "task.run";
             inputs: components["schemas"]["TaskInputs"];
         };
-        RunSubmission: components["schemas"]["CommandSubmission"] | components["schemas"]["TaskSubmission"] | components["schemas"]["DiagnosticSubmission"] | components["schemas"]["ContextSubmission"] | components["schemas"]["EvidenceListSubmission"] | components["schemas"]["EvidenceOpenSubmission"] | components["schemas"]["EvidenceCompareSubmission"] | components["schemas"]["ReportSubmission"] | components["schemas"]["QueryListSubmission"] | components["schemas"]["QueryDescribeSubmission"] | components["schemas"]["QueryRunSubmission"] | components["schemas"]["CollectionListSubmission"] | components["schemas"]["CollectionDescribeSubmission"] | components["schemas"]["CollectionRunSubmission"];
+        RunSubmission: components["schemas"]["CommandSubmission"] | components["schemas"]["TaskSubmission"] | components["schemas"]["DiagnosticSubmission"] | components["schemas"]["ContextSubmission"] | components["schemas"]["EvidenceListSubmission"] | components["schemas"]["EvidenceOpenSubmission"] | components["schemas"]["EvidenceReplaySubmission"] | components["schemas"]["EvidenceCompareSubmission"] | components["schemas"]["ReportSubmission"] | components["schemas"]["QueryListSubmission"] | components["schemas"]["QueryDescribeSubmission"] | components["schemas"]["QueryRunSubmission"] | components["schemas"]["CollectionListSubmission"] | components["schemas"]["CollectionDescribeSubmission"] | components["schemas"]["CollectionRunSubmission"];
         /**
          * @example {
          *       "id": "inv-example",
@@ -464,7 +464,7 @@ export interface components {
         RunSummary: {
             id: string;
             /** @enum {unknown} */
-            operation: "process.exec" | "command.inspect" | "task.run" | "diagnostics.run" | "context.resolve" | "evidence.list" | "evidence.open" | "evidence.compare" | "report.create" | "queries.list" | "queries.describe" | "query.run" | "evidence.packs.list" | "evidence.packs.describe" | "evidence.collect";
+            operation: "process.exec" | "command.inspect" | "task.run" | "diagnostics.run" | "context.resolve" | "evidence.list" | "evidence.open" | "evidence.replay" | "evidence.compare" | "report.create" | "queries.list" | "queries.describe" | "query.run" | "evidence.packs.list" | "evidence.packs.describe" | "evidence.collect";
             check_label: string;
             root_id: string | null;
             /** @enum {unknown} */
@@ -1797,7 +1797,7 @@ export interface components {
         };
         EvidenceOperation: {
             /** @enum {unknown} */
-            id: "evidence.list" | "evidence.open" | "evidence.compare" | "report.create";
+            id: "evidence.list" | "evidence.open" | "evidence.replay" | "evidence.compare" | "report.create";
             /** @constant */
             version: 1;
             /** @constant */
@@ -2402,6 +2402,16 @@ export interface components {
                 digest: string;
             } | null;
             delivery_cancellation_signal: number | null;
+        };
+        EvidenceReplaySubmission: {
+            /** Format: uuid */
+            submission_id: string;
+            /** @constant */
+            operation_version: 1;
+            limits: components["schemas"]["EvidenceLimits"];
+            /** @constant */
+            operation: "evidence.replay";
+            inputs: components["schemas"]["CoreEvidenceReferenceInput"];
         };
     };
     responses: never;

@@ -1,6 +1,6 @@
 # Local browser workbench — interface contract
 
-- **Version:** 0.1.5 (wire `api_version` remains `0.1`), 2026-10-19.
+- **Version:** 0.1.6 (wire `api_version` remains `0.1`), 2026-10-19.
 - **Owner:** GUI backend builder owns this contract and `docs/ui/openapi.json` during implementation;
   changes go through the coordinator and must reach the frontend builder before use.
 - **Status:** The owner selected a local browser app with direct checks and results/history, ahead
@@ -54,7 +54,7 @@ The launcher supplies repeated `--allow` operation IDs (`process.exec`, `command
 trusted `--read-policy` and at least one declared, permitted root. `task.run` grants only
 `error-budget` version 1. The diagnostic extension grants `diagnostics.run` separately. Offline
 investigations independently grant `context.resolve`, `evidence.list`, `evidence.open`,
-`evidence.compare` and `report.create`. Context requires paired `--context-source` and
+`evidence.replay`, `evidence.compare` and `report.create`. Context requires paired `--context-source` and
 `--context-max-age-days`; evidence/report grants require an existing private `--state-dir`.
 Startup inputs without their matching grants are refused, as are browser store size/retention
 overrides. Unknown/duplicate grants and missing prerequisites fail startup clearly.
@@ -115,9 +115,9 @@ Response `200`:
 ```
 
 Offline investigation descriptors contain only `id`, `version: 1` and `profile`:
-`offline-context-v1` for `context.resolve`, `verified-evidence-v1` for the other four.
+`offline-context-v1` for `context.resolve`, `verified-evidence-v1` for the other five.
 They add no source/store paths or new session fields. Their submissions use direct core inputs
-and omit `root_id` and `target_id`; `max_items` is available only for open/compare, with an effective
+and omit `root_id` and `target_id`; `max_items` is available only for open/replay/compare, with an effective
 default of 100 and range 1–1000. The [investigation contract](investigation-ui.md) gives each input
 and result view. All operations use the existing run and receipt endpoints.
 
@@ -284,3 +284,4 @@ same policy digest at admission and records an unchanged denial receipt if it ch
 | 0.1 | Owner-selected browser/checks scope, approved mockup, shared-core HTTP/session contract | GUI backend and frontend builders |
 | 0.1.1 | Pin fragment format, bootstrap, HTTP/worker bounds and embedded-build behavior; wire API stays 0.1 | GUI frontend and coordinator |
 | 0.1.3 | Independently granted offline context, evidence inspection/comparison and report previews; existing run/history boundary | GUI backend and frontend builders |
+| 0.1.6 | Independent offline replay grant, historical metric/log projections and explicit omissions through existing forms/results/history | GUI backend and frontend |

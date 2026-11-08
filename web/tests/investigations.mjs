@@ -15,15 +15,19 @@ const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const beforeId = 'run-9-18dd60cacef0724e-1';
 const afterId = 'run-16-18dd60cad194352b-1';
 const shiftedId = 'run-23-18dd60cad423c07a-1';
-const operations = ['context.resolve', 'evidence.list', 'evidence.open', 'evidence.compare', 'report.create'];
+const operations = ['context.resolve', 'evidence.list', 'evidence.open', 'evidence.replay', 'evidence.compare', 'report.create'];
 const cases = [];
 const receipts = [];
+const contracts = [];
 const screenshots = [];
 const children = [];
 const hostile = '<img src="https://example.invalid/x" onerror="window.investigationExecuted=1">';
 let browser;
 const scratch = await fs.mkdtemp(path.join(os.tmpdir(), 'investigation-browser-'));
 await fs.mkdir(output, { recursive: true });
+const installedBinary = path.join(scratch, 'save');
+await fs.copyFile(binary, installedBinary);
+await fs.chmod(installedBinary, 0o700);
 
 async function snapshot(directory, base = directory) {
   const entries = [];
@@ -60,7 +64,7 @@ async function privateCopy(source, destination) {
   }
 }
 async function startServer(args) {
-  const child = spawn(binary, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+  const child = spawn(installedBinary, args, { cwd: scratch, stdio: ['ignore', 'pipe', 'pipe'] });
   children.push(child);
   let stderr = '';
   child.stderr.on('data', value => { stderr += value; });
@@ -97,6 +101,7 @@ async function terminal(server, id) {
 }
 async function retain(server, id, name) {
   const run = await terminal(server, id);
+  contracts.push({ schema: 'RunSummary', value: run });
   const response = await server.request('GET', run.receipt_url);
   assert.equal(response.status, 200);
   const result = JSON.parse(response.text);
@@ -109,6 +114,7 @@ async function retain(server, id, name) {
 }
 async function runApi(server, operation, inputs, name, limits) {
   const body = payload(operation, inputs, limits);
+  contracts.push({ schema: 'RunSubmission', value: body });
   const admitted = await server.request('POST', '/api/v1/runs', body);
   assert.equal(admitted.status, 202, admitted.text);
   const record = await retain(server, JSON.parse(admitted.text).id, name);
@@ -138,6 +144,7 @@ try {
   const sessionReply = await server.request('GET', '/api/v1/session');
   assert.equal(sessionReply.status, 200);
   const session = JSON.parse(sessionReply.text);
+  contracts.push({ schema: 'Session', value: session });
   assert.deepEqual(session.operations.map(op => op.id).sort(), [...operations].sort());
   assert.equal(session.roots.length, 0); assert.equal(session.targets.length, 0);
   assert(!sessionReply.text.includes(scratch));
@@ -153,7 +160,7 @@ try {
   await page.goto(server.origin + '/#token=' + server.token);
   await page.locator('#check').waitFor();
   assert(!page.url().includes('token='));
-  assert.deepEqual(await page.locator('#check option').evaluateAll(nodes => nodes.map(node => node.value)), ['context', 'evidence-list', 'evidence-open', 'evidence-compare', 'evidence-report']);
+  assert.deepEqual(await page.locator('#check option').evaluateAll(nodes => nodes.map(node => node.value)), ['context', 'evidence-list', 'evidence-open', 'evidence-replay', 'evidence-compare', 'evidence-report']);
   const resultPanel = page.getByLabel('Offline investigation result');
   async function screenshot(name, fullPage = true) {
     const file = name + '.png';
@@ -174,6 +181,7 @@ try {
     const reply = await replyPromise;
     assert.equal(reply.status(), 202, await reply.text());
     const run = await reply.json();
+    contracts.push({ schema: 'RunSubmission', value: reply.request().postDataJSON() });
     const record = await retain(server, run.id, name);
     await page.waitForFunction(id => new URL(location.href).searchParams.get('run') === id, run.id);
     await page.getByRole('button', { name: 'Download result', exact: true }).waitFor();
@@ -211,6 +219,30 @@ try {
   assert.equal(canonical.bytes.toString(), opened.text);
   await screenshot('evidence-light');
   passed('Verified pinned inspection; canonical browser receipt download matches API bytes exactly');
+  const replayed = await runBrowser('evidence-replay', { bundleId: beforeId, bundlePin: manifestPin }, 'browser-replay', true);
+  assert.equal(replayed.result.execution.status, 'succeeded');
+  assert.equal(replayed.result.data.mode, 'replay');
+  assert.equal(replayed.result.data.analysis.profile, 'linux-offline-v1');
+  assert.deepEqual(replayed.result.data.observation, opened.result.data.observation);
+  assert((await resultPanel.innerText()).includes('Metrics'));
+  assert((await resultPanel.innerText()).includes('Logs'));
+  const replayDownload = await download('Download result', 'browser-replay.download.json');
+  assert.equal(replayDownload.bytes.toString(), replayed.text);
+  await screenshot('replay-light');
+  const limitedReplay = await runBrowser('evidence-replay', { maxItems: '1' }, 'browser-replay-limited');
+  assert.equal(limitedReplay.result.execution.status, 'partial');
+  assert(limitedReplay.result.data.omitted_details > 0);
+  assert((await resultPanel.innerText()).includes('Omitted detail items'));
+  await page.getByRole('button', { name: 'Dark', exact: true }).first().click();
+  await page.setViewportSize({ width: 390, height: 844 });
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'replay mobile horizontal overflow');
+  await screenshot('replay-mobile-dark', false);
+  await resultPanel.getByRole('heading', { name: 'Returned checks', exact: true }).scrollIntoViewIfNeeded();
+  await screenshot('replay-results-mobile-dark', false);
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await page.getByRole('button', { name: 'Light', exact: true }).first().click();
+  await page.locator('#maxItems').fill('100');
+  passed('Pinned replay keyboard flow, historical metric/log summaries, exact download and partial omissions in light/dark mobile views');
   const compared = await runBrowser('evidence-compare', { beforeId, afterId }, 'browser-compare');
   assert.equal(compared.result.execution.status, 'succeeded');
   await page.getByRole('button', { name: 'Dark', exact: true }).first().click();
@@ -245,6 +277,11 @@ try {
   await page.getByRole('button', { name: 'Download result', exact: true }).waitFor();
   const reopened = await download('Download result', 'history-open.download.json');
   assert.equal(reopened.bytes.toString(), opened.text);
+  await page.getByRole('link', { name: /Run history/u }).first().click();
+  await page.getByLabel('Session history').getByRole('button', { name: /Replay evidence/u }).last().click();
+  await page.getByRole('button', { name: 'Download result', exact: true }).waitFor();
+  const replayHistory = await download('Download result', 'history-replay.download.json');
+  assert.equal(replayHistory.bytes.toString(), replayed.text);
   passed('Session history reopens the original invocation without recomputation');
 
   assert.equal((await server.request('GET', '/api/v1/session', undefined, { Authorization: '' })).status, 401);
@@ -257,6 +294,8 @@ try {
   assert.notEqual(badPin.result.execution.status, 'succeeded');
   const missing = await runApi(server, 'evidence.open', { id: 'run-1-0000000000000000-1' }, 'api-missing-bundle');
   assert.notEqual(missing.result.execution.status, 'succeeded');
+  const replayBadPin = await runApi(server, 'evidence.replay', { id: beforeId, expected_manifest_sha256: 'sha256:' + '0'.repeat(64) }, 'api-replay-bad-pin');
+  assert.equal(replayBadPin.result.execution.status, 'failed');
   const bounded = await runApi(server, 'evidence.open', { id: beforeId }, 'api-bounded-open', { max_items: 1 });
   assert.equal(bounded.result.execution.status, 'partial');
   passed('Manifest pin mismatch, missing evidence and bounded partial inspection retain honest receipts; dedup/conflicts preserved');
@@ -273,6 +312,8 @@ try {
   await privateCopy(store + '-original', store);
   const storeSwap = await runApi(server, 'evidence.list', {}, 'api-store-replaced');
   assert.notEqual(storeSwap.result.execution.status, 'succeeded');
+  const replayStoreSwap = await runApi(server, 'evidence.replay', { id: beforeId }, 'api-replay-store-replaced');
+  assert.equal(replayStoreSwap.result.errors[0].code, 'store_identity_changed');
   assert.deepEqual(await snapshot(store + '-original'), storeBefore);
   assert.deepEqual(await snapshot(store), storeBefore);
   passed('Changed context bytes and same-content replacement store are refused by existing grants');
@@ -281,9 +322,11 @@ try {
   await privateCopy(store, corruptStore);
   await fs.writeFile(path.join(corruptStore, 'runs', beforeId, 'manifest.json'), '{');
   const corruptBefore = await snapshot(corruptStore);
-  const corruptServer = await startServer(['--state-dir', corruptStore, 'ui', 'serve', '--allow', 'evidence.open']);
+  const corruptServer = await startServer(['--state-dir', corruptStore, 'ui', 'serve', '--allow', 'evidence.open', '--allow', 'evidence.replay']);
   const corrupt = await runApi(corruptServer, 'evidence.open', { id: beforeId }, 'api-corrupt-bundle');
   assert.notEqual(corrupt.result.execution.status, 'succeeded');
+  const corruptReplay = await runApi(corruptServer, 'evidence.replay', { id: beforeId }, 'api-corrupt-replay');
+  assert.equal(corruptReplay.result.execution.status, 'failed');
   assert.deepEqual(await snapshot(corruptStore), corruptBefore);
   passed('Corrupt historical manifest is rejected without repair or store mutation');
 
@@ -297,6 +340,14 @@ try {
   assert.notEqual(stale.result.execution.status, 'succeeded');
   passed('Stale context retains its provenance and cannot claim usable bindings');
 
+  const replayOnly = await startServer(['--state-dir', store, 'ui', 'serve', '--allow', 'evidence.replay']);
+  const replayPage = await browserContext.newPage();
+  await replayPage.goto(replayOnly.origin + '/#token=' + replayOnly.token);
+  await replayPage.locator('#check').waitFor();
+  assert.deepEqual(await replayPage.locator('#check option').evaluateAll(nodes => nodes.map(node => node.value)), ['evidence-replay']);
+  assert.equal((await replayOnly.request('POST', '/api/v1/runs', payload('evidence.open', { id: beforeId }))).status, 403);
+  await replayPage.close();
+  passed('Replay-only browser session requires no context source and grants no inspection authority');
   const empty = await startServer(['ui', 'serve']);
   const emptyPage = await browserContext.newPage();
   await emptyPage.goto(empty.origin + '/#token=' + empty.token);
@@ -308,8 +359,10 @@ try {
   assert.deepEqual(browserErrors, []);
   assert.deepEqual(remoteRequests, []);
   assert.equal(sha(await fs.readFile(binary)), binaryHash);
+  assert.equal(sha(await fs.readFile(installedBinary)), binaryHash);
   assert.deepEqual(await sourceSnapshot(), sourcesBefore);
   passed('No browser script errors/remote requests; source and installed binary identities stable throughout acceptance');
+  await fs.writeFile(path.join(output, 'contracts.json'), JSON.stringify(contracts, null, 2) + '\n');
   await fs.writeFile(path.join(output, 'source-manifest.json'), JSON.stringify(sourcesBefore, null, 2) + '\n');
   await fs.writeFile(path.join(output, 'summary.json'), JSON.stringify({ status: 'passed', binary: { sha256: binaryHash, bytes: binaryBytes.length }, source_manifest_sha256: sha(JSON.stringify(sourcesBefore, null, 2) + '\n'), browser_version: browser.version(), cases, receipts, screenshots }, null, 2) + '\n');
 } finally {
